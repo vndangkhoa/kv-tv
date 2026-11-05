@@ -284,7 +284,7 @@
 
         <div class="panorama-subbar">
           <p class="panorama-deck">
-            <strong>Operational Panorama</strong> · Zero-rebuild host <code>/uploads</code> APK distribution, AFTVnews Downloader short-codes (<code>88101</code>–<code>88105</code>), and 2FA telemetry.
+            <strong>Operational Panorama</strong> · Zero-rebuild host <code>/uploads</code> &amp; Link-Only APK distribution, AFTVnews Downloader short-codes (<code>88101</code>–<code>88106</code>), and 2FA telemetry.
           </p>
           <div class="panorama-telemetry">
             <span class="telemetry-pill">
@@ -391,7 +391,7 @@
           <div class="panel-box-header">
             <div>
               <h2 id="catalog-perf-caption" class="section-heading">Per-App Distribution &amp; Binary Status</h2>
-              <p class="section-sub">AFTVnews Downloader short-codes (<code>/go/88101</code>–<code>88105</code>), SHA-256 verification, and active binary state.</p>
+              <p class="section-sub">AFTVnews Downloader short-codes (<code>/go/88101</code>–<code>88106</code>), SHA-256 verification, and active binary state.</p>
             </div>
             <span class="code-stamp">SHORT-CODE ROUTING</span>
           </div>
@@ -737,6 +737,18 @@ proxy_send_timeout 600s;</pre>
               <input type="checkbox" id="appFormFeatured" checked>
               <span>Pin to <strong>Featured TV Rail</strong></span>
             </label>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="field-group">
+            <label for="appFormApkUrl" class="field-label">Direct External APK Link (apkUrl — Link-Only Mode)</label>
+            <input type="url" id="appFormApkUrl" class="text-input mono-num" placeholder="https://github.com/yuliskov/SmartTube/releases/download/.../SmartTube.apk">
+          </div>
+
+          <div class="field-group">
+            <label for="appFormPresetUrl" class="field-label">External Pre-Set / Repo Link (presetUrl)</label>
+            <input type="url" id="appFormPresetUrl" class="text-input mono-num" placeholder="https://n.khoavo.vndns.net/repo.json">
           </div>
         </div>
 

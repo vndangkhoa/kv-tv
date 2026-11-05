@@ -265,21 +265,28 @@ kbd {
 .metro-stage {
   flex: 1;
   width: 100%;
-  max-width: 1720px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: clamp(20px, 3vw, 42px) clamp(16px, 3.5vw, 48px) 110px;
+  padding: 12px clamp(16px, 2.5vw, 36px) 24px;
   display: flex;
   flex-direction: column;
-  gap: clamp(20px, 2.6vw, 34px);
+  gap: 12px;
 }
 
 .kv-panorama-header,
 .panorama-header {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 6px;
   border-bottom: 1px solid var(--kv-border-hairline);
-  padding-bottom: 18px;
+  padding-bottom: 8px;
+}
+
+html[data-pivot="store"] .kv-panorama-header,
+.kv-pivots[hidden],
+.panorama-pivots[hidden],
+#metro-grid [data-app-downloads] {
+  display: none !important;
 }
 
 .kv-pivots,
@@ -398,8 +405,8 @@ kbd {
 .metro-grid {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  grid-auto-rows: minmax(215px, 240px);
-  gap: 12px;
+  grid-auto-rows: minmax(180px, 205px);
+  gap: 14px;
   background-color: var(--kv-bg-oled);
 }
 
@@ -413,7 +420,7 @@ kbd {
   color: var(--kv-fg-primary);
   font-family: var(--kv-font-sans);
   cursor: pointer;
-  padding: clamp(18px, 2vw, 26px);
+  padding: 14px 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -464,7 +471,7 @@ kbd {
   border: 1px solid var(--kv-border-hairline);
 }
 
-/* Tile Spans in the 6x2 Panorama Matrix */
+/* Dynamic Bento Spans in the 6-Column Grid */
 .kv-span-2x2,
 .span-2x2 {
   grid-column: span 2;
@@ -477,10 +484,213 @@ kbd {
   grid-row: span 1;
 }
 
+.kv-span-3x1,
+.span-3x1 {
+  grid-column: span 3;
+  grid-row: span 1;
+}
+
 .kv-span-1x1,
 .span-1x1 {
   grid-column: span 1;
   grid-row: span 1;
+}
+
+/* Hero 2x2 Bento Micro-Layout */
+.kv-hero-pill {
+  font-family: var(--kv-font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background-color: rgba(255, 255, 255, 0.22);
+  color: #FFFFFF;
+  padding: 3px 8px;
+}
+
+.kv-hero-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.kv-hero-subtitle {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.35;
+  margin: 0;
+}
+
+.kv-hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.kv-tag-pill {
+  font-family: var(--kv-font-mono);
+  font-size: 0.6875rem;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: rgba(255, 255, 255, 0.95);
+  padding: 2px 7px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  letter-spacing: 0.02em;
+}
+
+.kv-hero-footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.kv-hero-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.kv-hero-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  text-decoration: none;
+  background-color: #FFFFFF;
+  color: #000000;
+  border: 1px solid #FFFFFF;
+  transition: transform 120ms ease, background-color 120ms ease;
+}
+
+.kv-hero-btn:hover {
+  background-color: #EEEEEE;
+  transform: translateY(-1px);
+}
+
+.kv-hero-btn--secondary {
+  background-color: rgba(0, 0, 0, 0.35);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.kv-hero-btn--secondary:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+}
+
+/* Wide 3x1 KV-Store Bento Card */
+.kv-store-card-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  height: 100%;
+}
+
+.kv-store-card-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+}
+
+.kv-store-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.kv-store-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Dialer Card Chips */
+.kv-tile-chips {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.kv-tile-chip {
+  appearance: none;
+  background-color: rgba(0, 0, 0, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #FFFFFF;
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  cursor: pointer;
+  transition: background-color 140ms ease;
+}
+
+.kv-tile-chip:hover,
+.kv-tile-chip:focus {
+  background-color: #FFFFFF;
+  color: #000000;
+}
+
+/* QR Card Bento Wrap */
+.kv-qr-tile-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 100%;
+}
+
+.kv-qr-tile-box {
+  background: #FFFFFF;
+  padding: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.kv-qr-tile-box img {
+  width: 62px;
+  height: 62px;
+  display: block;
+}
+
+.kv-qr-tile-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+/* Footer & Discrete Admin Link */
+.kv-footer {
+  margin-top: 48px;
+  padding: 24px 0 36px;
+  border-top: 1px solid var(--kv-border-hairline);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  color: var(--kv-fg-secondary);
+}
+
+.kv-footer-admin-link {
+  color: var(--kv-fg-secondary);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--kv-fg-secondary);
+  transition: color 140ms ease;
+}
+
+.kv-footer-admin-link:hover {
+  color: var(--kv-cobalt);
+  border-bottom-color: var(--kv-cobalt);
 }
 
 /* Razor-Sharp 10-Foot TV Focus States (Zero blurred glow!) */
@@ -520,8 +730,8 @@ kbd {
 
 .kv-tile-glyph,
 .tile-glyph {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   color: var(--kv-fg-primary);
   flex-shrink: 0;
 }
@@ -530,8 +740,8 @@ kbd {
 .kv-span-2x2 .tile-glyph,
 .span-2x2 .kv-tile-glyph,
 .span-2x2 .tile-glyph {
-  width: 56px;
-  height: 56px;
+  width: 40px;
+  height: 40px;
 }
 
 .kv-code-stamp,
@@ -548,21 +758,14 @@ kbd {
 
 .kv-watermark-code,
 .watermark-code {
-  position: absolute;
-  top: 76px;
-  right: 16px;
-  width: 220px;
-  height: 76px;
-  color: rgba(255, 255, 255, 0.2);
-  pointer-events: none;
-  z-index: 1;
+  display: none;
 }
 
 .kv-tile-bottom,
 .tile-bottom {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   position: relative;
   z-index: 2;
   width: 100%;
@@ -573,18 +776,18 @@ kbd {
 .tile-title {
   font-size: clamp(1.35rem, 1.8vw, 1.85rem);
   font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
   color: var(--kv-fg-primary);
-  text-transform: lowercase;
+  text-transform: none;
 }
 
 .kv-span-2x2 .kv-tile-title,
 .kv-span-2x2 .tile-title,
 .span-2x2 .kv-tile-title,
 .span-2x2 .tile-title {
-  font-size: clamp(2.2rem, 3.2vw, 3.25rem);
-  letter-spacing: -0.035em;
+  font-size: clamp(1.35rem, 1.8vw, 1.85rem);
+  letter-spacing: -0.03em;
 }
 
 .kv-tile-edition,
@@ -592,7 +795,10 @@ kbd {
   font-size: 0.9375rem;
   font-weight: 500;
   color: var(--kv-fg-primary);
-  line-height: 1.3;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .kv-span-2x2 .kv-tile-edition,
@@ -658,10 +864,10 @@ kbd {
 
 .kv-qr-tile-img,
 .qr-tile-img {
-  width: 68px;
-  height: 68px;
+  width: 44px;
+  height: 44px;
   background-color: #FFFFFF;
-  padding: 4px;
+  padding: 3px;
   display: block;
   flex-shrink: 0;
 }
@@ -811,6 +1017,11 @@ kbd {
 /* ==========================================================================
    6. Native Modal Dialogs (dialog, .kv-dialog) — Scroll-Contained
    ========================================================================== */
+
+/* Native dialog hiding when not open */
+dialog:not([open]) {
+  display: none !important;
+}
 
 dialog,
 .kv-dialog {
@@ -1073,18 +1284,9 @@ dialog::backdrop {
 }
 
 .kv-dpad-simulator,
-.dpad-simulator {
-  position: fixed;
-  right: 20px;
-  bottom: 12px;
-  background-color: var(--kv-bg-chrome);
-  border: 2px solid var(--kv-fg-primary);
-  padding: 6px 10px;
-  z-index: 40;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
+.dpad-simulator,
+#metro-lower-strip {
+  display: none !important;
 }
 
 .kv-dpad-header,
@@ -1161,7 +1363,12 @@ dialog::backdrop {
   .kv-grid,
   .metro-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-auto-rows: minmax(200px, 225px);
+    grid-auto-rows: minmax(180px, 205px);
+  }
+
+  .kv-span-3x1,
+  .span-3x1 {
+    grid-column: span 4;
   }
 }
 
@@ -1169,14 +1376,21 @@ dialog::backdrop {
   .kv-grid,
   .metro-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: minmax(185px, auto);
+    grid-auto-rows: minmax(160px, auto);
   }
 
   .kv-span-2x2,
   .kv-span-2x1,
+  .kv-span-3x1,
   .span-2x2,
-  .span-2x1 {
+  .span-2x1,
+  .span-3x1 {
     grid-column: span 2;
+  }
+
+  .kv-span-2x2,
+  .span-2x2 {
+    grid-row: span 2;
   }
 
   .kv-span-1x1,
@@ -1189,10 +1403,9 @@ dialog::backdrop {
     grid-template-columns: 1fr;
   }
 
-  .kv-dpad-simulator,
-  .dpad-simulator {
-    right: 12px;
-    bottom: 12px;
+  .kv-store-card-wrap {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 
@@ -1209,10 +1422,10 @@ dialog::backdrop {
 .kv-lang-btn {
   appearance: none;
   font-family: var(--kv-font-mono);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.05em;
-  color: var(--kv-fg-muted);
+  color: var(--kv-fg-secondary);
   background-color: transparent;
   border: 1px solid transparent;
   padding: 3px 6px;
@@ -1243,17 +1456,16 @@ dialog::backdrop {
    ========================================================================== */
 
 .kv-app-banner {
-  background: linear-gradient(135deg, rgba(0, 164, 220, 0.18) 0%, rgba(10, 15, 29, 0.95) 100%);
+  background: var(--kv-bg-surface);
   border: 1px solid var(--kv-cobalt);
-  padding: 16px 24px;
-  margin: 16px 0 24px 0;
+  padding: 10px 16px;
+  margin: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 16px;
   flex-wrap: wrap;
   position: relative;
-  box-shadow: 0 4px 20px rgba(0, 164, 220, 0.15);
 }
 
 .kv-app-banner-content {
@@ -1272,10 +1484,10 @@ dialog::backdrop {
 
 .kv-badge-official {
   font-family: var(--kv-font-mono);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.05em;
-  color: #000000;
+  color: #ffffff;
   background-color: var(--kv-cobalt);
   padding: 3px 8px;
 }
@@ -1286,18 +1498,18 @@ dialog::backdrop {
   letter-spacing: 0.04em;
   color: #ffffff;
   background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid var(--kv-border-subtle);
+  border: 1px solid var(--kv-border-strong);
   padding: 2px 8px;
 }
 
 .kv-badge-code strong {
-  color: var(--kv-cobalt);
-  font-size: 0.875rem;
+  color: #ffffff;
+  font-size: 0.9375rem;
 }
 
 .kv-app-banner-title {
   font-family: var(--kv-font-sans);
-  font-size: 1.125rem;
+  font-size: clamp(1.35rem, 1.8vw, 1.85rem);
   font-weight: 700;
   color: var(--kv-fg-primary);
   margin: 0;
@@ -1306,7 +1518,7 @@ dialog::backdrop {
 }
 
 .kv-app-banner-desc {
-  font-size: 0.8125rem;
+  font-size: 0.9375rem;
   line-height: 1.45;
   color: var(--kv-fg-secondary);
   margin: 0;
@@ -1329,7 +1541,7 @@ dialog::backdrop {
   font-weight: 700;
   padding: 10px 18px;
   text-decoration: none;
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   letter-spacing: 0.04em;
   border: 1px solid var(--kv-cobalt);
   transition: all 140ms var(--kv-ease-out-expo);
@@ -1370,7 +1582,7 @@ body.is-tv-app .kv-app-banner {
   align-items: center;
   gap: 4px;
   font-family: var(--kv-font-mono);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 700;
   padding: 2px 6px;
   border-radius: 0;
@@ -1378,22 +1590,22 @@ body.is-tv-app .kv-app-banner {
 }
 
 .kv-app-status-badge.is-installed {
-  color: #10b981;
-  background-color: rgba(16, 185, 129, 0.15);
-  border: 1px solid #10b981;
+  color: #ffffff;
+  background-color: rgba(16, 124, 16, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.85);
 }
 
 .kv-app-status-badge.is-update {
-  color: #f59e0b;
-  background-color: rgba(245, 158, 11, 0.15);
-  border: 1px solid #f59e0b;
+  color: #ffffff;
+  background-color: rgba(180, 83, 9, 0.9);
+  border: 1px solid #ffffff;
   animation: pulse-update 1.5s infinite;
 }
 
 .kv-app-status-badge.is-not-installed {
-  color: var(--kv-fg-muted);
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--kv-border-hairline);
+  color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
 @keyframes pulse-update {
@@ -1422,12 +1634,12 @@ body.is-tv-app .kv-app-banner {
   font-family: var(--kv-font-mono);
   font-size: 0.75rem;
   font-weight: 700;
-  color: var(--kv-cobalt);
+  color: var(--kv-fg-primary);
 }
 
 .kv-guide-step-title {
   font-weight: 700;
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   color: var(--kv-fg-primary);
 }
 

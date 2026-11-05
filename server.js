@@ -450,6 +450,165 @@ function buildMinimalZipArchive(entryFileName, contentBuffer) {
 }
 
 /**
+ * Compute standard CRC-32 checksum over a Buffer.
+ * @param {Buffer} dataBuf
+ * @returns {number}
+ */
+function computeCrc32(dataBuf) {
+  let crc = 0xffffffff;
+  for (let i = 0; i < dataBuf.length; i++) {
+    crc ^= dataBuf[i];
+    for (let j = 0; j < 8; j++) {
+      crc = (crc >>> 1) ^ (crc & 1 ? 0xedb88320 : 0);
+    }
+  }
+  return (crc ^ 0xffffffff) >>> 0;
+}
+
+/**
+ * Build a multi-file ZIP archive Buffer in memory using Deflate (compression method 8).
+ * @param {Array<{ name: string, data: Buffer }>} entries
+ * @returns {Buffer}
+ */
+function buildMultiFileZipArchive(entries) {
+  const localParts = [];
+  const centralParts = [];
+  let offset = 0;
+
+  for (const entry of entries) {
+    const nameBuf = Buffer.from(entry.name.replace(/\\/g, '/'), 'utf8');
+    const rawBuf = Buffer.isBuffer(entry.data)
+      ? entry.data
+      : Buffer.from(String(entry.data), 'utf8');
+    const compressedBuf = zlib.deflateRawSync(rawBuf);
+    const crc = computeCrc32(rawBuf);
+
+    const localHeader = Buffer.alloc(30);
+    localHeader.writeUInt32LE(0x04034b50, 0); // PK\x03\x04
+    localHeader.writeUInt16LE(20, 4); // Version needed
+    localHeader.writeUInt16LE(0, 6); // Flags
+    localHeader.writeUInt16LE(8, 8); // Compression (8 = deflate)
+    localHeader.writeUInt16LE(0, 10); // Mod time
+    localHeader.writeUInt16LE(0, 12); // Mod date
+    localHeader.writeUInt32LE(crc, 14); // CRC-32
+    localHeader.writeUInt32LE(compressedBuf.length, 18); // Compressed size
+    localHeader.writeUInt32LE(rawBuf.length, 22); // Uncompressed size
+    localHeader.writeUInt16LE(nameBuf.length, 26); // Filename length
+    localHeader.writeUInt16LE(0, 28); // Extra field length
+
+    const centralHeader = Buffer.alloc(46);
+    centralHeader.writeUInt32LE(0x02014b50, 0); // PK\x01\x02
+    centralHeader.writeUInt16LE(20, 4); // Version made by
+    centralHeader.writeUInt16LE(20, 6); // Version needed
+    centralHeader.writeUInt16LE(0, 8); // Flags
+    centralHeader.writeUInt16LE(8, 10); // Compression (8 = deflate)
+    centralHeader.writeUInt16LE(0, 12); // Mod time
+    centralHeader.writeUInt16LE(0, 14); // Mod date
+    centralHeader.writeUInt32LE(crc, 16); // CRC-32
+    centralHeader.writeUInt32LE(compressedBuf.length, 20); // Compressed size
+    centralHeader.writeUInt32LE(rawBuf.length, 24); // Uncompressed size
+    centralHeader.writeUInt16LE(nameBuf.length, 28); // Filename length
+    centralHeader.writeUInt16LE(0, 30); // Extra length
+    centralHeader.writeUInt16LE(0, 32); // Comment length
+    centralHeader.writeUInt16LE(0, 34); // Disk number
+    centralHeader.writeUInt16LE(0, 36); // Internal attrs
+    centralHeader.writeUInt32LE(0, 38); // External attrs
+    centralHeader.writeUInt32LE(offset, 42); // Offset of local header
+
+    localParts.push(localHeader, nameBuf, compressedBuf);
+    centralParts.push(centralHeader, nameBuf);
+    offset += localHeader.length + nameBuf.length + compressedBuf.length;
+  }
+
+  const centralBuf = Buffer.concat(centralParts);
+  const eocd = Buffer.alloc(22);
+  eocd.writeUInt32LE(0x06054b50, 0); // PK\x05\x06
+  eocd.writeUInt16LE(0, 4); // Disk number
+  eocd.writeUInt16LE(0, 6); // Central dir disk
+  eocd.writeUInt16LE(entries.length, 8); // Entries on disk
+  eocd.writeUInt16LE(entries.length, 10); // Total entries
+  eocd.writeUInt32LE(centralBuf.length, 12); // Central dir size
+  eocd.writeUInt32LE(offset, 16); // Central dir offset
+  eocd.writeUInt16LE(0, 20); // Comment length
+
+  return Buffer.concat([...localParts, centralBuf, eocd]);
+}
+
+/**
+ * Dynamically package `addons/plugin.video.kvnetflix` into an in-memory ZIP Buffer
+ * so Kodi KV-Netflix preset addon works in 100% Link-Only mode without local files in `uploads/`.
+ * @returns {Buffer | null}
+ */
+function buildKodiAddonZipBuffer() {
+  const addonsRoot = path.join(__dirname, 'addons');
+  const addonDir = path.join(addonsRoot, 'plugin.video.kvnetflix');
+  if (!fs.existsSync(addonDir)) return null;
+
+  const entries = [];
+  function walk(dir) {
+    const items = fs.readdirSync(dir, { withFileTypes: true }).sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+    for (const item of items) {
+      const fullPath = path.join(dir, item.name);
+      if (item.isDirectory()) {
+        walk(fullPath);
+      } else if (item.isFile()) {
+        const relPath = path.relative(addonsRoot, fullPath).replace(/\\/g, '/');
+        entries.push({
+          name: relPath,
+          data: fs.readFileSync(fullPath),
+        });
+      }
+    }
+  }
+  walk(addonDir);
+  if (entries.length === 0) return null;
+  return buildMultiFileZipArchive(entries);
+}
+
+/**
+ * Dynamically build CloudStream 3 KV-PreSetup `.json` backup Buffer in memory.
+ * @returns {Buffer}
+ */
+function buildCloudStreamPresetBuffer() {
+  const preset = {
+    datastore: {
+      _Bool: {},
+      _Int: {},
+      _String: {
+        REPOSITORIES_KEY:
+          '[{"name": "KV-Netflix", "url": "https://n.khoavo.vndns.net/repo.json", "iconUrl": "https://n.khoavo.vndns.net/favicon.svg"}]',
+        PLUGINS_KEY:
+          '[{"internalName":"KVNetflixProvider","url":"https://n.khoavo.vndns.net/KVNetflixProvider.cs3","isOnline":true,"version":1}]',
+        '0/home_api_used': '"KV-Netflix"',
+      },
+      _Float: {},
+      _Long: {},
+      _StringSet: {},
+    },
+    settings: {
+      _Bool: {
+        auto_update: true,
+        auto_update_plugins: true,
+        auto_rotate_video_key: true,
+      },
+      _Int: {},
+      _String: {
+        filter_sub_lang_key: 'vi',
+        app_locale: 'vi',
+      },
+      _Float: {},
+      _Long: {},
+      _StringSet: {
+        provider_lang_key: ['vi', 'en'],
+      },
+    },
+  };
+  return Buffer.from(JSON.stringify(preset, null, 2), 'utf8');
+}
+
+/**
  * Inspect storage metrics for `/uploads` and `/data/store.json`.
  * @returns {object}
  */
@@ -720,10 +879,7 @@ const server = http.createServer(async (req, res) => {
 
       const cfCountry = String(req.headers['cf-ipcountry'] || '').toUpperCase();
       const xCountry = String(req.headers['x-country-code'] || '').toUpperCase();
-      const acceptLang = String(req.headers['accept-language'] || '').toLowerCase();
-      const isVietnam = cfCountry === 'VN' || xCountry === 'VN';
-      const prefersVietnamese = isVietnam || /vi([-_][a-zA-Z]{2})?|vi-vn/i.test(acceptLang);
-      const suggestedLang = prefersVietnamese ? 'vi' : 'en';
+      const suggestedLang = 'vi';
 
       sendJson(req, res, 200, {
         storeInfo: store.storeInfo || {
@@ -793,6 +949,15 @@ const server = http.createServer(async (req, res) => {
         fs.createReadStream(apkFilePath).pipe(res);
         return;
       }
+
+      if (app.apkUrl) {
+        res.writeHead(302, {
+          Location: app.apkUrl,
+          'Cache-Control': 'no-store',
+        });
+        res.end();
+        return;
+      }
     }
 
     // Direct 5-digit shortcode routes for Downloader app (e.g. /88000 or /88103)
@@ -825,7 +990,7 @@ const server = http.createServer(async (req, res) => {
       if (!app) {
         sendJson(req, res, 404, {
           found: false,
-          error: `No app found for Downloader code "${code}". Valid codes: 88000, 88101–88105.`,
+          error: `No app found for Downloader code "${code}". Valid codes: 88000, 88101–88106.`,
         });
         return;
       }
@@ -833,7 +998,9 @@ const server = http.createServer(async (req, res) => {
         found: true,
         app,
         downloadUrl: app.id === 'kv-store' ? '/kv-store.apk' : `/api/download/${app.id}`,
-        presetUrl: `/api/download/${app.id}?type=preset`,
+        presetUrl: app.presetUrl || `/api/download/${app.id}?type=preset`,
+        apkUrl: app.apkUrl || null,
+        linkOnly: !app.apkFileName,
       });
       return;
     }
@@ -930,6 +1097,59 @@ const server = http.createServer(async (req, res) => {
           fs.createReadStream(uploadedPath).pipe(res);
           return;
         }
+      }
+
+      // Link-Only & In-Memory Preset handling when no file is stored in uploads/
+      if (downloadType === 'preset') {
+        if (app.id === 'kodi-kv') {
+          const kodiZip = buildKodiAddonZipBuffer();
+          if (kodiZip) {
+            res.writeHead(200, {
+              'Content-Type': 'application/zip',
+              'Content-Disposition': 'attachment; filename="plugin.video.kvnetflix.zip"',
+              'Content-Length': String(kodiZip.length),
+              'Cache-Control': 'no-store',
+              'X-KVTV-In-Memory-Preset': 'kodi-kv',
+            });
+            if (method === 'HEAD') {
+              res.end();
+              return;
+            }
+            res.end(kodiZip);
+            return;
+          }
+        }
+        if (app.id === 'cloudstream-kv') {
+          const csPreset = buildCloudStreamPresetBuffer();
+          res.writeHead(200, {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Content-Disposition': 'attachment; filename="cloudstream-kv-preset.json"',
+            'Content-Length': String(csPreset.length),
+            'Cache-Control': 'no-store',
+            'X-KVTV-In-Memory-Preset': 'cloudstream-kv',
+          });
+          if (method === 'HEAD') {
+            res.end();
+            return;
+          }
+          res.end(csPreset);
+          return;
+        }
+        if (app.presetUrl) {
+          res.writeHead(302, {
+            Location: app.presetUrl,
+            'Cache-Control': 'no-store',
+          });
+          res.end();
+          return;
+        }
+      } else if (downloadType === 'apk' && app.apkUrl) {
+        res.writeHead(302, {
+          Location: app.apkUrl,
+          'Cache-Control': 'no-store',
+        });
+        res.end();
+        return;
       }
 
       // Generate realistic downloadable APK / Preset bundle on the fly
@@ -1287,10 +1507,13 @@ const server = http.createServer(async (req, res) => {
           id: slugId,
           name: rawName,
           edition: String(body.edition || existing?.edition || 'KV-Optimized Edition').trim(),
+          edition_vi: String(body.edition_vi || body.edition || existing?.edition_vi || existing?.edition || 'KV-Optimized Edition').trim(),
+          edition_en: String(body.edition_en || body.edition || existing?.edition_en || existing?.edition || 'KV-Optimized Edition').trim(),
           packageName: String(
             body.packageName || existing?.packageName || `vn.kvtv.${slugId.replace(/-/g, '')}`
           ).trim(),
           version: String(body.version || existing?.version || '1.0.0-kv').trim(),
+          versionCode: Number(body.versionCode || existing?.versionCode || 1),
           size: String(body.size || existing?.size || '25.0 MB').trim(),
           shortCode,
           category: String(body.category || existing?.category || 'Media Center').trim(),
@@ -1312,13 +1535,47 @@ const server = http.createServer(async (req, res) => {
               existing?.presetSummary ||
               'Pre-configured KV-TV optimization bundle included.'
           ).trim(),
+          presetSummary_vi: String(
+            body.presetSummary_vi ||
+              body.presetSummary ||
+              existing?.presetSummary_vi ||
+              existing?.presetSummary ||
+              'Pre-configured KV-TV optimization bundle included.'
+          ).trim(),
+          presetSummary_en: String(
+            body.presetSummary_en ||
+              body.presetSummary ||
+              existing?.presetSummary_en ||
+              existing?.presetSummary ||
+              'Pre-configured KV-TV optimization bundle included.'
+          ).trim(),
           description: String(
             body.description ||
               body.presetSummary ||
               existing?.description ||
               'Pre-configured KV-TV optimization bundle included.'
           ).trim(),
+          description_vi: String(
+            body.description_vi ||
+              body.description ||
+              existing?.description_vi ||
+              existing?.description ||
+              'Pre-configured KV-TV optimization bundle included.'
+          ).trim(),
+          description_en: String(
+            body.description_en ||
+              body.description ||
+              existing?.description_en ||
+              existing?.description ||
+              'Pre-configured KV-TV optimization bundle included.'
+          ).trim(),
           presetFeatures: features,
+          presetFeatures_vi: Array.isArray(body.presetFeatures_vi)
+            ? body.presetFeatures_vi
+            : existing?.presetFeatures_vi || features,
+          presetFeatures_en: Array.isArray(body.presetFeatures_en)
+            ? body.presetFeatures_en
+            : existing?.presetFeatures_en || features,
           color: String(body.color || existing?.color || '#00A4DC').trim(),
           iconType: String(body.iconType || existing?.iconType || 'custom').trim(),
           downloads:
@@ -1335,8 +1592,20 @@ const server = http.createServer(async (req, res) => {
           sha256:
             existing?.sha256 ||
             crypto.createHash('sha256').update(`${slugId}-${Date.now()}`).digest('hex'),
-          apkFileName: existing?.apkFileName || null,
-          presetFileName: existing?.presetFileName || null,
+          apkFileName:
+            body.apkFileName !== undefined ? body.apkFileName : existing?.apkFileName || null,
+          presetFileName:
+            body.presetFileName !== undefined
+              ? body.presetFileName
+              : existing?.presetFileName || null,
+          apkUrl:
+            body.apkUrl !== undefined
+              ? String(body.apkUrl).trim() || null
+              : existing?.apkUrl || null,
+          presetUrl:
+            body.presetUrl !== undefined
+              ? String(body.presetUrl).trim() || null
+              : existing?.presetUrl || null,
           updatedAt: new Date().toISOString(),
         };
 

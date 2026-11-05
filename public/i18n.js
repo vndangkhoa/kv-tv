@@ -12,16 +12,15 @@ export const TRANSLATIONS = {
   vi: {
     meta: {
       title: 'KV-TV Store · Kho Ứng Dụng Android TV (tv.vndns.net)',
-      description: 'Kho ứng dụng Android TV cài đặt sẵn — CloudStream 3, Jellyfin TV, Kodi 21 Omega, KV-Netflix và KV-Tube trên giao diện Metro typographic panorama.',
+      description: 'Kho ứng dụng Android TV tối ưu — CloudStream 3, Jellyfin TV, Kodi 21 Omega, KV-Netflix, SmartTube TV và KV-Store trên giao diện Bento Grid hiện đại.',
     },
     nav: {
       brand: 'KV-TV STORE · tv.vndns.net',
-      theme_badge: 'KV-TV-THEME v1.0',
-      store: '[ Kho Ứng Dụng (TV) ]',
-      presets: '[ Bản Tích Hợp Sẵn ]',
-      shortcodes: '[ Mã 5 Số Downloader ]',
-      phoneqr: '[ QR & Đồng Hành ]',
-      admin: '[ Quản Trị ]',
+      theme_badge: 'TIẾNG VIỆT',
+      store: 'Kho Ứng Dụng',
+      presets: 'Gói Cài Sẵn',
+      shortcodes: 'Mã 5 Số',
+      phoneqr: 'Mã QR',
     },
     pivots: {
       store: 'kho ứng dụng',
@@ -31,50 +30,58 @@ export const TRANSLATIONS = {
     },
     telemetry: {
       total_installs: 'LƯỢT TẢI',
-      codes_range: 'MÃ 88000 · 88101–88105',
+      codes_range: 'MÃ 88000 · 88101–88106',
       edge_cdn: 'MẠNG CDN VN · tv.vndns.net',
     },
     decks: {
-      store: '<strong>Kho Ứng Dụng Android TV Cài Đặt Sẵn</strong> — Không cần gõ link nguồn thủ công. Mọi APK đều tích hợp sẵn kho phim 4K Vietsub & Quốc tế, cấu hình phụ đề, và mã 5 số Downloader dùng được ngay.',
-      presets: '<strong>Bộ Cài Đặt Sẵn & Sao Lưu KV-TV</strong> — Tải trực tiếp gói cấu hình <code>type=preset</code> hoặc file APK cài sẵn chi tiết từng tiện ích, nguồn phụ đề tiếng Việt và tùy chọn phần cứng.',
-      shortcodes: '<strong>Danh Mục Mã 5 Số AFTVnews Downloader (88101–88105)</strong> — Nhập bất kỳ mã 5 số nào hoặc sao chép 1 chạm để tải trực tiếp APK cài sẵn trên Android TV Box.',
-      phoneqr: '<strong>Cổng Sideload & Quảng Cáo Qua Điện Thoại / Máy Tính</strong> — Quét mã QR trực tiếp bằng camera điện thoại, xem các chương trình tài trợ, hoặc cài đặt ứng dụng qua mạng nội bộ gia đình.',
+      store: '<strong>Kho Ứng Dụng Android TV Tối Ưu</strong> — Tích hợp sẵn nguồn phim 4K Vietsub, chặn quảng cáo và mã cài nhanh AFTVnews Downloader.',
+      presets: '<strong>Gói Sao Lưu & Cấu Hình Độc Lập</strong> — Tải trực tiếp file cấu hình (.json / .zip) hoặc bộ cài APK hoàn chỉnh.',
+      shortcodes: '<strong>Danh Mục Mã 5 Số AFTVnews Downloader</strong> — Nhập mã 5 số để tải trực tiếp APK trên Android TV trong 3 giây.',
+      phoneqr: '<strong>Quét Mã QR & Cài Đặt Di Động</strong> — Dùng camera điện thoại quét mã QR để tải nhanh hoặc chia sẻ đến TV.',
     },
     strip: {
-      presets_title: 'gói cấu hình 1 chạm (.zip / .backup)',
-      presets_body: 'Đã cài sẵn CloudStream, Kodi hoặc Jellyfin gốc? Tải ngay gói cấu hình độc lập của KV-TV để tích hợp kho phim Vietsub, tiện ích và cài đặt DoH 1.1.1.1 chỉ trong vài giây.',
+      presets_title: 'gói sao lưu & cấu hình (.zip / .json)',
+      presets_body: 'Gói cấu hình độc lập cho CloudStream 3, Kodi 21 và Jellyfin. Tích hợp trực tiếp nguồn phim KV-Netflix 4K VIP, phụ đề đồng bộ và DoH 1.1.1.1.',
       presets_badge: '5 GÓI CẤU HÌNH SẴN SÀNG',
       presets_btn: 'Tải Cấu Hình CS3',
       codes_title: 'danh mục mã số aftvnews downloader',
-      codes_body: 'Mở ứng dụng Downloader trên mọi Android TV Box và nhập <strong class="tabular">88101</strong> (Jellyfin), <strong class="tabular">88102</strong> (Kodi 21), <strong class="tabular">88103</strong> (CloudStream 3), <strong class="tabular">88104</strong> (KV-Netflix), hoặc <strong class="tabular">88105</strong> (KV-Tube).',
-      codes_badge: '302 CHUYỂN HƯỚNG APK TRỰC TIẾP',
+      codes_body: 'Mở ứng dụng Downloader trên Android TV và nhập mã 5 số: <strong class="tabular">88000</strong> (KV-Store), <strong class="tabular">88101</strong> (Jellyfin), <strong class="tabular">88102</strong> (Kodi 21), <strong class="tabular">88103</strong> (CloudStream 3), <strong class="tabular">88104</strong> (KV-Netflix), <strong class="tabular">88105</strong> (KV-Tube), hoặc <strong class="tabular">88106</strong> (SmartTube TV).',
+      codes_badge: 'CHUYỂN HƯỚNG APK TRỰC TIẾP',
       codes_btn: 'Mở Bàn Phím Số',
-      sponsor_title: 'kv-tv vip box setup — trung tâm giải trí 4k',
-      sponsor_body: 'Máy chủ đặt tại Việt Nam trên nền VPS NVMe tốc độ cao 1Gbps, tải APK cực nhanh và quét mã QR cài đặt tức thì.',
+      sponsor_title: 'hạ tầng vps nvme edge cdn',
+      sponsor_body: 'Máy chủ đặt tại Việt Nam băng thông 1Gbps không giới hạn. Tải APK trực tiếp, phản hồi dưới 15ms trên mọi nhà mạng.',
       sponsor_badge: 'MẠNG CDN VN · HOẠT ĐỘNG',
-      sponsor_btn: 'QR & Quảng Cáo',
+      sponsor_btn: 'Xem Mã QR',
     },
     tiles: {
-      dialer_title: 'mã 5 số',
-      dialer_edition: 'Bàn Phím Số AFTV',
+      hero_badge: '★ 4K VIP REPO',
+      btn_apk: 'TẢI APK',
+      btn_preset: 'CẤU HÌNH',
+      store_badge: 'BẢN CHÍNH THỨC · MÃ 88000',
+      store_title: 'kv-store cho android tv',
+      store_desc: 'Cài đặt và cập nhật mọi app media 4K HDR bằng remote TV.',
+      store_btn_dl: 'TẢI APP TV (88000)',
+      store_btn_guide: 'HƯỚNG DẪN',
+      dialer_title: 'Mã 5 Số Downloader',
+      dialer_edition: 'Bàn phím nhập mã nhanh',
       dialer_action: 'NHẬP',
       dialer_status: 'Tải APK Tức Thì',
-      qr_title: 'điện thoại & qr',
-      qr_edition: 'Cài Mobile & Ưu Đãi',
+      qr_title: 'Điện Thoại & QR',
+      qr_edition: 'Quét để tải trên di động',
       qr_action: 'QUÉT',
       installs_suffix: 'lượt cài',
     },
     matrix: {
       title: 'bộ cài đặt sẵn & bảng ma trận tối ưu hóa',
-      desc: 'Mỗi bản dựng KV-TV bao gồm cả file APK cài đặt sẵn và tệp sao lưu cấu hình <code>type=preset</code> độc lập, ghi rõ các tiện ích mở rộng, nguồn phụ đề và thiết lập phần cứng.',
+      desc: 'Mỗi bản dựng KV-TV bao gồm file APK cài sẵn và tệp cấu hình <code>type=preset</code> độc lập, ghi rõ các tiện ích mở rộng và nguồn phụ đề.',
       archive_label: 'TỆP CẤU HÌNH',
-      btn_download_preset: 'TẢI GÓI CẤU HÌNH SẴN (.ZIP)',
+      btn_download_preset: 'TẢI GÓI CẤU HÌNH (.JSON / .ZIP)',
       btn_direct_apk: 'TẢI APK TRỰC TIẾP ({code})',
       btn_inspect_qr: 'XEM CHI TIẾT & MÃ QR',
     },
     directory: {
       title: 'danh mục mã 5 số aftvnews downloader',
-      desc: 'Nhập bất kỳ mã 5 số nào (<strong class="tabular">88101</strong>–<strong class="tabular">88105</strong>) trong ứng dụng Downloader trên Android TV hoặc sao chép 1 chạm bên dưới.',
+      desc: 'Nhập bất kỳ mã 5 số nào (<strong class="tabular">88000</strong>, <strong class="tabular">88101</strong>–<strong class="tabular">88106</strong>) trong ứng dụng Downloader trên Android TV hoặc sao chép 1 chạm.',
       dialer_title: 'bàn phím nhập mã số nhanh',
       dialer_desc: 'Nhập mã 5 số để tải APK ngay lập tức hoặc xem thông số kỹ thuật.',
       btn_fetch_apk: 'TẢI APK THEO MÃ SỐ',
@@ -85,20 +92,20 @@ export const TRANSLATIONS = {
     },
     promo: {
       hero_title: 'cài đặt trên mọi android tv trong 60 giây',
-      hero_lead: 'Không còn cảnh gõ link nguồn mệt mỏi, lỗi plugin phụ đề hay chuột bay phiền toái. Mọi ứng dụng tại <strong>KV-TV Store</strong> (<code>tv.vndns.net</code>) đều được cấu hình sẵn trình phát 4K HDR, phụ đề tiếng Việt & tiếng Anh, và điều khiển chuẩn 10-foot bằng remote TV.',
-      btn_download_companion: 'TẢI APK ĐỒNG HÀNH (88103)',
-      btn_dialer: 'BÀN PHÍM MÃ SỐ (88101–88105)',
+      hero_lead: 'Toàn bộ ứng dụng tại <strong>KV-TV Store</strong> (<code>tv.vndns.net</code>) được cấu hình sẵn cho màn hình Android TV: chuẩn phát 4K HDR, phụ đề tiếng Việt đồng bộ và điều khiển 100% bằng remote TV.',
+      btn_download_companion: 'TẢI APK CLOUDSTREAM (88103)',
+      btn_dialer: 'BÀN PHÍM MÃ SỐ (88000–88106)',
       btn_focus_panorama: 'CHUYỂN ĐẾN KHO ỨNG DỤNG',
       qr_heading: 'quét trên điện thoại hoặc tv',
       qr_caption: 'Dùng camera điện thoại quét tại đây hoặc nhập <strong>tv.vndns.net</strong> vào trình duyệt TV / Downloader.',
-      step1_title: '1. mở trình duyệt tv hoặc downloader',
-      step1_body: 'Mở <strong>TV Bro</strong>, <strong>Puffin TV</strong>, <strong>Zeus Browser</strong>, hoặc <strong>Downloader by AFTVnews</strong> từ Google Play trên TV Sony, TCL, Xiaomi hoặc TV Box.',
-      step2_title: '2. nhập tv.vndns.net hoặc mã 5 số',
-      step2_body: 'Truy cập <strong>tv.vndns.net</strong> để dùng kho ứng dụng đầy đủ, hoặc nhập mã 5 số (<code class="tabular">88101</code> Jellyfin, <code class="tabular">88102</code> Kodi, <code class="tabular">88103</code> CloudStream, <code class="tabular">88104</code> KV-Netflix, <code class="tabular">88105</code> KV-Tube).',
-      step3_title: '3. cài đặt apk đã cấu hình sẵn',
-      step3_body: 'Xác nhận cài đặt APK bằng nút OK trên remote. Các tiện ích mở rộng, codec 4K và phụ đề tiếng Việt đã sẵn sàng—mở là xem ngay!',
-      campaigns_title: 'chương trình tài trợ & khuyến mãi',
-      campaigns_desc: 'Các bản phát hành đặc biệt và gói giải trí được tuyển chọn, quản lý trực tiếp qua KV-TV Admin Console.',
+      step1_title: '1. mở downloader trên android tv',
+      step1_body: 'Mở ứng dụng <strong>Downloader by AFTVnews</strong> (biểu tượng màu cam) từ Google Play Store trên TV Box hoặc Smart TV.',
+      step2_title: '2. nhập mã 5 số ứng dụng',
+      step2_body: 'Tại ô URL / Search Term nhập một trong các mã: <code class="tabular">88000</code> (KV-Store), <code class="tabular">88103</code> (CloudStream), <code class="tabular">88104</code> (KV-Netflix), hoặc <code class="tabular">88106</code> (SmartTube).',
+      step3_title: '3. bấm cài đặt & thưởng thức',
+      step3_body: 'Bấm nút Cài đặt (Install). Tiện ích xem phim 4K Vietsub và cấu hình tối ưu đã tích hợp sẵn, mở app là dùng được ngay.',
+      campaigns_title: 'chương trình tài trợ & hạ tầng',
+      campaigns_desc: 'Hệ thống hạ tầng mạng và máy chủ tốc độ cao phục vụ phân phối APK và stream nội dung 4K.',
       table_title: 'bảng tra cứu gói cài đặt & sideload',
       table_desc: 'Link tải APK trực tiếp, gói cấu hình độc lập, mã định danh gói và số liệu lượt cài đặt thực tế.',
       search_placeholder: 'Tìm kiếm theo tên app, mã số (88103), hoặc package...',
@@ -127,35 +134,27 @@ export const TRANSLATIONS = {
     },
     dialog_dialer: {
       title: 'bàn phím nhập mã số',
-      subtitle: 'Nhập mã AFTVnews Downloader 5 số (88101–88105)',
+      subtitle: 'Nhập mã AFTVnews Downloader 5 số (88000, 88101–88106)',
       close: 'ESC · ĐÓNG',
       btn_fetch: 'TẢI APK THEO MÃ SỐ',
       btn_inspect: 'XEM THÔNG SỐ BẢN DỰNG',
     },
     dialog_qr: {
       title: 'mã qr đồng hành cho điện thoại & tv',
-      subtitle: 'Quét bằng camera điện thoại để cài đặt APK hoặc khám phá ưu đãi',
+      subtitle: 'Quét bằng camera điện thoại để cài đặt APK hoặc mở link trực tiếp',
       close: 'ESC · ĐÓNG',
-      desc: 'Chọn một ứng dụng KV-TV bên dưới để tạo mã QR tải tốc độ cao cho điện thoại hoặc trình duyệt Android TV:',
-      sponsor_label: 'ĐƠN VỊ TÀI TRỢ',
+      desc: 'Chọn một ứng dụng KV-TV bên dưới để tạo mã QR tải tốc độ cao:',
+      sponsor_label: 'HẠ TẦNG MÁY CHỦ',
       shortlink_label: 'LINK TRỰC TIẾP',
     },
-    dpad: {
-      title: 'REMOTE D-PAD',
-      back: 'LÙI',
-      up: 'LÊN',
-      code: 'MÃ SỐ',
-      left: 'TRÁI',
-      ok: 'OK',
-      right: 'PHẢI',
-      qr: 'QR',
-      down: 'XUỐNG',
-      top: 'ĐẦU',
+    footer: {
+      copyright: '© 2026 KV-TV Store · tv.vndns.net',
+      admin: 'Quản trị hệ thống',
     },
     toasts: {
       copied: 'Đã sao chép mã số {code} vào bộ nhớ tạm!',
       fetching: 'Đang tải thông tin APK cho mã {code}...',
-      invalid_code: 'Mã số không hợp lệ ({code}). Vui lòng nhập từ 88101 đến 88105.',
+      invalid_code: 'Mã số không hợp lệ ({code}). Vui lòng nhập từ 88000 đến 88106.',
       starting_dl: 'Bắt đầu tải xuống {name} ({code})...',
       switched_vi: 'Đã chuyển giao diện sang Tiếng Việt.',
       switched_en: 'Switched interface to English.',
@@ -169,72 +168,79 @@ export const TRANSLATIONS = {
   },
   en: {
     meta: {
-      title: 'KV-TV Store · Metro Typographic Panorama (tv.vndns.net)',
-      description: 'KV-TV Android TV App Store (tv.vndns.net) — Pre-configured CloudStream 3, Jellyfin TV, Kodi 21 Omega, KV-Netflix, and KV-Tube in kv-tv-theme.',
+      title: 'KV-TV Store · Android TV App Repository (tv.vndns.net)',
+      description: 'Pre-configured Android TV apps — CloudStream 3, Jellyfin TV, Kodi 21 Omega, KV-Netflix, SmartTube TV, and KV-Store on a modern Bento Grid.',
     },
     nav: {
       brand: 'KV-TV STORE · tv.vndns.net',
-      theme_badge: 'KV-TV-THEME v1.0',
-      store: '[ Storefront (TV) ]',
-      presets: '[ Pre-Set Packs ]',
-      shortcodes: '[ Short-Codes ]',
-      phoneqr: '[ Phone & Promo Hub ]',
-      admin: '[ Admin Console ]',
+      theme_badge: 'ENGLISH',
+      store: 'Apps',
+      presets: 'Presets',
+      shortcodes: '5-Digit Codes',
+      phoneqr: 'QR Code',
     },
     pivots: {
-      store: 'store',
-      presets: 'pre-sets',
+      store: 'apps',
+      presets: 'presets',
       shortcodes: 'short-codes',
-      phoneqr: 'phone-qr',
+      phoneqr: 'qr companion',
     },
     telemetry: {
       total_installs: 'TOTAL INSTALLS',
-      codes_range: 'CODES 88000 · 88101–88105',
+      codes_range: 'CODES 88000 · 88101–88106',
       edge_cdn: 'EDGE CDN · tv.vndns.net',
     },
     decks: {
-      store: '<strong>Pre-Configured Android TV Storefront</strong> — Zero manual repo typing. Every APK ships with KV-TV Vietnamese & Global 4K repositories, subtitle profiles, and AFTVnews Downloader short-codes ready out of the box.',
-      presets: '<strong>KV-TV Pre-Set Builds & Backup Packs</strong> — Download standalone <code>type=preset</code> configuration archives or pre-configured APKs detailing every pre-installed extension, subtitle provider, and player flag.',
-      shortcodes: '<strong>AFTVnews 5-Digit Short-Code Directory (88101–88105)</strong> — Dial any 5-digit short-code or copy with one click to fetch pre-configured APKs directly on your Android TV box.',
-      phoneqr: '<strong>Phone & Desktop Promotional & Sideload Hub</strong> — Scan the live QR code with your phone camera, explore sponsor campaigns, or sideload packages across your home network.',
+      store: '<strong>Optimized Android TV App Repository</strong> — Pre-configured 4K Vietsub streams, ad-blocking, and 5-digit AFTVnews Downloader codes.',
+      presets: '<strong>Standalone Configuration & Backup Packs</strong> — Direct downloads for standalone configurations (.json / .zip) or complete APKs.',
+      shortcodes: '<strong>AFTVnews 5-Digit Downloader Directory</strong> — Enter any 5-digit code to download APKs directly on Android TV in seconds.',
+      phoneqr: '<strong>QR Codes & Mobile Installation</strong> — Scan QR codes with your phone camera to download APKs or share links to TV.',
     },
     strip: {
-      presets_title: 'one-click pre-set config packs (.zip / .backup)',
-      presets_body: 'Already installed vanilla CloudStream, Kodi, or Jellyfin? Grab the standalone KV-TV configuration bundle to inject MegaRepo, Vietsub providers, and 1.1.1.1 DoH settings in seconds.',
-      presets_badge: '5 PRE-SET ARCHIVES READY',
-      presets_btn: 'Download CS3 Pre-Set',
-      codes_title: 'aftvnews downloader short-code index',
-      codes_body: 'Open Downloader on any Android TV box and enter <strong class="tabular">88101</strong> (Jellyfin), <strong class="tabular">88102</strong> (Kodi 21), <strong class="tabular">88103</strong> (CloudStream 3), <strong class="tabular">88104</strong> (KV-Netflix), or <strong class="tabular">88105</strong> (KV-Tube).',
-      codes_badge: '302 DIRECT APK REDIRECT',
-      codes_btn: 'Launch Dialer',
-      sponsor_title: 'kv-tv vip box setup — 4k cinema hub',
-      sponsor_body: 'Hosted on low-latency Vietnam NVMe VPS with 1Gbps direct APK streams and instant QR phone companion sideloading.',
-      sponsor_badge: 'VN EDGE CDN · ACTIVE',
-      sponsor_btn: 'Phone QR & Promos',
+      presets_title: 'configuration & backup packs (.zip / .json)',
+      presets_body: 'Standalone configs for CloudStream 3, Kodi 21, and Jellyfin. Connects directly to the KV-Netflix 4K VIP repository, subtitles, and DoH 1.1.1.1.',
+      presets_badge: '5 PRESET PACKS READY',
+      presets_btn: 'Download CS3 Config',
+      codes_title: 'aftvnews downloader directory',
+      codes_body: 'Launch Downloader on Android TV and enter: <strong class="tabular">88000</strong> (KV-Store), <strong class="tabular">88101</strong> (Jellyfin), <strong class="tabular">88102</strong> (Kodi 21), <strong class="tabular">88103</strong> (CloudStream 3), <strong class="tabular">88104</strong> (KV-Netflix), <strong class="tabular">88105</strong> (KV-Tube), or <strong class="tabular">88106</strong> (SmartTube TV).',
+      codes_badge: 'DIRECT APK REDIRECTS',
+      codes_btn: 'Open Numeric Keypad',
+      sponsor_title: 'vps nvme edge cdn infrastructure',
+      sponsor_body: 'Hosted on high-speed Vietnam NVMe servers with 1Gbps bandwidth. Direct APK downloads with sub-15ms response times.',
+      sponsor_badge: 'EDGE CDN · ACTIVE',
+      sponsor_btn: 'View QR Code',
     },
     tiles: {
-      dialer_title: 'short-code',
-      dialer_edition: '5-Digit AFTV Keypad',
+      hero_badge: '★ 4K VIP REPO',
+      btn_apk: 'GET APK',
+      btn_preset: 'PRESET',
+      store_badge: 'OFFICIAL APP · CODE 88000',
+      store_title: 'kv-store for android tv',
+      store_desc: 'Install and update 4K HDR media apps using your TV remote.',
+      store_btn_dl: 'GET APP TV (88000)',
+      store_btn_guide: 'GUIDE',
+      dialer_title: '5-Digit Code Dialer',
+      dialer_edition: 'Quick numeric keypad',
       dialer_action: 'DIAL',
       dialer_status: 'Instant APK Fetch',
-      qr_title: 'phone & qr',
-      qr_edition: 'Mobile Sideload & Promo',
+      qr_title: 'Phone & QR Code',
+      qr_edition: 'Scan to open on mobile',
       qr_action: 'SCAN',
       installs_suffix: 'installs',
     },
     matrix: {
-      title: 'pre-set backup packs & optimization matrix',
-      desc: 'Every KV-TV build includes both a pre-configured APK and a standalone <code>type=preset</code> configuration archive detailing pre-installed extensions, subtitle providers, and hardware player flags.',
-      archive_label: 'PRE-SET ARCHIVE',
-      btn_download_preset: 'DOWNLOAD PRE-SET PACK (.ZIP)',
-      btn_direct_apk: 'DIRECT APK ({code})',
-      btn_inspect_qr: 'INSPECT & QR',
+      title: 'pre-configured packages & optimization matrix',
+      desc: 'Each KV-TV build includes a pre-configured APK and a standalone <code>type=preset</code> config file specifying extensions and subtitle sources.',
+      archive_label: 'CONFIG ARCHIVE',
+      btn_download_preset: 'DOWNLOAD PRESET (.JSON / .ZIP)',
+      btn_direct_apk: 'DIRECT APK DOWNLOAD ({code})',
+      btn_inspect_qr: 'DETAILS & QR CODE',
     },
     directory: {
-      title: '5-digit aftvnews downloader short-code directory',
-      desc: 'Type any 5-digit code (<strong class="tabular">88101</strong>–<strong class="tabular">88105</strong>) inside the AFTVnews Downloader app on Android TV or copy a code with one click below.',
-      dialer_title: 'instant short-code dialer',
-      dialer_desc: 'Dial a 5-digit code to trigger immediate APK download or inspect package specs.',
+      title: 'aftvnews 5-digit downloader directory',
+      desc: 'Enter any 5-digit code (<strong class="tabular">88000</strong>, <strong class="tabular">88101</strong>–<strong class="tabular">88106</strong>) in the Downloader app on Android TV or copy with one click.',
+      dialer_title: 'quick short-code dialer',
+      dialer_desc: 'Enter 5-digit code to download APK instantly or inspect specifications.',
       btn_fetch_apk: 'FETCH APK BY CODE',
       btn_open_keypad: 'OPEN FULL KEYPAD',
       btn_copy: 'COPY',
@@ -243,26 +249,26 @@ export const TRANSLATIONS = {
     },
     promo: {
       hero_title: 'install on any android tv in 60 seconds',
-      hero_lead: 'Skip tedious repository typing, broken subtitle plugins, and air-mouse headaches. Every APK in <strong>KV-TV Store</strong> (<code>tv.vndns.net</code>) ships pre-configured with 4K HDR hardware players, Vietnamese & English subtitles, and 10-foot D-Pad remote navigation out of the box.',
-      btn_download_companion: 'DOWNLOAD COMPANION APK (88103)',
-      btn_dialer: 'SHORT-CODE DIALER (88101–88105)',
-      btn_focus_panorama: 'FOCUS LIVE TILE PANORAMA',
+      hero_lead: 'All applications on <strong>KV-TV Store</strong> (<code>tv.vndns.net</code>) are pre-configured for Android TV displays: 4K HDR playback, synchronized subtitles, and native remote navigation.',
+      btn_download_companion: 'GET CLOUDSTREAM APK (88103)',
+      btn_dialer: 'SHORT-CODE KEYPAD (88000–88106)',
+      btn_focus_panorama: 'VIEW APP STORE',
       qr_heading: 'scan on phone or tv',
-      qr_caption: 'Point your phone camera here or type <strong>tv.vndns.net</strong> in your TV browser or Downloader app.',
-      step1_title: '1. open tv browser or downloader',
-      step1_body: 'Launch <strong>TV Bro</strong>, <strong>Puffin TV</strong>, <strong>Zeus Browser</strong>, or <strong>Downloader by AFTVnews</strong> from Google Play on your Sony, TCL, Xiaomi, or Android TV Box.',
-      step2_title: '2. enter tv.vndns.net or 5-digit code',
-      step2_body: 'Navigate to <strong>tv.vndns.net</strong> for the full D-Pad store, or enter a 5-digit short-code (<code class="tabular">88101</code> Jellyfin, <code class="tabular">88102</code> Kodi, <code class="tabular">88103</code> CloudStream, <code class="tabular">88104</code> KV-Netflix, <code class="tabular">88105</code> KV-Tube).',
-      step3_title: '3. install pre-configured apk',
-      step3_body: 'Confirm APK installation with your remote OK button. Extensions, 4K codecs, and Vietnamese/English subtitle providers are already configured—open and play!',
-      campaigns_title: 'active promotional & sponsor campaigns',
-      campaigns_desc: 'Curated seasonal builds and hardware-verified media bundles managed live via the KV-TV Admin Console.',
-      table_title: 'sideload & package reference matrix',
-      table_desc: 'Direct APK links, standalone Pre-Set packs, SHA/package identifiers, and live install telemetry.',
-      search_placeholder: 'Filter by app, code (88103), or package...',
+      qr_caption: 'Scan with your smartphone camera or enter <strong>tv.vndns.net</strong> into your TV browser / Downloader.',
+      step1_title: '1. open downloader on android tv',
+      step1_body: 'Launch <strong>Downloader by AFTVnews</strong> (orange icon) from Google Play Store on your TV Box or Smart TV.',
+      step2_title: '2. enter 5-digit code',
+      step2_body: 'In the URL / Search Term field, enter: <code class="tabular">88000</code> (KV-Store), <code class="tabular">88103</code> (CloudStream), <code class="tabular">88104</code> (KV-Netflix), or <code class="tabular">88106</code> (SmartTube).',
+      step3_title: '3. install and enjoy',
+      step3_body: 'Click Install. 4K Vietsub streaming extensions and settings are already configured for immediate viewing.',
+      campaigns_title: 'infrastructure & sponsorships',
+      campaigns_desc: 'High-speed NVMe edge network delivering fast APK downloads and media streaming.',
+      table_title: 'apk package & sideload directory',
+      table_desc: 'Direct APK download links, standalone config packs, package IDs, and install statistics.',
+      search_placeholder: 'Search by app name, short-code (88103), or package...',
       th_app: 'Application',
-      th_code: 'Short-Code',
-      th_pkg: 'Package Identifier',
+      th_code: 'Code',
+      th_pkg: 'Package ID',
       th_ver_size: 'Version & Size',
       th_installs: 'Installs',
       th_actions: 'Direct Actions',
@@ -274,136 +280,108 @@ export const TRANSLATIONS = {
       spec_ver_size: 'VERSION & SIZE',
       spec_pkg: 'PACKAGE ID',
       spec_arch: 'ARCHITECTURE',
-      qr_caption: 'SCAN FOR APK · {code}',
+      qr_caption: 'SCAN TO DOWNLOAD APK · {code}',
       btn_apk: 'DOWNLOAD PRE-CONFIGURED APK',
-      btn_preset: 'DOWNLOAD PRE-SET PACK (.ZIP)',
-      btn_copy: 'COPY SHORT-CODE',
+      btn_preset: 'DOWNLOAD PRESET (.ZIP)',
+      btn_copy: 'COPY CODE',
       btn_install: 'INSTALL',
       btn_update: 'UPDATE',
-      btn_open: 'OPEN APP',
+      btn_open: 'LAUNCH APP',
       btn_uninstall: 'UNINSTALL',
     },
     dialog_dialer: {
-      title: 'short-code dialer',
-      subtitle: 'Enter 5-digit AFTVnews Downloader code (88101–88105)',
+      title: 'numeric code dialer',
+      subtitle: 'Enter 5-digit AFTVnews Downloader code (88000, 88101–88106)',
       close: 'ESC · CLOSE',
       btn_fetch: 'FETCH APK BY CODE',
-      btn_inspect: 'INSPECT BUILD DETAILS',
+      btn_inspect: 'INSPECT APP DETAILS',
     },
     dialog_qr: {
-      title: 'phone & tv qr companion',
-      subtitle: 'Scan with phone camera to sideload APKs or browse sponsor offers',
+      title: 'companion qr for phone & tv',
+      subtitle: 'Scan with smartphone camera to download APK or open direct link',
       close: 'ESC · CLOSE',
-      desc: 'Select any KV-TV build below to generate a direct high-speed download QR code for your phone or Android TV browser:',
-      sponsor_label: 'ACTIVE SPONSOR',
-      shortlink_label: 'DIRECT SHORTLINK',
+      desc: 'Select a KV-TV application below to generate high-speed QR download code:',
+      sponsor_label: 'INFRASTRUCTURE',
+      shortlink_label: 'DIRECT LINK',
     },
-    dpad: {
-      title: 'D-PAD REMOTE',
-      back: 'BACK',
-      up: 'UP',
-      code: 'CODE',
-      left: 'LEFT',
-      ok: 'OK',
-      right: 'RIGHT',
-      qr: 'QR',
-      down: 'DOWN',
-      top: 'TOP',
+    footer: {
+      copyright: '© 2026 KV-TV Store · tv.vndns.net',
+      admin: 'Admin Console',
     },
     toasts: {
-      copied: 'Copied Short-Code {code} to clipboard!',
-      fetching: 'Fetching APK for Short-Code {code}...',
-      invalid_code: 'Invalid Short-Code ({code}). Please enter 88101 through 88105.',
+      copied: 'Copied code {code} to clipboard!',
+      fetching: 'Fetching APK details for code {code}...',
+      invalid_code: 'Invalid code ({code}). Please enter between 88000 and 88106.',
       starting_dl: 'Starting download for {name} ({code})...',
       switched_vi: 'Đã chuyển giao diện sang Tiếng Việt.',
       switched_en: 'Switched interface to English.',
     },
     tickers: [
-      'KV-Netflix 4K VIP: All VN 4K Repos Pre-Configured',
-      'DNS-over-HTTPS (1.1.1.1): VN ISP Anti-Block Enabled',
-      '10-Foot Format: Smooth D-Pad remote navigation, zero air-mouse',
-      'One-Click Backup & Restore: Instant config import via .json / .backup',
+      'KV-Netflix 4K VIP: High-speed 4K HDR streams with synced Vietsub',
+      'Cloudflare 1.1.1.1 DoH: Built-in bypass for Vietnamese ISP filters',
+      '10-Foot Design: Smooth TV remote D-Pad navigation, zero air-mouse needed',
+      '1-Click Restore: Instant configuration setup via .json / .backup file',
     ],
   },
 };
 
-let currentLang = DEFAULT_LANG;
-const listeners = new Set();
-
-/**
- * Detect language based on waterfall cascade:
- * 1. localStorage override ('kvtv_lang')
- * 2. URL search param (?lang=vi or ?lang=en)
- * 3. Server suggested lang (from geo/header)
- * 4. Browser navigator language (check for 'vi')
- * 5. Default fallback -> 'vi'
- */
-export function detectInitialLanguage(serverSuggestedLang = null) {
-  // 1. Explicit override in localStorage
-  try {
-    const saved = localStorage.getItem('kvtv_lang');
-    if (saved === 'vi' || saved === 'en') return saved;
-  } catch {}
-
-  // 2. URL query param
-  try {
-    const param = new URLSearchParams(window.location.search).get('lang');
-    if (param === 'vi' || param === 'en') {
-      try { localStorage.setItem('kvtv_lang', param); } catch {}
-      return param;
-    }
-  } catch {}
-
-  // 3. Server suggestion (GeoIP or accept-language)
-  if (serverSuggestedLang === 'vi' || serverSuggestedLang === 'en') {
-    return serverSuggestedLang;
+export function detectInitialLanguage() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const langQuery = (urlParams.get('lang') || '').toLowerCase();
+  if (SUPPORTED_LANGS.includes(langQuery)) {
+    return langQuery;
   }
-
-  // 4. Browser language
-  try {
-    const langs = navigator.languages || [navigator.language || ''];
-    const hasVi = langs.some((l) => String(l).toLowerCase().startsWith('vi'));
-    if (hasVi) return 'vi';
-  } catch {}
-
-  // 5. Default to Vietnamese
+  const stored = (localStorage.getItem('kv_tv_lang') || '').toLowerCase();
+  if (SUPPORTED_LANGS.includes(stored)) {
+    return stored;
+  }
+  const serverSuggested = (window.__KV_SUGGESTED_LANG__ || '').toLowerCase();
+  if (SUPPORTED_LANGS.includes(serverSuggested)) {
+    return serverSuggested;
+  }
+  const navLangs = navigator.languages || [navigator.language || ''];
+  for (const nl of navLangs) {
+    const code = (nl || '').toLowerCase().slice(0, 2);
+    if (code === 'vi') return 'vi';
+    if (code === 'en') return 'en';
+  }
   return DEFAULT_LANG;
 }
 
+let activeLang = detectInitialLanguage();
+const listeners = new Set();
+
 export function getCurrentLanguage() {
-  return currentLang;
+  return activeLang;
 }
 
-export function setLanguage(lang, persist = true) {
-  if (!SUPPORTED_LANGS.includes(lang)) {
-    lang = DEFAULT_LANG;
+export function setLanguage(lang) {
+  if (!SUPPORTED_LANGS.includes(lang) || lang === activeLang) {
+    return;
   }
-  currentLang = lang;
-  document.documentElement.lang = lang;
+  activeLang = lang;
+  try {
+    localStorage.setItem('kv_tv_lang', lang);
+  } catch {}
 
-  if (persist) {
-    try {
-      localStorage.setItem('kvtv_lang', lang);
-    } catch {}
-  }
+  document.documentElement.setAttribute('lang', lang);
 
-  // Update switcher UI buttons if present
   const btnVi = document.getElementById('lang-btn-vi');
   const btnEn = document.getElementById('lang-btn-en');
   if (btnVi && btnEn) {
-    const isVi = lang === 'vi';
-    btnVi.classList.toggle('is-active', isVi);
-    btnVi.setAttribute('aria-pressed', isVi ? 'true' : 'false');
-    btnEn.classList.toggle('is-active', !isVi);
-    btnEn.setAttribute('aria-pressed', !isVi ? 'true' : 'false');
+    btnVi.classList.toggle('is-active', lang === 'vi');
+    btnVi.setAttribute('aria-pressed', String(lang === 'vi'));
+    btnEn.classList.toggle('is-active', lang === 'en');
+    btnEn.setAttribute('aria-pressed', String(lang === 'en'));
   }
 
-  // Notify subscribers
+  translateDom();
+
   for (const fn of listeners) {
     try {
-      fn(currentLang);
-    } catch (err) {
-      console.error('[i18n] listener error:', err);
+      fn(lang);
+    } catch (e) {
+      console.error('[i18n] listener error:', e);
     }
   }
 }
@@ -413,91 +391,90 @@ export function onLanguageChange(fn) {
   return () => listeners.delete(fn);
 }
 
-/**
- * Retrieve translation by dotted path (e.g. 'nav.store')
- */
-export function t(path, params = {}) {
-  const dict = TRANSLATIONS[currentLang] || TRANSLATIONS[DEFAULT_LANG];
-  const parts = path.split('.');
-  let cur = dict;
-  for (const part of parts) {
-    if (cur && typeof cur === 'object' && part in cur) {
-      cur = cur[part];
+export function t(keyPath, params = {}) {
+  const parts = keyPath.split('.');
+  let node = TRANSLATIONS[activeLang];
+  for (const p of parts) {
+    if (node && typeof node === 'object' && p in node) {
+      node = node[p];
     } else {
-      // Fallback to Vietnamese dictionary
-      let fallback = TRANSLATIONS[DEFAULT_LANG];
-      for (const p of parts) {
-        if (fallback && typeof fallback === 'object' && p in fallback) {
-          fallback = fallback[p];
+      let fallbackNode = TRANSLATIONS[DEFAULT_LANG];
+      for (const fp of parts) {
+        if (fallbackNode && typeof fallbackNode === 'object' && fp in fallbackNode) {
+          fallbackNode = fallbackNode[fp];
         } else {
-          fallback = path;
-          break;
+          return keyPath;
         }
       }
-      cur = fallback;
+      node = fallbackNode;
       break;
     }
   }
 
-  if (typeof cur !== 'string') return path;
+  if (typeof node === 'string') {
+    return node.replace(/\{(\w+)\}/g, (match, paramKey) => {
+      return params[paramKey] !== undefined ? String(params[paramKey]) : match;
+    });
+  }
 
-  // Replace {variables}
-  return cur.replace(/\{(\w+)\}/g, (_, key) => {
-    return key in params ? params[key] : `{${key}}`;
-  });
+  return node !== undefined ? node : keyPath;
 }
 
-/**
- * Extract localized attribute from data object
- * e.g. tField(app, 'edition') checks app.edition_vi -> app.edition -> app.edition_en
- */
-export function tField(obj, fieldName, lang = currentLang) {
-  if (!obj) return '';
-  const altLang = lang === 'vi' ? 'en' : 'vi';
-  return (
-    obj[`${fieldName}_${lang}`] ||
-    obj[fieldName] ||
-    obj[`${fieldName}_${altLang}`] ||
-    ''
-  );
+export function tField(obj, baseKey, lang = activeLang) {
+  if (!obj || typeof obj !== 'object') return '';
+  const langKey = `${baseKey}_${lang}`;
+  if (obj[langKey]) return obj[langKey];
+  if (obj[baseKey]) return obj[baseKey];
+  const fallbackKey = `${baseKey}_${DEFAULT_LANG}`;
+  if (obj[fallbackKey]) return obj[fallbackKey];
+  return '';
 }
 
-/**
- * Apply translations to all DOM elements with data-i18n attributes
- */
 export function translateDom() {
-  // Translate textContent / innerHTML
-  document.querySelectorAll('[data-i18n]').forEach((el) => {
+  document.documentElement.setAttribute('lang', activeLang);
+
+  const metaTitle = t('meta.title');
+  if (metaTitle && metaTitle !== 'meta.title') {
+    document.title = metaTitle;
+  }
+  const metaDescEl = document.querySelector('meta[name="description"]');
+  if (metaDescEl) {
+    metaDescEl.setAttribute('content', t('meta.description'));
+  }
+
+  const elements = document.querySelectorAll('[data-i18n]');
+  for (const el of elements) {
     const key = el.getAttribute('data-i18n');
+    if (!key) continue;
     const isHtml = el.getAttribute('data-i18n-html') === 'true';
-    const translation = t(key);
-    if (isHtml) {
-      el.innerHTML = translation;
-    } else {
-      el.textContent = translation;
+    const translated = t(key);
+    if (translated && translated !== key) {
+      if (isHtml) {
+        el.innerHTML = translated;
+      } else {
+        el.textContent = translated;
+      }
     }
-  });
+  }
 
-  // Translate placeholders
-  document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
+  const placeholders = document.querySelectorAll('[data-i18n-placeholder]');
+  for (const el of placeholders) {
     const key = el.getAttribute('data-i18n-placeholder');
+    if (!key) continue;
     el.setAttribute('placeholder', t(key));
-  });
+  }
 
-  // Translate titles / aria-labels
-  document.querySelectorAll('[data-i18n-title]').forEach((el) => {
+  const titles = document.querySelectorAll('[data-i18n-title]');
+  for (const el of titles) {
     const key = el.getAttribute('data-i18n-title');
+    if (!key) continue;
     el.setAttribute('title', t(key));
-  });
-  document.querySelectorAll('[data-i18n-aria]').forEach((el) => {
-    const key = el.getAttribute('data-i18n-aria');
-    el.setAttribute('aria-label', t(key));
-  });
+  }
 
-  // Update document title and meta description
-  document.title = t('meta.title');
-  const metaDesc = document.querySelector('meta[name="description"]');
-  if (metaDesc) {
-    metaDesc.setAttribute('content', t('meta.description'));
+  const arias = document.querySelectorAll('[data-i18n-aria]');
+  for (const el of arias) {
+    const key = el.getAttribute('data-i18n-aria');
+    if (!key) continue;
+    el.setAttribute('aria-label', t(key));
   }
 }

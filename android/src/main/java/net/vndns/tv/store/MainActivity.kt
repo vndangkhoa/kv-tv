@@ -45,6 +45,9 @@ class MainActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progressBar)
 
         bridge = KVTVBridge(this, webView)
+        bridge.cleanTempApks()
+        bridge.preConfigureApp(KVTVBridge.PKG_KODI)
+        bridge.preConfigureApp(KVTVBridge.PKG_CLOUDSTREAM)
 
         configureWebView()
 
@@ -58,6 +61,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         hideSystemUI()
+        bridge.cleanTempApks()
         // Notify webview to refresh catalog statuses on resume (e.g. returning from installer)
         webView.evaluateJavascript("window.onKVTVResume && window.onKVTVResume();", null)
     }

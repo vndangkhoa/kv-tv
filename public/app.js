@@ -25,6 +25,7 @@ const METRO_TILE_CLASSES = {
   'kodi-kv': 'kv-tile--teal',
   'kv-netflix': 'kv-tile--crimson',
   'kv-tube': 'kv-tile--vermilion',
+  'smarttube-tv': 'kv-tile--vermilion',
 };
 
 const METRO_TILE_COLORS = {
@@ -34,6 +35,7 @@ const METRO_TILE_COLORS = {
   'kodi-kv': 'var(--kv-teal)',
   'kv-netflix': 'var(--kv-crimson)',
   'kv-tube': 'var(--kv-vermilion)',
+  'smarttube-tv': 'var(--kv-vermilion)',
 };
 
 const FALLBACK_CATALOG = {
@@ -73,6 +75,7 @@ const FALLBACK_CATALOG = {
       edition_en: 'KV-PreSetup (KV-Netflix 4K VIP)',
       packageName: 'com.lagradost.cloudstream3',
       version: '4.8.0-kv',
+      versionCode: 68,
       size: '68.7 MB',
       shortCode: '88103',
       category: 'Streaming',
@@ -110,6 +113,7 @@ const FALLBACK_CATALOG = {
       edition_en: 'KV-Optimized Edition',
       packageName: 'org.jellyfin.androidtv.kv',
       version: '0.18.4-kv2',
+      versionCode: 180402,
       size: '42.8 MB',
       shortCode: '88101',
       category: 'Media Center',
@@ -147,6 +151,7 @@ const FALLBACK_CATALOG = {
       edition_en: 'KV-Build All-in-One',
       packageName: 'org.xbmc.kodi',
       version: '21.3-Omega',
+      versionCode: 2103000,
       size: '66.6 MB',
       shortCode: '88102',
       category: 'Media Center',
@@ -184,6 +189,7 @@ const FALLBACK_CATALOG = {
       edition_en: 'TV Remote & 4K HDR Mod',
       packageName: 'com.streamflow.tv',
       version: '2.0.0-tv',
+      versionCode: 117,
       size: '25.0 MB',
       shortCode: '88104',
       category: 'Originals & Cinema',
@@ -221,6 +227,7 @@ const FALLBACK_CATALOG = {
       edition_en: 'Ad-Free 4K60 + SponsorBlock',
       packageName: 'vn.kvtv.tube',
       version: '24.85-kv',
+      versionCode: 248500,
       size: '19.4 MB',
       shortCode: '88105',
       category: 'Video & Music',
@@ -250,6 +257,45 @@ const FALLBACK_CATALOG = {
         'Works without Google Play Services on any Android TV box',
       ],
     },
+    {
+      id: 'smarttube-tv',
+      name: 'SmartTube TV',
+      edition: 'Bản Chính Thức 4K60 HDR + SponsorBlock',
+      edition_vi: 'Bản Chính Thức 4K60 HDR + SponsorBlock',
+      edition_en: 'Official 4K60 HDR + SponsorBlock',
+      packageName: 'com.teamsmart.videomanager.tv',
+      version: '32.68s',
+      versionCode: 32680,
+      size: '19.8 MB',
+      shortCode: '88106',
+      category: 'Video & Music',
+      category_vi: 'Video & Âm Nhạc',
+      category_en: 'Video & Music',
+      arch: 'Universal (arm64-v8a + armeabi-v7a + x86)',
+      downloads: 6450,
+      apkUrl: 'https://github.com/yuliskov/SmartTube/releases/download/32.68s/SmartTube_stable_32.68_universal.apk',
+      description: 'Ứng dụng xem YouTube không quảng cáo tốt nhất cho Android TV / Google TV / TV Box (yuliskov/SmartTube). Chặn 100% quảng cáo, tích hợp sẵn SponsorBlock tự bỏ qua đoạn giới thiệu, hỗ trợ 4K 60fps HDR & điều khiển bằng remote TV mượt mà.',
+      description_vi: 'Ứng dụng xem YouTube không quảng cáo tốt nhất cho Android TV / Google TV / TV Box (yuliskov/SmartTube). Chặn 100% quảng cáo, tích hợp sẵn SponsorBlock tự bỏ qua đoạn giới thiệu, hỗ trợ 4K 60fps HDR & điều khiển bằng remote TV mượt mà.',
+      description_en: 'Official SmartTube Stable universal release for Android TV & TV Boxes. 100% ad-free YouTube experience with built-in SponsorBlock, DeArrow, 4K 60fps HDR VP9/AV1 hardware decoding, and full D-Pad remote control.',
+      presetFeatures: [
+        'Chặn 100% quảng cáo video, banner và quảng cáo chèn giữa',
+        'Tích hợp sẵn SponsorBlock tự động bỏ qua intro, outro & đoạn quảng cáo tài trợ',
+        'Hỗ trợ độ phân giải 4K 60fps HDR10 / VP9 / AV1 mượt mà trên mọi TV Box',
+        'Đăng nhập tài khoản Google đồng bộ lịch sử & kênh đăng ký không cần MicroG',
+      ],
+      presetFeatures_vi: [
+        'Chặn 100% quảng cáo video, banner và quảng cáo chèn giữa',
+        'Tích hợp sẵn SponsorBlock tự động bỏ qua intro, outro & đoạn quảng cáo tài trợ',
+        'Hỗ trợ độ phân giải 4K 60fps HDR10 / VP9 / AV1 mượt mà trên mọi TV Box',
+        'Đăng nhập tài khoản Google đồng bộ lịch sử & kênh đăng ký không cần MicroG',
+      ],
+      presetFeatures_en: [
+        '100% Ad-free playback (zero pre-roll, mid-roll, or sponsored banners)',
+        'Built-in SponsorBlock auto-skips intros, outros, and sponsor segments',
+        'Full 4K 60fps HDR10 / VP9 / AV1 hardware acceleration for Android TV',
+        'Direct Google account sign-in & subscription sync without Google Play Services',
+      ],
+    },
   ],
   ads: [
     {
@@ -257,9 +303,9 @@ const FALLBACK_CATALOG = {
       title: 'Cài Đặt Hộp KV-TV VIP — Biến Mọi Android TV Thành Rạp Phim 4K',
       title_vi: 'Cài Đặt Hộp KV-TV VIP — Biến Mọi Android TV Thành Rạp Phim 4K',
       title_en: 'KV-TV VIP Box Setup — Turn any Android TV into a 4K Cinema Hub',
-      subtitle: 'Jellyfin, Kodi 21 Omega, CloudStream Vietsub & KV-Tube 4K60 không quảng cáo sẵn sàng trong 60 giây.',
-      subtitle_vi: 'Jellyfin, Kodi 21 Omega, CloudStream Vietsub & KV-Tube 4K60 không quảng cáo sẵn sàng trong 60 giây.',
-      subtitle_en: 'Pre-tuned Jellyfin, Kodi 21 Omega, CloudStream Vietsub & Ad-Free 4K60 KV-Tube ready in 60 seconds.',
+      subtitle: 'Jellyfin, Kodi 21 Omega, CloudStream Vietsub & SmartTube 4K60 không quảng cáo sẵn sàng trong 60 giây.',
+      subtitle_vi: 'Jellyfin, Kodi 21 Omega, CloudStream Vietsub & SmartTube 4K60 không quảng cáo sẵn sàng trong 60 giây.',
+      subtitle_en: 'Pre-tuned Jellyfin, Kodi 21 Omega, CloudStream Vietsub & Ad-Free 4K60 SmartTube ready in 60 seconds.',
       badge: 'FEATURED',
       ctaText: 'Khám Phá Bản Cài Sẵn',
       ctaText_vi: 'Khám Phá Bản Cài Sẵn',
@@ -274,9 +320,9 @@ const FALLBACK_CATALOG = {
       title: 'Mạng ThueVPSGiaRe Tốc Độ Cao VN — Tải Trực Tiếp APK 1Gbps',
       title_vi: 'Mạng ThueVPSGiaRe Tốc Độ Cao VN — Tải Trực Tiếp APK 1Gbps',
       title_en: 'ThueVPSGiaRe High-Speed VN Edge CDN — 1Gbps Direct APK Downloads',
-      subtitle: 'Máy chủ NVMe VPS độ trễ thấp tại Việt Nam với mã tải Downloader 5 số (88101–88105).',
-      subtitle_vi: 'Máy chủ NVMe VPS độ trễ thấp tại Việt Nam với mã tải Downloader 5 số (88101–88105).',
-      subtitle_en: 'Hosted on low-latency Vietnam NVMe VPS with instant AFTVnews Downloader short-codes (88101–88105).',
+      subtitle: 'Máy chủ NVMe VPS độ trễ thấp tại Việt Nam với mã tải Downloader 5 số (88101–88106).',
+      subtitle_vi: 'Máy chủ NVMe VPS độ trễ thấp tại Việt Nam với mã tải Downloader 5 số (88101–88106).',
+      subtitle_en: 'Hosted on low-latency Vietnam NVMe VPS with instant AFTVnews Downloader short-codes (88101–88106).',
       badge: 'SPONSOR',
       ctaText: 'Nhập Mã Số',
       ctaText_vi: 'Nhập Mã Số',
@@ -312,7 +358,7 @@ const PIVOT_DESCRIPTIONS = {
   'pre-sets':
     '<strong>KV-TV Pre-Set Builds &amp; Backup Packs</strong> — Download standalone <code>type=preset</code> configuration archives or pre-configured APKs detailing every pre-installed extension, subtitle provider, and player flag.',
   'short-codes':
-    '<strong>AFTVnews 5-Digit Short-Code Directory (88101–88105)</strong> — Dial any 5-digit short-code or copy with one click to fetch pre-configured APKs directly on your Android TV box.',
+    '<strong>AFTVnews 5-Digit Short-Code Directory (88101–88106)</strong> — Dial any 5-digit short-code or copy with one click to fetch pre-configured APKs directly on your Android TV box.',
   'phone-qr':
     '<strong>Phone &amp; Desktop Promotional &amp; Sideload Hub</strong> — Scan the live QR code with your phone camera, explore sponsor campaigns, or sideload packages across your home network.',
 };
@@ -787,9 +833,67 @@ function renderPromoPortal() {
  */
 function hydrateLiveTilesAndStrip() {
   const currentLang = getCurrentLanguage();
+  const metroGrid = document.getElementById('metro-grid');
+  const dialerTile = metroGrid?.querySelector('[data-tile-kind="dialer"]') || null;
   let totalInstalls = 0;
+
   for (const app of state.catalog.apps) {
     totalInstalls += Number(app.downloads || 0);
+
+    // Dynamically create and insert a Live Tile on #metro-grid if it doesn't exist yet
+    if (metroGrid && app.id && app.id !== 'kv-store') {
+      let existingTile = metroGrid.querySelector(`[data-app-id="${CSS.escape(app.id)}"]`);
+      if (!existingTile) {
+        const tileColorClass = METRO_TILE_CLASSES[app.id] || 'kv-tile--cobalt';
+        const legacyColorClass = tileColorClass.replace('kv-tile--', 'tile-');
+        const newTile = document.createElement('button');
+        newTile.type = 'button';
+        newTile.className = `kv-tile ${tileColorClass} kv-span-1x1 metro-tile ${legacyColorClass} span-1x1`;
+        newTile.setAttribute('tabindex', '-1');
+        newTile.setAttribute('data-tile-kind', 'app');
+        newTile.setAttribute('data-app-id', app.id);
+        newTile.setAttribute('data-short-code', app.shortCode || '');
+        newTile.setAttribute('data-pivot-tags', 'store pre-sets short-codes');
+        if (app.color && !METRO_TILE_CLASSES[app.id]) {
+          newTile.style.backgroundColor = app.color;
+        }
+        const versionClean = String(app.version || '1.0').replace(/^v/i, '');
+        const formattedDownloads = Number(app.downloads || 0).toLocaleString('en-US');
+        newTile.innerHTML = `
+          <div class="kv-tile-top tile-top">
+            <svg class="kv-tile-glyph tile-glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+              <rect x="5" y="9" width="38" height="30" />
+              <polygon points="20,17 32,24 20,31" fill="currentColor" stroke="none" />
+            </svg>
+            <span class="kv-code-stamp code-stamp tabular" data-app-stamp="${escapeHtml(app.id)}">${escapeHtml(app.shortCode || '')} · ${escapeHtml(app.size || '')}</span>
+          </div>
+          <div class="kv-tile-bottom tile-bottom">
+            <span class="kv-tile-title tile-title">${escapeHtml(String(app.name || app.id).toLowerCase())}</span>
+            <span class="kv-tile-edition tile-edition">${escapeHtml(tField(app, 'edition', currentLang))}</span>
+            <div class="kv-tile-meta-row tile-meta-row">
+              <span class="tabular" data-app-version="${escapeHtml(app.id)}">v${escapeHtml(versionClean)}</span>
+              <span class="tabular" data-app-downloads="${escapeHtml(app.id)}">${formattedDownloads} ${escapeHtml(t('tiles.installs_suffix'))}</span>
+            </div>
+          </div>
+        `;
+        newTile.addEventListener('click', () => {
+          setRovingFocus(newTile, false);
+          openAppDialog(app.id);
+        });
+        newTile.addEventListener('focus', () => {
+          const readout = document.getElementById('dpad-focus-readout');
+          if (readout) {
+            readout.textContent = newTile.getAttribute('data-short-code') || app.id;
+          }
+        });
+        if (dialerTile && dialerTile.parentNode === metroGrid) {
+          metroGrid.insertBefore(newTile, dialerTile);
+        } else {
+          metroGrid.appendChild(newTile);
+        }
+      }
+    }
+
     const dlEl = document.querySelector(`[data-app-downloads="${CSS.escape(app.id)}"]`);
     if (dlEl) {
       const formatted = Number(app.downloads || 0).toLocaleString('en-US');
@@ -848,16 +952,6 @@ async function loadCatalog() {
           ...state.catalog,
           ...data,
         };
-      }
-      if (data && data.suggestedLang) {
-        let hasUserOverride = false;
-        try {
-          hasUserOverride = Boolean(localStorage.getItem('kvtv_lang'));
-        } catch {}
-        const urlLang = new URLSearchParams(window.location.search).get('lang');
-        if (!hasUserOverride && !urlLang && data.suggestedLang !== getCurrentLanguage()) {
-          setLanguage(data.suggestedLang, false);
-        }
       }
     }
   } catch {
@@ -966,10 +1060,27 @@ function openAppDialog(appIdentifier) {
       }
       if (presetBtn) {
         presetBtn.style.display = 'inline-flex';
-        presetBtn.href = `/api/download/${encodeURIComponent(app.id)}?type=preset`;
-        const pSpan = presetBtn.querySelector('span');
-        if (pSpan) pSpan.textContent = t('dialog_app.btn_preset') || 'TẢI GÓI CẤU HÌNH (.ZIP)';
-        presetBtn.onclick = null;
+        if (app.id === 'cloudstream-kv' || app.id === 'kodi-kv') {
+          presetBtn.removeAttribute('href');
+          const pSpan = presetBtn.querySelector('span');
+          if (pSpan) {
+            pSpan.textContent =
+              currentLang === 'vi'
+                ? '[ NẠP CẤU HÌNH KV-NETFLIX ]'
+                : '[ APPLY KV-NETFLIX PRE-SET ]';
+          }
+          presetBtn.onclick = (e) => {
+            e.preventDefault();
+            if (window.KVTVBridge.preConfigureApp) {
+              window.KVTVBridge.preConfigureApp(app.packageName);
+            }
+          };
+        } else {
+          presetBtn.href = `/api/download/${encodeURIComponent(app.id)}?type=preset`;
+          const pSpan = presetBtn.querySelector('span');
+          if (pSpan) pSpan.textContent = t('dialog_app.btn_preset') || 'TẢI GÓI CẤU HÌNH (.ZIP)';
+          presetBtn.onclick = null;
+        }
       }
     } else if (status === 'UPDATE') {
       if (apkBtn) {
@@ -1051,11 +1162,12 @@ function openAppDialog(appIdentifier) {
 function updateDialerReadouts() {
   const padded = state.currentCode.padEnd(5, '_');
   const match = findApp(state.currentCode);
-  let statusText = 'Type 5-digit code...';
+  const isVi = getCurrentLanguage() === 'vi';
+  let statusText = isVi ? 'Nhập mã 5 số...' : 'Type 5-digit code...';
   if (match) {
     statusText = `${match.name} · ${match.size}`;
   } else if (state.currentCode.length === 5) {
-    statusText = 'Valid codes: 88000, 88101–88105';
+    statusText = isVi ? 'Mã hợp lệ: 88000, 88101–88106' : 'Valid codes: 88000, 88101–88106';
   }
 
   for (const id of ['dialer-digits', 'inline-dialer-digits']) {
@@ -1317,7 +1429,11 @@ function bindInteractions() {
 
   // 3. Live Tile Click & Focus handlers
   for (const tile of allTiles) {
-    tile.addEventListener('click', () => {
+    tile.addEventListener('click', (e) => {
+      // Don't open tile dialog if clicking an inner action button or link
+      if (e.target.closest('a, button, .kv-hero-btn, .kv-tile-chip') && e.target.closest('a, button, .kv-hero-btn, .kv-tile-chip') !== tile) {
+        return;
+      }
       setRovingFocus(tile, false);
       const kind = tile.getAttribute('data-tile-kind');
       if (kind === 'app') {
@@ -1326,6 +1442,13 @@ function bindInteractions() {
         openDialerDialog();
       } else if (kind === 'qr') {
         openQrDialog();
+      }
+    });
+
+    tile.addEventListener('keydown', (e) => {
+      if ((e.key === 'Enter' || e.key === ' ') && e.target === tile) {
+        e.preventDefault();
+        tile.click();
       }
     });
 
@@ -1515,7 +1638,8 @@ function bindInteractions() {
     }
 
     const activeEl = document.activeElement;
-    if (!allTiles.includes(activeEl)) return;
+    const liveTiles = getAllGridTiles();
+    if (!liveTiles.includes(activeEl)) return;
 
     const nextTile = findSpatialCandidate(activeEl, e.key);
     if (!nextTile) {
@@ -1531,8 +1655,9 @@ function bindInteractions() {
   for (const btn of document.querySelectorAll('[data-dpad]')) {
     btn.addEventListener('click', () => {
       const action = btn.getAttribute('data-dpad');
+      const liveTiles = getAllGridTiles();
       const activeTile =
-        allTiles.find((t) => t.getAttribute('tabindex') === '0') || allTiles[0];
+        liveTiles.find((t) => t.getAttribute('tabindex') === '0') || liveTiles[0];
 
       if (action === 'BACK') {
         allDialogs.forEach((d) => {
@@ -1547,7 +1672,7 @@ function bindInteractions() {
           if (d.open) d.close();
         });
         activatePivot('store', { updateUrl: true });
-        setRovingFocus(allTiles[0], true);
+        setRovingFocus(liveTiles[0], true);
         return;
       }
 
@@ -1581,6 +1706,29 @@ function bindInteractions() {
   document.getElementById('kv-banner-guide-btn')?.addEventListener('click', () => {
     document.getElementById('metro-guide-dialog')?.showModal();
   });
+  document.getElementById('kv-store-inline-guide-btn')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    document.getElementById('metro-guide-dialog')?.showModal();
+  });
+
+  // 11b. Dialer Tile Quick Preset Chips & Hero Action Clicks
+  for (const chip of document.querySelectorAll('.kv-tile-chip[data-preset-code]')) {
+    chip.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const code = chip.getAttribute('data-preset-code');
+      if (code) {
+        state.dialerCode = code;
+        updateDialerReadouts();
+        openDialerDialog();
+      }
+    });
+  }
+
+  for (const btn of document.querySelectorAll('.kv-hero-btn')) {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+  }
 
   document.getElementById('guide-copy-code-btn')?.addEventListener('click', async () => {
     try {

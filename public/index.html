@@ -22,15 +22,12 @@
         <span class="kv-topbar-brand-mark switcher-brand-mark" aria-hidden="true"></span>
         <span data-i18n="nav.brand">KV-TV STORE · tv.vndns.net</span>
       </a>
-      <span class="kv-topbar-badge" data-i18n="nav.theme_badge">KV-TV-THEME v1.0</span>
     </div>
     <div class="kv-topbar-nav switcher-links">
-      <a class="kv-topbar-link switcher-link is-active" href="/?mode=tv" data-nav-pivot="store" data-i18n="nav.store" aria-current="page">[ Kho Ứng Dụng (TV) ]</a>
-      <a class="kv-topbar-link switcher-link" href="/?pivot=pre-sets" data-nav-pivot="pre-sets" data-i18n="nav.presets">[ Bản Tích Hợp Sẵn ]</a>
-      <a class="kv-topbar-link switcher-link" href="/?pivot=short-codes" data-nav-pivot="short-codes" data-i18n="nav.shortcodes">[ Mã 5 Số Downloader ]</a>
-      <a class="kv-topbar-link switcher-link" href="/?mode=promo" data-nav-pivot="phone-qr" data-i18n="nav.phoneqr">[ QR &amp; Đồng Hành ]</a>
-      <a class="kv-topbar-link switcher-link" href="/kv-store.apk" id="topbar-app-download-link" download="kv-store.apk" title="Tải ứng dụng KV-Store cho TV">[ ⬇ Tải App TV (88000) ]</a>
-      <a class="kv-topbar-link switcher-link" href="/admin" data-i18n="nav.admin">[ Quản Trị ]</a>
+      <a class="kv-topbar-link switcher-link is-active" href="/?mode=tv" data-nav-pivot="store" data-i18n="nav.store" aria-current="page">Kho Ứng Dụng</a>
+      <a class="kv-topbar-link switcher-link" href="/?pivot=pre-sets" data-nav-pivot="pre-sets" data-i18n="nav.presets">Gói Cài Sẵn</a>
+      <a class="kv-topbar-link switcher-link" href="/?pivot=short-codes" data-nav-pivot="short-codes" data-i18n="nav.shortcodes">Mã 5 Số</a>
+      <a class="kv-topbar-link switcher-link" href="/?mode=promo" data-nav-pivot="phone-qr" data-i18n="nav.phoneqr">Mã QR</a>
       <div class="kv-lang-switcher" role="group" aria-label="Ngôn ngữ / Language">
         <button
           type="button"
@@ -39,7 +36,7 @@
           data-lang="vi"
           aria-pressed="true"
           title="Tiếng Việt"
-        >[ VI ]</button>
+        >VI</button>
         <button
           type="button"
           class="kv-topbar-link kv-lang-btn"
@@ -47,71 +44,35 @@
           data-lang="en"
           aria-pressed="false"
           title="English"
-        >[ EN ]</button>
+        >EN</button>
       </div>
+      <time class="kv-telemetry-pill telemetry-pill tabular" id="tv-live-clock" datetime="2026-11-05T10:45:00">10:45</time>
     </div>
   </nav>
 
   <!-- Main Metro Typographic Panorama Stage -->
   <main class="kv-stage metro-stage" id="tv-spatial-root">
-    <!-- Giant Lowercase Metro Panorama Header -->
+    <!-- Compact De-slopped Header -->
     <header class="kv-panorama-header panorama-header">
-      <div class="kv-pivots panorama-pivots" role="tablist" aria-label="Metro Panorama Pivots">
-        <button type="button" class="kv-pivot-btn pivot-btn" role="tab" id="pivot-store" aria-selected="true" data-pivot="store" data-i18n="pivots.store">kho ứng dụng</button>
-        <button type="button" class="kv-pivot-btn pivot-btn" role="tab" id="pivot-presets" aria-selected="false" data-pivot="pre-sets" data-i18n="pivots.presets">bản cài sẵn</button>
-        <button type="button" class="kv-pivot-btn pivot-btn" role="tab" id="pivot-shortcodes" aria-selected="false" data-pivot="short-codes" data-i18n="pivots.shortcodes">mã 5 số</button>
-        <button type="button" class="kv-pivot-btn pivot-btn" role="tab" id="pivot-phoneqr" aria-selected="false" data-pivot="phone-qr" data-i18n="pivots.phoneqr">qr mobile</button>
-      </div>
       <div class="kv-panorama-subbar panorama-subbar">
-        <p class="kv-panorama-deck panorama-deck" id="panorama-deck-text">
-          <strong>Kho Ứng Dụng Android TV Cài Đặt Sẵn</strong> — Không cần gõ link nguồn thủ công. Mọi APK đều tích hợp sẵn kho phim 4K Vietsub &amp; Quốc tế, cấu hình phụ đề, và mã 5 số Downloader dùng được ngay.
+        <p class="kv-panorama-deck panorama-deck" id="panorama-deck-text" data-i18n="decks.store" data-i18n-html="true">
+          <strong>Kho Ứng Dụng Android TV Tối Ưu</strong> — Tích hợp sẵn nguồn phim 4K Vietsub, chặn quảng cáo và mã cài nhanh AFTVnews Downloader.
         </p>
         <div class="kv-panorama-telemetry panorama-telemetry">
           <span class="kv-telemetry-pill telemetry-pill">
             <span class="kv-telemetry-dot telemetry-dot" aria-hidden="true"></span>
             <span id="catalog-status-text" data-i18n="telemetry.edge_cdn">MẠNG CDN VN · tv.vndns.net</span>
           </span>
-          <span class="kv-telemetry-pill telemetry-pill tabular" id="telemetry-downloads">18,060 LƯỢT TẢI</span>
-          <span class="kv-telemetry-pill telemetry-pill tabular" data-i18n="telemetry.codes_range">MÃ 88000 · 88101–88105</span>
-          <time class="kv-telemetry-pill telemetry-pill tabular" id="tv-live-clock" datetime="2026-11-05T10:45:00">10:45</time>
+          <span class="kv-telemetry-pill telemetry-pill tabular" data-i18n="telemetry.codes_range">MÃ 88000 · 88101–88106</span>
         </div>
       </div>
     </header>
 
-    <!-- Prominent KV-Store TV App Download Hero Banner (Code 88000) -->
-    <section class="kv-app-banner" id="kv-store-app-promo" aria-label="Tải App KV-Store TV">
-      <div class="kv-app-banner-content">
-        <div class="kv-app-banner-badge-group">
-          <span class="kv-badge-official">[ APP CHÍNH THỨC CHO ANDROID TV ]</span>
-          <span class="kv-badge-code">DOWNLOADER CODE: <strong class="tabular">88000</strong></span>
-        </div>
-        <div class="kv-app-banner-info">
-          <h2 class="kv-app-banner-title">TẢI VÀ CÀI ĐẶT APP KV-STORE TRỰC TIẾP LÊN TIVI</h2>
-          <p class="kv-app-banner-desc">
-            Cài đặt 1-chạm không cần chuột, tự động cập nhật mọi app CloudStream, Jellyfin, Kodi, Netflix 4K và hỗ trợ điều khiển 100% bằng remote TV D-pad.
-          </p>
-        </div>
-      </div>
-      <div class="kv-app-banner-actions">
-        <a class="kv-btn kv-btn--primary kv-banner-btn-dl" id="kv-banner-download-btn" href="/kv-store.apk" download="kv-store.apk">
-          <svg class="kv-icon-dl" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-            <polyline points="7 10 12 15 17 10" />
-            <line x1="12" y1="15" x2="12" y2="3" />
-          </svg>
-          <span>TẢI APP CHO TV (APK)</span>
-        </a>
-        <button type="button" class="kv-btn kv-banner-btn-guide" id="kv-banner-guide-btn">
-          <span>HƯỚNG DẪN MÃ 88000</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- Asymmetric 2D Panorama Live Tile Grid (6 columns x 2 rows = 12 cells) -->
-    <section id="metro-grid" class="kv-grid metro-grid" aria-label="Featured Android TV Live Tiles">
-      <!-- 1. CloudStream 3 (cloudstream-kv, 88103) — 2x2 Large Hero Tile in Metro Cobalt -->
-      <button
-        type="button"
+    <!-- Dynamic Asymmetric Bento Grid (6 Columns) -->
+    <section id="metro-grid" class="kv-grid metro-grid" aria-label="Kho Ứng Dụng Android TV">
+      <!-- 1. CloudStream 3 (Hero 2x2 · Cobalt) -->
+      <div
+        role="button"
         class="kv-tile kv-tile--cobalt kv-span-2x2 metro-tile tile-cobalt span-2x2"
         tabindex="0"
         data-tile-kind="app"
@@ -119,64 +80,100 @@
         data-short-code="88103"
         data-pivot-tags="store pre-sets short-codes"
       >
-        <svg class="kv-watermark-code watermark-code" viewBox="0 0 220 76" fill="currentColor" aria-hidden="true">
-          <path d="M18 35C11 33 7 28 7 21C7 11 15 4 26 4C37 4 45 11 45 21C45 28 41 33 34 35C42 37 47 43 47 52C47 64 38 72 26 72C14 72 5 64 5 52C5 43 10 37 18 35ZM26 30C31 30 35 26 35 21C35 16 31 12 26 12C21 12 17 16 17 21C17 26 21 30 26 30ZM26 63C32 63 37 58 37 52C37 45 32 40 26 40C20 40 15 45 15 52C15 58 20 63 26 63Z" />
-          <path d="M68 35C61 33 57 28 57 21C57 11 65 4 76 4C87 4 95 11 95 21C95 28 91 33 84 35C92 37 97 43 97 52C97 64 88 72 76 72C64 72 55 64 55 52C55 43 60 37 68 35ZM76 30C81 30 85 26 85 21C85 16 81 12 76 12C71 12 67 16 67 21C67 26 71 30 76 30ZM76 63C82 63 87 58 87 52C87 45 82 40 76 40C70 40 65 45 65 52C65 58 70 63 76 63Z" />
-          <path d="M118 71V18H106V10H128V71H118Z" />
-          <path d="M159 72C145 72 137 59 137 38C137 17 145 4 159 4C173 4 181 17 181 38C181 59 173 72 159 72ZM159 63C167 63 171 53 171 38C171 23 167 13 159 13C151 13 147 23 147 38C147 53 151 63 159 63Z" />
-          <path d="M188 53H198C198 59 202 63 207 63C213 63 217 59 217 52C217 45 212 41 204 41H200V32H204C211 32 215 28 215 22C215 16 211 12 206 12C201 12 197 16 197 22H187C187 11 195 4 206 4C217 4 225 11 225 21C225 28 221 33 214 35C221 37 226 43 226 52C226 64 218 72 207 72C195 72 188 64 188 53Z" transform="translate(-8, 0)" />
-        </svg>
         <div class="kv-tile-top tile-top">
           <svg class="kv-tile-glyph tile-glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
             <path d="M14 34H35C40 34 43 30.5 43 26C43 21.8 39.8 18.4 35.5 18.1C34.2 11.8 28.6 7 22 7C14.3 7 8 13.3 8 21C8 21.6 8.1 22.2 8.2 22.8C5.2 24.1 3 27.1 3 30.5C3 32.5 4.5 34 6.5 34H14Z" />
             <polygon points="21,18 32,24.5 21,31" fill="currentColor" stroke="none" />
           </svg>
-          <span class="kv-code-stamp code-stamp tabular" data-app-stamp="cloudstream-kv">88103 · 24.2 MB</span>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span class="kv-code-stamp code-stamp tabular" data-app-stamp="cloudstream-kv">88103 · 68.7 MB</span>
+            <span class="kv-hero-pill" data-i18n="tiles.hero_badge">★ 4K VIP REPO</span>
+          </div>
         </div>
-        <div class="kv-tile-bottom tile-bottom">
+        <div class="kv-hero-main">
           <span class="kv-tile-title tile-title">cloudstream 3</span>
-          <span class="kv-tile-edition tile-edition">KV-PreSetup · All VN &amp; Global 4K Repos</span>
-          <div class="kv-live-status-strip live-status-strip">
-            <span class="kv-live-status-text live-status-text" id="cs-live-status">MegaRepo + Vietsub + 1.1.1.1 DoH Ready</span>
-            <span class="kv-live-status-badge live-status-badge tabular" data-app-version="cloudstream-kv">v4.4.1-kv</span>
-          </div>
-          <div class="kv-tile-meta-row tile-meta-row">
-            <span>com.lagradost.cloudstream3</span>
-            <span class="tabular" data-app-downloads="cloudstream-kv">4,150 installs</span>
+          <span class="kv-hero-subtitle tile-edition" data-app-edition="cloudstream-kv">Kho Phim 4K VIP Tích Hợp Sẵn</span>
+          <div class="kv-hero-tags">
+            <span class="kv-tag-pill">KV-Netflix VIP</span>
+            <span class="kv-tag-pill">4K HDR10</span>
+            <span class="kv-tag-pill">DoH 1.1.1.1</span>
+            <span class="kv-tag-pill">Vietsub Tự Động</span>
           </div>
         </div>
-      </button>
+        <div class="kv-hero-footer">
+          <div class="kv-tile-meta-row tile-meta-row">
+            <span class="tabular" data-app-version="cloudstream-kv">v4.8.0-kv</span>
+            <span class="tabular" data-app-downloads="cloudstream-kv">952 lượt cài</span>
+          </div>
+          <div class="kv-hero-actions">
+            <a class="kv-hero-btn" href="/api/download/cloudstream-kv?type=apk" data-app-download="cloudstream-kv" data-i18n="tiles.btn_apk">TẢI APK (88103)</a>
+            <a class="kv-hero-btn kv-hero-btn--secondary" href="/api/download/cloudstream-kv?type=preset" data-app-download="cloudstream-kv" data-i18n="tiles.btn_preset">CẤU HÌNH</a>
+          </div>
+        </div>
+      </div>
 
-      <!-- 2. Jellyfin TV (jellyfin-kv, 88101) — 2x1 Wide Tile in Royal Violet -->
-      <button
-        type="button"
-        class="kv-tile kv-tile--violet kv-span-2x1 metro-tile tile-violet span-2x1"
+      <!-- 2. KV-Netflix (Wide 2x1 · Crimson) -->
+      <div
+        role="button"
+        class="kv-tile kv-tile--crimson kv-span-2x1 metro-tile tile-crimson span-2x1"
         tabindex="-1"
         data-tile-kind="app"
-        data-app-id="jellyfin-kv"
-        data-short-code="88101"
+        data-app-id="kv-netflix"
+        data-short-code="88104"
+        data-pivot-tags="store pre-sets short-codes"
+      >
+        <div class="kv-tile-top tile-top">
+          <svg class="kv-tile-glyph tile-glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+            <path d="M13 40V8L35 40V8" />
+          </svg>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span class="kv-code-stamp code-stamp tabular" data-app-stamp="kv-netflix">88104 · 25.0 MB</span>
+            <span class="kv-code-stamp code-stamp tabular">4K HDR10</span>
+          </div>
+        </div>
+        <div class="kv-tile-bottom tile-bottom">
+          <span class="kv-tile-title tile-title">kv-netflix</span>
+          <span class="kv-tile-edition tile-edition" data-app-edition="kv-netflix">Bản TV Remote &amp; 4K HDR</span>
+          <div class="kv-tile-meta-row tile-meta-row">
+            <span class="tabular" data-app-version="kv-netflix">v2.0.0-tv</span>
+            <span class="tabular" data-app-downloads="kv-netflix">1,180 lượt cài</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. SmartTube TV (Wide 2x1 · Vermilion) -->
+      <div
+        role="button"
+        class="kv-tile kv-tile--vermilion kv-span-2x1 metro-tile tile-vermilion span-2x1"
+        tabindex="-1"
+        data-tile-kind="app"
+        data-app-id="smarttube-tv"
+        data-short-code="88106"
         data-pivot-tags="store pre-sets short-codes"
       >
         <div class="kv-tile-top tile-top">
           <svg class="kv-tile-glyph tile-glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
-            <polygon points="24,5 43,39 5,39" />
-            <polygon points="24,17 33,34 15,34" fill="currentColor" stroke="none" />
+            <rect x="5" y="9" width="38" height="30" />
+            <polygon points="20,17 32,24 20,31" fill="currentColor" stroke="none" />
           </svg>
-          <span class="kv-code-stamp code-stamp tabular" data-app-stamp="jellyfin-kv">88101 · 42.8 MB</span>
-        </div>
-        <div class="kv-tile-bottom tile-bottom">
-          <span class="kv-tile-title tile-title">jellyfin tv</span>
-          <span class="kv-tile-edition tile-edition">KV-Optimized · 4K HDR Direct Play</span>
-          <div class="kv-tile-meta-row tile-meta-row">
-            <span>v0.18.4-kv2 · ExoPlayer HDR10</span>
-            <span class="tabular" data-app-downloads="jellyfin-kv">1,420 installs</span>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span class="kv-code-stamp code-stamp tabular" data-app-stamp="smarttube-tv">88106 · 19.8 MB</span>
+            <span class="kv-code-stamp code-stamp tabular">CHẶN 100% QC</span>
           </div>
         </div>
-      </button>
+        <div class="kv-tile-bottom tile-bottom">
+          <span class="kv-tile-title tile-title">smarttube tv</span>
+          <span class="kv-tile-edition tile-edition" data-app-edition="smarttube-tv">YouTube 4K60 Không Quảng Cáo</span>
+          <div class="kv-tile-meta-row tile-meta-row">
+            <span class="tabular" data-app-version="smarttube-tv">v32.68s</span>
+            <span class="tabular" data-app-downloads="smarttube-tv">1,420 lượt cài</span>
+          </div>
+        </div>
+      </div>
 
-      <!-- 3. Kodi 21 Omega (kodi-kv, 88102) — 1x1 Square Tile in Metro Teal -->
-      <button
-        type="button"
+      <!-- 4. Kodi 21 Omega (Square 1x1 · Teal) -->
+      <div
+        role="button"
         class="kv-tile kv-tile--teal kv-span-1x1 metro-tile tile-teal span-1x1"
         tabindex="-1"
         data-tile-kind="app"
@@ -190,75 +187,49 @@
             <line x1="14" y1="14" x2="34" y2="34" />
             <line x1="34" y1="14" x2="14" y2="34" />
           </svg>
-          <span class="kv-code-stamp code-stamp tabular" data-app-stamp="kodi-kv">88102 · 94.5 MB</span>
+          <span class="kv-code-stamp code-stamp tabular" data-app-stamp="kodi-kv">88102</span>
         </div>
         <div class="kv-tile-bottom tile-bottom">
           <span class="kv-tile-title tile-title">kodi 21</span>
-          <span class="kv-tile-edition tile-edition">Arctic Zephyr 2 + VN Subs</span>
+          <span class="kv-tile-edition tile-edition" data-app-edition="kodi-kv">Addon KV-Netflix</span>
           <div class="kv-tile-meta-row tile-meta-row">
-            <span class="tabular">v21.2-kv</span>
-            <span class="tabular" data-app-downloads="kodi-kv">2,890</span>
+            <span class="tabular" data-app-version="kodi-kv">v21.3</span>
+            <span class="tabular" data-app-downloads="kodi-kv">764 cài</span>
           </div>
         </div>
-      </button>
+      </div>
 
-      <!-- 4. KV-Netflix (kv-netflix, 88104) — 1x1 Square Tile in Cinema Crimson -->
-      <button
-        type="button"
-        class="kv-tile kv-tile--crimson kv-span-1x1 metro-tile tile-crimson span-1x1"
+      <!-- 5. Jellyfin TV (Square 1x1 · Violet) -->
+      <div
+        role="button"
+        class="kv-tile kv-tile--violet kv-span-1x1 metro-tile tile-violet span-1x1"
         tabindex="-1"
         data-tile-kind="app"
-        data-app-id="kv-netflix"
-        data-short-code="88104"
-        data-pivot-tags="store pre-sets short-codes"
-      >
-        <div class="kv-tile-top tile-top">
-          <svg class="kv-tile-glyph tile-glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
-            <path d="M13 40V8L35 40V8" />
-          </svg>
-          <span class="kv-code-stamp code-stamp tabular" data-app-stamp="kv-netflix">88104 · 38.6 MB</span>
-        </div>
-        <div class="kv-tile-bottom tile-bottom">
-          <span class="kv-tile-title tile-title">kv-netflix</span>
-          <span class="kv-tile-edition tile-edition">D-Pad + L1/L3 4K HDR</span>
-          <div class="kv-tile-meta-row tile-meta-row">
-            <span class="tabular">v8.114.0-kv</span>
-            <span class="tabular" data-app-downloads="kv-netflix">3,680</span>
-          </div>
-        </div>
-      </button>
-
-      <!-- 5. KV-Tube (kv-tube, 88105) — 2x1 Wide Tile in Vermilion Red -->
-      <button
-        type="button"
-        class="kv-tile kv-tile--vermilion kv-span-2x1 metro-tile tile-vermilion span-2x1"
-        tabindex="-1"
-        data-tile-kind="app"
-        data-app-id="kv-tube"
-        data-short-code="88105"
+        data-app-id="jellyfin-kv"
+        data-short-code="88101"
         data-pivot-tags="store pre-sets short-codes"
       >
         <div class="kv-tile-top tile-top">
           <svg class="kv-tile-glyph tile-glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
-            <rect x="5" y="9" width="38" height="30" />
-            <polygon points="20,17 32,24 20,31" fill="currentColor" stroke="none" />
+            <polygon points="24,5 43,39 5,39" />
+            <polygon points="24,17 33,34 15,34" fill="currentColor" stroke="none" />
           </svg>
-          <span class="kv-code-stamp code-stamp tabular" data-app-stamp="kv-tube">88105 · 19.4 MB</span>
+          <span class="kv-code-stamp code-stamp tabular" data-app-stamp="jellyfin-kv">88101</span>
         </div>
         <div class="kv-tile-bottom tile-bottom">
-          <span class="kv-tile-title tile-title">kv-tube</span>
-          <span class="kv-tile-edition tile-edition">Ad-Free 4K60 + SponsorBlock</span>
+          <span class="kv-tile-title tile-title">jellyfin tv</span>
+          <span class="kv-tile-edition tile-edition" data-app-edition="jellyfin-kv">4K Direct Play</span>
           <div class="kv-tile-meta-row tile-meta-row">
-            <span>v24.85-kv · VP9/AV1 Hardware Decode</span>
-            <span class="tabular" data-app-downloads="kv-tube">5,920 installs</span>
+            <span class="tabular" data-app-version="jellyfin-kv">v0.19.10</span>
+            <span class="tabular" data-app-downloads="jellyfin-kv">635 cài</span>
           </div>
         </div>
-      </button>
+      </div>
 
-      <!-- 6. 5-Digit Short-Code Dialer Tile — 1x1 Action Tile in Emerald -->
-      <button
-        type="button"
-        class="kv-tile kv-tile--emerald kv-span-1x1 metro-tile tile-emerald span-1x1"
+      <!-- 6. 5-Digit Short-Code Dialer (Wide 2x1 · Emerald) -->
+      <div
+        role="button"
+        class="kv-tile kv-tile--emerald kv-span-2x1 metro-tile tile-emerald span-2x1"
         tabindex="-1"
         data-tile-kind="dialer"
         data-pivot-tags="store short-codes"
@@ -275,45 +246,113 @@
             <rect x="20" y="32" width="8" height="8" />
             <rect x="32" y="32" width="8" height="8" />
           </svg>
-          <span class="kv-code-stamp code-stamp tabular">88101–88105</span>
-        </div>
-        <div class="kv-tile-bottom tile-bottom">
-          <span class="kv-tile-title tile-title" data-i18n="tiles.dialer_title">mã 5 số</span>
-          <span class="kv-tile-edition tile-edition" data-i18n="tiles.dialer_edition">Bàn Phím Số AFTV</span>
-          <div class="kv-tile-meta-row tile-meta-row">
-            <span data-i18n="tiles.dialer_status">Tải APK Tức Thì</span>
-            <span data-i18n="tiles.dialer_action">NHẬP</span>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span class="kv-code-stamp code-stamp tabular">88000 · 88101–88106</span>
+            <span class="kv-code-stamp code-stamp tabular">AFTVNEWS</span>
           </div>
         </div>
-      </button>
+        <div class="kv-tile-bottom tile-bottom">
+          <span class="kv-tile-title tile-title" data-i18n="tiles.dialer_title">Mã 5 Số Downloader</span>
+          <span class="kv-tile-edition tile-edition" data-i18n="tiles.dialer_edition">Bàn phím nhập mã nhanh</span>
+          <div class="kv-tile-chips">
+            <span class="kv-tile-chip tabular" data-preset-code="88000">88000</span>
+            <span class="kv-tile-chip tabular" data-preset-code="88103">88103</span>
+            <span class="kv-tile-chip tabular" data-preset-code="88104">88104</span>
+            <span class="kv-tile-chip tabular" data-preset-code="88106">88106</span>
+          </div>
+        </div>
+      </div>
 
-      <!-- 7. Phone & TV QR Companion Tile — 1x1 Live Tile in Deep Amber -->
-      <button
-        type="button"
-        class="kv-tile kv-tile--amber kv-span-1x1 metro-tile tile-amber span-1x1"
+      <!-- 7. Phone & TV QR Companion (Wide 2x1 · Amber) -->
+      <div
+        role="button"
+        class="kv-tile kv-tile--amber kv-span-2x1 metro-tile tile-amber span-2x1"
         tabindex="-1"
         data-tile-kind="qr"
         data-pivot-tags="store phone-qr"
       >
-        <div class="kv-tile-top tile-top kv-qr-tile-preview qr-tile-preview">
-          <img
-            class="kv-qr-tile-img qr-tile-img"
-            src="/api/qr?text=https%3A%2F%2Ftv.vndns.net&dark=%23000000&light=%23FFFFFF&size=160"
-            alt="Scan QR code for tv.vndns.net"
-            width="68"
-            height="68"
-          >
-          <span class="kv-code-stamp code-stamp tabular">QR SYNC</span>
-        </div>
-        <div class="kv-tile-bottom tile-bottom">
-          <span class="kv-tile-title tile-title" data-i18n="tiles.qr_title">điện thoại &amp; qr</span>
-          <span class="kv-tile-edition tile-edition" data-i18n="tiles.qr_edition">Cài Mobile &amp; Ưu Đãi</span>
-          <div class="kv-tile-meta-row tile-meta-row">
-            <span>tv.vndns.net</span>
-            <span data-i18n="tiles.qr_action">QUÉT</span>
+        <div class="kv-qr-tile-wrap">
+          <div class="kv-qr-tile-box">
+            <img
+              src="/api/qr?text=https%3A%2F%2Ftv.vndns.net&dark=%23000000&light=%23FFFFFF&size=160"
+              alt="QR Code"
+              width="62"
+              height="62"
+            >
+          </div>
+          <div class="kv-qr-tile-text">
+            <span class="kv-code-stamp code-stamp tabular" style="width: fit-content;">MÃ QR</span>
+            <span class="kv-tile-title tile-title" style="font-size: 1.25rem;" data-i18n="tiles.qr_title">Điện Thoại &amp; QR</span>
+            <span class="kv-tile-edition tile-edition" data-i18n="tiles.qr_edition">Quét để tải trên di động</span>
+            <span style="font-family: var(--kv-font-mono); font-size: 0.75rem; opacity: 0.85;">tv.vndns.net</span>
           </div>
         </div>
-      </button>
+      </div>
+
+      <!-- 8. KV-Tube (Square 1x1 · Vermilion) -->
+      <div
+        role="button"
+        class="kv-tile kv-tile--vermilion kv-span-1x1 metro-tile tile-vermilion span-1x1"
+        tabindex="-1"
+        data-tile-kind="app"
+        data-app-id="kv-tube"
+        data-short-code="88105"
+        data-pivot-tags="store pre-sets short-codes"
+      >
+        <div class="kv-tile-top tile-top">
+          <svg class="kv-tile-glyph tile-glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+            <rect x="5" y="9" width="38" height="30" />
+            <polygon points="20,17 32,24 20,31" fill="currentColor" stroke="none" />
+          </svg>
+          <span class="kv-code-stamp code-stamp tabular" data-app-stamp="kv-tube">88105</span>
+        </div>
+        <div class="kv-tile-bottom tile-bottom">
+          <span class="kv-tile-title tile-title">kv-tube</span>
+          <span class="kv-tile-edition tile-edition" data-app-edition="kv-tube">Bản Nhẹ · Chặn QC</span>
+          <div class="kv-tile-meta-row tile-meta-row">
+            <span class="tabular" data-app-version="kv-tube">v24.85-kv</span>
+            <span class="tabular" data-app-downloads="kv-tube">812 cài</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. KV-Store TV (Official TV App · Wide 3x1 · Cobalt) -->
+      <div
+        role="button"
+        class="kv-tile kv-tile--cobalt kv-span-3x1 metro-tile tile-cobalt span-3x1"
+        tabindex="-1"
+        data-tile-kind="app"
+        data-app-id="kv-store"
+        data-short-code="88000"
+        data-pivot-tags="store pre-sets short-codes"
+      >
+        <div class="kv-store-card-wrap">
+          <div class="kv-store-card-left">
+            <svg class="kv-tile-glyph tile-glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" style="width: 44px; height: 44px;" aria-hidden="true">
+              <rect x="6" y="10" width="36" height="32" />
+              <path d="M16 10V6H32V10" />
+              <line x1="6" y1="20" x2="42" y2="20" />
+              <circle cx="24" cy="30" r="3" fill="currentColor" stroke="none" />
+            </svg>
+            <div class="kv-store-card-info">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span class="kv-hero-pill" data-i18n="tiles.store_badge">BẢN CHÍNH THỨC · MÃ 88000</span>
+                <span class="kv-code-stamp code-stamp tabular" data-app-stamp="kv-store">2.5 MB</span>
+              </div>
+              <span class="kv-tile-title tile-title" style="font-size: 1.35rem;" data-i18n="tiles.store_title">kv-store cho android tv</span>
+              <span class="kv-tile-edition tile-edition" style="white-space: normal;" data-i18n="tiles.store_desc">Cài đặt và cập nhật mọi app media 4K bằng remote TV.</span>
+              <div class="kv-tile-meta-row tile-meta-row" style="padding-top: 4px; border-top: none;">
+                <span class="tabular" data-app-version="kv-store">v1.0.0</span>
+                <span class="tabular" data-app-downloads="kv-store">1,248 lượt cài</span>
+              </div>
+            </div>
+          </div>
+          <div class="kv-store-card-actions">
+            <a class="kv-hero-btn" href="/kv-store.apk" download="kv-store.apk" data-i18n="tiles.store_btn_dl">TẢI APP TV (88000)</a>
+            <button type="button" class="kv-hero-btn kv-hero-btn--secondary" id="kv-store-inline-guide-btn" data-i18n="tiles.store_btn_guide">HƯỚNG DẪN</button>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- 3-Column Lower Metro Feature & Sponsor Strip -->
@@ -332,7 +371,7 @@
       <article class="strip-block">
         <h2 class="strip-block-title" data-i18n="strip.codes_title">danh mục mã số aftvnews downloader</h2>
         <p class="strip-block-body" data-i18n="strip.codes_body" data-i18n-html="true">
-          Mở ứng dụng Downloader trên mọi Android TV Box và nhập <strong class="tabular">88101</strong> (Jellyfin), <strong class="tabular">88102</strong> (Kodi 21), <strong class="tabular">88103</strong> (CloudStream 3), <strong class="tabular">88104</strong> (KV-Netflix), hoặc <strong class="tabular">88105</strong> (KV-Tube).
+          Mở ứng dụng Downloader trên mọi Android TV Box và nhập <strong class="tabular">88101</strong> (Jellyfin), <strong class="tabular">88102</strong> (Kodi 21), <strong class="tabular">88103</strong> (CloudStream 3), <strong class="tabular">88104</strong> (KV-Netflix), <strong class="tabular">88105</strong> (KV-Tube), hoặc <strong class="tabular">88106</strong> (SmartTube TV).
         </p>
         <div class="strip-block-footer">
           <span class="tabular" data-i18n="strip.codes_badge">302 CHUYỂN HƯỚNG APK TRỰC TIẾP</span>
@@ -377,7 +416,7 @@
         <div>
           <h2 id="shortcodes-heading" class="kv-section-title" data-i18n="directory.title">danh mục mã 5 số aftvnews downloader</h2>
           <p class="kv-section-desc" data-i18n="directory.desc" data-i18n-html="true">
-            Nhập bất kỳ mã 5 số nào (<strong class="tabular">88101</strong>–<strong class="tabular">88105</strong>) trong ứng dụng Downloader trên Android TV hoặc sao chép 1 chạm bên dưới.
+            Nhập bất kỳ mã 5 số nào (<strong class="tabular">88101</strong>–<strong class="tabular">88106</strong>) trong ứng dụng Downloader trên Android TV hoặc sao chép 1 chạm bên dưới.
           </p>
         </div>
       </div>
@@ -398,6 +437,7 @@
             <button type="button" class="dialer-preset-chip" data-preset-code="88103">88103 · CloudStream 3</button>
             <button type="button" class="dialer-preset-chip" data-preset-code="88104">88104 · KV-Netflix</button>
             <button type="button" class="dialer-preset-chip" data-preset-code="88105">88105 · KV-Tube</button>
+            <button type="button" class="dialer-preset-chip" data-preset-code="88106">88106 · SmartTube TV</button>
           </div>
           <div class="kv-dialog-actions">
             <button type="button" class="kv-btn kv-btn--primary" id="inline-dialer-fetch-btn" data-i18n="directory.btn_fetch_apk">TẢI APK THEO MÃ SỐ</button>
@@ -426,7 +466,7 @@
               <span data-i18n="promo.btn_download_companion">TẢI APK ĐỒNG HÀNH (88103)</span>
             </a>
             <button type="button" class="kv-btn kv-btn--emerald" id="promo-open-dialer-btn">
-              <span data-i18n="promo.btn_dialer">BÀN PHÍM MÃ SỐ (88101–88105)</span>
+              <span data-i18n="promo.btn_dialer">BÀN PHÍM MÃ SỐ (88101–88106)</span>
             </button>
             <button type="button" class="kv-btn" id="promo-launch-tv-btn">
               <span data-i18n="promo.btn_focus_panorama">CHUYỂN ĐẾN KHO ỨNG DỤNG</span>
@@ -486,7 +526,7 @@
             <h3 class="kv-step-title" data-i18n="promo.step2_title">2. nhập tv.vndns.net hoặc mã 5 số</h3>
           </div>
           <p class="kv-step-body" data-i18n="promo.step2_body" data-i18n-html="true">
-            Truy cập <strong>tv.vndns.net</strong> để dùng kho ứng dụng đầy đủ, hoặc nhập mã 5 số (<code class="tabular">88101</code> Jellyfin, <code class="tabular">88102</code> Kodi, <code class="tabular">88103</code> CloudStream, <code class="tabular">88104</code> KV-Netflix, <code class="tabular">88105</code> KV-Tube).
+            Truy cập <strong>tv.vndns.net</strong> để dùng kho ứng dụng đầy đủ, hoặc nhập mã 5 số (<code class="tabular">88101</code> Jellyfin, <code class="tabular">88102</code> Kodi, <code class="tabular">88103</code> CloudStream, <code class="tabular">88104</code> KV-Netflix, <code class="tabular">88105</code> KV-Tube, <code class="tabular">88106</code> SmartTube TV).
           </p>
         </article>
 
@@ -627,7 +667,7 @@
     <div class="kv-dialog-banner dialog-banner kv-tile--emerald">
       <div>
         <h2 class="kv-dialog-title dialog-title" id="metro-dialer-title" data-i18n="dialog_dialer.title">bàn phím nhập mã số</h2>
-        <p class="kv-dialog-subtitle dialog-subtitle" data-i18n="dialog_dialer.subtitle">Nhập mã AFTVnews Downloader 5 số (88000, 88101–88105)</p>
+        <p class="kv-dialog-subtitle dialog-subtitle" data-i18n="dialog_dialer.subtitle">Nhập mã AFTVnews Downloader 5 số (88000, 88101–88106)</p>
       </div>
       <form method="dialog">
         <button type="submit" class="kv-dialog-close-btn dialog-close-btn" data-i18n="dialog_dialer.close">ESC · ĐÓNG</button>
@@ -645,6 +685,7 @@
         <button type="button" class="dialer-preset-chip" data-preset-code="88103">88103 · CloudStream 3</button>
         <button type="button" class="dialer-preset-chip" data-preset-code="88104">88104 · KV-Netflix</button>
         <button type="button" class="dialer-preset-chip" data-preset-code="88105">88105 · KV-Tube</button>
+        <button type="button" class="dialer-preset-chip" data-preset-code="88106">88106 · SmartTube TV</button>
       </div>
       <div class="dialer-keypad" role="group" aria-label="Numeric Keypad">
         <button type="button" class="dialer-key" data-key="1">1</button>
@@ -696,6 +737,7 @@
             <button type="button" class="dialer-preset-chip" data-qr-url="https://tv.vndns.net/go/88102" data-qr-label="Kodi 21 APK (88102)">88102 · Kodi 21</button>
             <button type="button" class="dialer-preset-chip" data-qr-url="https://tv.vndns.net/go/88104" data-qr-label="KV-Netflix APK (88104)">88104 · KV-Netflix</button>
             <button type="button" class="dialer-preset-chip" data-qr-url="https://tv.vndns.net/go/88105" data-qr-label="KV-Tube APK (88105)">88105 · KV-Tube</button>
+            <button type="button" class="dialer-preset-chip" data-qr-url="https://tv.vndns.net/go/88106" data-qr-label="SmartTube TV APK (88106)">88106 · SmartTube TV</button>
           </div>
           <div class="kv-dialog-specs dialog-specs" id="qr-promo-list">
             <div class="spec-item">
@@ -744,7 +786,7 @@
         <div class="kv-guide-step-card">
           <span class="kv-guide-step-num">BƯỚC 2</span>
           <span class="kv-guide-step-title">Nhập mã số 88000</span>
-          <span class="kv-guide-step-text">Mở Downloader, tại ô URL / Search Term nhập chính xác số <strong class="tabular" style="color: var(--kv-cobalt); font-size: 1.1em;">88000</strong> rồi bấm nút <strong>GO</strong>. File APK sẽ tự động tải.</span>
+          <span class="kv-guide-step-text">Mở Downloader, tại ô URL / Search Term nhập chính xác số <strong class="tabular">88000</strong> rồi bấm nút <strong>GO</strong>. File APK sẽ tự động tải.</span>
         </div>
         <div class="kv-guide-step-card">
           <span class="kv-guide-step-num">BƯỚC 3</span>
@@ -759,7 +801,7 @@
         </div>
         <div class="spec-item">
           <span class="spec-label">MÃ DOWNLOANDER</span>
-          <span class="spec-value tabular" style="color: var(--kv-cobalt); font-weight: 700;">88000</span>
+          <span class="spec-value tabular">88000</span>
         </div>
         <div class="spec-item">
           <span class="spec-label">DUNG LƯỢNG APK</span>
@@ -777,24 +819,11 @@
     </div>
   </dialog>
 
-  <!-- Compact Bottom-Right D-Pad Remote Simulator -->
-  <aside class="kv-dpad-simulator dpad-simulator" id="tv-remote-widget" aria-label="TV D-Pad Remote Simulator">
-    <div class="kv-dpad-header dpad-header">
-      <span data-i18n="dpad.title">REMOTE D-PAD</span>
-      <span class="tabular" id="dpad-focus-readout">88103</span>
-    </div>
-    <div class="kv-dpad-grid dpad-grid">
-      <button type="button" class="kv-dpad-btn dpad-btn dpad-back" data-dpad="BACK" title="Quay lại / Đóng cửa sổ" data-i18n-title="dpad.back" data-i18n="dpad.back">LÙI</button>
-      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="ArrowUp" title="Di chuyển lên" data-i18n-title="dpad.up" data-i18n="dpad.up">LÊN</button>
-      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="DIAL" title="Bàn phím mã số" data-i18n-title="dpad.code" data-i18n="dpad.code">MÃ SỐ</button>
-      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="ArrowLeft" title="Di chuyển trái" data-i18n-title="dpad.left" data-i18n="dpad.left">TRÁI</button>
-      <button type="button" class="kv-dpad-btn dpad-btn dpad-ok" data-dpad="Enter" title="Chọn mục đang focus" data-i18n-title="dpad.ok" data-i18n="dpad.ok">OK</button>
-      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="ArrowRight" title="Di chuyển phải" data-i18n-title="dpad.right" data-i18n="dpad.right">PHẢI</button>
-      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="QR" title="Mở QR điện thoại" data-i18n-title="dpad.qr" data-i18n="dpad.qr">QR</button>
-      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="ArrowDown" title="Di chuyển xuống" data-i18n-title="dpad.down" data-i18n="dpad.down">XUỐNG</button>
-      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="HOME" title="Về đầu trang" data-i18n-title="dpad.top" data-i18n="dpad.top">ĐẦU</button>
-    </div>
-  </aside>
+  <!-- Discreet System Footer -->
+  <footer class="kv-footer">
+    <span data-i18n="footer.copyright">© 2026 KV-TV Store · tv.vndns.net</span>
+    <a href="/admin" class="kv-footer-admin-link" data-i18n="footer.admin">Quản trị hệ thống</a>
+  </footer>
 
   <!-- Toast Status Banner -->
   <div id="kv-toast-banner" class="kv-toast" role="status" aria-live="polite" hidden></div>

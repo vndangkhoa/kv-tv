@@ -405,7 +405,9 @@
     perfBody.innerHTML = apps
       .map((app) => {
         const hasRealApk = Boolean(app.apkFileName);
+        const hasExternalApk = Boolean(!app.apkFileName && app.apkUrl);
         const hasPresetZip = Boolean(app.presetFileName);
+        const hasExternalPreset = Boolean(!app.presetFileName && app.presetUrl);
         return `
           <tr>
             <th scope="row">
@@ -425,6 +427,8 @@
               ${
                 hasRealApk
                   ? `<span class="badge badge-emerald">Uploaded (${escapeHtml(app.apkFileName)})</span>`
+                  : hasExternalApk
+                  ? `<span class="badge badge-emerald">External Link (Link-Only)</span>`
                   : `<span class="badge badge-sky">Pre-Seeded Demo APK</span>`
               }
             </td>
@@ -432,6 +436,8 @@
               ${
                 hasPresetZip
                   ? `<span class="badge badge-emerald">${escapeHtml(app.presetFileName)}</span>`
+                  : hasExternalPreset
+                  ? `<span class="badge badge-sky">External Pre-Set Link</span>`
                   : app.preConfigured
                   ? `<span class="badge badge-subtle">Built-in Pre-Set</span>`
                   : `<span class="badge badge-subtle">Standard</span>`
@@ -535,9 +541,13 @@
         const shaShort = app.sha256 ? `${String(app.sha256).slice(0, 12)}…` : '—';
         const apkStatus = app.apkFileName
           ? `Host file: /uploads/${app.apkFileName} (${app.size})`
+          : app.apkUrl
+          ? `External Link: ${app.apkUrl}`
           : `Serving pre-seeded demo package (${app.size}) until .apk uploaded`;
         const presetStatus = app.presetFileName
           ? `Host file: /uploads/${app.presetFileName}`
+          : app.presetUrl
+          ? `External Link: ${app.presetUrl}`
           : `Serving auto-generated Pre-Set backup (.zip)`;
 
         return `
@@ -552,6 +562,11 @@
                   <span class="badge ${app.preConfigured ? 'badge-emerald' : 'badge-subtle'}">
                     ${app.preConfigured ? 'Pre-Set Ready' : 'Standard APK'}
                   </span>
+                  ${
+                    !app.apkFileName && app.apkUrl
+                      ? `<span class="badge badge-emerald">External Link (Link-Only)</span>`
+                      : ''
+                  }
                   <span class="badge badge-sky mono-num">Code: ${escapeHtml(app.shortCode)}</span>
                   <span class="app-edition-tag">${escapeHtml(app.edition)}</span>
                 </div>
@@ -732,6 +747,14 @@
     document.getElementById('appFormFeatured').checked = existing
       ? Boolean(existing.featured)
       : true;
+    const apkUrlEl = document.getElementById('appFormApkUrl');
+    if (apkUrlEl) {
+      apkUrlEl.value = existing ? existing.apkUrl || '' : '';
+    }
+    const presetUrlEl = document.getElementById('appFormPresetUrl');
+    if (presetUrlEl) {
+      presetUrlEl.value = existing ? existing.presetUrl || '' : '';
+    }
     document.getElementById('appFormPresetSummary').value = existing
       ? existing.presetSummary || ''
       : '';
@@ -766,6 +789,8 @@
       color: document.getElementById('appFormColor').value.trim(),
       preConfigured: document.getElementById('appFormPreConfigured').checked,
       featured: document.getElementById('appFormFeatured').checked,
+      apkUrl: document.getElementById('appFormApkUrl')?.value.trim() || '',
+      presetUrl: document.getElementById('appFormPresetUrl')?.value.trim() || '',
       presetSummary: document.getElementById('appFormPresetSummary').value.trim(),
       description: document.getElementById('appFormDescription').value.trim(),
       presetFeatures: document

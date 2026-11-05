@@ -223,17 +223,25 @@ def show_catalog(base_url, handle, params):
 
     category = params.get('category', ['home'])[0]
     label = params.get('label', ['Movies'])[0]
+    is_widget = params.get('widget', ['0'])[0] == '1'
     page_str = params.get('page', ['1'])[0]
     try:
         page = int(page_str)
     except ValueError:
         page = 1
 
-    # Form URL
-    if category in ('home', 'movies'):
+    # Form URL (map friendly category names to backend slugs)
+    category_map = {
+        'movies': 'phim-le',
+        'series': 'phim-bo',
+        'tvshows': 'tv-shows',
+        'anime': 'hoat-hinh',
+    }
+    mapped_cat = category_map.get(category, category)
+    if category == 'home':
         api_url = f"{API_BASE}/api/videos/home?page={page}"
     else:
-        api_url = f"{API_BASE}/api/videos/home?category={category}&page={page}"
+        api_url = f"{API_BASE}/api/videos/home?category={mapped_cat}&page={page}"
 
     movies = http_get_json(api_url)
 
@@ -243,6 +251,12 @@ def show_catalog(base_url, handle, params):
         xbmcplugin.endOfDirectory(handle, succeeded=True)
         return
 
+    # Filter out known dead upstream stream slugs and prioritize items with 16:9 backdrops on Home widgets
+    dead_slugs = {'cuoc-doi-bi-lay-mat-natalee-holloway', 'anaesthesia-vo-cam', 'thuong-cong-chua'}
+    movies = [m for m in movies if (m.get('slug') or m.get('id')) not in dead_slugs]
+    if is_widget:
+        movies.sort(key=lambda x: (0 if x.get('backdrop') else 1))
+
     for m in movies:
         title = m.get('title') or m.get('originalTitle') or 'Untitled'
         year = m.get('year') or 0
@@ -251,7 +265,7 @@ def show_catalog(base_url, handle, params):
             continue
 
         thumb = m.get('thumbnail') or ADDON_ICON
-        backdrop = m.get('backdrop') or ADDON_FANART
+        backdrop = m.get('backdrop') or thumb or ADDON_FANART
         quality = m.get('quality', '')
         lang = m.get('lang', '')
 
@@ -271,31 +285,50 @@ def show_catalog(base_url, handle, params):
         li = xbmcgui.ListItem(label=display_label)
         li.setArt({
             'icon': thumb,
-            'thumb': thumb,
+            'thumb': backdrop or thumb,
             'poster': thumb,
-            'fanart': backdrop
+            'fanart': backdrop,
+            'landscape': backdrop,
+            'banner': backdrop
         })
 
+        plot_text = clean_html(m.get('description', '')) or f"{title} ({year}) - {quality} {lang}".strip()
         info = {
             'title': title,
             'year': year,
-            'plot': clean_html(m.get('description', '')),
-            'duration': parse_duration_seconds(m.get('time') or m.get('duration')),
+            'plot': plot_text,
+            'duration': parse_duration_seconds(m.get('time') or m.get('duration')) or 5400,
+            'genre': m.get('genre') or label,
             'mediatype': 'movie'
         }
         set_item_video_info(li, info)
 
-        url = build_url(base_url, {
+        detail_target = build_url(base_url, {
             'action': 'detail',
             'slug': slug,
             'title': title,
             'thumb': thumb,
             'fanart': backdrop
         })
-        xbmcplugin.addDirectoryItem(handle, url, li, isFolder=True)
 
-    # Add Next Page button if we received items
-    if len(movies) >= 10:
+        if is_widget:
+            li.setProperty('IsPlayable', 'true')
+            li.addContextMenuItems([
+                ('Browse Episodes / Servers', f'ActivateWindow(Videos,{detail_target},return)')
+            ])
+            url = build_url(base_url, {
+                'action': 'play_slug',
+                'slug': slug,
+                'title': title,
+                'thumb': thumb,
+                'fanart': backdrop
+            })
+            xbmcplugin.addDirectoryItem(handle, url, li, isFolder=False)
+        else:
+            xbmcplugin.addDirectoryItem(handle, detail_target, li, isFolder=True)
+
+    # Add Next Page button if we received items (skip in home widgets)
+    if len(movies) >= 10 and not is_widget:
         next_li = xbmcgui.ListItem(label=f"Next Page (Page {page + 1}) >>")
         next_li.setArt({
             'icon': ADDON_ICON,
@@ -342,7 +375,7 @@ def show_search(base_url, handle, params):
             continue
 
         thumb = m.get('thumbnail') or ADDON_ICON
-        backdrop = m.get('backdrop') or ADDON_FANART
+        backdrop = m.get('backdrop') or thumb or ADDON_FANART
         quality = m.get('quality', '')
         lang = m.get('lang', '')
 
@@ -417,6 +450,9 @@ def show_movie_detail(base_url, handle, params):
         xbmcplugin.endOfDirectory(handle, succeeded=True)
         return
 
+    # Prefer standard MPEG-TS HLS servers (e.g., KKPhim) over PNG-wrapped VSMOV streams in Kodi FFmpeg
+    episodes.sort(key=lambda e: (1 if 'streamvsmov.com' in (e.get('url') or '') else 0, e.get('number') or 1))
+
     for ep in episodes:
         ep_num = ep.get('number', 1)
         ep_title = ep.get('title') or f"Episode {ep_num}"
@@ -474,25 +510,17 @@ def play_video(handle, params):
         xbmcplugin.setResolvedUrl(handle, False, xbmcgui.ListItem())
         return
 
-    try:
-        raw_val = ADDON.getSetting('use_stream_proxy')
-        use_proxy = (raw_val.lower() == 'true') if raw_val else True
-    except Exception:
-        use_proxy = True
+    # Kodi FFmpeg HLS demuxer requires direct .m3u8 URLs (the web proxy /api/stream
+    # lacks a .m3u8 path extension and returns 405 on HEAD requests).
+    resolved_url = stream_url
 
-    # Build resolved streaming path
-    if use_proxy:
-        # Pass encoded stream url through KV proxy
-        resolved_url = f"{STREAM_PROXY}{urllib.parse.quote(stream_url, safe='')}"
-    else:
-        resolved_url = stream_url
+    log(f"Playing video: '{title}' (handle={handle}) -> Resolved URL: {resolved_url}")
 
-    log(f"Playing video: '{title}' -> Resolved URL: {resolved_url}")
-
-    play_item = xbmcgui.ListItem(path=resolved_url)
+    play_item = xbmcgui.ListItem(label=title, path=resolved_url)
     play_item.setArt({
         'icon': thumb or ADDON_ICON,
         'thumb': thumb or ADDON_ICON,
+        'poster': thumb or ADDON_ICON,
         'fanart': fanart or ADDON_FANART
     })
 
@@ -502,14 +530,61 @@ def play_video(handle, params):
     }
     set_item_video_info(play_item, info)
 
-    # Configure adaptive streaming properties
+    # Configure adaptive streaming properties if addon is installed, otherwise use native FFmpeg HLS
     play_item.setProperty('IsPlayable', 'true')
-    play_item.setProperty('inputstream', 'inputstream.adaptive')
-    play_item.setProperty('inputstream.adaptive.manifest_type', 'hls')
+    if xbmc.getCondVisibility('System.HasAddon(inputstream.adaptive)'):
+        play_item.setProperty('inputstream', 'inputstream.adaptive')
+        play_item.setProperty('inputstream.adaptive.manifest_type', 'hls')
     play_item.setMimeType('application/vnd.apple.mpegurl')
     play_item.setContentLookup(False)
 
-    xbmcplugin.setResolvedUrl(handle, succeeded=True, listitem=play_item)
+    if handle >= 0:
+        xbmcplugin.setResolvedUrl(handle, succeeded=True, listitem=play_item)
+    else:
+        xbmc.Player().play(resolved_url, play_item)
+
+
+def play_slug(handle, params):
+    """Fetch movie detail by slug and immediately play the first available episode/stream."""
+    slug = params.get('slug', [''])[0]
+    title = params.get('title', ['Movie'])[0]
+    thumb = params.get('thumb', [ADDON_ICON])[0]
+    fanart = params.get('fanart', [ADDON_FANART])[0]
+
+    if not slug:
+        xbmcplugin.setResolvedUrl(handle, False, xbmcgui.ListItem())
+        return
+
+    detail = http_get_json(f"{API_BASE}/api/videos/{slug}")
+    episodes = (detail or {}).get('episodes') or []
+    if not episodes:
+        xbmcgui.Dialog().notification(ADDON_NAME, f"No stream found for {title}", ADDON_ICON, 3000)
+        xbmcplugin.setResolvedUrl(handle, False, xbmcgui.ListItem())
+        return
+
+    # Sort standard MPEG-TS HLS streams before PNG-wrapped VSMOV streams and probe for a live #EXTM3U manifest
+    candidates = sorted(episodes, key=lambda e: (1 if 'streamvsmov.com' in (e.get('url') or '') else 0))
+    chosen_ep = candidates[0]
+    for cand in candidates:
+        u = cand.get('url') or ''
+        if not u:
+            continue
+        try:
+            req = urllib.request.Request(u, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req, timeout=4) as resp:
+                head = resp.read(128).decode('utf-8', 'ignore')
+                if '#EXTM3U' in head and 'streamvsmov.com' not in u:
+                    chosen_ep = cand
+                    break
+        except Exception:
+            continue
+
+    play_video(handle, {
+        'stream_url': [chosen_ep['url']],
+        'title': [f"{title} - {chosen_ep.get('title') or 'Full'}"],
+        'thumb': [detail.get('thumbnail') or thumb],
+        'fanart': [detail.get('backdrop') or fanart]
+    })
 
 
 # ---------------------------------------------------------------------------
@@ -546,6 +621,8 @@ def run():
         show_movie_detail(base_url, handle, params)
     elif action == 'play':
         play_video(handle, params)
+    elif action == 'play_slug':
+        play_slug(handle, params)
     elif action == 'settings':
         ADDON.openSettings()
     else:
