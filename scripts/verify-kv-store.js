@@ -107,8 +107,8 @@ async function runTests() {
   assert(dataTube.found === true, 'KV-Tube found via 88105');
   assert(dataTube.app?.id === 'kv-tube', 'App ID is kv-tube');
   assert(
-    dataTube.app?.packageName === 'org.schabi.newpipe',
-    'KV-Tube packageName is org.schabi.newpipe (distinct from SmartTube)'
+    dataTube.app?.packageName === 'com.kvtube.tv',
+    'KV-Tube packageName is com.kvtube.tv (distinct from SmartTube)'
   );
   assert(
     dataTube.apkUrl?.includes('/releases/download/v1.0.0/kv-tube.apk'),
