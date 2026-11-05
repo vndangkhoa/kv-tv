@@ -92,13 +92,27 @@ async function runTests() {
   assert(dataSmart.found === true, 'SmartTube TV found via 88106');
   assert(dataSmart.app?.id === 'smarttube-tv', 'App ID is smarttube-tv');
   assert(
-    dataSmart.app?.packageName === 'com.teamsmart.videomanager.tv',
-    'SmartTube TV packageName is com.teamsmart.videomanager.tv'
+    dataSmart.app?.packageName === 'org.smarttube.stable',
+    'SmartTube TV packageName is org.smarttube.stable'
   );
   assert(dataSmart.linkOnly === true, 'SmartTube TV is linkOnly');
   assert(
-    dataSmart.apkUrl?.includes('SmartTube_stable_32.68_universal.apk'),
-    'SmartTube TV apkUrl points to official SmartTube release APK'
+    dataSmart.apkUrl?.includes('/releases/download/v1.0.0/smarttube-tv.apk'),
+    'SmartTube TV apkUrl points to pre-configured Forgejo release APK'
+  );
+
+  const resTube = await request('/api/code/88105');
+  assert(resTube.statusCode === 200, 'GET /api/code/88105 status is 200');
+  const dataTube = JSON.parse(resTube.body.toString('utf8'));
+  assert(dataTube.found === true, 'KV-Tube found via 88105');
+  assert(dataTube.app?.id === 'kv-tube', 'App ID is kv-tube');
+  assert(
+    dataTube.app?.packageName === 'org.schabi.newpipe',
+    'KV-Tube packageName is org.schabi.newpipe (distinct from SmartTube)'
+  );
+  assert(
+    dataTube.apkUrl?.includes('/releases/download/v1.0.0/kv-tube.apk'),
+    'KV-Tube apkUrl points to pre-configured Forgejo release APK'
   );
 
   // 5. Downloader short-code redirects /go/88000, /go/88106, and /api/download/smarttube-tv
@@ -117,8 +131,8 @@ async function runTests() {
   const resDlSmart = await request('/api/download/smarttube-tv');
   assert(resDlSmart.statusCode === 302, 'GET /api/download/smarttube-tv returns 302');
   assert(
-    resDlSmart.headers['location']?.includes('SmartTube_stable_32.68_universal.apk'),
-    `GET /api/download/smarttube-tv redirects to GitHub release (${resDlSmart.headers['location']})`
+    resDlSmart.headers['location']?.includes('/releases/download/v1.0.0/smarttube-tv.apk'),
+    `GET /api/download/smarttube-tv redirects to Forgejo release (${resDlSmart.headers['location']})`
   );
 
   // 6. Dynamic in-memory Presets for Kodi 21 Omega (kodi-kv) and CloudStream 3 (cloudstream-kv)
@@ -154,8 +168,8 @@ async function runTests() {
   console.log('\n7. Verifying Frontend assets:');
   const indexHtml = fs.readFileSync(path.join(__dirname, '..', 'public', 'index.html'), 'utf8');
   assert(
-    indexHtml.includes('id="kv-store-app-promo"'),
-    'index.html has #kv-store-app-promo banner'
+    indexHtml.includes('id="kv-store-inline-dl-btn"'),
+    'index.html has #kv-store-inline-dl-btn download action'
   );
   assert(indexHtml.includes('88000'), 'index.html displays shortcode 88000');
 

@@ -2,7 +2,7 @@
 """
 KV-Netflix Kodi Video Addon
 Author: KV-TV
-Version: 1.0.0
+Version: 1.1.0
 Compatibility: Python 3, Kodi 20 Nexus / Kodi 21 Omega
 """
 
@@ -20,17 +20,20 @@ import xbmcgui
 import xbmcplugin
 import xbmcaddon
 
+import service
+
 ADDON_ID = 'plugin.video.kvnetflix'
 ADDON = xbmcaddon.Addon(id=ADDON_ID)
 ADDON_NAME = ADDON.getAddonInfo('name')
 ADDON_PATH = ADDON.getAddonInfo('path')
-ADDON_ICON = os.path.join(ADDON_PATH, 'icon.png')
-ADDON_FANART = os.path.join(ADDON_PATH, 'fanart.jpg')
+ICONS_DIR = os.path.join(ADDON_PATH, 'resources', 'icons')
+ADDON_LOGO = os.path.join(ICONS_DIR, 'logo.png')
+ADDON_BACKDROP = os.path.join(ICONS_DIR, 'backdrop.jpg')
+ADDON_ICON = ADDON_LOGO if os.path.exists(ADDON_LOGO) else os.path.join(ADDON_PATH, 'icon.png')
+ADDON_FANART = ADDON_BACKDROP if os.path.exists(ADDON_BACKDROP) else os.path.join(ADDON_PATH, 'fanart.jpg')
 
 API_BASE = 'https://nf.khoavo.myds.me'
-STREAM_PROXY = 'https://nf.khoavo.myds.me/api/stream?url='
-
-USER_AGENT = 'KV-Netflix-Kodi/1.0.0 (Kodi Omega)'
+USER_AGENT = 'KV-Netflix-Kodi/1.1.0 (Kodi Omega)'
 
 
 def log(msg, level=xbmc.LOGINFO):
@@ -47,7 +50,7 @@ def http_get_json(url, timeout=15):
                 'Accept': 'application/json'
             }
         )
-        with urllib.request.urlopen(req, timeout=timeout) as response:
+        with urllib.request.urlopen(req, timeout=timeout, context=service.SSL_CTX) as response:
             data = response.read().decode('utf-8')
             return json.loads(data)
     except urllib.error.HTTPError as e:
@@ -104,7 +107,6 @@ def set_item_video_info(item, info):
         if 'mediatype' in info and info['mediatype']:
             tag.setMediaType(str(info['mediatype']))
     except Exception:
-        # Fallback to legacy setInfo
         item.setInfo('video', info)
 
 
@@ -113,50 +115,75 @@ def build_url(base_url, params):
     return f"{base_url}?{urllib.parse.urlencode(params)}"
 
 
+def extract_subtitle_urls(detail):
+    """Extract absolute subtitle URLs from a video detail dictionary."""
+    subs = []
+    for s in (detail or {}).get('subtitles') or []:
+        u = s.get('url') or ''
+        if not u:
+            continue
+        if u.startswith('/'):
+            u = f"{API_BASE}{u}"
+        subs.append(u)
+    return subs
+
+
 # ---------------------------------------------------------------------------
 # View Handlers
 # ---------------------------------------------------------------------------
 
 def show_main_menu(base_url, handle):
-    """Display the top-level main menu."""
+    """Display the top-level main menu with custom category icons."""
     xbmcplugin.setContent(handle, 'videos')
 
     menu_items = [
         {
-            'title': '★ Top Movies',
+            'title': 'Top Movies',
             'params': {'action': 'catalog', 'category': 'movies', 'label': 'Top Movies'},
-            'icon': ADDON_ICON,
-            'fanart': ADDON_FANART
+            'icon': os.path.join(ICONS_DIR, 'top_movies.png'),
+            'fanart': ADDON_FANART,
+            'is_folder': True,
+            'plot': 'Browse top trending feature films and blockbusters on KV-Netflix.'
         },
         {
-            'title': '★ New Releases',
+            'title': 'New Releases',
             'params': {'action': 'catalog', 'category': 'home', 'label': 'New Releases'},
-            'icon': ADDON_ICON,
-            'fanart': ADDON_FANART
+            'icon': os.path.join(ICONS_DIR, 'new_releases.png'),
+            'fanart': ADDON_FANART,
+            'is_folder': True,
+            'plot': 'Watch the latest movies and newly added episodes updated daily.'
         },
         {
-            'title': '★ Featured Series',
+            'title': 'Featured Series',
             'params': {'action': 'catalog', 'category': 'series', 'label': 'Featured Series'},
-            'icon': ADDON_ICON,
-            'fanart': ADDON_FANART
+            'icon': os.path.join(ICONS_DIR, 'series.png'),
+            'fanart': ADDON_FANART,
+            'is_folder': True,
+            'plot': 'Explore binge-worthy Asian dramas, US/UK series, and multi-episode shows.'
         },
         {
-            'title': '★ Genres',
+            'title': 'Genres',
             'params': {'action': 'genres'},
-            'icon': ADDON_ICON,
-            'fanart': ADDON_FANART
+            'icon': os.path.join(ICONS_DIR, 'genres.png'),
+            'fanart': ADDON_FANART,
+            'is_folder': True,
+            'plot': 'Filter movies and series by genre: Action, Sci-Fi, Horror, Romance, Anime, and more.'
         },
         {
-            'title': '★ Search Movies',
+            'title': 'Search Movies',
             'params': {'action': 'search_prompt'},
-            'icon': ADDON_ICON,
-            'fanart': ADDON_FANART
+            'icon': os.path.join(ICONS_DIR, 'search.png'),
+            'fanart': ADDON_FANART,
+            'is_folder': True,
+            'plot': 'Search the KV-Netflix catalog by title, actor, or keyword.'
         },
         {
-            'title': '★ Settings',
+            'title': 'Settings',
             'params': {'action': 'settings'},
-            'icon': ADDON_ICON,
-            'fanart': ADDON_FANART
+            'icon': os.path.join(ICONS_DIR, 'settings.png'),
+            'fanart': ADDON_FANART,
+            'is_folder': False,
+            'plot': 'Configure KV-Netflix streaming proxy and server settings.'
         }
     ]
 
@@ -164,11 +191,16 @@ def show_main_menu(base_url, handle):
         li = xbmcgui.ListItem(label=item['title'])
         li.setArt({
             'icon': item['icon'],
-            'thumb': item['icon'],
+            'thumb': ADDON_LOGO,
             'fanart': item['fanart']
         })
+        set_item_video_info(li, {
+            'title': item['title'],
+            'plot': item['plot'],
+            'mediatype': 'video'
+        })
         url = build_url(base_url, item['params'])
-        xbmcplugin.addDirectoryItem(handle, url, li, isFolder=True)
+        xbmcplugin.addDirectoryItem(handle, url, li, isFolder=item['is_folder'])
 
     xbmcplugin.endOfDirectory(handle, succeeded=True)
 
@@ -180,7 +212,6 @@ def show_genres(base_url, handle):
     genres_url = f"{API_BASE}/api/categories/genres"
     genres = http_get_json(genres_url)
 
-    # Fallback to standard genres if offline / network error
     if not genres or not isinstance(genres, list):
         genres = [
             {'Name': 'Hành Động', 'Slug': 'hanh-dong'},
@@ -194,16 +225,17 @@ def show_genres(base_url, handle):
             {'Name': 'Võ Thuật', 'Slug': 'vo-thuat'}
         ]
 
+    genre_icon = os.path.join(ICONS_DIR, 'genres.png')
     for g in genres:
         name = g.get('Name') or g.get('name') or 'Unknown'
         slug = g.get('Slug') or g.get('slug') or ''
         if not slug:
             continue
 
-        li = xbmcgui.ListItem(label=f"★ {name}")
+        li = xbmcgui.ListItem(label=name)
         li.setArt({
-            'icon': ADDON_ICON,
-            'thumb': ADDON_ICON,
+            'icon': genre_icon,
+            'thumb': ADDON_LOGO,
             'fanart': ADDON_FANART
         })
         url = build_url(base_url, {
@@ -230,7 +262,6 @@ def show_catalog(base_url, handle, params):
     except ValueError:
         page = 1
 
-    # Form URL (map friendly category names to backend slugs)
     category_map = {
         'movies': 'phim-le',
         'series': 'phim-bo',
@@ -251,7 +282,6 @@ def show_catalog(base_url, handle, params):
         xbmcplugin.endOfDirectory(handle, succeeded=True)
         return
 
-    # Filter out known dead upstream stream slugs and prioritize items with 16:9 backdrops on Home widgets
     dead_slugs = {'cuoc-doi-bi-lay-mat-natalee-holloway', 'anaesthesia-vo-cam', 'thuong-cong-chua'}
     movies = [m for m in movies if (m.get('slug') or m.get('id')) not in dead_slugs]
     if is_widget:
@@ -269,7 +299,6 @@ def show_catalog(base_url, handle, params):
         quality = m.get('quality', '')
         lang = m.get('lang', '')
 
-        # Display label decoration
         badges = []
         if quality:
             badges.append(quality)
@@ -277,7 +306,7 @@ def show_catalog(base_url, handle, params):
             badges.append(lang)
         if year:
             badges.append(str(year))
-        
+
         display_label = title
         if badges:
             display_label = f"{title} [{', '.join(badges)}]"
@@ -327,12 +356,11 @@ def show_catalog(base_url, handle, params):
         else:
             xbmcplugin.addDirectoryItem(handle, detail_target, li, isFolder=True)
 
-    # Add Next Page button if we received items (skip in home widgets)
     if len(movies) >= 10 and not is_widget:
         next_li = xbmcgui.ListItem(label=f"Next Page (Page {page + 1}) >>")
         next_li.setArt({
-            'icon': ADDON_ICON,
-            'thumb': ADDON_ICON,
+            'icon': os.path.join(ICONS_DIR, 'new_releases.png'),
+            'thumb': ADDON_LOGO,
             'fanart': ADDON_FANART
         })
         next_url = build_url(base_url, {
@@ -377,7 +405,6 @@ def show_search(base_url, handle, params):
         thumb = m.get('thumbnail') or ADDON_ICON
         backdrop = m.get('backdrop') or thumb or ADDON_FANART
         quality = m.get('quality', '')
-        lang = m.get('lang', '')
 
         display_label = title
         if year:
@@ -443,6 +470,8 @@ def show_movie_detail(base_url, handle, params):
     thumb = detail.get('thumbnail') or movie_thumb
     backdrop = detail.get('backdrop') or movie_fanart
     episodes = detail.get('episodes') or []
+    subs = extract_subtitle_urls(detail)
+    sub_param = subs[0] if subs else ''
 
     if not episodes:
         dialog = xbmcgui.Dialog()
@@ -450,19 +479,17 @@ def show_movie_detail(base_url, handle, params):
         xbmcplugin.endOfDirectory(handle, succeeded=True)
         return
 
-    # Prefer standard MPEG-TS HLS servers (e.g., KKPhim) over PNG-wrapped VSMOV streams in Kodi FFmpeg
-    episodes.sort(key=lambda e: (1 if 'streamvsmov.com' in (e.get('url') or '') else 0, e.get('number') or 1))
-
     for ep in episodes:
         ep_num = ep.get('number', 1)
         ep_title = ep.get('title') or f"Episode {ep_num}"
         ep_url = ep.get('url', '')
+        embed_url = ep.get('embedUrl', '')
         server = ep.get('serverName', '')
 
         if not ep_url:
             continue
 
-        label = f"★ {ep_title}"
+        label = ep_title
         if server:
             label = f"{label} ({server})"
 
@@ -482,25 +509,30 @@ def show_movie_detail(base_url, handle, params):
         }
         set_item_video_info(li, info)
 
-        # Mark as playable item
         li.setProperty('IsPlayable', 'true')
 
-        play_url = build_url(base_url, {
+        play_params = {
             'action': 'play',
             'stream_url': ep_url,
+            'embed_url': embed_url,
             'title': f"{title} - {ep_title}",
             'thumb': thumb,
             'fanart': backdrop
-        })
+        }
+        if sub_param:
+            play_params['sub_url'] = sub_param
 
+        play_url = build_url(base_url, play_params)
         xbmcplugin.addDirectoryItem(handle, play_url, li, isFolder=False)
 
     xbmcplugin.endOfDirectory(handle, succeeded=True)
 
 
 def play_video(handle, params):
-    """Resolve stream URL via proxy or direct URL and start playback."""
+    """Resolve stream URL via local HLS proxy and start playback."""
     stream_url = params.get('stream_url', [''])[0]
+    embed_url = params.get('embed_url', [''])[0]
+    sub_url = params.get('sub_url', [''])[0]
     title = params.get('title', ['Stream'])[0]
     thumb = params.get('thumb', [''])[0]
     fanart = params.get('fanart', [''])[0]
@@ -510,11 +542,12 @@ def play_video(handle, params):
         xbmcplugin.setResolvedUrl(handle, False, xbmcgui.ListItem())
         return
 
-    # Kodi FFmpeg HLS demuxer requires direct .m3u8 URLs (the web proxy /api/stream
-    # lacks a .m3u8 path extension and returns 405 on HEAD requests).
+    # Ensure local HLS proxy is active to sign VSMOV streams and strip fake PNG headers
     resolved_url = stream_url
+    if service.ensure_proxy_running():
+        resolved_url = service.build_proxy_play_url(stream_url, embed_url)
 
-    log(f"Playing video: '{title}' (handle={handle}) -> Resolved URL: {resolved_url}")
+    log(f"Playing video: '{title}' (handle={handle}) -> {resolved_url} (upstream={stream_url})")
 
     play_item = xbmcgui.ListItem(label=title, path=resolved_url)
     play_item.setArt({
@@ -530,11 +563,10 @@ def play_video(handle, params):
     }
     set_item_video_info(play_item, info)
 
-    # Configure adaptive streaming properties if addon is installed, otherwise use native FFmpeg HLS
+    if sub_url:
+        play_item.setSubtitles([sub_url])
+
     play_item.setProperty('IsPlayable', 'true')
-    if xbmc.getCondVisibility('System.HasAddon(inputstream.adaptive)'):
-        play_item.setProperty('inputstream', 'inputstream.adaptive')
-        play_item.setProperty('inputstream.adaptive.manifest_type', 'hls')
     play_item.setMimeType('application/vnd.apple.mpegurl')
     play_item.setContentLookup(False)
 
@@ -562,42 +594,78 @@ def play_slug(handle, params):
         xbmcplugin.setResolvedUrl(handle, False, xbmcgui.ListItem())
         return
 
-    # Sort standard MPEG-TS HLS streams before PNG-wrapped VSMOV streams and probe for a live #EXTM3U manifest
-    candidates = sorted(episodes, key=lambda e: (1 if 'streamvsmov.com' in (e.get('url') or '') else 0))
-    chosen_ep = candidates[0]
-    for cand in candidates:
-        u = cand.get('url') or ''
-        if not u:
-            continue
-        try:
-            req = urllib.request.Request(u, headers={'User-Agent': 'Mozilla/5.0'})
-            with urllib.request.urlopen(req, timeout=4) as resp:
-                head = resp.read(128).decode('utf-8', 'ignore')
-                if '#EXTM3U' in head and 'streamvsmov.com' not in u:
-                    chosen_ep = cand
-                    break
-        except Exception:
-            continue
+    subs = extract_subtitle_urls(detail)
+    chosen_ep = episodes[0]
+    for cand in episodes:
+        if cand.get('url'):
+            chosen_ep = cand
+            break
 
-    play_video(handle, {
-        'stream_url': [chosen_ep['url']],
+    play_params = {
+        'stream_url': [chosen_ep.get('url', '')],
+        'embed_url': [chosen_ep.get('embedUrl', '')],
         'title': [f"{title} - {chosen_ep.get('title') or 'Full'}"],
-        'thumb': [detail.get('thumbnail') or thumb],
-        'fanart': [detail.get('backdrop') or fanart]
-    })
+        'thumb': [(detail or {}).get('thumbnail') or thumb],
+        'fanart': [(detail or {}).get('backdrop') or fanart]
+    }
+    if subs:
+        play_params['sub_url'] = [subs[0]]
+
+    play_video(handle, play_params)
 
 
 # ---------------------------------------------------------------------------
 # Main Router
 # ---------------------------------------------------------------------------
 
-def run():
+def clear_stale_addon_textures():
+    """One-time cleanup of stale cached kvnetflix textures and directory cache inside Kodi."""
     try:
-        import xbmcvfs, shutil
+        import sqlite3
+        import xbmcvfs
+        flag = xbmcvfs.translatePath('special://userdata/kvnetflix_tex_v113.flag')
+        if os.path.exists(flag):
+            return
+        db_path = xbmcvfs.translatePath('special://userdata/Database/Textures13.db')
+        thumbs_dir = xbmcvfs.translatePath('special://userdata/Thumbnails')
+        if os.path.exists(db_path):
+            conn = sqlite3.connect(db_path, timeout=5)
+            cur = conn.cursor()
+            cur.execute("SELECT id, cachedurl FROM texture WHERE url LIKE '%kvnetflix%'")
+            rows = cur.fetchall()
+            for tex_id, cachedurl in rows:
+                if cachedurl:
+                    cached_file = os.path.join(thumbs_dir, cachedurl.replace('/', os.sep).lstrip(os.sep))
+                    try:
+                        if os.path.exists(cached_file):
+                            os.remove(cached_file)
+                    except Exception:
+                        pass
+                cur.execute("DELETE FROM sizes WHERE idtexture = ?", (tex_id,))
+                cur.execute("DELETE FROM texture WHERE id = ?", (tex_id,))
+            conn.commit()
+            conn.close()
+        cache_dir = xbmcvfs.translatePath('special://temp/archive_cache')
+        if os.path.isdir(cache_dir):
+            for fn in os.listdir(cache_dir):
+                try:
+                    os.remove(os.path.join(cache_dir, fn))
+                except Exception:
+                    pass
+        with open(flag, 'w') as f:
+            f.write('ok')
+    except Exception as e:
+        log(f"Texture cache cleanup note: {e}")
+
+
+def run():
+    clear_stale_addon_textures()
+    try:
+        import xbmcvfs
         src = xbmcvfs.translatePath('special://logpath/kodi.log')
         dst = '/storage/emulated/0/Download/kodi.log'
         xbmcvfs.copy(src, dst)
-    except Exception as e:
+    except Exception:
         pass
 
     base_url = sys.argv[0] if len(sys.argv) > 0 else 'plugin://plugin.video.kvnetflix/'

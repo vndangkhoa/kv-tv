@@ -50,6 +50,26 @@ class KVTVBridge(
         const val CLOUDSTREAM_REPO_URL = "https://n.khoavo.vndns.net/repo.json"
         const val CLOUDSTREAM_PLUGIN_URL = "https://n.khoavo.vndns.net/KVNetflixProvider.cs3"
         const val MAX_REDIRECTS = 10
+
+        val PACKAGE_ALIASES: Map<String, List<String>> = mapOf(
+            "org.smarttube.stable" to listOf("org.smarttube.stable", "com.teamsmart.videomanager.tv", "app.smarttube.fdroid", "com.liskovsoft.smarttubetv"),
+            "com.teamsmart.videomanager.tv" to listOf("org.smarttube.stable", "com.teamsmart.videomanager.tv", "app.smarttube.fdroid", "com.liskovsoft.smarttubetv"),
+            "org.schabi.newpipe" to listOf("org.schabi.newpipe", "com.kvtube.tv"),
+            "com.kvtube.tv" to listOf("org.schabi.newpipe", "com.kvtube.tv")
+        )
+    }
+
+    private fun resolveInstalledPackage(packageName: String): android.content.pm.PackageInfo? {
+        val pm = context.packageManager
+        val candidates = PACKAGE_ALIASES[packageName] ?: listOf(packageName)
+        for (cand in candidates) {
+            try {
+                return pm.getPackageInfo(cand, 0)
+            } catch (_: PackageManager.NameNotFoundException) {
+            } catch (_: Exception) {
+            }
+        }
+        return null
     }
 
     /**
@@ -59,16 +79,13 @@ class KVTVBridge(
     @JavascriptInterface
     fun checkApp(packageName: String, storeVersionCode: Long): String {
         return try {
-            val pm = context.packageManager
-            val pInfo = pm.getPackageInfo(packageName, 0)
+            val pInfo = resolveInstalledPackage(packageName) ?: return STATUS_NOT_INSTALLED
             val installedCode = PackageInfoCompat.getLongVersionCode(pInfo)
             if (storeVersionCode > 0 && installedCode < storeVersionCode) {
                 STATUS_UPDATE
             } else {
                 STATUS_INSTALLED
             }
-        } catch (e: PackageManager.NameNotFoundException) {
-            STATUS_NOT_INSTALLED
         } catch (e: Exception) {
             STATUS_NOT_INSTALLED
         }
@@ -83,7 +100,6 @@ class KVTVBridge(
         val result = JSONObject()
         try {
             val arr = JSONArray(catalogJsonStr)
-            val pm = context.packageManager
             for (i in 0 until arr.length()) {
                 val item = arr.optJSONObject(i)
                 val pkgName = item?.optString("packageName")
@@ -91,20 +107,7 @@ class KVTVBridge(
                 if (pkgName.isNullOrBlank()) continue
 
                 val storeCode = item?.optLong("versionCode", 0L) ?: 0L
-
-                val status = try {
-                    val pInfo = pm.getPackageInfo(pkgName, 0)
-                    val installedCode = PackageInfoCompat.getLongVersionCode(pInfo)
-                    if (storeCode > 0 && installedCode < storeCode) {
-                        STATUS_UPDATE
-                    } else {
-                        STATUS_INSTALLED
-                    }
-                } catch (e: PackageManager.NameNotFoundException) {
-                    STATUS_NOT_INSTALLED
-                } catch (e: Exception) {
-                    STATUS_NOT_INSTALLED
-                }
+                val status = checkApp(pkgName, storeCode)
                 result.put(pkgName, status)
             }
         } catch (e: Exception) {
@@ -323,8 +326,9 @@ class KVTVBridge(
     @JavascriptInterface
     fun uninstallApp(packageName: String) {
         try {
+            val targetPkg = resolveInstalledPackage(packageName)?.packageName ?: packageName
             val intent = Intent(Intent.ACTION_DELETE).apply {
-                data = Uri.parse("package:$packageName")
+                data = Uri.parse("package:$targetPkg")
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }
             activity.startActivity(intent)
@@ -340,18 +344,19 @@ class KVTVBridge(
     @JavascriptInterface
     fun launchApp(packageName: String): Boolean {
         return try {
-            if (packageName == PKG_KODI || packageName == PKG_CLOUDSTREAM) {
-                preConfigureApp(packageName)
+            val targetPkg = resolveInstalledPackage(packageName)?.packageName ?: packageName
+            if (targetPkg == PKG_KODI || targetPkg == PKG_CLOUDSTREAM) {
+                preConfigureApp(targetPkg)
             }
             val pm = context.packageManager
-            val intent = pm.getLeanbackLaunchIntentForPackage(packageName)
-                ?: pm.getLaunchIntentForPackage(packageName)
+            val intent = pm.getLeanbackLaunchIntentForPackage(targetPkg)
+                ?: pm.getLaunchIntentForPackage(targetPkg)
             if (intent != null) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 activity.startActivity(intent)
                 true
             } else {
-                showToast("Không thể khởi chạy ứng dụng $packageName")
+                showToast("Không thể khởi chạy ứng dụng $targetPkg")
                 false
             }
         } catch (e: Exception) {

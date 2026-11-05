@@ -13,6 +13,7 @@ RUN npm install --omit=dev --no-audit --no-fund && npm cache clean --force
 COPY server.js ./
 COPY lib ./lib
 COPY public ./public
+COPY addons ./addons
 
 # Create persistent directories for bind mounts
 # /app/data    -> store.json (catalog, analytics, 2FA secret, ads)

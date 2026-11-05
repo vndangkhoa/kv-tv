@@ -49,7 +49,9 @@ const FALLBACK_CATALOG = {
     {
       id: 'kv-store',
       name: 'KV-Store TV',
-      edition: 'Official Android TV Client',
+      edition: 'Ứng Dụng Android TV Chính Thức',
+      edition_vi: 'Ứng Dụng Android TV Chính Thức',
+      edition_en: 'Official Android TV Client',
       packageName: 'net.vndns.tv.store',
       version: '1.0.0',
       versionCode: 1,
@@ -57,7 +59,9 @@ const FALLBACK_CATALOG = {
       shortCode: '88000',
       category: 'Media Center',
       arch: 'Universal (arm64-v8a + armeabi-v7a)',
-      downloads: 8800,
+      downloads: 1248,
+      sha256: 'e1f9e1116f273126885004f1bbccfe43906fdb921933594cfdd12a09dfe284a8',
+      apkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-store.apk',
       description:
         'Ứng dụng chính thức của KV-Store dành cho Android TV / Google TV. Tích hợp quản lý ứng dụng, cài đặt 1-chạm không cần chuột, tự động phát hiện phiên bản và khởi chạy ứng dụng media, phim ảnh 4K HDR.',
       presetFeatures: [
@@ -70,19 +74,21 @@ const FALLBACK_CATALOG = {
     {
       id: 'cloudstream-kv',
       name: 'CloudStream 3',
-      edition: 'Bản tích hợp sẵn (KV-Netflix 4K VIP)',
-      edition_vi: 'Bản tích hợp sẵn (KV-Netflix 4K VIP)',
-      edition_en: 'KV-PreSetup (KV-Netflix 4K VIP)',
+      edition: 'Kho Phim 4K VIP Tích Hợp Sẵn',
+      edition_vi: 'Kho Phim 4K VIP Tích Hợp Sẵn',
+      edition_en: 'Pre-Configured 4K VIP Edition',
       packageName: 'com.lagradost.cloudstream3',
       version: '4.8.0-kv',
       versionCode: 68,
-      size: '68.7 MB',
+      size: '68.8 MB',
       shortCode: '88103',
       category: 'Streaming',
       category_vi: 'Phim & Trực Tuyến',
       category_en: 'Streaming',
       arch: 'Universal (arm64-v8a + armeabi-v7a)',
-      downloads: 4150,
+      downloads: 952,
+      sha256: '9afb6d317b70ccd30a5b0eb8c7972c629d82c8c9beec5a25a3ba24dedf27e13c',
+      apkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/cloudstream-kv.apk',
       description: 'Bản dựng tối ưu hóa riêng cho hệ sinh thái KV: Cài sẵn plugin mở rộng KV-Netflix VIP tốc độ cao, hỗ trợ chuẩn 4K HDR10, âm thanh 5.1 và phụ đề Vietsub đồng bộ.',
       description_vi: 'Bản dựng tối ưu hóa riêng cho hệ sinh thái KV: Cài sẵn plugin mở rộng KV-Netflix VIP tốc độ cao, hỗ trợ chuẩn 4K HDR10, âm thanh 5.1 và phụ đề Vietsub đồng bộ.',
       description_en: 'Custom-engineered for the KV ecosystem: Pre-loaded with private high-speed KV-Netflix VIP extension, 4K HDR10, 5.1 surround audio, and synchronized Vietsub.',
@@ -108,19 +114,21 @@ const FALLBACK_CATALOG = {
     {
       id: 'jellyfin-kv',
       name: 'Jellyfin TV',
-      edition: 'Bản tối ưu KV · 4K HDR Direct Play',
-      edition_vi: 'Bản tối ưu KV · 4K HDR Direct Play',
+      edition: 'Bản Tối Ưu · 4K HDR Direct Play',
+      edition_vi: 'Bản Tối Ưu · 4K HDR Direct Play',
       edition_en: 'KV-Optimized Edition',
-      packageName: 'org.jellyfin.androidtv.kv',
-      version: '0.18.4-kv2',
-      versionCode: 180402,
-      size: '42.8 MB',
+      packageName: 'org.jellyfin.androidtv',
+      version: '0.19.10',
+      versionCode: 191099,
+      size: '20.9 MB',
       shortCode: '88101',
       category: 'Media Center',
       category_vi: 'Máy Chủ Phim & Nhạc',
       category_en: 'Media Center',
       arch: 'Universal (arm64-v8a + armeabi-v7a)',
-      downloads: 1420,
+      downloads: 635,
+      sha256: '04a486b3f7c3148e3e400d313de12af121f9008f354857ef519cdea495f74f3c',
+      apkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/jellyfin-kv.apk',
       description: 'Bản dựng Jellyfin tùy biến cho Android TV với khả năng tự động kết nối máy chủ KV Media, phát trực tiếp 4K HEVC 10-bit không cần transcode và hỗ trợ phụ đề tiếng Việt / tiếng Anh.',
       description_vi: 'Bản dựng Jellyfin tùy biến cho Android TV với khả năng tự động kết nối máy chủ KV Media, phát trực tiếp 4K HEVC 10-bit không cần transcode và hỗ trợ phụ đề tiếng Việt / tiếng Anh.',
       description_en: 'Custom Android TV build of Jellyfin with pre-configured KV Media Server discovery, Direct Play 4K HEVC 10-bit profiles, and styled Vietnamese/English subtitles.',
@@ -146,57 +154,61 @@ const FALLBACK_CATALOG = {
     {
       id: 'kodi-kv',
       name: 'Kodi 21 Omega',
-      edition: 'Gói All-in-One Arctic Zephyr 2',
-      edition_vi: 'Gói All-in-One Arctic Zephyr 2',
-      edition_en: 'KV-Build All-in-One',
+      edition: 'Gói Addon KV-Netflix & Bingie Mod',
+      edition_vi: 'Gói Addon KV-Netflix & Bingie Mod',
+      edition_en: 'KV-Netflix Addon & Bingie Mod',
       packageName: 'org.xbmc.kodi',
       version: '21.3-Omega',
       versionCode: 2103000,
-      size: '66.6 MB',
+      size: '66.8 MB',
       shortCode: '88102',
       category: 'Media Center',
       category_vi: 'Trung Tâm Giải Trí',
       category_en: 'Media Center',
-      arch: 'Universal (arm64-v8a + armeabi-v7a)',
-      downloads: 2890,
-      description: 'Bản Kodi 21.3 Omega dựng sẵn với giao diện TV 10-foot Arctic Zephyr 2 mượt mà, tinh chỉnh bộ nhớ đệm cho TV Box cấu hình thấp và tích hợp sẵn các nguồn phụ đề tiếng Việt chất lượng cao.',
-      description_vi: 'Bản Kodi 21.3 Omega dựng sẵn với giao diện TV 10-foot Arctic Zephyr 2 mượt mà, tinh chỉnh bộ nhớ đệm cho TV Box cấu hình thấp và tích hợp sẵn các nguồn phụ đề tiếng Việt chất lượng cao.',
-      description_en: 'Ready-to-run Kodi 21.3 Omega build featuring the lightweight Arctic Zephyr 2 10-foot TV skin, tuned memory cache for 1GB/2GB TV boxes, and pre-installed Vietnamese subtitle addons.',
+      arch: 'Universal (arm64-v8a)',
+      downloads: 764,
+      sha256: '0c95c81202e449da3165dbbb134fdea9e1687ce84ec49cc3ac3181e706eddf58',
+      apkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kodi-kv.apk',
+      description: 'Bản Kodi 21.3 Omega dựng sẵn với Addon KV-Netflix ngay trên màn hình chính, vào thẳng kho phim 4K không hỏi quyền rườm rà, tinh chỉnh bộ nhớ đệm cho TV Box và phụ đề tiếng Việt.',
+      description_vi: 'Bản Kodi 21.3 Omega dựng sẵn với Addon KV-Netflix ngay trên màn hình chính, vào thẳng kho phim 4K không hỏi quyền rườm rà, tinh chỉnh bộ nhớ đệm cho TV Box và phụ đề tiếng Việt.',
+      description_en: 'Ready-to-run Kodi 21.3 Omega build featuring the KV-Netflix 4K poster wall on the Home screen, zero-prompt launch, tuned memory cache for TV boxes, and pre-installed Vietnamese subtitles.',
       presetFeatures: [
-        'Giao diện điều khiển remote TV Arctic Zephyr 2 kích hoạt sẵn',
+        'Cài sẵn Addon KV-Netflix (plugin.video.kvnetflix) trên màn hình chính',
+        'Khởi chạy tức thì vào kho phim 4K không hỏi quyền truy cập tệp',
         'Tệp advancedsettings.xml tối ưu bộ nhớ đệm cho Box 1GB/2GB RAM',
-        'Cài sẵn các nhà cung cấp phụ đề tiếng Việt (Subscene / OpenSubtitles)',
-        'Tối ưu bộ đệm phát trực tuyến TorrServer & Elementum',
+        'Passthrough âm thanh Dolby Atmos / DTS-HD & phụ đề tiếng Việt',
       ],
       presetFeatures_vi: [
-        'Giao diện điều khiển remote TV Arctic Zephyr 2 kích hoạt sẵn',
+        'Cài sẵn Addon KV-Netflix (plugin.video.kvnetflix) trên màn hình chính',
+        'Khởi chạy tức thì vào kho phim 4K không hỏi quyền truy cập tệp',
         'Tệp advancedsettings.xml tối ưu bộ nhớ đệm cho Box 1GB/2GB RAM',
-        'Cài sẵn các nhà cung cấp phụ đề tiếng Việt (Subscene / OpenSubtitles)',
-        'Tối ưu bộ đệm phát trực tuyến TorrServer & Elementum',
+        'Passthrough âm thanh Dolby Atmos / DTS-HD & phụ đề tiếng Việt',
       ],
       presetFeatures_en: [
-        'Arctic Zephyr 2 10-foot TV remote skin pre-activated',
+        'Pre-installed KV-Netflix Addon (plugin.video.kvnetflix) on Home screen',
+        'Zero-prompt instant launch directly into 4K poster wall',
         'advancedsettings.xml tuned for 1GB/2GB RAM TV Boxes',
-        'Pre-installed Vietnamese subtitle providers (Subscene/OpenSubtitles)',
-        'TorrServer & Elementum streaming buffer optimization',
+        'Dolby Atmos / DTS-HD audio passthrough & Vietnamese subtitles',
       ],
     },
     {
       id: 'kv-netflix',
       name: 'KV-Netflix',
-      edition: 'Bản Mod TV Remote & 4K HDR',
-      edition_vi: 'Bản Mod TV Remote & 4K HDR',
+      edition: 'Bản TV Remote & 4K HDR',
+      edition_vi: 'Bản TV Remote & 4K HDR',
       edition_en: 'TV Remote & 4K HDR Mod',
       packageName: 'com.streamflow.tv',
-      version: '2.0.0-tv',
+      version: '1.4.6-kv',
       versionCode: 117,
-      size: '25.0 MB',
+      size: '24.1 MB',
       shortCode: '88104',
       category: 'Originals & Cinema',
       category_vi: 'Điện Ảnh & Phim Gốc',
       category_en: 'Originals & Cinema',
       arch: 'Universal (arm64-v8a + armeabi-v7a)',
-      downloads: 3680,
+      downloads: 1180,
+      sha256: '25f5af849bbc6f447292c163c6199a07cfb2f09baa963902e2c4e3cd60357dca',
+      apkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-netflix-tv.apk',
       description: 'Tối ưu hóa cho các dòng Android TV Box không đạt chứng chỉ Netflix gốc. Hỗ trợ điều hướng remote D-Pad mượt mà không cần chuột bay, tự thích ứng Widevine L1/L3 và âm thanh 5.1.',
       description_vi: 'Tối ưu hóa cho các dòng Android TV Box không đạt chứng chỉ Netflix gốc. Hỗ trợ điều hướng remote D-Pad mượt mà không cần chuột bay, tự thích ứng Widevine L1/L3 và âm thanh 5.1.',
       description_en: 'Engineered for Android TV boxes that fail Netflix certification checks. Provides native D-Pad remote focus navigation without an air-mouse, adaptive Widevine L1/L3 fallback, and 5.1 audio.',
@@ -222,58 +234,61 @@ const FALLBACK_CATALOG = {
     {
       id: 'kv-tube',
       name: 'KV-Tube',
-      edition: 'Chặn 100% quảng cáo 4K60 + SponsorBlock',
-      edition_vi: 'Chặn 100% quảng cáo 4K60 + SponsorBlock',
-      edition_en: 'Ad-Free 4K60 + SponsorBlock',
-      packageName: 'vn.kvtv.tube',
-      version: '24.85-kv',
-      versionCode: 248500,
-      size: '19.4 MB',
+      edition: 'Bản Nhẹ · Chặn Quảng Cáo 4K',
+      edition_vi: 'Bản Nhẹ · Chặn Quảng Cáo 4K',
+      edition_en: 'Lightweight Ad-Free 4K Client',
+      packageName: 'org.schabi.newpipe',
+      version: '0.29.1-kv',
+      versionCode: 1015,
+      size: '11.0 MB',
       shortCode: '88105',
       category: 'Video & Music',
       category_vi: 'Video & Âm Nhạc',
       category_en: 'Video & Music',
-      arch: 'Universal (arm64-v8a + armeabi-v7a)',
-      downloads: 5920,
-      description: 'Ứng dụng KV-Tube / SmartTube thế hệ mới cho Android TV. Chặn đứng 100% quảng cáo trong và ngoài video, tự động bỏ qua intro/quảng cáo của YouTuber và hỗ trợ giải mã phần cứng 4K 60fps HDR mượt mà.',
-      description_vi: 'Ứng dụng KV-Tube / SmartTube thế hệ mới cho Android TV. Chặn đứng 100% quảng cáo trong và ngoài video, tự động bỏ qua intro/quảng cáo của YouTuber và hỗ trợ giải mã phần cứng 4K 60fps HDR mượt mà.',
-      description_en: 'Next-gen SmartTube/KV-Tube client for Android TV. Blocks 100% of video and banner ads, automatically skips sponsor reads via SponsorBlock, and unlocks 4K 60fps HDR on any TV box.',
+      arch: 'Universal (arm64-v8a + armeabi-v7a + x86_64)',
+      downloads: 812,
+      sha256: '8d7a7e39881fdd607dc14a4afc932cf08f402c759a43ba2b6e33268eaa6c48e4',
+      apkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-tube.apk',
+      description: 'Bản dựng KV-Tube (NewPipe KV-Mod) siêu nhẹ chỉ 11MB cho Android TV & Box cấu hình thấp. Bật sẵn độ phân giải 4K/1080p60, giao diện đen OLED, xu hướng Việt Nam và phát nhạc nền khi tắt màn hình.',
+      description_vi: 'Bản dựng KV-Tube (NewPipe KV-Mod) siêu nhẹ chỉ 11MB cho Android TV & Box cấu hình thấp. Bật sẵn độ phân giải 4K/1080p60, giao diện đen OLED, xu hướng Việt Nam và phát nhạc nền khi tắt màn hình.',
+      description_en: 'Ultra-lightweight 11MB KV-Tube (NewPipe KV-Mod) client for Android TV. Pre-configured with 4K/1080p60 default resolution, OLED black theme, Vietnam trending feed, and background audio playback.',
       presetFeatures: [
-        'Xem video 100% không quảng cáo (không video chèn, không banner)',
-        'Cấu hình sẵn SponsorBlock (tự động bỏ qua mở đầu, giới thiệu tài trợ)',
-        'Hỗ trợ giải mã phần cứng AV1 & VP9 cho hình ảnh 4K 60fps mượt mà',
-        'Hoạt động độc lập, không cần Google Play Services trên mọi TV Box',
+        'Siêu nhẹ 11MB, khởi động tức thì trên TV Box RAM 1GB/2GB',
+        'Bật sẵn độ phân giải 4K / 1080p60 và giao diện đen OLED',
+        'Chặn 100% quảng cáo, hỗ trợ nghe nhạc nền & tải video',
+        'Đặt sẵn ngôn ngữ Tiếng Việt và bảng xu hướng Việt Nam',
       ],
       presetFeatures_vi: [
-        'Xem video 100% không quảng cáo (không video chèn, không banner)',
-        'Cấu hình sẵn SponsorBlock (tự động bỏ qua mở đầu, giới thiệu tài trợ)',
-        'Hỗ trợ giải mã phần cứng AV1 & VP9 cho hình ảnh 4K 60fps mượt mà',
-        'Hoạt động độc lập, không cần Google Play Services trên mọi TV Box',
+        'Siêu nhẹ 11MB, khởi động tức thì trên TV Box RAM 1GB/2GB',
+        'Bật sẵn độ phân giải 4K / 1080p60 và giao diện đen OLED',
+        'Chặn 100% quảng cáo, hỗ trợ nghe nhạc nền & tải video',
+        'Đặt sẵn ngôn ngữ Tiếng Việt và bảng xu hướng Việt Nam',
       ],
       presetFeatures_en: [
-        '100% Ad-free playback (no pre-roll, mid-roll, or banner ads)',
-        'SponsorBlock pre-configured (skips intros, self-promo & sponsor segments)',
-        'AV1 & VP9 hardware codec selector for smooth 4K 60fps',
-        'Works without Google Play Services on any Android TV box',
+        'Ultra-light 11MB package for 1GB/2GB RAM TV boxes',
+        'Pre-configured 4K / 1080p60 resolution and OLED black theme',
+        '100% ad-free with background playback and video downloads',
+        'Pre-set Vietnamese locale and Vietnam trending feed',
       ],
     },
     {
       id: 'smarttube-tv',
       name: 'SmartTube TV',
-      edition: 'Bản Chính Thức 4K60 HDR + SponsorBlock',
-      edition_vi: 'Bản Chính Thức 4K60 HDR + SponsorBlock',
-      edition_en: 'Official 4K60 HDR + SponsorBlock',
-      packageName: 'com.teamsmart.videomanager.tv',
+      edition: 'YouTube 4K60 Không Quảng Cáo',
+      edition_vi: 'YouTube 4K60 Không Quảng Cáo',
+      edition_en: 'Ad-Free 4K60 YouTube Client',
+      packageName: 'org.smarttube.stable',
       version: '32.68s',
-      versionCode: 32680,
-      size: '19.8 MB',
+      versionCode: 2458,
+      size: '33.4 MB',
       shortCode: '88106',
       category: 'Video & Music',
       category_vi: 'Video & Âm Nhạc',
       category_en: 'Video & Music',
       arch: 'Universal (arm64-v8a + armeabi-v7a + x86)',
-      downloads: 6450,
-      apkUrl: 'https://github.com/yuliskov/SmartTube/releases/download/32.68s/SmartTube_stable_32.68_universal.apk',
+      downloads: 1420,
+      sha256: '355b3abc7fb71b6d07ee3dd6dc056e6e36df6a6042a95902a56c2c17e99202a4',
+      apkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/smarttube-tv.apk',
       description: 'Ứng dụng xem YouTube không quảng cáo tốt nhất cho Android TV / Google TV / TV Box (yuliskov/SmartTube). Chặn 100% quảng cáo, tích hợp sẵn SponsorBlock tự bỏ qua đoạn giới thiệu, hỗ trợ 4K 60fps HDR & điều khiển bằng remote TV mượt mà.',
       description_vi: 'Ứng dụng xem YouTube không quảng cáo tốt nhất cho Android TV / Google TV / TV Box (yuliskov/SmartTube). Chặn 100% quảng cáo, tích hợp sẵn SponsorBlock tự bỏ qua đoạn giới thiệu, hỗ trợ 4K 60fps HDR & điều khiển bằng remote TV mượt mà.',
       description_en: 'Official SmartTube Stable universal release for Android TV & TV Boxes. 100% ad-free YouTube experience with built-in SponsorBlock, DeArrow, 4K 60fps HDR VP9/AV1 hardware decoding, and full D-Pad remote control.',
@@ -406,6 +421,12 @@ function syncInstalledAppStatuses() {
 
 function updateAppStatusBadges() {
   if (!state.isTVApp) return;
+  const isVi = getCurrentLanguage() !== 'en';
+
+  // Ensure inner tile links/chips don't hijack TV D-Pad tile-to-tile navigation
+  for (const innerEl of document.querySelectorAll('#metro-grid .kv-hero-btn, #metro-grid .kv-tile-chip')) {
+    innerEl.setAttribute('tabindex', '-1');
+  }
 
   for (const app of state.catalog.apps || []) {
     const status = state.appStatuses[app.packageName] || 'NOT_INSTALLED';
@@ -420,11 +441,54 @@ function updateAppStatusBadges() {
       }
       badgeEl.className = `kv-app-status-badge is-${status.toLowerCase().replace(/_/g, '-')}`;
       if (status === 'INSTALLED') {
-        badgeEl.textContent = '✓ ĐÃ CÀI ĐẶT';
+        badgeEl.textContent = isVi ? '✓ ĐÃ CÀI ĐẶT' : '✓ INSTALLED';
       } else if (status === 'UPDATE') {
-        badgeEl.textContent = '▲ CÓ BẢN MỚI';
+        badgeEl.textContent = isVi ? '▲ CÓ BẢN MỚI' : '▲ UPDATE';
       } else {
-        badgeEl.textContent = '○ CHƯA CÀI';
+        badgeEl.textContent = isVi ? '○ CHƯA CÀI' : '○ NOT INSTALLED';
+      }
+
+      if (app.id === 'cloudstream-kv') {
+        const heroPrimaryBtn = tile.querySelector('.kv-hero-actions .kv-hero-btn:first-child');
+        if (heroPrimaryBtn) {
+          heroPrimaryBtn.removeAttribute('href');
+          if (status === 'INSTALLED') {
+            heroPrimaryBtn.textContent = isVi ? 'MỞ ỨNG DỤNG' : 'OPEN APP';
+            heroPrimaryBtn.onclick = (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              window.KVTVBridge?.launchApp(app.packageName);
+            };
+          } else {
+            heroPrimaryBtn.textContent =
+              status === 'UPDATE'
+                ? isVi
+                  ? 'CẬP NHẬT (88103)'
+                  : 'UPDATE (88103)'
+                : isVi
+                ? 'CÀI ĐẶT (88103)'
+                : 'INSTALL (88103)';
+            heroPrimaryBtn.onclick = (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              window.KVTVBridge?.installApp('/api/download/cloudstream-kv?type=apk', app.name);
+            };
+          }
+        }
+      }
+
+      if (app.id === 'kv-store') {
+        const storeBtn = document.getElementById('kv-store-inline-dl-btn');
+        if (storeBtn) {
+          storeBtn.removeAttribute('href');
+          storeBtn.removeAttribute('download');
+          storeBtn.textContent = isVi ? `✓ ĐANG CHẠY v${app.version}` : `✓ RUNNING v${app.version}`;
+          storeBtn.onclick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openAppDialog('kv-store');
+          };
+        }
       }
     }
   }
@@ -1244,7 +1308,8 @@ function getVisibleGridTiles() {
 function setRovingFocus(targetTile, shouldFocus = true) {
   const allTiles = getAllGridTiles();
   for (const tile of allTiles) {
-    tile.setAttribute('tabindex', tile === targetTile ? '0' : '-1');
+    tile.setAttribute('tabindex', '0');
+    tile.toggleAttribute('data-roving-active', tile === targetTile);
   }
   if (shouldFocus && targetTile instanceof HTMLElement) {
     targetTile.focus();
@@ -1657,7 +1722,8 @@ function bindInteractions() {
       const action = btn.getAttribute('data-dpad');
       const liveTiles = getAllGridTiles();
       const activeTile =
-        liveTiles.find((t) => t.getAttribute('tabindex') === '0') || liveTiles[0];
+        liveTiles.find((t) => t === document.activeElement || t.hasAttribute('data-roving-active')) ||
+        liveTiles[0];
 
       if (action === 'BACK') {
         allDialogs.forEach((d) => {
