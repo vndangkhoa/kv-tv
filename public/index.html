@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" data-pivot="store">
+<html lang="vi" data-pivot="store">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KV-TV Store · Metro Typographic Panorama (tv.vndns.net)</title>
-  <meta name="description" content="KV-TV Android TV App Store (tv.vndns.net) — Pre-configured CloudStream 3, Jellyfin TV, Kodi 21 Omega, KV-Netflix, and KV-Tube in kv-tv-theme.">
+  <title>KV-TV Store · Kho Ứng Dụng Android TV (tv.vndns.net)</title>
+  <meta name="description" content="Kho ứng dụng Android TV cài đặt sẵn — CloudStream 3, Jellyfin TV, Kodi 21 Omega, KV-Netflix và KV-Tube trên giao diện Metro typographic panorama.">
   <meta name="theme-color" content="#000000">
   <link rel="manifest" href="/manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,16 +20,35 @@
     <div class="kv-topbar-brand switcher-brand">
       <a class="kv-topbar-brand switcher-brand" href="/?mode=tv" id="brand-home-link">
         <span class="kv-topbar-brand-mark switcher-brand-mark" aria-hidden="true"></span>
-        <span>KV-TV STORE · tv.vndns.net</span>
+        <span data-i18n="nav.brand">KV-TV STORE · tv.vndns.net</span>
       </a>
-      <span class="kv-topbar-badge">KV-TV-THEME v1.0</span>
+      <span class="kv-topbar-badge" data-i18n="nav.theme_badge">KV-TV-THEME v1.0</span>
     </div>
     <div class="kv-topbar-nav switcher-links">
-      <a class="kv-topbar-link switcher-link is-active" href="/?mode=tv" data-nav-pivot="store" aria-current="page">[ Storefront (TV) ]</a>
-      <a class="kv-topbar-link switcher-link" href="/?pivot=pre-sets" data-nav-pivot="pre-sets">[ Pre-Set Packs ]</a>
-      <a class="kv-topbar-link switcher-link" href="/?pivot=short-codes" data-nav-pivot="short-codes">[ Short-Codes ]</a>
-      <a class="kv-topbar-link switcher-link" href="/?mode=promo" data-nav-pivot="phone-qr">[ Phone &amp; Promo Hub ]</a>
-      <a class="kv-topbar-link switcher-link" href="/admin">[ Admin Console ]</a>
+      <a class="kv-topbar-link switcher-link is-active" href="/?mode=tv" data-nav-pivot="store" data-i18n="nav.store" aria-current="page">[ Kho Ứng Dụng (TV) ]</a>
+      <a class="kv-topbar-link switcher-link" href="/?pivot=pre-sets" data-nav-pivot="pre-sets" data-i18n="nav.presets">[ Bản Tích Hợp Sẵn ]</a>
+      <a class="kv-topbar-link switcher-link" href="/?pivot=short-codes" data-nav-pivot="short-codes" data-i18n="nav.shortcodes">[ Mã 5 Số Downloader ]</a>
+      <a class="kv-topbar-link switcher-link" href="/?mode=promo" data-nav-pivot="phone-qr" data-i18n="nav.phoneqr">[ QR &amp; Đồng Hành ]</a>
+      <a class="kv-topbar-link switcher-link" href="/kv-store.apk" id="topbar-app-download-link" download="kv-store.apk" title="Tải ứng dụng KV-Store cho TV">[ ⬇ Tải App TV (88000) ]</a>
+      <a class="kv-topbar-link switcher-link" href="/admin" data-i18n="nav.admin">[ Quản Trị ]</a>
+      <div class="kv-lang-switcher" role="group" aria-label="Ngôn ngữ / Language">
+        <button
+          type="button"
+          class="kv-topbar-link kv-lang-btn is-active"
+          id="lang-btn-vi"
+          data-lang="vi"
+          aria-pressed="true"
+          title="Tiếng Việt"
+        >[ VI ]</button>
+        <button
+          type="button"
+          class="kv-topbar-link kv-lang-btn"
+          id="lang-btn-en"
+          data-lang="en"
+          aria-pressed="false"
+          title="English"
+        >[ EN ]</button>
+      </div>
     </div>
   </nav>
 
@@ -38,26 +57,55 @@
     <!-- Giant Lowercase Metro Panorama Header -->
     <header class="kv-panorama-header panorama-header">
       <div class="kv-pivots panorama-pivots" role="tablist" aria-label="Metro Panorama Pivots">
-        <button type="button" class="kv-pivot-btn pivot-btn" role="tab" id="pivot-store" aria-selected="true" data-pivot="store">store</button>
-        <button type="button" class="kv-pivot-btn pivot-btn" role="tab" id="pivot-presets" aria-selected="false" data-pivot="pre-sets">pre-sets</button>
-        <button type="button" class="kv-pivot-btn pivot-btn" role="tab" id="pivot-shortcodes" aria-selected="false" data-pivot="short-codes">short-codes</button>
-        <button type="button" class="kv-pivot-btn pivot-btn" role="tab" id="pivot-phoneqr" aria-selected="false" data-pivot="phone-qr">phone-qr</button>
+        <button type="button" class="kv-pivot-btn pivot-btn" role="tab" id="pivot-store" aria-selected="true" data-pivot="store" data-i18n="pivots.store">kho ứng dụng</button>
+        <button type="button" class="kv-pivot-btn pivot-btn" role="tab" id="pivot-presets" aria-selected="false" data-pivot="pre-sets" data-i18n="pivots.presets">bản cài sẵn</button>
+        <button type="button" class="kv-pivot-btn pivot-btn" role="tab" id="pivot-shortcodes" aria-selected="false" data-pivot="short-codes" data-i18n="pivots.shortcodes">mã 5 số</button>
+        <button type="button" class="kv-pivot-btn pivot-btn" role="tab" id="pivot-phoneqr" aria-selected="false" data-pivot="phone-qr" data-i18n="pivots.phoneqr">qr mobile</button>
       </div>
       <div class="kv-panorama-subbar panorama-subbar">
         <p class="kv-panorama-deck panorama-deck" id="panorama-deck-text">
-          <strong>Pre-Configured Android TV Storefront</strong> — Zero manual repo typing. Every APK ships with KV-TV Vietnamese &amp; Global 4K repositories, subtitle profiles, and AFTVnews Downloader short-codes ready out of the box.
+          <strong>Kho Ứng Dụng Android TV Cài Đặt Sẵn</strong> — Không cần gõ link nguồn thủ công. Mọi APK đều tích hợp sẵn kho phim 4K Vietsub &amp; Quốc tế, cấu hình phụ đề, và mã 5 số Downloader dùng được ngay.
         </p>
         <div class="kv-panorama-telemetry panorama-telemetry">
           <span class="kv-telemetry-pill telemetry-pill">
             <span class="kv-telemetry-dot telemetry-dot" aria-hidden="true"></span>
-            <span id="catalog-status-text">EDGE CDN · tv.vndns.net</span>
+            <span id="catalog-status-text" data-i18n="telemetry.edge_cdn">MẠNG CDN VN · tv.vndns.net</span>
           </span>
-          <span class="kv-telemetry-pill telemetry-pill tabular" id="telemetry-downloads">18,060 TOTAL INSTALLS</span>
-          <span class="kv-telemetry-pill telemetry-pill tabular">CODES 88101–88105</span>
+          <span class="kv-telemetry-pill telemetry-pill tabular" id="telemetry-downloads">18,060 LƯỢT TẢI</span>
+          <span class="kv-telemetry-pill telemetry-pill tabular" data-i18n="telemetry.codes_range">MÃ 88000 · 88101–88105</span>
           <time class="kv-telemetry-pill telemetry-pill tabular" id="tv-live-clock" datetime="2026-11-05T10:45:00">10:45</time>
         </div>
       </div>
     </header>
+
+    <!-- Prominent KV-Store TV App Download Hero Banner (Code 88000) -->
+    <section class="kv-app-banner" id="kv-store-app-promo" aria-label="Tải App KV-Store TV">
+      <div class="kv-app-banner-content">
+        <div class="kv-app-banner-badge-group">
+          <span class="kv-badge-official">[ APP CHÍNH THỨC CHO ANDROID TV ]</span>
+          <span class="kv-badge-code">DOWNLOADER CODE: <strong class="tabular">88000</strong></span>
+        </div>
+        <div class="kv-app-banner-info">
+          <h2 class="kv-app-banner-title">TẢI VÀ CÀI ĐẶT APP KV-STORE TRỰC TIẾP LÊN TIVI</h2>
+          <p class="kv-app-banner-desc">
+            Cài đặt 1-chạm không cần chuột, tự động cập nhật mọi app CloudStream, Jellyfin, Kodi, Netflix 4K và hỗ trợ điều khiển 100% bằng remote TV D-pad.
+          </p>
+        </div>
+      </div>
+      <div class="kv-app-banner-actions">
+        <a class="kv-btn kv-btn--primary kv-banner-btn-dl" id="kv-banner-download-btn" href="/kv-store.apk" download="kv-store.apk">
+          <svg class="kv-icon-dl" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          <span>TẢI APP CHO TV (APK)</span>
+        </a>
+        <button type="button" class="kv-btn kv-banner-btn-guide" id="kv-banner-guide-btn">
+          <span>HƯỚNG DẪN MÃ 88000</span>
+        </button>
+      </div>
+    </section>
 
     <!-- Asymmetric 2D Panorama Live Tile Grid (6 columns x 2 rows = 12 cells) -->
     <section id="metro-grid" class="kv-grid metro-grid" aria-label="Featured Android TV Live Tiles">
@@ -230,11 +278,11 @@
           <span class="kv-code-stamp code-stamp tabular">88101–88105</span>
         </div>
         <div class="kv-tile-bottom tile-bottom">
-          <span class="kv-tile-title tile-title">short-code</span>
-          <span class="kv-tile-edition tile-edition">5-Digit AFTV Keypad</span>
+          <span class="kv-tile-title tile-title" data-i18n="tiles.dialer_title">mã 5 số</span>
+          <span class="kv-tile-edition tile-edition" data-i18n="tiles.dialer_edition">Bàn Phím Số AFTV</span>
           <div class="kv-tile-meta-row tile-meta-row">
-            <span>Instant APK Fetch</span>
-            <span>DIAL</span>
+            <span data-i18n="tiles.dialer_status">Tải APK Tức Thì</span>
+            <span data-i18n="tiles.dialer_action">NHẬP</span>
           </div>
         </div>
       </button>
@@ -258,11 +306,11 @@
           <span class="kv-code-stamp code-stamp tabular">QR SYNC</span>
         </div>
         <div class="kv-tile-bottom tile-bottom">
-          <span class="kv-tile-title tile-title">phone &amp; qr</span>
-          <span class="kv-tile-edition tile-edition">Mobile Sideload &amp; Promo</span>
+          <span class="kv-tile-title tile-title" data-i18n="tiles.qr_title">điện thoại &amp; qr</span>
+          <span class="kv-tile-edition tile-edition" data-i18n="tiles.qr_edition">Cài Mobile &amp; Ưu Đãi</span>
           <div class="kv-tile-meta-row tile-meta-row">
             <span>tv.vndns.net</span>
-            <span>SCAN</span>
+            <span data-i18n="tiles.qr_action">QUÉT</span>
           </div>
         </div>
       </button>
@@ -271,35 +319,35 @@
     <!-- 3-Column Lower Metro Feature & Sponsor Strip -->
     <section class="panorama-strip" id="metro-lower-strip" aria-label="Store Pre-Set Packs and Broadcast Notices">
       <article class="strip-block">
-        <h2 class="strip-block-title">one-click pre-set config packs (.zip / .backup)</h2>
-        <p class="strip-block-body">
-          Already installed vanilla CloudStream, Kodi, or Jellyfin? Grab the standalone KV-TV configuration bundle to inject MegaRepo, Vietsub providers, and 1.1.1.1 DoH settings in seconds.
+        <h2 class="strip-block-title" data-i18n="strip.presets_title">gói cấu hình 1 chạm (.zip / .backup)</h2>
+        <p class="strip-block-body" data-i18n="strip.presets_body">
+          Đã cài sẵn CloudStream, Kodi hoặc Jellyfin gốc? Tải ngay gói cấu hình độc lập của KV-TV để tích hợp kho phim Vietsub, tiện ích và cài đặt DoH 1.1.1.1 chỉ trong vài giây.
         </p>
         <div class="strip-block-footer">
-          <span class="tabular">5 PRE-SET ARCHIVES READY</span>
-          <a class="kv-btn kv-btn--primary kv-btn--sm metro-inline-btn" href="/api/download/cloudstream-kv?type=preset" data-app-download="cloudstream-kv">Download CS3 Pre-Set</a>
+          <span class="tabular" data-i18n="strip.presets_badge">5 GÓI CẤU HÌNH SẴN SÀNG</span>
+          <a class="kv-btn kv-btn--primary kv-btn--sm metro-inline-btn" href="/api/download/cloudstream-kv?type=preset" data-app-download="cloudstream-kv" data-i18n="strip.presets_btn">Tải Cấu Hình CS3</a>
         </div>
       </article>
 
       <article class="strip-block">
-        <h2 class="strip-block-title">aftvnews downloader short-code index</h2>
-        <p class="strip-block-body">
-          Open Downloader on any Android TV box and enter <strong class="tabular">88101</strong> (Jellyfin), <strong class="tabular">88102</strong> (Kodi 21), <strong class="tabular">88103</strong> (CloudStream 3), <strong class="tabular">88104</strong> (KV-Netflix), or <strong class="tabular">88105</strong> (KV-Tube).
+        <h2 class="strip-block-title" data-i18n="strip.codes_title">danh mục mã số aftvnews downloader</h2>
+        <p class="strip-block-body" data-i18n="strip.codes_body" data-i18n-html="true">
+          Mở ứng dụng Downloader trên mọi Android TV Box và nhập <strong class="tabular">88101</strong> (Jellyfin), <strong class="tabular">88102</strong> (Kodi 21), <strong class="tabular">88103</strong> (CloudStream 3), <strong class="tabular">88104</strong> (KV-Netflix), hoặc <strong class="tabular">88105</strong> (KV-Tube).
         </p>
         <div class="strip-block-footer">
-          <span class="tabular">302 DIRECT APK REDIRECT</span>
-          <button type="button" class="kv-btn kv-btn--primary kv-btn--sm metro-inline-btn" id="open-dialer-strip-btn">Launch Dialer</button>
+          <span class="tabular" data-i18n="strip.codes_badge">302 CHUYỂN HƯỚNG APK TRỰC TIẾP</span>
+          <button type="button" class="kv-btn kv-btn--primary kv-btn--sm metro-inline-btn" id="open-dialer-strip-btn" data-i18n="strip.codes_btn">Mở Bàn Phím Số</button>
         </div>
       </article>
 
       <article class="strip-block">
-        <h2 class="strip-block-title" id="sponsor-strip-title">kv-tv vip box setup — 4k cinema hub</h2>
-        <p class="strip-block-body" id="sponsor-strip-body">
-          Hosted on low-latency Vietnam NVMe VPS with 1Gbps direct APK streams and instant QR phone companion sideloading.
+        <h2 class="strip-block-title" id="sponsor-strip-title" data-i18n="strip.sponsor_title">kv-tv vip box setup — trung tâm giải trí 4k</h2>
+        <p class="strip-block-body" id="sponsor-strip-body" data-i18n="strip.sponsor_body">
+          Máy chủ đặt tại Việt Nam trên nền VPS NVMe tốc độ cao 1Gbps, tải APK cực nhanh và quét mã QR cài đặt tức thì.
         </p>
         <div class="strip-block-footer">
-          <span class="tabular" id="sponsor-strip-stats">VN EDGE CDN · ACTIVE</span>
-          <button type="button" class="kv-btn kv-btn--primary kv-btn--sm metro-inline-btn" id="open-qr-strip-btn">Phone QR &amp; Promos</button>
+          <span class="tabular" id="sponsor-strip-stats" data-i18n="strip.sponsor_badge">MẠNG CDN VN · HOẠT ĐỘNG</span>
+          <button type="button" class="kv-btn kv-btn--primary kv-btn--sm metro-inline-btn" id="open-qr-strip-btn" data-i18n="strip.sponsor_btn">QR &amp; Quảng Cáo</button>
         </div>
       </article>
     </section>
@@ -310,9 +358,9 @@
     <section id="pivot-panel-presets" class="kv-pivot-section" aria-labelledby="presets-heading" hidden>
       <div class="kv-section-head">
         <div>
-          <h2 id="presets-heading" class="kv-section-title">pre-set backup packs &amp; optimization matrix</h2>
-          <p class="kv-section-desc">
-            Every KV-TV build includes both a pre-configured APK and a standalone <code>type=preset</code> configuration archive detailing pre-installed extensions, subtitle providers, and hardware player flags.
+          <h2 id="presets-heading" class="kv-section-title" data-i18n="matrix.title">bộ cài đặt sẵn &amp; bảng ma trận tối ưu hóa</h2>
+          <p class="kv-section-desc" data-i18n="matrix.desc" data-i18n-html="true">
+            Mỗi bản dựng KV-TV bao gồm cả file APK cài đặt sẵn và tệp sao lưu cấu hình <code>type=preset</code> độc lập, ghi rõ các tiện ích mở rộng, nguồn phụ đề và thiết lập phần cứng.
           </p>
         </div>
       </div>
@@ -327,9 +375,9 @@
     <section id="pivot-panel-shortcodes" class="kv-pivot-section" aria-labelledby="shortcodes-heading" hidden>
       <div class="kv-section-head">
         <div>
-          <h2 id="shortcodes-heading" class="kv-section-title">5-digit aftvnews downloader short-code directory</h2>
-          <p class="kv-section-desc">
-            Type any 5-digit code (<strong class="tabular">88101</strong>–<strong class="tabular">88105</strong>) inside the AFTVnews Downloader app on Android TV or copy a code with one click below.
+          <h2 id="shortcodes-heading" class="kv-section-title" data-i18n="directory.title">danh mục mã 5 số aftvnews downloader</h2>
+          <p class="kv-section-desc" data-i18n="directory.desc" data-i18n-html="true">
+            Nhập bất kỳ mã 5 số nào (<strong class="tabular">88101</strong>–<strong class="tabular">88105</strong>) trong ứng dụng Downloader trên Android TV hoặc sao chép 1 chạm bên dưới.
           </p>
         </div>
       </div>
@@ -338,8 +386,8 @@
           <!-- Populated and hydrated by app.js -->
         </div>
         <aside class="kv-inline-dialer-box" aria-label="Interactive Short-Code Keypad">
-          <h3 class="kv-section-title">instant short-code dialer</h3>
-          <p class="kv-section-desc">Dial a 5-digit code to trigger immediate APK download or inspect package specs.</p>
+          <h3 class="kv-section-title" data-i18n="directory.dialer_title">bàn phím nhập mã số nhanh</h3>
+          <p class="kv-section-desc" data-i18n="directory.dialer_desc">Nhập mã 5 số để tải APK ngay lập tức hoặc xem thông số kỹ thuật.</p>
           <div class="dialer-readout">
             <span id="inline-dialer-digits" class="tabular">88103</span>
             <span class="dialer-status" id="inline-dialer-status">CloudStream 3 · 24.2 MB</span>
@@ -352,8 +400,8 @@
             <button type="button" class="dialer-preset-chip" data-preset-code="88105">88105 · KV-Tube</button>
           </div>
           <div class="kv-dialog-actions">
-            <button type="button" class="kv-btn kv-btn--primary" id="inline-dialer-fetch-btn">FETCH APK BY CODE</button>
-            <button type="button" class="kv-btn" id="inline-dialer-modal-btn">OPEN FULL KEYPAD</button>
+            <button type="button" class="kv-btn kv-btn--primary" id="inline-dialer-fetch-btn" data-i18n="directory.btn_fetch_apk">TẢI APK THEO MÃ SỐ</button>
+            <button type="button" class="kv-btn" id="inline-dialer-modal-btn" data-i18n="directory.btn_open_keypad">MỞ BÀN PHÍM ĐẦY ĐỦ</button>
           </div>
         </aside>
       </div>
@@ -367,21 +415,21 @@
       <div class="kv-promo-hero" id="promo-portal-root">
         <div class="kv-promo-hero-main">
           <div>
-            <h2 id="promo-hero-heading" class="kv-promo-hero-title">install on any android tv in 60 seconds</h2>
-            <p class="kv-promo-hero-lead">
-              Skip tedious repository typing, broken subtitle plugins, and air-mouse headaches. Every APK in <strong>KV-TV Store</strong> (<code>tv.vndns.net</code>) ships pre-configured with 4K HDR hardware players, Vietnamese &amp; English subtitles, and 10-foot D-Pad remote navigation out of the box.
+            <h2 id="promo-hero-heading" class="kv-promo-hero-title" data-i18n="promo.hero_title">cài đặt trên mọi android tv trong 60 giây</h2>
+            <p class="kv-promo-hero-lead" data-i18n="promo.hero_lead" data-i18n-html="true">
+              Không còn cảnh gõ link nguồn mệt mỏi, lỗi plugin phụ đề hay chuột bay phiền toái. Mọi ứng dụng tại <strong>KV-TV Store</strong> (<code>tv.vndns.net</code>) đều được cấu hình sẵn trình phát 4K HDR, phụ đề tiếng Việt &amp; tiếng Anh, và điều khiển chuẩn 10-foot bằng remote TV.
             </p>
           </div>
 
           <div class="kv-promo-hero-cta">
             <a href="/api/download/cloudstream-kv?type=apk" class="kv-btn kv-btn--primary" id="promo-companion-download-btn" data-app-download="cloudstream-kv">
-              <span>DOWNLOAD COMPANION APK (88103)</span>
+              <span data-i18n="promo.btn_download_companion">TẢI APK ĐỒNG HÀNH (88103)</span>
             </a>
             <button type="button" class="kv-btn kv-btn--emerald" id="promo-open-dialer-btn">
-              <span>SHORT-CODE DIALER (88101–88105)</span>
+              <span data-i18n="promo.btn_dialer">BÀN PHÍM MÃ SỐ (88101–88105)</span>
             </button>
             <button type="button" class="kv-btn" id="promo-launch-tv-btn">
-              <span>FOCUS LIVE TILE PANORAMA</span>
+              <span data-i18n="promo.btn_focus_panorama">CHUYỂN ĐẾN KHO ỨNG DỤNG</span>
             </button>
           </div>
 
@@ -395,7 +443,7 @@
         </div>
 
         <aside class="kv-promo-qr-aside" aria-labelledby="promo-qr-heading">
-          <h3 id="promo-qr-heading" class="kv-promo-qr-title">scan on phone or tv</h3>
+          <h3 id="promo-qr-heading" class="kv-promo-qr-title" data-i18n="promo.qr_heading">quét trên điện thoại hoặc tv</h3>
           <div class="kv-promo-qr-frame">
             <img
               id="promo-hero-qr-img"
@@ -407,8 +455,8 @@
             >
           </div>
           <span class="kv-code-stamp tabular">https://tv.vndns.net</span>
-          <p class="kv-promo-qr-caption">
-            Point your phone camera here or type <strong>tv.vndns.net</strong> in your TV browser or Downloader app.
+          <p class="kv-promo-qr-caption" data-i18n="promo.qr_caption" data-i18n-html="true">
+            Dùng camera điện thoại quét tại đây hoặc nhập <strong>tv.vndns.net</strong> vào trình duyệt TV / Downloader.
           </p>
         </aside>
       </div>
@@ -421,10 +469,10 @@
               <rect x="3" y="5" width="22" height="15" />
               <line x1="8" y1="24" x2="20" y2="24" />
             </svg>
-            <h3 class="kv-step-title">1. open tv browser or downloader</h3>
+            <h3 class="kv-step-title" data-i18n="promo.step1_title">1. mở trình duyệt tv hoặc downloader</h3>
           </div>
-          <p class="kv-step-body">
-            Launch <strong>TV Bro</strong>, <strong>Puffin TV</strong>, <strong>Zeus Browser</strong>, or <strong>Downloader by AFTVnews</strong> from Google Play on your Sony, TCL, Xiaomi, or Android TV Box.
+          <p class="kv-step-body" data-i18n="promo.step1_body" data-i18n-html="true">
+            Mở <strong>TV Bro</strong>, <strong>Puffin TV</strong>, <strong>Zeus Browser</strong>, hoặc <strong>Downloader by AFTVnews</strong> từ Google Play trên TV Sony, TCL, Xiaomi hoặc TV Box.
           </p>
         </article>
 
@@ -435,10 +483,10 @@
               <line x1="9" y1="11" x2="19" y2="11" />
               <line x1="9" y1="17" x2="15" y2="17" />
             </svg>
-            <h3 class="kv-step-title">2. enter tv.vndns.net or 5-digit code</h3>
+            <h3 class="kv-step-title" data-i18n="promo.step2_title">2. nhập tv.vndns.net hoặc mã 5 số</h3>
           </div>
-          <p class="kv-step-body">
-            Navigate to <strong>tv.vndns.net</strong> for the full D-Pad store, or enter a 5-digit short-code (<code class="tabular">88101</code> Jellyfin, <code class="tabular">88102</code> Kodi, <code class="tabular">88103</code> CloudStream, <code class="tabular">88104</code> KV-Netflix, <code class="tabular">88105</code> KV-Tube).
+          <p class="kv-step-body" data-i18n="promo.step2_body" data-i18n-html="true">
+            Truy cập <strong>tv.vndns.net</strong> để dùng kho ứng dụng đầy đủ, hoặc nhập mã 5 số (<code class="tabular">88101</code> Jellyfin, <code class="tabular">88102</code> Kodi, <code class="tabular">88103</code> CloudStream, <code class="tabular">88104</code> KV-Netflix, <code class="tabular">88105</code> KV-Tube).
           </p>
         </article>
 
@@ -448,10 +496,10 @@
               <polygon points="14,3 24,8 24,15 14,25 4,15 4,8" />
               <polyline points="9,14 13,18 19,11" />
             </svg>
-            <h3 class="kv-step-title">3. install pre-configured apk</h3>
+            <h3 class="kv-step-title" data-i18n="promo.step3_title">3. cài đặt apk đã cấu hình sẵn</h3>
           </div>
-          <p class="kv-step-body">
-            Confirm APK installation with your remote OK button. Extensions, 4K codecs, and Vietnamese/English subtitle providers are already configured—open and play!
+          <p class="kv-step-body" data-i18n="promo.step3_body">
+            Xác nhận cài đặt APK bằng nút OK trên remote. Các tiện ích mở rộng, codec 4K và phụ đề tiếng Việt đã sẵn sàng—mở là xem ngay!
           </p>
         </article>
       </div>
@@ -460,8 +508,8 @@
       <div>
         <div class="kv-section-head">
           <div>
-            <h3 class="kv-section-title">active promotional &amp; sponsor campaigns</h3>
-            <p class="kv-section-desc">Curated seasonal builds and hardware-verified media bundles managed live via the KV-TV Admin Console.</p>
+            <h3 class="kv-section-title" data-i18n="promo.campaigns_title">chương trình tài trợ &amp; khuyến mãi</h3>
+            <p class="kv-section-desc" data-i18n="promo.campaigns_desc">Các bản phát hành đặc biệt và gói giải trí được tuyển chọn, quản lý trực tiếp qua KV-TV Admin Console.</p>
           </div>
         </div>
       </div>
@@ -472,8 +520,8 @@
       <!-- Full Sideload & Package Reference Table (tabular-nums) -->
       <div class="kv-section-head">
         <div>
-          <h3 id="promo-table-heading" class="kv-section-title">sideload &amp; package reference matrix</h3>
-          <p class="kv-section-desc">Direct APK links, standalone Pre-Set packs, SHA/package identifiers, and live install telemetry.</p>
+          <h3 id="promo-table-heading" class="kv-section-title" data-i18n="promo.table_title">bảng tra cứu gói cài đặt &amp; sideload</h3>
+          <p class="kv-section-desc" data-i18n="promo.table_desc">Link tải APK trực tiếp, gói cấu hình độc lập, mã định danh gói và số liệu lượt cài đặt thực tế.</p>
         </div>
         <div class="kv-search-wrap">
           <label for="promo-search-input" class="sr-only">Filter apps by name, short-code, or feature</label>
@@ -481,7 +529,8 @@
             type="search"
             id="promo-search-input"
             class="kv-input"
-            placeholder="Filter by app, code (88103), or package..."
+            placeholder="Tìm kiếm theo tên app, mã số (88103), hoặc package..."
+            data-i18n-placeholder="promo.search_placeholder"
             autocomplete="off"
           >
         </div>
@@ -491,12 +540,12 @@
         <table class="kv-table">
           <thead>
             <tr>
-              <th scope="col">Application</th>
-              <th scope="col">Short-Code</th>
-              <th scope="col">Package Identifier</th>
-              <th scope="col">Version &amp; Size</th>
-              <th scope="col">Installs</th>
-              <th scope="col">Direct Actions</th>
+              <th scope="col" data-i18n="promo.th_app">Ứng Dụng</th>
+              <th scope="col" data-i18n="promo.th_code">Mã Số</th>
+              <th scope="col" data-i18n="promo.th_pkg">Mã Gói (Package ID)</th>
+              <th scope="col" data-i18n="promo.th_ver_size">Phiên Bản &amp; Dung Lượng</th>
+              <th scope="col" data-i18n="promo.th_installs">Lượt Cài</th>
+              <th scope="col" data-i18n="promo.th_actions">Thao Tác Trực Tiếp</th>
             </tr>
           </thead>
           <tbody id="promo-catalog-table-body">
@@ -515,7 +564,7 @@
         <p class="kv-dialog-subtitle dialog-subtitle" id="metro-dialog-edition">KV-PreSetup (Full Repos)</p>
       </div>
       <form method="dialog">
-        <button type="submit" class="kv-dialog-close-btn dialog-close-btn">ESC · CLOSE</button>
+        <button type="submit" class="kv-dialog-close-btn dialog-close-btn" data-i18n="dialog_app.close">ESC · ĐÓNG</button>
       </form>
     </div>
     <div class="kv-dialog-body dialog-body">
@@ -526,19 +575,19 @@
         <div class="kv-dialog-col">
           <div class="kv-dialog-specs dialog-specs">
             <div class="spec-item">
-              <span class="spec-label">SHORT-CODE</span>
+              <span class="spec-label" data-i18n="dialog_app.spec_code">MÃ SỐ</span>
               <span class="spec-value tabular" id="metro-dialog-code">88103</span>
             </div>
             <div class="spec-item">
-              <span class="spec-label">VERSION &amp; SIZE</span>
+              <span class="spec-label" data-i18n="dialog_app.spec_ver_size">PHIÊN BẢN &amp; DUNG LƯỢNG</span>
               <span class="spec-value tabular" id="metro-dialog-version">v4.4.1-kv · 24.2 MB</span>
             </div>
             <div class="spec-item">
-              <span class="spec-label">PACKAGE ID</span>
+              <span class="spec-label" data-i18n="dialog_app.spec_pkg">MÃ GÓI (PACKAGE ID)</span>
               <span class="spec-value" id="metro-dialog-pkg">com.lagradost.cloudstream3</span>
             </div>
             <div class="spec-item">
-              <span class="spec-label">ARCHITECTURE</span>
+              <span class="spec-label" data-i18n="dialog_app.spec_arch">KIẾN TRÚC</span>
               <span class="spec-value" id="metro-dialog-arch">Universal (arm64-v8a + armeabi-v7a)</span>
             </div>
           </div>
@@ -553,18 +602,21 @@
             width="148"
             height="148"
           >
-          <span class="dialog-qr-caption" id="metro-dialog-qr-caption">SCAN FOR APK · 88103</span>
+          <span class="dialog-qr-caption" id="metro-dialog-qr-caption">QUÉT TẢI APK · 88103</span>
         </div>
       </div>
       <div class="kv-dialog-actions dialog-actions">
         <a class="kv-btn kv-btn--primary metro-action-btn" id="metro-dialog-apk-btn" href="/api/download/cloudstream-kv?type=apk" data-app-download="cloudstream-kv">
-          <span>DOWNLOAD PRE-CONFIGURED APK</span>
+          <span data-i18n="dialog_app.btn_apk">TẢI APK CÀI ĐẶT SẴN</span>
         </a>
         <a class="kv-btn metro-action-btn secondary" id="metro-dialog-preset-btn" href="/api/download/cloudstream-kv?type=preset" data-app-download="cloudstream-kv">
-          <span>DOWNLOAD PRE-SET PACK (.ZIP)</span>
+          <span data-i18n="dialog_app.btn_preset">TẢI GÓI CẤU HÌNH (.ZIP)</span>
         </a>
+        <button type="button" class="kv-btn metro-action-btn" id="metro-dialog-uninstall-btn" style="display: none; border-color: var(--kv-crimson); color: var(--kv-crimson);">
+          <span>GỠ CÀI ĐẶT</span>
+        </button>
         <button type="button" class="kv-btn" id="metro-dialog-copy-btn" data-copy-code="88103">
-          <span>COPY SHORT-CODE</span>
+          <span data-i18n="dialog_app.btn_copy">CHÉP MÃ SỐ</span>
         </button>
       </div>
     </div>
@@ -574,11 +626,11 @@
   <dialog id="metro-dialer-dialog" class="kv-dialog" closedby="any" aria-labelledby="metro-dialer-title">
     <div class="kv-dialog-banner dialog-banner kv-tile--emerald">
       <div>
-        <h2 class="kv-dialog-title dialog-title" id="metro-dialer-title">short-code dialer</h2>
-        <p class="kv-dialog-subtitle dialog-subtitle">Enter 5-digit AFTVnews Downloader code (88101–88105)</p>
+        <h2 class="kv-dialog-title dialog-title" id="metro-dialer-title" data-i18n="dialog_dialer.title">bàn phím nhập mã số</h2>
+        <p class="kv-dialog-subtitle dialog-subtitle" data-i18n="dialog_dialer.subtitle">Nhập mã AFTVnews Downloader 5 số (88000, 88101–88105)</p>
       </div>
       <form method="dialog">
-        <button type="submit" class="kv-dialog-close-btn dialog-close-btn">ESC · CLOSE</button>
+        <button type="submit" class="kv-dialog-close-btn dialog-close-btn" data-i18n="dialog_dialer.close">ESC · ĐÓNG</button>
       </form>
     </div>
     <div class="kv-dialog-body dialog-body">
@@ -587,6 +639,7 @@
         <span class="dialer-status" id="dialer-match-label">CloudStream 3 · 24.2 MB</span>
       </div>
       <div class="dialer-presets" aria-label="Quick Short-Code Presets">
+        <button type="button" class="dialer-preset-chip" data-preset-code="88000">88000 · KV-Store TV</button>
         <button type="button" class="dialer-preset-chip" data-preset-code="88101">88101 · Jellyfin</button>
         <button type="button" class="dialer-preset-chip" data-preset-code="88102">88102 · Kodi 21</button>
         <button type="button" class="dialer-preset-chip" data-preset-code="88103">88103 · CloudStream 3</button>
@@ -609,10 +662,10 @@
       </div>
       <div class="kv-dialog-actions dialog-actions">
         <button type="button" class="kv-btn kv-btn--primary metro-action-btn" id="dialer-go-apk-btn">
-          <span>FETCH APK BY CODE</span>
+          <span data-i18n="dialog_dialer.btn_fetch">TẢI APK THEO MÃ SỐ</span>
         </button>
         <button type="button" class="kv-btn metro-action-btn secondary" id="dialer-open-app-btn">
-          <span>INSPECT BUILD DETAILS</span>
+          <span data-i18n="dialog_dialer.btn_inspect">XEM THÔNG SỐ BẢN DỰNG</span>
         </button>
       </div>
     </div>
@@ -622,21 +675,22 @@
   <dialog id="metro-qr-dialog" class="kv-dialog" closedby="any" aria-labelledby="metro-qr-title">
     <div class="kv-dialog-banner dialog-banner kv-tile--amber">
       <div>
-        <h2 class="kv-dialog-title dialog-title" id="metro-qr-title">phone &amp; tv qr companion</h2>
-        <p class="kv-dialog-subtitle dialog-subtitle">Scan with phone camera to sideload APKs or browse sponsor offers</p>
+        <h2 class="kv-dialog-title dialog-title" id="metro-qr-title" data-i18n="dialog_qr.title">mã qr đồng hành cho điện thoại &amp; tv</h2>
+        <p class="kv-dialog-subtitle dialog-subtitle" data-i18n="dialog_qr.subtitle">Quét bằng camera điện thoại để cài đặt APK hoặc khám phá ưu đãi</p>
       </div>
       <form method="dialog">
-        <button type="submit" class="kv-dialog-close-btn dialog-close-btn">ESC · CLOSE</button>
+        <button type="submit" class="kv-dialog-close-btn dialog-close-btn" data-i18n="dialog_qr.close">ESC · ĐÓNG</button>
       </form>
     </div>
     <div class="kv-dialog-body dialog-body">
       <div class="kv-dialog-grid dialog-grid">
         <div class="kv-dialog-col">
-          <p>
-            Select any KV-TV build below to generate a direct high-speed download QR code for your phone or Android TV browser:
+          <p data-i18n="dialog_qr.desc">
+            Chọn một ứng dụng KV-TV bên dưới để tạo mã QR tải tốc độ cao cho điện thoại hoặc trình duyệt Android TV:
           </p>
           <div class="dialer-presets" id="qr-target-chips">
             <button type="button" class="dialer-preset-chip is-active" data-qr-url="https://tv.vndns.net" data-qr-label="KV-TV Storefront (tv.vndns.net)">Storefront</button>
+            <button type="button" class="dialer-preset-chip" data-qr-url="https://tv.vndns.net/kv-store.apk" data-qr-label="KV-Store TV App APK (88000)">88000 · KV-Store TV</button>
             <button type="button" class="dialer-preset-chip" data-qr-url="https://tv.vndns.net/go/88103" data-qr-label="CloudStream 3 APK (88103)">88103 · CloudStream</button>
             <button type="button" class="dialer-preset-chip" data-qr-url="https://tv.vndns.net/go/88101" data-qr-label="Jellyfin TV APK (88101)">88101 · Jellyfin</button>
             <button type="button" class="dialer-preset-chip" data-qr-url="https://tv.vndns.net/go/88102" data-qr-label="Kodi 21 APK (88102)">88102 · Kodi 21</button>
@@ -645,11 +699,11 @@
           </div>
           <div class="kv-dialog-specs dialog-specs" id="qr-promo-list">
             <div class="spec-item">
-              <span class="spec-label">ACTIVE SPONSOR</span>
+              <span class="spec-label" data-i18n="dialog_qr.sponsor_label">ĐƠN VỊ TÀI TRỢ</span>
               <span class="spec-value">ThueVPSGiaRe VN NVMe Edge CDN (1Gbps)</span>
             </div>
             <div class="spec-item">
-              <span class="spec-label">DIRECT SHORTLINK</span>
+              <span class="spec-label" data-i18n="dialog_qr.shortlink_label">LINK TRỰC TIẾP</span>
               <span class="spec-value tabular" id="qr-selected-url">https://tv.vndns.net</span>
             </div>
           </div>
@@ -669,22 +723,76 @@
     </div>
   </dialog>
 
+  <!-- 4. Downloader Code 88000 Instructions Modal Dialog -->
+  <dialog id="metro-guide-dialog" class="kv-dialog" closedby="any" aria-labelledby="metro-guide-title">
+    <div class="kv-dialog-banner dialog-banner kv-tile--cobalt">
+      <div>
+        <h2 class="kv-dialog-title dialog-title" id="metro-guide-title">hướng dẫn cài app tv (mã 88000)</h2>
+        <p class="kv-dialog-subtitle dialog-subtitle">Cài đặt trực tiếp App KV-Store trên Android TV / Google TV qua AFTVnews Downloader</p>
+      </div>
+      <form method="dialog">
+        <button type="submit" class="kv-dialog-close-btn dialog-close-btn">ESC · ĐÓNG</button>
+      </form>
+    </div>
+    <div class="kv-dialog-body dialog-body">
+      <div class="kv-guide-step-grid">
+        <div class="kv-guide-step-card">
+          <span class="kv-guide-step-num">BƯỚC 1</span>
+          <span class="kv-guide-step-title">Cài ứng dụng Downloader</span>
+          <span class="kv-guide-step-text">Vào Google Play Store trên TV Box, tìm <strong>Downloader</strong> (biểu tượng màu cam của AFTVnews) và cài đặt.</span>
+        </div>
+        <div class="kv-guide-step-card">
+          <span class="kv-guide-step-num">BƯỚC 2</span>
+          <span class="kv-guide-step-title">Nhập mã số 88000</span>
+          <span class="kv-guide-step-text">Mở Downloader, tại ô URL / Search Term nhập chính xác số <strong class="tabular" style="color: var(--kv-cobalt); font-size: 1.1em;">88000</strong> rồi bấm nút <strong>GO</strong>. File APK sẽ tự động tải.</span>
+        </div>
+        <div class="kv-guide-step-card">
+          <span class="kv-guide-step-num">BƯỚC 3</span>
+          <span class="kv-guide-step-title">Cài đặt &amp; Trải nghiệm</span>
+          <span class="kv-guide-step-text">Bấm <strong>Install (Cài đặt)</strong> khi tải xong. Mở KV-Store để cài đặt &amp; cập nhật mọi app phim, nhạc, thể thao 1-chạm hoàn toàn bằng remote TV!</span>
+        </div>
+      </div>
+      <div class="kv-dialog-specs dialog-specs">
+        <div class="spec-item">
+          <span class="spec-label">LINK TRỰC TIẾP</span>
+          <span class="spec-value tabular">https://tv.vndns.net/kv-store.apk</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-label">MÃ DOWNLOANDER</span>
+          <span class="spec-value tabular" style="color: var(--kv-cobalt); font-weight: 700;">88000</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-label">DUNG LƯỢNG APK</span>
+          <span class="spec-value tabular">2.5 MB (Tương thích Android 5.0 - 14+)</span>
+        </div>
+      </div>
+      <div class="kv-dialog-actions dialog-actions">
+        <a class="kv-btn kv-btn--primary metro-action-btn" href="/kv-store.apk" download="kv-store.apk">
+          <span>TẢI TRỰC TIẾP FILE APK (2.5 MB)</span>
+        </a>
+        <button type="button" class="kv-btn secondary" id="guide-copy-code-btn" data-copy-code="88000">
+          <span>SAO CHÉP MÃ 88000</span>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
   <!-- Compact Bottom-Right D-Pad Remote Simulator -->
   <aside class="kv-dpad-simulator dpad-simulator" id="tv-remote-widget" aria-label="TV D-Pad Remote Simulator">
     <div class="kv-dpad-header dpad-header">
-      <span>D-PAD REMOTE</span>
+      <span data-i18n="dpad.title">REMOTE D-PAD</span>
       <span class="tabular" id="dpad-focus-readout">88103</span>
     </div>
     <div class="kv-dpad-grid dpad-grid">
-      <button type="button" class="kv-dpad-btn dpad-btn dpad-back" data-dpad="BACK" title="Back / Close Modal">BACK</button>
-      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="ArrowUp" title="Navigate Up">UP</button>
-      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="DIAL" title="Short-Code Keypad">CODE</button>
-      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="ArrowLeft" title="Navigate Left">LEFT</button>
-      <button type="button" class="kv-dpad-btn dpad-btn dpad-ok" data-dpad="Enter" title="Select Focused Tile">OK</button>
-      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="ArrowRight" title="Navigate Right">RIGHT</button>
-      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="QR" title="Open Phone QR">QR</button>
-      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="ArrowDown" title="Navigate Down">DOWN</button>
-      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="HOME" title="Focus Hero Tile">TOP</button>
+      <button type="button" class="kv-dpad-btn dpad-btn dpad-back" data-dpad="BACK" title="Quay lại / Đóng cửa sổ" data-i18n-title="dpad.back" data-i18n="dpad.back">LÙI</button>
+      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="ArrowUp" title="Di chuyển lên" data-i18n-title="dpad.up" data-i18n="dpad.up">LÊN</button>
+      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="DIAL" title="Bàn phím mã số" data-i18n-title="dpad.code" data-i18n="dpad.code">MÃ SỐ</button>
+      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="ArrowLeft" title="Di chuyển trái" data-i18n-title="dpad.left" data-i18n="dpad.left">TRÁI</button>
+      <button type="button" class="kv-dpad-btn dpad-btn dpad-ok" data-dpad="Enter" title="Chọn mục đang focus" data-i18n-title="dpad.ok" data-i18n="dpad.ok">OK</button>
+      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="ArrowRight" title="Di chuyển phải" data-i18n-title="dpad.right" data-i18n="dpad.right">PHẢI</button>
+      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="QR" title="Mở QR điện thoại" data-i18n-title="dpad.qr" data-i18n="dpad.qr">QR</button>
+      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="ArrowDown" title="Di chuyển xuống" data-i18n-title="dpad.down" data-i18n="dpad.down">XUỐNG</button>
+      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="HOME" title="Về đầu trang" data-i18n-title="dpad.top" data-i18n="dpad.top">ĐẦU</button>
     </div>
   </aside>
 

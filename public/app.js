@@ -4,9 +4,22 @@
  * - 4 Panorama Pivots: store · pre-sets · short-codes · phone-qr (?mode=promo)
  * - 3 Native <dialog closedby="any"> Modals + Light-Dismiss Fallback
  * - 10-Foot Roving Tabindex 2D Spatial Navigation + D-Pad Remote Simulator
+ * - Bilingual Engine (Tiếng Việt [default] & English)
  */
 
+import {
+  detectInitialLanguage,
+  getCurrentLanguage,
+  setLanguage,
+  onLanguageChange,
+  t,
+  tField,
+  translateDom,
+  TRANSLATIONS,
+} from './i18n.js';
+
 const METRO_TILE_CLASSES = {
+  'kv-store': 'kv-tile--cobalt',
   'cloudstream-kv': 'kv-tile--cobalt',
   'jellyfin-kv': 'kv-tile--violet',
   'kodi-kv': 'kv-tile--teal',
@@ -15,6 +28,7 @@ const METRO_TILE_CLASSES = {
 };
 
 const METRO_TILE_COLORS = {
+  'kv-store': 'var(--kv-cobalt)',
   'cloudstream-kv': 'var(--kv-cobalt)',
   'jellyfin-kv': 'var(--kv-violet)',
   'kodi-kv': 'var(--kv-teal)',
@@ -31,39 +45,94 @@ const FALLBACK_CATALOG = {
   },
   apps: [
     {
+      id: 'kv-store',
+      name: 'KV-Store TV',
+      edition: 'Official Android TV Client',
+      packageName: 'net.vndns.tv.store',
+      version: '1.0.0',
+      versionCode: 1,
+      size: '2.5 MB',
+      shortCode: '88000',
+      category: 'Media Center',
+      arch: 'Universal (arm64-v8a + armeabi-v7a)',
+      downloads: 8800,
+      description:
+        'Ứng dụng chính thức của KV-Store dành cho Android TV / Google TV. Tích hợp quản lý ứng dụng, cài đặt 1-chạm không cần chuột, tự động phát hiện phiên bản và khởi chạy ứng dụng media, phim ảnh 4K HDR.',
+      presetFeatures: [
+        'Điều hướng 100% bằng remote TV D-pad mượt mà',
+        'Cài đặt 1-chạm trực tiếp không cần chuột',
+        'Tự động quét và phát hiện phiên bản ứng dụng đã cài đặt',
+        'Hỗ trợ cập nhật và mở nhanh ứng dụng ngay trên TV',
+      ],
+    },
+    {
       id: 'cloudstream-kv',
       name: 'CloudStream 3',
-      edition: 'KV-PreSetup (Full Repos)',
+      edition: 'Bản tích hợp sẵn (KV-Netflix 4K VIP)',
+      edition_vi: 'Bản tích hợp sẵn (KV-Netflix 4K VIP)',
+      edition_en: 'KV-PreSetup (KV-Netflix 4K VIP)',
       packageName: 'com.lagradost.cloudstream3',
-      version: '4.4.1-kv',
-      size: '24.2 MB',
+      version: '4.8.0-kv',
+      size: '68.7 MB',
       shortCode: '88103',
       category: 'Streaming',
+      category_vi: 'Phim & Trực Tuyến',
+      category_en: 'Streaming',
       arch: 'Universal (arm64-v8a + armeabi-v7a)',
       downloads: 4150,
-      description:
-        'Zero manual repository typing required. Ships with MegaRepo and Vietnamese HD movie/anime extensions pre-activated, Cloudflare DoH enabled, and automatic 4K Vietsub stream selection.',
+      description: 'Bản dựng tối ưu hóa riêng cho hệ sinh thái KV: Cài sẵn plugin mở rộng KV-Netflix VIP tốc độ cao, hỗ trợ chuẩn 4K HDR10, âm thanh 5.1 và phụ đề Vietsub đồng bộ.',
+      description_vi: 'Bản dựng tối ưu hóa riêng cho hệ sinh thái KV: Cài sẵn plugin mở rộng KV-Netflix VIP tốc độ cao, hỗ trợ chuẩn 4K HDR10, âm thanh 5.1 và phụ đề Vietsub đồng bộ.',
+      description_en: 'Custom-engineered for the KV ecosystem: Pre-loaded with private high-speed KV-Netflix VIP extension, 4K HDR10, 5.1 surround audio, and synchronized Vietsub.',
       presetFeatures: [
-        'Pre-configured MegaRepo + Vietnamese HD Movie/Anime extensions',
-        'Auto-selects 1080p/4K highest-bitrate stream with Vietsub',
-        'DNS-over-HTTPS (Cloudflare 1.1.1.1) pre-enabled to bypass ISP blocks',
-        'One-click Pre-Set Backup (.backup) restore included',
+        'Tích hợp sẵn tiện ích mở rộng KV-Netflix (n.khoavo.vndns.net)',
+        'Nguồn phim Full HD / 4K HDR10 riêng không bị chặn hay giật lag',
+        'Tự động đồng bộ kho phim mới nhất với hệ thống KV-Netflix',
+        'Kèm file cấu hình Pre-Set backup (.json) khôi phục 1-chạm',
+      ],
+      presetFeatures_vi: [
+        'Tích hợp sẵn tiện ích mở rộng KV-Netflix (n.khoavo.vndns.net)',
+        'Nguồn phim Full HD / 4K HDR10 riêng không bị chặn hay giật lag',
+        'Tự động đồng bộ kho phim mới nhất với hệ thống KV-Netflix',
+        'Kèm file cấu hình Pre-Set backup (.json) khôi phục 1-chạm',
+      ],
+      presetFeatures_en: [
+        'Pre-loaded with KV-Netflix VIP extension (n.khoavo.vndns.net)',
+        'Dedicated Full HD / 4K HDR10 streams without ISP throttling or buffering',
+        'Auto-syncs catalog directly with private KV-Netflix server',
+        'Includes 1-click Pre-Set restore (.json) backup',
       ],
     },
     {
       id: 'jellyfin-kv',
       name: 'Jellyfin TV',
-      edition: 'KV-Optimized Edition',
+      edition: 'Bản tối ưu KV · 4K HDR Direct Play',
+      edition_vi: 'Bản tối ưu KV · 4K HDR Direct Play',
+      edition_en: 'KV-Optimized Edition',
       packageName: 'org.jellyfin.androidtv.kv',
       version: '0.18.4-kv2',
       size: '42.8 MB',
       shortCode: '88101',
       category: 'Media Center',
+      category_vi: 'Máy Chủ Phim & Nhạc',
+      category_en: 'Media Center',
       arch: 'Universal (arm64-v8a + armeabi-v7a)',
       downloads: 1420,
-      description:
-        'Custom Android TV build of Jellyfin with pre-configured KV Media Server discovery, Direct Play 4K HEVC 10-bit profiles, and styled Vietnamese/English subtitles.',
+      description: 'Bản dựng Jellyfin tùy biến cho Android TV với khả năng tự động kết nối máy chủ KV Media, phát trực tiếp 4K HEVC 10-bit không cần transcode và hỗ trợ phụ đề tiếng Việt / tiếng Anh.',
+      description_vi: 'Bản dựng Jellyfin tùy biến cho Android TV với khả năng tự động kết nối máy chủ KV Media, phát trực tiếp 4K HEVC 10-bit không cần transcode và hỗ trợ phụ đề tiếng Việt / tiếng Anh.',
+      description_en: 'Custom Android TV build of Jellyfin with pre-configured KV Media Server discovery, Direct Play 4K HEVC 10-bit profiles, and styled Vietnamese/English subtitles.',
       presetFeatures: [
+        'Tự động tìm kiếm & điền sẵn địa chỉ máy chủ',
+        'Trình phát ExoPlayer tăng tốc phần cứng + dự phòng libVLC',
+        'Phát trực tiếp 4K HEVC 10-bit không qua transcode',
+        'Định kiểu phụ đề tiếng Việt & tiếng Anh mặc định',
+      ],
+      presetFeatures_vi: [
+        'Tự động tìm kiếm & điền sẵn địa chỉ máy chủ',
+        'Trình phát ExoPlayer tăng tốc phần cứng + dự phòng libVLC',
+        'Phát trực tiếp 4K HEVC 10-bit không qua transcode',
+        'Định kiểu phụ đề tiếng Việt & tiếng Anh mặc định',
+      ],
+      presetFeatures_en: [
         'Auto-discovery & pre-filled server URL',
         'Hardware-accelerated ExoPlayer + libVLC fallback',
         'Zero-transcode 4K HEVC 10-bit Direct Play',
@@ -73,17 +142,34 @@ const FALLBACK_CATALOG = {
     {
       id: 'kodi-kv',
       name: 'Kodi 21 Omega',
-      edition: 'KV-Build All-in-One',
+      edition: 'Gói All-in-One Arctic Zephyr 2',
+      edition_vi: 'Gói All-in-One Arctic Zephyr 2',
+      edition_en: 'KV-Build All-in-One',
       packageName: 'org.xbmc.kodi',
-      version: '21.2-kv-build',
-      size: '94.5 MB',
+      version: '21.3-Omega',
+      size: '66.6 MB',
       shortCode: '88102',
       category: 'Media Center',
+      category_vi: 'Trung Tâm Giải Trí',
+      category_en: 'Media Center',
       arch: 'Universal (arm64-v8a + armeabi-v7a)',
       downloads: 2890,
-      description:
-        'Ready-to-run Kodi 21.2 Omega build featuring the lightweight Arctic Zephyr 2 10-foot TV skin, tuned memory cache for 1GB/2GB TV boxes, and pre-installed Vietnamese subtitle addons.',
+      description: 'Bản Kodi 21.3 Omega dựng sẵn với giao diện TV 10-foot Arctic Zephyr 2 mượt mà, tinh chỉnh bộ nhớ đệm cho TV Box cấu hình thấp và tích hợp sẵn các nguồn phụ đề tiếng Việt chất lượng cao.',
+      description_vi: 'Bản Kodi 21.3 Omega dựng sẵn với giao diện TV 10-foot Arctic Zephyr 2 mượt mà, tinh chỉnh bộ nhớ đệm cho TV Box cấu hình thấp và tích hợp sẵn các nguồn phụ đề tiếng Việt chất lượng cao.',
+      description_en: 'Ready-to-run Kodi 21.3 Omega build featuring the lightweight Arctic Zephyr 2 10-foot TV skin, tuned memory cache for 1GB/2GB TV boxes, and pre-installed Vietnamese subtitle addons.',
       presetFeatures: [
+        'Giao diện điều khiển remote TV Arctic Zephyr 2 kích hoạt sẵn',
+        'Tệp advancedsettings.xml tối ưu bộ nhớ đệm cho Box 1GB/2GB RAM',
+        'Cài sẵn các nhà cung cấp phụ đề tiếng Việt (Subscene / OpenSubtitles)',
+        'Tối ưu bộ đệm phát trực tuyến TorrServer & Elementum',
+      ],
+      presetFeatures_vi: [
+        'Giao diện điều khiển remote TV Arctic Zephyr 2 kích hoạt sẵn',
+        'Tệp advancedsettings.xml tối ưu bộ nhớ đệm cho Box 1GB/2GB RAM',
+        'Cài sẵn các nhà cung cấp phụ đề tiếng Việt (Subscene / OpenSubtitles)',
+        'Tối ưu bộ đệm phát trực tuyến TorrServer & Elementum',
+      ],
+      presetFeatures_en: [
         'Arctic Zephyr 2 10-foot TV remote skin pre-activated',
         'advancedsettings.xml tuned for 1GB/2GB RAM TV Boxes',
         'Pre-installed Vietnamese subtitle providers (Subscene/OpenSubtitles)',
@@ -93,17 +179,34 @@ const FALLBACK_CATALOG = {
     {
       id: 'kv-netflix',
       name: 'KV-Netflix',
-      edition: 'TV Remote & 4K HDR Mod',
-      packageName: 'vn.kvtv.netflix',
-      version: '8.114.0-kv',
-      size: '38.6 MB',
+      edition: 'Bản Mod TV Remote & 4K HDR',
+      edition_vi: 'Bản Mod TV Remote & 4K HDR',
+      edition_en: 'TV Remote & 4K HDR Mod',
+      packageName: 'com.streamflow.tv',
+      version: '2.0.0-tv',
+      size: '25.0 MB',
       shortCode: '88104',
       category: 'Originals & Cinema',
+      category_vi: 'Điện Ảnh & Phim Gốc',
+      category_en: 'Originals & Cinema',
       arch: 'Universal (arm64-v8a + armeabi-v7a)',
       downloads: 3680,
-      description:
-        'Engineered for Android TV boxes that fail Netflix certification checks. Provides native D-Pad remote focus navigation without an air-mouse, adaptive Widevine L1/L3 fallback, and 5.1 audio.',
+      description: 'Tối ưu hóa cho các dòng Android TV Box không đạt chứng chỉ Netflix gốc. Hỗ trợ điều hướng remote D-Pad mượt mà không cần chuột bay, tự thích ứng Widevine L1/L3 và âm thanh 5.1.',
+      description_vi: 'Tối ưu hóa cho các dòng Android TV Box không đạt chứng chỉ Netflix gốc. Hỗ trợ điều hướng remote D-Pad mượt mà không cần chuột bay, tự thích ứng Widevine L1/L3 và âm thanh 5.1.',
+      description_en: 'Engineered for Android TV boxes that fail Netflix certification checks. Provides native D-Pad remote focus navigation without an air-mouse, adaptive Widevine L1/L3 fallback, and 5.1 audio.',
       presetFeatures: [
+        'Điều hướng trực tiếp bằng remote D-Pad (không cần chuột bay)',
+        'Tự động thích ứng Widevine L1/L3 cho mọi TV Box',
+        'Cấu hình sẵn âm thanh vòm Dolby Digital Plus 5.1 & HDR10',
+        'Khởi động siêu nhanh trên chip Amlogic & Rockchip',
+      ],
+      presetFeatures_vi: [
+        'Điều hướng trực tiếp bằng remote D-Pad (không cần chuột bay)',
+        'Tự động thích ứng Widevine L1/L3 cho mọi TV Box',
+        'Cấu hình sẵn âm thanh vòm Dolby Digital Plus 5.1 & HDR10',
+        'Khởi động siêu nhanh trên chip Amlogic & Rockchip',
+      ],
+      presetFeatures_en: [
         'Native D-Pad directional navigation (no air-mouse needed)',
         'Widevine L1/L3 adaptive fallback for uncertified TV boxes',
         'Pre-tuned Dolby Digital Plus 5.1 & HDR10 playback flags',
@@ -113,17 +216,34 @@ const FALLBACK_CATALOG = {
     {
       id: 'kv-tube',
       name: 'KV-Tube',
-      edition: 'Ad-Free 4K60 + SponsorBlock',
+      edition: 'Chặn 100% quảng cáo 4K60 + SponsorBlock',
+      edition_vi: 'Chặn 100% quảng cáo 4K60 + SponsorBlock',
+      edition_en: 'Ad-Free 4K60 + SponsorBlock',
       packageName: 'vn.kvtv.tube',
       version: '24.85-kv',
       size: '19.4 MB',
       shortCode: '88105',
       category: 'Video & Music',
+      category_vi: 'Video & Âm Nhạc',
+      category_en: 'Video & Music',
       arch: 'Universal (arm64-v8a + armeabi-v7a)',
       downloads: 5920,
-      description:
-        'Next-gen SmartTube/KV-Tube client for Android TV. Blocks 100% of video and banner ads, automatically skips sponsor reads via SponsorBlock, and unlocks 4K 60fps HDR on any TV box.',
+      description: 'Ứng dụng KV-Tube / SmartTube thế hệ mới cho Android TV. Chặn đứng 100% quảng cáo trong và ngoài video, tự động bỏ qua intro/quảng cáo của YouTuber và hỗ trợ giải mã phần cứng 4K 60fps HDR mượt mà.',
+      description_vi: 'Ứng dụng KV-Tube / SmartTube thế hệ mới cho Android TV. Chặn đứng 100% quảng cáo trong và ngoài video, tự động bỏ qua intro/quảng cáo của YouTuber và hỗ trợ giải mã phần cứng 4K 60fps HDR mượt mà.',
+      description_en: 'Next-gen SmartTube/KV-Tube client for Android TV. Blocks 100% of video and banner ads, automatically skips sponsor reads via SponsorBlock, and unlocks 4K 60fps HDR on any TV box.',
       presetFeatures: [
+        'Xem video 100% không quảng cáo (không video chèn, không banner)',
+        'Cấu hình sẵn SponsorBlock (tự động bỏ qua mở đầu, giới thiệu tài trợ)',
+        'Hỗ trợ giải mã phần cứng AV1 & VP9 cho hình ảnh 4K 60fps mượt mà',
+        'Hoạt động độc lập, không cần Google Play Services trên mọi TV Box',
+      ],
+      presetFeatures_vi: [
+        'Xem video 100% không quảng cáo (không video chèn, không banner)',
+        'Cấu hình sẵn SponsorBlock (tự động bỏ qua mở đầu, giới thiệu tài trợ)',
+        'Hỗ trợ giải mã phần cứng AV1 & VP9 cho hình ảnh 4K 60fps mượt mà',
+        'Hoạt động độc lập, không cần Google Play Services trên mọi TV Box',
+      ],
+      presetFeatures_en: [
         '100% Ad-free playback (no pre-roll, mid-roll, or banner ads)',
         'SponsorBlock pre-configured (skips intros, self-promo & sponsor segments)',
         'AV1 & VP9 hardware codec selector for smooth 4K 60fps',
@@ -134,11 +254,16 @@ const FALLBACK_CATALOG = {
   ads: [
     {
       id: 'ad-vip-box',
-      title: 'KV-TV VIP Box Setup — Turn any Android TV into a 4K Cinema Hub',
-      subtitle:
-        'Pre-tuned Jellyfin, Kodi 21 Omega, CloudStream Vietsub & Ad-Free 4K60 KV-Tube ready in 60 seconds.',
+      title: 'Cài Đặt Hộp KV-TV VIP — Biến Mọi Android TV Thành Rạp Phim 4K',
+      title_vi: 'Cài Đặt Hộp KV-TV VIP — Biến Mọi Android TV Thành Rạp Phim 4K',
+      title_en: 'KV-TV VIP Box Setup — Turn any Android TV into a 4K Cinema Hub',
+      subtitle: 'Jellyfin, Kodi 21 Omega, CloudStream Vietsub & KV-Tube 4K60 không quảng cáo sẵn sàng trong 60 giây.',
+      subtitle_vi: 'Jellyfin, Kodi 21 Omega, CloudStream Vietsub & KV-Tube 4K60 không quảng cáo sẵn sàng trong 60 giây.',
+      subtitle_en: 'Pre-tuned Jellyfin, Kodi 21 Omega, CloudStream Vietsub & Ad-Free 4K60 KV-Tube ready in 60 seconds.',
       badge: 'FEATURED',
-      ctaText: 'Explore Pre-Set Apps',
+      ctaText: 'Khám Phá Bản Cài Sẵn',
+      ctaText_vi: 'Khám Phá Bản Cài Sẵn',
+      ctaText_en: 'Explore Pre-Set Apps',
       ctaUrl: '#metro-grid',
       active: true,
       impressions: 4820,
@@ -146,11 +271,16 @@ const FALLBACK_CATALOG = {
     },
     {
       id: 'ad-vps-cdn',
-      title: 'ThueVPSGiaRe High-Speed VN Edge CDN — 1Gbps Direct APK Downloads',
-      subtitle:
-        'Hosted on low-latency Vietnam NVMe VPS with instant AFTVnews Downloader short-codes (88101–88105).',
+      title: 'Mạng ThueVPSGiaRe Tốc Độ Cao VN — Tải Trực Tiếp APK 1Gbps',
+      title_vi: 'Mạng ThueVPSGiaRe Tốc Độ Cao VN — Tải Trực Tiếp APK 1Gbps',
+      title_en: 'ThueVPSGiaRe High-Speed VN Edge CDN — 1Gbps Direct APK Downloads',
+      subtitle: 'Máy chủ NVMe VPS độ trễ thấp tại Việt Nam với mã tải Downloader 5 số (88101–88105).',
+      subtitle_vi: 'Máy chủ NVMe VPS độ trễ thấp tại Việt Nam với mã tải Downloader 5 số (88101–88105).',
+      subtitle_en: 'Hosted on low-latency Vietnam NVMe VPS with instant AFTVnews Downloader short-codes (88101–88105).',
       badge: 'SPONSOR',
-      ctaText: 'Dial Short-Code',
+      ctaText: 'Nhập Mã Số',
+      ctaText_vi: 'Nhập Mã Số',
+      ctaText_en: 'Dial Short-Code',
       ctaUrl: '/go/88103',
       active: true,
       impressions: 3190,
@@ -158,11 +288,16 @@ const FALLBACK_CATALOG = {
     },
     {
       id: 'ad-cloudstream-44',
-      title: 'CloudStream KV-PreSetup v4.4 Released — All VN Movie Extensions Ready',
-      subtitle:
-        'Includes pre-loaded MegaRepo, 4K Vietsub auto-selector, and Cloudflare 1.1.1.1 DoH bypass.',
+      title: 'Phát Hành CloudStream KV-PreSetup v4.8 — Tích Hợp Kho Phim KV-Netflix VIP',
+      title_vi: 'Phát Hành CloudStream KV-PreSetup v4.8 — Tích Hợp Kho Phim KV-Netflix VIP',
+      title_en: 'CloudStream KV-PreSetup v4.8 Released — KV-Netflix 4K VIP Provider',
+      subtitle: 'Bản quyền riêng, kho phim 4K Vietsub mượt mà và bypass chặn nhà mạng qua Cloudflare DoH 1.1.1.1.',
+      subtitle_vi: 'Bản quyền riêng, kho phim 4K Vietsub mượt mà và bypass chặn nhà mạng qua Cloudflare DoH 1.1.1.1.',
+      subtitle_en: 'Includes KV-Netflix VIP repo, 4K Vietsub stream selector, and Cloudflare 1.1.1.1 DoH bypass.',
       badge: 'NEW RELEASE',
-      ctaText: 'Code: 88103',
+      ctaText: 'Mã: 88103',
+      ctaText_vi: 'Mã: 88103',
+      ctaText_en: 'Code: 88103',
       ctaUrl: '/go/88103',
       active: true,
       impressions: 5410,
@@ -188,7 +323,66 @@ const state = {
   activeAppId: 'cloudstream-kv',
   promoSearchQuery: '',
   catalog: structuredClone(FALLBACK_CATALOG),
+  isTVApp: typeof window.KVTVBridge !== 'undefined',
+  appStatuses: {},
 };
+
+if (state.isTVApp) {
+  document.body.classList.add('is-tv-app');
+  document.documentElement.classList.add('is-tv-app');
+}
+
+function checkIsTVApp() {
+  if (typeof window.KVTVBridge !== 'undefined') {
+    state.isTVApp = true;
+    document.body.classList.add('is-tv-app');
+    document.documentElement.classList.add('is-tv-app');
+    return true;
+  }
+  return false;
+}
+
+function syncInstalledAppStatuses() {
+  if (!checkIsTVApp() || !window.KVTVBridge) return;
+  try {
+    const payload = (state.catalog.apps || []).map((a) => ({
+      packageName: a.packageName,
+      versionCode: Number(a.versionCode || 0),
+      id: a.id,
+    }));
+    const raw = window.KVTVBridge.scanCatalogStatuses(JSON.stringify(payload));
+    state.appStatuses = JSON.parse(raw || '{}');
+    updateAppStatusBadges();
+  } catch (err) {
+    console.error('[KVTVBridge] syncInstalledAppStatuses error:', err);
+  }
+}
+
+function updateAppStatusBadges() {
+  if (!state.isTVApp) return;
+
+  for (const app of state.catalog.apps || []) {
+    const status = state.appStatuses[app.packageName] || 'NOT_INSTALLED';
+    const tile = document.querySelector(`.kv-tile[data-app-id="${CSS.escape(app.id)}"]`);
+    if (tile) {
+      let badgeEl = tile.querySelector('.kv-app-status-badge');
+      if (!badgeEl) {
+        badgeEl = document.createElement('span');
+        badgeEl.className = 'kv-app-status-badge';
+        const metaRow = tile.querySelector('.kv-tile-meta-row') || tile.querySelector('.kv-tile-bottom');
+        if (metaRow) metaRow.prepend(badgeEl);
+      }
+      badgeEl.className = `kv-app-status-badge is-${status.toLowerCase().replace(/_/g, '-')}`;
+      if (status === 'INSTALLED') {
+        badgeEl.textContent = '✓ ĐÃ CÀI ĐẶT';
+      } else if (status === 'UPDATE') {
+        badgeEl.textContent = '▲ CÓ BẢN MỚI';
+      } else {
+        badgeEl.textContent = '○ CHƯA CÀI';
+      }
+    }
+  }
+}
 
 function escapeHtml(str) {
   return String(str ?? '')
@@ -275,8 +469,9 @@ function activatePivot(pivotName, options = {}) {
 
   // 3. Update Panorama Subbar Deck copy
   const deckTextEl = document.getElementById('panorama-deck-text');
-  if (deckTextEl && PIVOT_DESCRIPTIONS[normalized]) {
-    deckTextEl.innerHTML = PIVOT_DESCRIPTIONS[normalized];
+  if (deckTextEl) {
+    const key = `decks.${normalized.replace(/-/g, '')}`;
+    deckTextEl.innerHTML = t(key);
   }
 
   // 4. Toggle Store Panorama Grid & Lower Strip vs Dedicated Pivot Stage Panels
@@ -339,11 +534,18 @@ function renderPresetsMatrix() {
   const grid = document.getElementById('presets-matrix-grid');
   if (!grid) return;
 
+  const currentLang = getCurrentLanguage();
   grid.innerHTML = state.catalog.apps
     .map((app) => {
       const colorClass = METRO_TILE_CLASSES[app.id] || 'kv-tile--cobalt';
       const versionClean = String(app.version || '').replace(/^v/i, '');
-      const featuresHtml = (app.presetFeatures || [])
+      const localizedEdition = tField(app, 'edition', currentLang);
+      const localizedDesc = tField(app, 'description', currentLang);
+      const features = (currentLang === 'vi' && app.presetFeatures_vi)
+        ? app.presetFeatures_vi
+        : (app.presetFeatures || []);
+
+      const featuresHtml = features
         .map(
           (feat) => `
           <li>
@@ -358,19 +560,19 @@ function renderPresetsMatrix() {
           <div class="kv-preset-banner ${colorClass}">
             <div>
               <h3 class="kv-preset-banner-title">${escapeHtml(app.name.toLowerCase())}</h3>
-              <p>${escapeHtml(app.edition)}</p>
+              <p>${escapeHtml(localizedEdition)}</p>
             </div>
             <span class="kv-code-stamp tabular">CODE ${escapeHtml(app.shortCode)}</span>
           </div>
           <div class="kv-preset-body">
-            <p class="kv-preset-summary">${escapeHtml(app.description)}</p>
+            <p class="kv-preset-summary">${escapeHtml(localizedDesc)}</p>
             <div class="kv-dialog-specs dialog-specs">
               <div class="spec-item">
-                <span class="spec-label">PRE-SET ARCHIVE</span>
+                <span class="spec-label">${t('matrix.archive_label')}</span>
                 <span class="spec-value tabular">${escapeHtml(app.id)}-preset.zip</span>
               </div>
               <div class="spec-item">
-                <span class="spec-label">BUILD VERSION</span>
+                <span class="spec-label">${t('dialog_app.spec_ver_size')}</span>
                 <span class="spec-value tabular">v${escapeHtml(versionClean)} · ${escapeHtml(app.size)}</span>
               </div>
             </div>
@@ -382,17 +584,17 @@ function renderPresetsMatrix() {
               href="/api/download/${encodeURIComponent(app.id)}?type=preset"
               data-app-download="${escapeHtml(app.id)}"
             >
-              <span>DOWNLOAD PRE-SET PACK (.ZIP)</span>
+              <span>${t('matrix.btn_download_preset')}</span>
             </a>
             <a
               class="kv-btn"
               href="/api/download/${encodeURIComponent(app.id)}?type=apk"
               data-app-download="${escapeHtml(app.id)}"
             >
-              <span>APK (${escapeHtml(app.size)})</span>
+              <span>${t('matrix.btn_direct_apk', { code: app.shortCode })}</span>
             </a>
             <button type="button" class="kv-btn" data-open-app="${escapeHtml(app.id)}">
-              <span>INSPECT &amp; QR</span>
+              <span>${t('matrix.btn_inspect_qr')}</span>
             </button>
           </div>
         </article>`;
@@ -407,10 +609,12 @@ function renderShortCodesDirectory() {
   const listEl = document.getElementById('shortcodes-directory-list');
   if (!listEl) return;
 
+  const currentLang = getCurrentLanguage();
   listEl.innerHTML = state.catalog.apps
     .map((app) => {
       const colorClass = METRO_TILE_CLASSES[app.id] || 'kv-tile--cobalt';
       const versionClean = String(app.version || '').replace(/^v/i, '');
+      const localizedEdition = tField(app, 'edition', currentLang);
       return `
         <article class="kv-shortcode-row">
           <div class="kv-shortcode-id">
@@ -418,23 +622,23 @@ function renderShortCodesDirectory() {
             <div>
               <h3 class="kv-shortcode-info-title">${escapeHtml(app.name.toLowerCase())}</h3>
               <p class="kv-shortcode-info-sub tabular">
-                ${escapeHtml(app.edition)} · v${escapeHtml(versionClean)} · ${escapeHtml(app.size)}
+                ${escapeHtml(localizedEdition)} · v${escapeHtml(versionClean)} · ${escapeHtml(app.size)}
               </p>
             </div>
           </div>
           <div class="kv-shortcode-btns">
             <button type="button" class="kv-btn kv-btn--emerald" data-copy-code="${escapeHtml(app.shortCode)}">
-              <span>COPY ${escapeHtml(app.shortCode)}</span>
+              <span>${t('directory.btn_copy')} ${escapeHtml(app.shortCode)}</span>
             </button>
             <a
               class="kv-btn kv-btn--primary"
               href="/api/download/${encodeURIComponent(app.id)}?type=apk"
               data-app-download="${escapeHtml(app.id)}"
             >
-              <span>DIRECT APK</span>
+              <span>${t('directory.btn_apk')}</span>
             </a>
             <button type="button" class="kv-btn" data-open-app="${escapeHtml(app.id)}">
-              <span>QR &amp; SPECS</span>
+              <span>${t('directory.btn_qr')} &amp; SPECS</span>
             </button>
           </div>
         </article>`;
@@ -446,6 +650,7 @@ function renderShortCodesDirectory() {
  * Render the Phone & Desktop Promotional & Ad Landing Portal (#pivot-panel-phoneqr)
  */
 function renderPromoPortal() {
+  const currentLang = getCurrentLanguage();
   const adsGrid = document.getElementById('promo-ads-grid');
   if (adsGrid) {
     const adPalette = ['kv-tile--cobalt', 'kv-tile--violet', 'kv-tile--teal'];
@@ -453,11 +658,14 @@ function renderPromoPortal() {
     adsGrid.innerHTML = activeAds
       .map((ad, idx) => {
         const bgClass = adPalette[idx % adPalette.length];
+        const titleLoc = tField(ad, 'title', currentLang);
+        const subLoc = tField(ad, 'subtitle', currentLang);
+        const ctaLoc = tField(ad, 'ctaText', currentLang) || t('promo.open_btn');
         return `
           <article class="kv-ad-tile ${bgClass}">
             <div>
-              <h4 class="kv-ad-title">${escapeHtml(ad.title.toLowerCase())}</h4>
-              <p class="kv-ad-subtitle">${escapeHtml(ad.subtitle)}</p>
+              <h4 class="kv-ad-title">${escapeHtml(titleLoc.toLowerCase())}</h4>
+              <p class="kv-ad-subtitle">${escapeHtml(subLoc)}</p>
             </div>
             <div class="kv-ad-footer tabular">
               <span class="kv-code-stamp">${escapeHtml(ad.badge || 'SPONSOR')} · ${Number(ad.impressions || 0).toLocaleString('en-US')} VIEWS</span>
@@ -467,7 +675,7 @@ function renderPromoPortal() {
                 data-ad-id="${escapeHtml(ad.id)}"
                 data-ad-url="${escapeHtml(ad.ctaUrl || '#metro-grid')}"
               >
-                <span>${escapeHtml(ad.ctaText || 'OPEN')}</span>
+                <span>${escapeHtml(ctaLoc)}</span>
               </button>
             </div>
           </article>`;
@@ -482,11 +690,11 @@ function renderPromoPortal() {
       if (!q) return true;
       const haystack = [
         app.name,
-        app.edition,
+        tField(app, 'edition', currentLang),
         app.shortCode,
         app.packageName,
-        app.description,
-        ...(app.presetFeatures || []),
+        tField(app, 'description', currentLang),
+        ...(currentLang === 'vi' && app.presetFeatures_vi ? app.presetFeatures_vi : (app.presetFeatures || [])),
       ]
         .join(' ')
         .toLowerCase();
@@ -497,11 +705,65 @@ function renderPromoPortal() {
       .map((app) => {
         const versionClean = String(app.version || '').replace(/^v/i, '');
         const colorClass = METRO_TILE_CLASSES[app.id] || 'kv-tile--cobalt';
+        const localizedEdition = tField(app, 'edition', currentLang);
+
+        const status = state.isTVApp ? (state.appStatuses[app.packageName] || 'NOT_INSTALLED') : null;
+        let statusBadgeHtml = '';
+        if (status === 'INSTALLED') {
+          statusBadgeHtml = `<span class="kv-app-status-badge is-installed" style="margin-left: 6px;">✓ ĐÃ CÀI</span>`;
+        } else if (status === 'UPDATE') {
+          statusBadgeHtml = `<span class="kv-app-status-badge is-update" style="margin-left: 6px;">▲ CÓ BẢN MỚI</span>`;
+        }
+
+        let actionsHtml = '';
+        if (state.isTVApp) {
+          if (status === 'INSTALLED') {
+            actionsHtml = `
+              <button type="button" class="kv-btn kv-btn--primary kv-btn--sm" data-tv-launch="${escapeHtml(app.packageName)}">[ MỞ ]</button>
+              <button type="button" class="kv-btn kv-btn--sm" data-tv-uninstall="${escapeHtml(app.packageName)}" style="color: var(--kv-crimson); border-color: var(--kv-crimson);">[ GỠ ]</button>
+              <button type="button" class="kv-btn kv-btn--sm" data-open-app="${escapeHtml(app.id)}">${t('directory.btn_qr')}</button>
+            `;
+          } else if (status === 'UPDATE') {
+            actionsHtml = `
+              <button type="button" class="kv-btn kv-btn--primary kv-btn--sm" data-tv-install="${escapeHtml(app.id)}">[ CẬP NHẬT ]</button>
+              <button type="button" class="kv-btn kv-btn--sm" data-open-app="${escapeHtml(app.id)}">${t('directory.btn_qr')}</button>
+            `;
+          } else {
+            actionsHtml = `
+              <button type="button" class="kv-btn kv-btn--primary kv-btn--sm" data-tv-install="${escapeHtml(app.id)}">[ CÀI ĐẶT ]</button>
+              <button type="button" class="kv-btn kv-btn--sm" data-open-app="${escapeHtml(app.id)}">${t('directory.btn_qr')}</button>
+            `;
+          }
+        } else {
+          actionsHtml = `
+            <a
+              class="kv-btn kv-btn--primary kv-btn--sm"
+              href="${app.id === 'kv-store' ? '/kv-store.apk' : `/api/download/${encodeURIComponent(app.id)}?type=apk`}"
+              data-app-download="${escapeHtml(app.id)}"
+            >APK</a>
+            <a
+              class="kv-btn kv-btn--sm"
+              href="/api/download/${encodeURIComponent(app.id)}?type=preset"
+              data-app-download="${escapeHtml(app.id)}"
+            >PRE-SET</a>
+            <button
+              type="button"
+              class="kv-btn kv-btn--sm"
+              data-copy-code="${escapeHtml(app.shortCode)}"
+            >${t('directory.btn_copy')} ${escapeHtml(app.shortCode)}</button>
+            <button
+              type="button"
+              class="kv-btn kv-btn--sm"
+              data-open-app="${escapeHtml(app.id)}"
+            >${t('directory.btn_qr')}</button>
+          `;
+        }
+
         return `
           <tr class="tabular">
             <td>
-              <strong>${escapeHtml(app.name)}</strong>
-              <div>${escapeHtml(app.edition)}</div>
+              <strong>${escapeHtml(app.name)}</strong>${statusBadgeHtml}
+              <div>${escapeHtml(localizedEdition)}</div>
             </td>
             <td>
               <span class="kv-code-stamp ${colorClass}">CODE ${escapeHtml(app.shortCode)}</span>
@@ -511,26 +773,7 @@ function renderPromoPortal() {
             <td>${Number(app.downloads || 0).toLocaleString('en-US')}</td>
             <td>
               <div class="kv-table-actions">
-                <a
-                  class="kv-btn kv-btn--primary kv-btn--sm"
-                  href="/api/download/${encodeURIComponent(app.id)}?type=apk"
-                  data-app-download="${escapeHtml(app.id)}"
-                >APK</a>
-                <a
-                  class="kv-btn kv-btn--sm"
-                  href="/api/download/${encodeURIComponent(app.id)}?type=preset"
-                  data-app-download="${escapeHtml(app.id)}"
-                >PRE-SET</a>
-                <button
-                  type="button"
-                  class="kv-btn kv-btn--sm"
-                  data-copy-code="${escapeHtml(app.shortCode)}"
-                >COPY ${escapeHtml(app.shortCode)}</button>
-                <button
-                  type="button"
-                  class="kv-btn kv-btn--sm"
-                  data-open-app="${escapeHtml(app.id)}"
-                >DETAILS</button>
+                ${actionsHtml}
               </div>
             </td>
           </tr>`;
@@ -543,15 +786,15 @@ function renderPromoPortal() {
  * Hydrate live tiles, telemetry pills, and lower sponsor strip from state.catalog
  */
 function hydrateLiveTilesAndStrip() {
+  const currentLang = getCurrentLanguage();
   let totalInstalls = 0;
   for (const app of state.catalog.apps) {
     totalInstalls += Number(app.downloads || 0);
     const dlEl = document.querySelector(`[data-app-downloads="${CSS.escape(app.id)}"]`);
     if (dlEl) {
       const formatted = Number(app.downloads || 0).toLocaleString('en-US');
-      dlEl.textContent = dlEl.textContent.includes('installs')
-        ? `${formatted} installs`
-        : formatted;
+      const suffix = t('tiles.installs_suffix');
+      dlEl.textContent = `${formatted} ${suffix}`;
     }
     const stampEl = document.querySelector(`[data-app-stamp="${CSS.escape(app.id)}"]`);
     if (stampEl && app.shortCode && app.size) {
@@ -561,11 +804,18 @@ function hydrateLiveTilesAndStrip() {
     if (verEl && app.version) {
       verEl.textContent = `v${String(app.version).replace(/^v/i, '')}`;
     }
+    const tileBtn = document.querySelector(`[data-app-id="${CSS.escape(app.id)}"]`);
+    if (tileBtn) {
+      const editionEl = tileBtn.querySelector('.tile-edition');
+      if (editionEl) {
+        editionEl.textContent = tField(app, 'edition', currentLang);
+      }
+    }
   }
 
   const totalEl = document.getElementById('telemetry-downloads');
   if (totalEl && totalInstalls > 0) {
-    totalEl.textContent = `${totalInstalls.toLocaleString('en-US')} TOTAL INSTALLS`;
+    totalEl.textContent = `${totalInstalls.toLocaleString('en-US')} ${t('telemetry.total_installs')}`;
   }
 
   const activeAds = (state.catalog.ads || []).filter((ad) => ad.active !== false);
@@ -574,8 +824,8 @@ function hydrateLiveTilesAndStrip() {
     const titleEl = document.getElementById('sponsor-strip-title');
     const bodyEl = document.getElementById('sponsor-strip-body');
     const statsEl = document.getElementById('sponsor-strip-stats');
-    if (titleEl) titleEl.textContent = leadAd.title.toLowerCase();
-    if (bodyEl) bodyEl.textContent = leadAd.subtitle;
+    if (titleEl) titleEl.textContent = tField(leadAd, 'title', currentLang).toLowerCase();
+    if (bodyEl) bodyEl.textContent = tField(leadAd, 'subtitle', currentLang);
     if (statsEl) {
       statsEl.textContent = `${leadAd.badge || 'SPONSOR'} · ${Number(leadAd.impressions || 0).toLocaleString('en-US')} VIEWS`;
     }
@@ -599,16 +849,28 @@ async function loadCatalog() {
           ...data,
         };
       }
+      if (data && data.suggestedLang) {
+        let hasUserOverride = false;
+        try {
+          hasUserOverride = Boolean(localStorage.getItem('kvtv_lang'));
+        } catch {}
+        const urlLang = new URLSearchParams(window.location.search).get('lang');
+        if (!hasUserOverride && !urlLang && data.suggestedLang !== getCurrentLanguage()) {
+          setLanguage(data.suggestedLang, false);
+        }
+      }
     }
   } catch {
     // Offline or standalone preview: fallback catalog stays active
   }
 
+  translateDom();
   hydrateLiveTilesAndStrip();
   renderPresetsMatrix();
   renderShortCodesDirectory();
   renderPromoPortal();
   updateDialerReadouts();
+  syncInstalledAppStatuses();
 }
 
 /**
@@ -626,6 +888,7 @@ function openAppDialog(appIdentifier) {
     banner.className = `kv-dialog-banner dialog-banner ${METRO_TILE_CLASSES[app.id] || 'kv-tile--cobalt'}`;
   }
 
+  const currentLang = getCurrentLanguage();
   const versionClean = String(app.version || '').replace(/^v/i, '');
   const titleEl = document.getElementById('metro-dialog-title');
   const editionEl = document.getElementById('metro-dialog-edition');
@@ -636,8 +899,8 @@ function openAppDialog(appIdentifier) {
   const archEl = document.getElementById('metro-dialog-arch');
 
   if (titleEl) titleEl.textContent = app.name.toLowerCase();
-  if (editionEl) editionEl.textContent = app.edition;
-  if (descEl) descEl.textContent = app.description;
+  if (editionEl) editionEl.textContent = tField(app, 'edition', currentLang);
+  if (descEl) descEl.textContent = tField(app, 'description', currentLang);
   if (codeEl) codeEl.textContent = app.shortCode;
   if (verEl) verEl.textContent = `v${versionClean} · ${app.size}`;
   if (pkgEl) pkgEl.textContent = app.packageName;
@@ -646,7 +909,10 @@ function openAppDialog(appIdentifier) {
   const featureList = document.getElementById('metro-dialog-features');
   if (featureList) {
     featureList.innerHTML = '';
-    for (const feat of app.presetFeatures || []) {
+    const feats = (currentLang === 'vi' && app.presetFeatures_vi)
+      ? app.presetFeatures_vi
+      : (app.presetFeatures || []);
+    for (const feat of feats) {
       const li = document.createElement('li');
       const bullet = document.createElement('span');
       bullet.className = `feature-bullet ${METRO_TILE_CLASSES[app.id] || 'kv-tile--cobalt'}`;
@@ -664,19 +930,111 @@ function openAppDialog(appIdentifier) {
   }
   const qrCap = document.getElementById('metro-dialog-qr-caption');
   if (qrCap) {
-    qrCap.textContent = `SCAN FOR APK · ${app.shortCode}`;
+    qrCap.textContent = t('dialog_app.qr_caption', { code: app.shortCode });
   }
 
   const apkBtn = document.getElementById('metro-dialog-apk-btn');
   const presetBtn = document.getElementById('metro-dialog-preset-btn');
   const copyBtn = document.getElementById('metro-dialog-copy-btn');
-  if (apkBtn) {
-    apkBtn.href = `/api/download/${encodeURIComponent(app.id)}?type=apk`;
-    apkBtn.setAttribute('data-app-download', app.id);
-  }
-  if (presetBtn) {
-    presetBtn.href = `/api/download/${encodeURIComponent(app.id)}?type=preset`;
-    presetBtn.setAttribute('data-app-download', app.id);
+  const uninstallBtn = document.getElementById('metro-dialog-uninstall-btn');
+
+  const downloadApkUrl = app.id === 'kv-store' ? '/kv-store.apk' : `/api/download/${encodeURIComponent(app.id)}?type=apk`;
+
+  if (state.isTVApp && window.KVTVBridge) {
+    const status =
+      state.appStatuses[app.packageName] ||
+      window.KVTVBridge.checkApp(app.packageName, Number(app.versionCode || 0));
+
+    if (status === 'INSTALLED') {
+      if (apkBtn) {
+        apkBtn.removeAttribute('href');
+        const span = apkBtn.querySelector('span');
+        if (span) span.textContent = `[ ${t('dialog_app.btn_open') || 'MỞ ỨNG DỤNG'} ]`;
+        apkBtn.onclick = (e) => {
+          e.preventDefault();
+          window.KVTVBridge.launchApp(app.packageName);
+        };
+      }
+      if (uninstallBtn) {
+        uninstallBtn.style.display = 'inline-flex';
+        const uSpan = uninstallBtn.querySelector('span');
+        if (uSpan) uSpan.textContent = `[ ${t('dialog_app.btn_uninstall') || 'GỠ CÀI ĐẶT'} ]`;
+        uninstallBtn.onclick = (e) => {
+          e.preventDefault();
+          window.KVTVBridge.uninstallApp(app.packageName);
+        };
+      }
+      if (presetBtn) {
+        presetBtn.style.display = 'inline-flex';
+        presetBtn.href = `/api/download/${encodeURIComponent(app.id)}?type=preset`;
+        const pSpan = presetBtn.querySelector('span');
+        if (pSpan) pSpan.textContent = t('dialog_app.btn_preset') || 'TẢI GÓI CẤU HÌNH (.ZIP)';
+        presetBtn.onclick = null;
+      }
+    } else if (status === 'UPDATE') {
+      if (apkBtn) {
+        apkBtn.removeAttribute('href');
+        const span = apkBtn.querySelector('span');
+        if (span) span.textContent = `[ ${t('dialog_app.btn_update') || 'CẬP NHẬT'} ]`;
+        apkBtn.onclick = (e) => {
+          e.preventDefault();
+          window.KVTVBridge.installApp(downloadApkUrl, app.name);
+        };
+      }
+      if (uninstallBtn) {
+        uninstallBtn.style.display = 'none';
+      }
+      if (presetBtn) {
+        presetBtn.style.display = 'inline-flex';
+        presetBtn.removeAttribute('href');
+        const pSpan = presetBtn.querySelector('span');
+        if (pSpan) pSpan.textContent = `[ ${t('dialog_app.btn_open') || 'MỞ BẢN HIỆN TẠI'} ]`;
+        presetBtn.onclick = (e) => {
+          e.preventDefault();
+          window.KVTVBridge.launchApp(app.packageName);
+        };
+      }
+    } else {
+      // NOT_INSTALLED
+      if (apkBtn) {
+        apkBtn.removeAttribute('href');
+        const span = apkBtn.querySelector('span');
+        if (span) span.textContent = `[ ${t('dialog_app.btn_install') || 'CÀI ĐẶT'} ]`;
+        apkBtn.onclick = (e) => {
+          e.preventDefault();
+          window.KVTVBridge.installApp(downloadApkUrl, app.name);
+        };
+      }
+      if (uninstallBtn) {
+        uninstallBtn.style.display = 'none';
+      }
+      if (presetBtn) {
+        presetBtn.style.display = 'inline-flex';
+        presetBtn.href = `/api/download/${encodeURIComponent(app.id)}?type=preset`;
+        const pSpan = presetBtn.querySelector('span');
+        if (pSpan) pSpan.textContent = t('dialog_app.btn_preset') || 'TẢI GÓI CẤU HÌNH (.ZIP)';
+        presetBtn.onclick = null;
+      }
+    }
+  } else {
+    // Normal web browser
+    if (apkBtn) {
+      apkBtn.href = downloadApkUrl;
+      apkBtn.setAttribute('data-app-download', app.id);
+      const span = apkBtn.querySelector('span');
+      if (span) span.textContent = t('dialog_app.btn_apk') || 'TẢI APK CÀI ĐẶT SẴN';
+      apkBtn.onclick = null;
+    }
+    if (presetBtn) {
+      presetBtn.href = `/api/download/${encodeURIComponent(app.id)}?type=preset`;
+      presetBtn.setAttribute('data-app-download', app.id);
+      const span = presetBtn.querySelector('span');
+      if (span) span.textContent = t('dialog_app.btn_preset') || 'TẢI GÓI CẤU HÌNH (.ZIP)';
+      presetBtn.onclick = null;
+    }
+    if (uninstallBtn) {
+      uninstallBtn.style.display = 'none';
+    }
   }
   if (copyBtn) {
     copyBtn.setAttribute('data-copy-code', app.shortCode);
@@ -697,7 +1055,7 @@ function updateDialerReadouts() {
   if (match) {
     statusText = `${match.name} · ${match.size}`;
   } else if (state.currentCode.length === 5) {
-    statusText = 'Valid codes: 88101–88105';
+    statusText = 'Valid codes: 88000, 88101–88105';
   }
 
   for (const id of ['dialer-digits', 'inline-dialer-digits']) {
@@ -904,18 +1262,17 @@ function startLiveTickers() {
     setInterval(updateClock, 15000);
   }
 
-  const csMessages = [
-    'MegaRepo + Vietsub + 1.1.1.1 DoH Ready',
-    'Auto-Selects 4K HDR10 Stream + Vietnamese Subs',
-    'Zero Manual Repo Typing · Pre-Activated Extensions',
-    'AFTVnews Downloader Short-Code: 88103',
-  ];
   let csIndex = 0;
   const csStatusEl = document.getElementById('cs-live-status');
+  if (csStatusEl) {
+    const messages = TRANSLATIONS[getCurrentLanguage()]?.tickers || TRANSLATIONS['vi'].tickers;
+    csStatusEl.textContent = messages[0];
+  }
   setInterval(() => {
     if (!csStatusEl) return;
-    csIndex = (csIndex + 1) % csMessages.length;
-    csStatusEl.textContent = csMessages[csIndex];
+    const messages = TRANSLATIONS[getCurrentLanguage()]?.tickers || TRANSLATIONS['vi'].tickers;
+    csIndex = (csIndex + 1) % messages.length;
+    csStatusEl.textContent = messages[csIndex];
   }, 3600);
 }
 
@@ -1023,8 +1380,13 @@ function bindInteractions() {
 
   const triggerDialerFetch = () => {
     const match = findApp(state.currentCode) || state.catalog.apps[0];
-    showToast(`Fetching APK for Short-Code ${match.shortCode} (${match.name})...`);
-    window.location.href = `/api/download/${encodeURIComponent(match.id)}?type=apk`;
+    const dlUrl = match.id === 'kv-store' ? '/kv-store.apk' : `/api/download/${encodeURIComponent(match.id)}?type=apk`;
+    if (state.isTVApp && window.KVTVBridge) {
+      window.KVTVBridge.installApp(dlUrl, match.name);
+    } else {
+      showToast(t('toasts.fetching', { code: match.shortCode }));
+      window.location.href = dlUrl;
+    }
   };
 
   document.getElementById('dialer-go-apk-btn')?.addEventListener('click', triggerDialerFetch);
@@ -1069,6 +1431,35 @@ function bindInteractions() {
     const target = e.target instanceof Element ? e.target : null;
     if (!target) return;
 
+    const tvInstallBtn = target.closest('[data-tv-install]');
+    if (tvInstallBtn) {
+      const appId = tvInstallBtn.getAttribute('data-tv-install');
+      const app = findApp(appId);
+      if (app && window.KVTVBridge) {
+        const url = app.id === 'kv-store' ? '/kv-store.apk' : `/api/download/${encodeURIComponent(app.id)}?type=apk`;
+        window.KVTVBridge.installApp(url, app.name);
+      }
+      return;
+    }
+
+    const tvLaunchBtn = target.closest('[data-tv-launch]');
+    if (tvLaunchBtn) {
+      const pkg = tvLaunchBtn.getAttribute('data-tv-launch');
+      if (pkg && window.KVTVBridge) {
+        window.KVTVBridge.launchApp(pkg);
+      }
+      return;
+    }
+
+    const tvUninstallBtn = target.closest('[data-tv-uninstall]');
+    if (tvUninstallBtn) {
+      const pkg = tvUninstallBtn.getAttribute('data-tv-uninstall');
+      if (pkg && window.KVTVBridge) {
+        window.KVTVBridge.uninstallApp(pkg);
+      }
+      return;
+    }
+
     const openAppBtn = target.closest('[data-open-app]');
     if (openAppBtn) {
       openAppDialog(openAppBtn.getAttribute('data-open-app'));
@@ -1080,7 +1471,7 @@ function bindInteractions() {
       const code = copyBtn.getAttribute('data-copy-code') || '88103';
       try {
         await navigator.clipboard.writeText(code);
-        showToast(`Copied Short-Code ${code} to clipboard`);
+        showToast(t('toasts.copied', { code }));
       } catch {
         showToast(`Short-Code: ${code}`);
       }
@@ -1104,7 +1495,7 @@ function bindInteractions() {
         app.downloads = Number(app.downloads || 0) + 1;
         hydrateLiveTilesAndStrip();
         renderPromoPortal();
-        showToast(`Starting download for ${app.name} (${app.shortCode})...`);
+        showToast(t('toasts.starting_dl', { name: app.name, code: app.shortCode }));
       }
     }
   });
@@ -1185,12 +1576,70 @@ function bindInteractions() {
       }
     });
   }
+
+  // 11. KV-Store TV App Guide Modal & Code Copy
+  document.getElementById('kv-banner-guide-btn')?.addEventListener('click', () => {
+    document.getElementById('metro-guide-dialog')?.showModal();
+  });
+
+  document.getElementById('guide-copy-code-btn')?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText('88000');
+      showToast('Đã chép mã 88000 vào bộ nhớ tạm');
+    } catch {
+      showToast('Mã Downloader: 88000');
+    }
+  });
+
+  // 12. TV App Lifecycle Handlers
+  window.onKVTVResume = () => {
+    syncInstalledAppStatuses();
+  };
+
+  window.addEventListener('focus', () => {
+    if (state.isTVApp) {
+      syncInstalledAppStatuses();
+    }
+  });
+  // 13. Metro Language Switcher Buttons
+  const btnVi = document.getElementById('lang-btn-vi');
+  const btnEn = document.getElementById('lang-btn-en');
+  btnVi?.addEventListener('click', () => {
+    if (getCurrentLanguage() !== 'vi') {
+      setLanguage('vi');
+      showToast(t('toasts.switched_vi'));
+    }
+  });
+  btnEn?.addEventListener('click', () => {
+    if (getCurrentLanguage() !== 'en') {
+      setLanguage('en');
+      showToast(t('toasts.switched_en'));
+    }
+  });
 }
 
 function initApp() {
+  const initialLang = detectInitialLanguage();
+  setLanguage(initialLang, false);
+  translateDom();
+
   initDialogLightDismiss();
   startLiveTickers();
   bindInteractions();
+
+  onLanguageChange(() => {
+    translateDom();
+    hydrateLiveTilesAndStrip();
+    renderPresetsMatrix();
+    renderShortCodesDirectory();
+    renderPromoPortal();
+    updateDialerReadouts();
+    const deckTextEl = document.getElementById('panorama-deck-text');
+    if (deckTextEl) {
+      const key = `decks.${state.pivot.replace(/-/g, '')}`;
+      deckTextEl.innerHTML = t(key);
+    }
+  });
 
   const initialPivot = resolveInitialPivot();
   activatePivot(initialPivot, { updateUrl: false, focusTarget: false });

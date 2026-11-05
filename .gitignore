@@ -13,3 +13,9 @@ yarn-error.log*
 uploads/*.apk
 uploads/*.zip
 uploads/*.backup
+
+# Android build outputs & local properties
+android/.gradle/
+android/build/
+android/local.properties
+

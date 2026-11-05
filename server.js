@@ -718,12 +718,21 @@ const server = http.createServer(async (req, res) => {
         saveStore(false);
       }
 
+      const cfCountry = String(req.headers['cf-ipcountry'] || '').toUpperCase();
+      const xCountry = String(req.headers['x-country-code'] || '').toUpperCase();
+      const acceptLang = String(req.headers['accept-language'] || '').toLowerCase();
+      const isVietnam = cfCountry === 'VN' || xCountry === 'VN';
+      const prefersVietnamese = isVietnam || /vi([-_][a-zA-Z]{2})?|vi-vn/i.test(acceptLang);
+      const suggestedLang = prefersVietnamese ? 'vi' : 'en';
+
       sendJson(req, res, 200, {
         storeInfo: store.storeInfo || {
           name: 'KV-TV App Store',
           domain: 'https://tv.vndns.net',
           downloaderCodePrefix: '88',
         },
+        suggestedLang,
+        clientCountry: cfCountry || xCountry || 'UNKNOWN',
         apps: store.apps,
         ads: store.ads.filter((a) => a.active !== false),
         categories: store.categories || [
@@ -734,6 +743,74 @@ const server = http.createServer(async (req, res) => {
           'Video & Music',
         ],
       });
+      return;
+    }
+
+    // 2.5 Dedicated /kv-store.apk and /api/download/kv-store endpoint
+    if ((method === 'GET' || method === 'HEAD') && (pathname === '/kv-store.apk' || pathname === '/api/download/kv-store')) {
+      const app = store.apps.find((a) => a.id === 'kv-store') || {
+        id: 'kv-store',
+        name: 'KV-Store TV',
+        shortCode: '88000',
+        downloads: 8800,
+        apkFileName: 'kv-store.apk',
+      };
+
+      const deviceType = detectDeviceType(req, searchParams);
+      if (method === 'GET') {
+        app.downloads = Number(app.downloads || 0) + 1;
+        const bucket = getTodayAnalyticsBucket();
+        bucket.downloads += 1;
+        recordTelemetryEvent({
+          event: 'download',
+          appId: 'kv-store',
+          appName: 'KV-Store TV (apk)',
+          deviceType,
+          ip: getClientIp(req),
+          userAgent: req.headers['user-agent'],
+        });
+        saveStore(false);
+      }
+
+      const possiblePaths = [
+        path.join(PUBLIC_DIR, 'kv-store.apk'),
+        path.join(UPLOADS_DIR, 'kv-store.apk'),
+      ];
+      const apkFilePath = possiblePaths.find((p) => fs.existsSync(p) && fs.statSync(p).isFile());
+
+      if (apkFilePath) {
+        const stat = fs.statSync(apkFilePath);
+        res.writeHead(200, {
+          'Content-Type': 'application/vnd.android.package-archive',
+          'Content-Disposition': 'attachment; filename="kv-store.apk"',
+          'Content-Length': String(stat.size),
+          'Cache-Control': 'no-store',
+        });
+        if (method === 'HEAD') {
+          res.end();
+          return;
+        }
+        fs.createReadStream(apkFilePath).pipe(res);
+        return;
+      }
+    }
+
+    // Direct 5-digit shortcode routes for Downloader app (e.g. /88000 or /88103)
+    if ((method === 'GET' || method === 'HEAD') && /^\/88\d{3}\/?$/.test(pathname)) {
+      const directCode = pathname.replace(/^\//, '').replace(/\/$/, '');
+      if (directCode === '88000') {
+        res.writeHead(302, {
+          Location: '/kv-store.apk',
+          'Cache-Control': 'no-store',
+        });
+        res.end();
+        return;
+      }
+      res.writeHead(302, {
+        Location: `/go/${directCode}`,
+        'Cache-Control': 'no-store',
+      });
+      res.end();
       return;
     }
 
@@ -748,14 +825,14 @@ const server = http.createServer(async (req, res) => {
       if (!app) {
         sendJson(req, res, 404, {
           found: false,
-          error: `No app found for Downloader code "${code}". Valid codes: 88101–88105.`,
+          error: `No app found for Downloader code "${code}". Valid codes: 88000, 88101–88105.`,
         });
         return;
       }
       sendJson(req, res, 200, {
         found: true,
         app,
-        downloadUrl: `/api/download/${app.id}`,
+        downloadUrl: app.id === 'kv-store' ? '/kv-store.apk' : `/api/download/${app.id}`,
         presetUrl: `/api/download/${app.id}?type=preset`,
       });
       return;
@@ -764,6 +841,14 @@ const server = http.createServer(async (req, res) => {
     // 4. GET /go/:shortCode -> 302 redirect to /api/download/:appId
     if ((method === 'GET' || method === 'HEAD') && pathname.startsWith('/go/')) {
       const code = decodeURIComponent(pathname.slice('/go/'.length)).trim();
+      if (code === '88000' || code.toLowerCase() === 'kv-store') {
+        res.writeHead(302, {
+          Location: '/kv-store.apk',
+          'Cache-Control': 'no-store',
+        });
+        res.end();
+        return;
+      }
       const app = store.apps.find(
         (a) =>
           String(a.shortCode).toLowerCase() === code.toLowerCase() ||
@@ -820,8 +905,12 @@ const server = http.createServer(async (req, res) => {
       const uploadedName =
         downloadType === 'preset' ? app.presetFileName : app.apkFileName;
       if (uploadedName) {
-        const uploadedPath = path.join(UPLOADS_DIR, path.basename(uploadedName));
-        if (fs.existsSync(uploadedPath) && fs.statSync(uploadedPath).isFile()) {
+        const possibleUploadPaths = [
+          path.join(UPLOADS_DIR, path.basename(uploadedName)),
+          path.join(PUBLIC_DIR, path.basename(uploadedName)),
+        ];
+        const uploadedPath = possibleUploadPaths.find((p) => fs.existsSync(p) && fs.statSync(p).isFile());
+        if (uploadedPath) {
           const stat = fs.statSync(uploadedPath);
           const cType =
             downloadType === 'preset'
