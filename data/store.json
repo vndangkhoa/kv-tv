@@ -206,11 +206,11 @@
     }
   ],
   "admin": {
-    "username": "admin",
-    "passwordHash": "pbkdf2$100000$kvtv2026salt01$3a9c0d968100ce74dae5666d6be80c428d14faca632552a633269953d80d1e50",
+    "username": "vndangkhoa",
+    "passwordHash": "pbkdf2$100000$eb6888b79c7af6d5aa53af673ad2da51$9cbf57fb89070fd4553fe13e1ac0e6bf911bb8d9b80f9611a00095f3e62dae24",
     "totpSecret": "KVKVTVSTORETWOFASECRETBASE32AABB",
     "totpEnabled": true,
-    "updatedAt": "2026-11-05T03:48:10.908Z"
+    "updatedAt": "2026-11-05T05:28:35.105Z"
   },
   "analytics": {
     "daily": [

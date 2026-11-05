@@ -1,0 +1,32 @@
+{
+  "datastore": {
+    "_Bool": {},
+    "_Int": {},
+    "_String": {
+      "REPOSITORIES_KEY": "[{\"iconUrl\": \"https://raw.githubusercontent.com/self-similarity/MegaRepo/builds/icon.png\", \"name\": \"Mega repository\", \"url\": \"https://raw.githubusercontent.com/self-similarity/MegaRepo/builds/repo.json\", \"description\": \"Add all repositories easily.\"}, {\"iconUrl\": null, \"name\": \"Vietnamese Extension\", \"url\": \"https://gitlab.com/tearrs/cloudstream-vietnamese/-/raw/main/repo.json\", \"description\": \"https://t.me/cloudstream_extension_vn\"}]"
+    },
+    "_Float": {},
+    "_Long": {},
+    "_StringSet": {}
+  },
+  "settings": {
+    "_Bool": {
+      "auto_update": true,
+      "auto_update_plugins": true,
+      "auto_rotate_video_key": true
+    },
+    "_Int": {},
+    "_String": {
+      "dns_key": "2",
+      "filter_sub_lang_key": "vi"
+    },
+    "_Float": {},
+    "_Long": {},
+    "_StringSet": {
+      "provider_lang_key": [
+        "vi",
+        "en"
+      ]
+    }
+  }
+}

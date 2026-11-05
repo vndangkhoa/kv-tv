@@ -762,7 +762,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     // 4. GET /go/:shortCode -> 302 redirect to /api/download/:appId
-    if (method === 'GET' && pathname.startsWith('/go/')) {
+    if ((method === 'GET' || method === 'HEAD') && pathname.startsWith('/go/')) {
       const code = decodeURIComponent(pathname.slice('/go/'.length)).trim();
       const app = store.apps.find(
         (a) =>
@@ -785,7 +785,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     // 5. GET /api/download/:appId?type=apk|preset
-    if (method === 'GET' && pathname.startsWith('/api/download/')) {
+    if ((method === 'GET' || method === 'HEAD') && pathname.startsWith('/api/download/')) {
       const rawId = decodeURIComponent(pathname.slice('/api/download/'.length)).trim();
       const app = store.apps.find(
         (a) =>
@@ -800,19 +800,21 @@ const server = http.createServer(async (req, res) => {
       const downloadType = searchParams.get('type') === 'preset' ? 'preset' : 'apk';
       const deviceType = detectDeviceType(req, searchParams);
 
-      app.downloads = Number(app.downloads || 0) + 1;
-      const bucket = getTodayAnalyticsBucket();
-      bucket.downloads += 1;
+      if (method === 'GET') {
+        app.downloads = Number(app.downloads || 0) + 1;
+        const bucket = getTodayAnalyticsBucket();
+        bucket.downloads += 1;
 
-      recordTelemetryEvent({
-        event: 'download',
-        appId: app.id,
-        appName: `${app.name} (${downloadType})`,
-        deviceType,
-        ip: getClientIp(req),
-        userAgent: req.headers['user-agent'],
-      });
-      saveStore(false);
+        recordTelemetryEvent({
+          event: 'download',
+          appId: app.id,
+          appName: `${app.name} (${downloadType})`,
+          deviceType,
+          ip: getClientIp(req),
+          userAgent: req.headers['user-agent'],
+        });
+        saveStore(false);
+      }
 
       // Check if an uploaded binary exists on disk
       const uploadedName =
@@ -821,16 +823,21 @@ const server = http.createServer(async (req, res) => {
         const uploadedPath = path.join(UPLOADS_DIR, path.basename(uploadedName));
         if (fs.existsSync(uploadedPath) && fs.statSync(uploadedPath).isFile()) {
           const stat = fs.statSync(uploadedPath);
+          const cType =
+            downloadType === 'preset'
+              ? (uploadedName.endsWith('.json') ? 'application/json' : 'application/zip')
+              : 'application/vnd.android.package-archive';
           res.writeHead(200, {
-            'Content-Type':
-              downloadType === 'preset'
-                ? 'application/zip'
-                : 'application/vnd.android.package-archive',
+            'Content-Type': cType,
             'Content-Disposition': `attachment; filename="${path.basename(uploadedName)}"`,
             'Content-Length': String(stat.size),
             'Cache-Control': 'no-store',
             'X-KVTV-SHA256': app.sha256 || '',
           });
+          if (method === 'HEAD') {
+            res.end();
+            return;
+          }
           fs.createReadStream(uploadedPath).pipe(res);
           return;
         }
@@ -971,7 +978,7 @@ const server = http.createServer(async (req, res) => {
         loginAttempts.set(ip, prev);
         sendJson(req, res, 401, {
           ok: false,
-          error: 'Invalid username or password (default local password: kvtv2026)',
+          error: 'Invalid username or password',
         });
         return;
       }

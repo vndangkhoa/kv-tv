@@ -15,8 +15,8 @@ services:
       - PORT=3456
       - TZ=Asia/Ho_Chi_Minh
       - PUBLIC_BASE_URL=${PUBLIC_BASE_URL:-https://tv.vndns.net}
-      - ADMIN_DEFAULT_USER=${ADMIN_DEFAULT_USER:-admin}
-      - ADMIN_DEFAULT_PASS=${ADMIN_DEFAULT_PASS:-kvtv2026}
+      - ADMIN_DEFAULT_USER=${ADMIN_DEFAULT_USER:-vndangkhoa}
+      - ADMIN_DEFAULT_PASS=${ADMIN_DEFAULT_PASS:-thieugia}
     volumes:
       # =========================================================================
       # PERSISTENT HOST BIND-MOUNTS (ZERO-REBUILD APK & CATALOG UPDATES)
