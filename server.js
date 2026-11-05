@@ -26,15 +26,219 @@ const PORT = Number(process.env.PORT || 3456);
 const HOST = process.env.HOST || '0.0.0.0';
 const PUBLIC_DIR = path.join(__dirname, 'public');
 const MAX_UPLOAD_BYTES = 512 * 1024 * 1024; // 512 MB max APK upload
-const MAX_JSON_BYTES = 50 * 1024 * 1024; // 50 MB max JSON body
+const MAX_JSON_BYTES = 1 * 1024 * 1024; // 1 MB max JSON body
+const MAX_RATE_KEYS = 10000;
+const MAX_SESSION_ENTRIES = 1000;
+const ANALYTICS_DEDUP_TTL_MS = 3 * 60 * 1000; // 3 minutes
 
 // Load or seed persistent store on boot
 let store = ensureSeeded(false);
 
-// Active admin sessions & temporary 2FA challenges
+// Active admin sessions, temporary 2FA challenges, and bounded rate-limit / security state
 const adminSessions = new Map(); // token -> { username, createdAt, expiresAt }
-const temp2faTokens = new Map(); // tempToken -> { username, createdAt, expiresAt }
+const temp2faTokens = new Map(); // tempToken -> { username, createdAt, expiresAt, failedAttempts }
+const revokedTokens = new Set(); // invalidated/consumed temp2fa or session tokens
 const loginAttempts = new Map(); // ip -> { count, resetAt }
+const verify2faAttempts = new Map(); // ip -> { count, resetAt }
+const publicApiRateMap = new Map(); // ip -> { count, resetAt }
+const adClickRateMap = new Map(); // ip -> { count, resetAt }
+const apkDownloadRateMap = new Map(); // ip -> { count, resetAt }
+const activeStreamsByIp = new Map(); // ip -> number of concurrent GET APK streams
+const recentAnalyticsEvents = new Map(); // key -> expiresAt
+
+const SECURITY_HEADERS = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'SAMEORIGIN',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=()',
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+  'Content-Security-Policy':
+    "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://tv.vndns.net https://tv.khoavo.vndns.net https://git.khoavo.myds.me; frame-ancestors 'self'; base-uri 'self'",
+};
+
+const TRUSTED_ADMIN_ORIGINS = new Set([
+  'https://tv.vndns.net',
+  'https://tv.khoavo.vndns.net',
+  'http://localhost:3456',
+  'http://127.0.0.1:3456',
+  'http://localhost:3457',
+  'http://127.0.0.1:3457',
+]);
+
+/**
+ * Resolve CORS Access-Control-Allow-Origin header value (strict for /api/admin/*).
+ * @param {http.IncomingMessage} req
+ * @returns {string}
+ */
+function resolveCorsOrigin(req) {
+  const rawUrl = String(req.url || '');
+  if (rawUrl.startsWith('/api/admin/') || rawUrl === '/api/admin') {
+    const reqOrigin = String(req.headers.origin || '').trim();
+    if (reqOrigin && TRUSTED_ADMIN_ORIGINS.has(reqOrigin)) {
+      return reqOrigin;
+    }
+    return 'https://tv.vndns.net';
+  }
+  return '*';
+}
+
+/**
+ * Add a token to the bounded `revokedTokens` Set so stateless HMAC fallback cannot reuse it.
+ * @param {string} token
+ */
+function addRevokedToken(token) {
+  if (!token) return;
+  if (revokedTokens.size >= MAX_RATE_KEYS && !revokedTokens.has(token)) {
+    const oldest = revokedTokens.values().next().value;
+    if (oldest !== undefined) revokedTokens.delete(oldest);
+  }
+  revokedTokens.add(token);
+}
+
+/**
+ * Insert an entry into a bounded session/token Map (`MAX_SESSION_ENTRIES = 1000`),
+ * evicting expired or oldest entries when full.
+ * @param {Map} map
+ * @param {string} key
+ * @param {object} value
+ * @param {number} [maxEntries=MAX_SESSION_ENTRIES]
+ */
+function setBoundedSession(map, key, value, maxEntries = MAX_SESSION_ENTRIES) {
+  const now = Date.now();
+  if (map.size >= maxEntries && !map.has(key)) {
+    for (const [k, v] of map) {
+      if (!v || now > v.expiresAt) {
+        map.delete(k);
+      }
+    }
+    if (map.size >= maxEntries) {
+      const oldestKey = map.keys().next().value;
+      if (oldestKey !== undefined) {
+        map.delete(oldestKey);
+      }
+    }
+  }
+  map.set(key, value);
+}
+
+/**
+ * Bounded rate-limiter helper with `MAX_RATE_KEYS = 10000`.
+ * Evicts expired or oldest keys when full.
+ * @param {Map<string, { count: number, resetAt: number }>} map
+ * @param {string} key
+ * @param {number} maxRequests
+ * @param {number} windowMs
+ * @returns {{ allowed: boolean, count: number, remaining: number, retryAfterSec: number, resetAt: number }}
+ */
+function checkRateLimit(map, key, maxRequests, windowMs) {
+  const now = Date.now();
+  let entry = map.get(key);
+  if (!entry || now >= entry.resetAt) {
+    if (map.size >= MAX_RATE_KEYS && !map.has(key)) {
+      for (const [k, v] of map) {
+        if (!v || now >= v.resetAt) {
+          map.delete(k);
+        }
+      }
+      if (map.size >= MAX_RATE_KEYS) {
+        const oldestKey = map.keys().next().value;
+        if (oldestKey !== undefined) {
+          map.delete(oldestKey);
+        }
+      }
+    }
+    entry = { count: 1, resetAt: now + windowMs };
+    map.set(key, entry);
+    return {
+      allowed: true,
+      count: 1,
+      remaining: Math.max(0, maxRequests - 1),
+      retryAfterSec: Math.max(1, Math.ceil(windowMs / 1000)),
+      resetAt: entry.resetAt,
+    };
+  }
+
+  entry.count += 1;
+  const retryAfterSec = Math.max(1, Math.ceil((entry.resetAt - now) / 1000));
+  if (entry.count > maxRequests) {
+    return {
+      allowed: false,
+      count: entry.count,
+      remaining: 0,
+      retryAfterSec,
+      resetAt: entry.resetAt,
+    };
+  }
+
+  return {
+    allowed: true,
+    count: entry.count,
+    remaining: Math.max(0, maxRequests - entry.count),
+    retryAfterSec,
+    resetAt: entry.resetAt,
+  };
+}
+
+/**
+ * Deduplicate analytics/telemetry counter increments per non-loopback IP within a 3-minute TTL window.
+ * @param {string} ip
+ * @param {string} eventKey
+ * @param {number} [ttlMs=ANALYTICS_DEDUP_TTL_MS]
+ * @returns {boolean}
+ */
+function shouldRecordAnalyticsEvent(ip, eventKey, ttlMs = ANALYTICS_DEDUP_TTL_MS) {
+  if (!ip || ip === '127.0.0.1' || ip === '::1') {
+    return true;
+  }
+  const now = Date.now();
+  const expiresAt = recentAnalyticsEvents.get(eventKey);
+  if (expiresAt && now < expiresAt) {
+    return false;
+  }
+  if (recentAnalyticsEvents.size >= MAX_RATE_KEYS && !recentAnalyticsEvents.has(eventKey)) {
+    for (const [k, exp] of recentAnalyticsEvents) {
+      if (now >= exp) {
+        recentAnalyticsEvents.delete(k);
+      }
+    }
+    if (recentAnalyticsEvents.size >= MAX_RATE_KEYS) {
+      const oldestKey = recentAnalyticsEvents.keys().next().value;
+      if (oldestKey !== undefined) {
+        recentAnalyticsEvents.delete(oldestKey);
+      }
+    }
+  }
+  recentAnalyticsEvents.set(eventKey, now + ttlMs);
+  return true;
+}
+
+// Periodic cleanup of expired rate-limit, session, and analytics deduplication keys
+setInterval(() => {
+  const now = Date.now();
+  for (const [k, v] of adminSessions) {
+    if (!v || now > v.expiresAt) adminSessions.delete(k);
+  }
+  for (const [k, v] of temp2faTokens) {
+    if (!v || now > v.expiresAt) {
+      temp2faTokens.delete(k);
+      addRevokedToken(k);
+    }
+  }
+  for (const map of [
+    loginAttempts,
+    verify2faAttempts,
+    publicApiRateMap,
+    adClickRateMap,
+    apkDownloadRateMap,
+  ]) {
+    for (const [k, v] of map) {
+      if (!v || now >= v.resetAt) map.delete(k);
+    }
+  }
+  for (const [k, exp] of recentAnalyticsEvents) {
+    if (now >= exp) recentAnalyticsEvents.delete(k);
+  }
+}, 60000).unref();
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -117,20 +321,44 @@ function formatBytes(bytes) {
 }
 
 /**
- * Extract client IP from reverse proxy headers or socket.
+ * Normalize an IP address (stripping `::ffff:` IPv4-mapped IPv6 prefix and capping at 64 chars).
+ * @param {string} rawIp
+ * @returns {string}
+ */
+function normalizeClientIp(rawIp) {
+  let ip = String(rawIp || '').trim();
+  if (ip.toLowerCase().startsWith('::ffff:')) {
+    ip = ip.slice(7);
+  }
+  return ip.slice(0, 64) || '127.0.0.1';
+}
+
+/**
+ * Extract trusted client IP preferring `cf-connecting-ip`, then `x-real-ip`,
+ * then first valid IP in `x-forwarded-for`, falling back to `req.socket?.remoteAddress || '127.0.0.1'`.
  * @param {http.IncomingMessage} req
  * @returns {string}
  */
 function getClientIp(req) {
-  const forwarded = req.headers['x-forwarded-for'];
-  if (typeof forwarded === 'string' && forwarded.trim()) {
-    return forwarded.split(',')[0].trim();
+  const cfIp = req.headers['cf-connecting-ip'];
+  if (typeof cfIp === 'string' && cfIp.trim()) {
+    return normalizeClientIp(cfIp.split(',')[0]);
   }
   const realIp = req.headers['x-real-ip'];
   if (typeof realIp === 'string' && realIp.trim()) {
-    return realIp.trim();
+    return normalizeClientIp(realIp.split(',')[0]);
   }
-  return req.socket?.remoteAddress || '127.0.0.1';
+  const forwarded = req.headers['x-forwarded-for'];
+  if (typeof forwarded === 'string' && forwarded.trim()) {
+    const firstIp = forwarded
+      .split(',')
+      .map((s) => s.trim())
+      .find(Boolean);
+    if (firstIp) {
+      return normalizeClientIp(firstIp);
+    }
+  }
+  return normalizeClientIp(req.socket?.remoteAddress || '127.0.0.1');
 }
 
 /**
@@ -214,22 +442,28 @@ function recordTelemetryEvent(entry) {
  * @param {http.ServerResponse} res
  * @param {number} statusCode
  * @param {object} payload
+ * @param {object} [extraHeaders={}]
  */
-function sendJson(req, res, statusCode, payload) {
+function sendJson(req, res, statusCode, payload, extraHeaders = {}) {
   const jsonStr = JSON.stringify(payload);
   const acceptEncoding = String(req.headers['accept-encoding'] || '');
   const isHead = (req.method || 'GET').toUpperCase() === 'HEAD';
+  const corsOrigin = resolveCorsOrigin(req);
   const headers = {
     'Content-Type': 'application/json; charset=utf-8',
     'Cache-Control': 'no-store, no-cache, must-revalidate',
-    'X-Content-Type-Options': 'nosniff',
-    'Access-Control-Allow-Origin': '*',
+    ...SECURITY_HEADERS,
+    'Access-Control-Allow-Origin': corsOrigin,
     'Access-Control-Allow-Headers':
       'Content-Type, Authorization, X-Admin-Token, X-File-Name, X-Upload-Type, Range',
     'Access-Control-Allow-Methods': 'GET, HEAD, POST, PUT, DELETE, OPTIONS',
     'Access-Control-Expose-Headers':
       'Content-Length, Content-Range, Accept-Ranges, Content-Disposition, X-Download-Source, X-Backup-Url, X-KVTV-SHA256',
+    ...extraHeaders,
   };
+  if (corsOrigin !== '*') {
+    headers.Vary = 'Origin';
+  }
 
   if (!isHead && jsonStr.length > 1024 && acceptEncoding.includes('gzip')) {
     const compressed = zlib.gzipSync(Buffer.from(jsonStr, 'utf8'));
@@ -302,6 +536,16 @@ async function readJsonBody(req) {
 }
 
 /**
+ * Resolve dedicated HMAC signing key for session and temporary 2FA tokens.
+ * @returns {string}
+ */
+function getHmacSecret() {
+  return `${process.env.SESSION_HMAC_SECRET || 'kvtv-prod-hmac'}:${
+    store.admin.passwordHash || 'kvtv-secret'
+  }`;
+}
+
+/**
  * Create a signed session token or temp token.
  * @param {string} username
  * @param {'session'|'temp2fa'} kind
@@ -314,15 +558,20 @@ function createAuthToken(username, kind = 'session', ttlMs = 12 * 3600 * 1000) {
   const nonce = crypto.randomBytes(12).toString('hex');
   const payload = `${kind}:${username}:${expiresAt}:${nonce}`;
   const sig = crypto
-    .createHmac('sha256', store.admin.passwordHash || 'kvtv-secret')
+    .createHmac('sha256', getHmacSecret())
     .update(payload)
     .digest('hex');
   const token = Buffer.from(`${payload}:${sig}`).toString('base64url');
 
   if (kind === 'session') {
-    adminSessions.set(token, { username, createdAt: now, expiresAt });
+    setBoundedSession(adminSessions, token, { username, createdAt: now, expiresAt });
   } else {
-    temp2faTokens.set(token, { username, createdAt: now, expiresAt });
+    setBoundedSession(temp2faTokens, token, {
+      username,
+      createdAt: now,
+      expiresAt,
+      failedAttempts: 0,
+    });
   }
   return token;
 }
@@ -335,12 +584,16 @@ function createAuthToken(username, kind = 'session', ttlMs = 12 * 3600 * 1000) {
  */
 function verifyAuthToken(token, expectedKind = 'session') {
   if (!token || typeof token !== 'string') return false;
+  if (revokedTokens.has(token)) return false;
 
   const map = expectedKind === 'session' ? adminSessions : temp2faTokens;
   const cached = map.get(token);
   if (cached) {
     if (Date.now() > cached.expiresAt) {
       map.delete(token);
+      if (expectedKind === 'temp2fa') {
+        addRevokedToken(token);
+      }
       return false;
     }
     return true;
@@ -358,10 +611,13 @@ function verifyAuthToken(token, expectedKind = 'session') {
 
     const payload = `${kind}:${username}:${expiresAtStr}:${nonce}`;
     const expectedSig = crypto
-      .createHmac('sha256', store.admin.passwordHash || 'kvtv-secret')
+      .createHmac('sha256', getHmacSecret())
       .update(payload)
       .digest('hex');
-    return crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expectedSig));
+    const sigBuf = Buffer.from(sig);
+    const expectedBuf = Buffer.from(expectedSig);
+    if (sigBuf.length !== expectedBuf.length) return false;
+    return crypto.timingSafeEqual(sigBuf, expectedBuf);
   } catch {
     return false;
   }
@@ -895,7 +1151,7 @@ function serveFileWithRange(req, res, filePath, extraHeaders = {}) {
       'Content-Type': contentType,
       'Cache-Control': cacheControl,
       'Accept-Ranges': 'bytes',
-      'X-Content-Type-Options': 'nosniff',
+      ...SECURITY_HEADERS,
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Expose-Headers':
         'Content-Length, Content-Range, Accept-Ranges, Content-Disposition, X-Download-Source, X-Backup-Url, X-KVTV-SHA256',
@@ -1222,6 +1478,8 @@ function streamFromBackupWithCache(req, res, app, backupUrl, fileName) {
  */
 function handleApkDownload(req, res, app, searchParams, options = {}) {
   const method = (req.method || 'GET').toUpperCase();
+  const ip = getClientIp(req);
+  const isLoopback = ip === '127.0.0.1' || ip === '::1';
   const fileName = getCanonicalApkFileName(app);
   const backupUrl = getBackupApkUrl(app);
   const source = String(searchParams.get('source') || '').toLowerCase();
@@ -1230,7 +1488,55 @@ function handleApkDownload(req, res, app, searchParams, options = {}) {
   const isInitialGet =
     method === 'GET' && (!rangeHeader || /^bytes=0-/i.test(rangeHeader));
 
-  if (isInitialGet && options.trackDownload !== false) {
+  // Tier 3 — Concurrent APK stream protection & initial GET download rate limit
+  if (method === 'GET' && !isLoopback) {
+    const activeCount = activeStreamsByIp.get(ip) || 0;
+    if (activeCount >= 6) {
+      sendJson(
+        req,
+        res,
+        429,
+        { ok: false, error: 'Too Many Concurrent Downloads (max 6 per IP)' },
+        { 'Retry-After': '15' }
+      );
+      return;
+    }
+
+    if (isInitialGet) {
+      const dlRate = checkRateLimit(apkDownloadRateMap, ip, 30, 5 * 60 * 1000);
+      if (!dlRate.allowed) {
+        sendJson(
+          req,
+          res,
+          429,
+          { ok: false, error: 'Too many APK downloads. Please wait a few minutes.' },
+          { 'Retry-After': String(dlRate.retryAfterSec) }
+        );
+        return;
+      }
+    }
+
+    activeStreamsByIp.set(ip, activeCount + 1);
+    let streamReleased = false;
+    const releaseStream = () => {
+      if (streamReleased) return;
+      streamReleased = true;
+      const cur = activeStreamsByIp.get(ip) || 0;
+      if (cur <= 1) {
+        activeStreamsByIp.delete(ip);
+      } else {
+        activeStreamsByIp.set(ip, cur - 1);
+      }
+    };
+    res.on('close', releaseStream);
+    res.on('finish', releaseStream);
+  }
+
+  if (
+    isInitialGet &&
+    options.trackDownload !== false &&
+    shouldRecordAnalyticsEvent(ip, `dl:${ip}:${app.id}`)
+  ) {
     const deviceType = detectDeviceType(req, searchParams);
     app.downloads = Number(app.downloads || 0) + 1;
     const bucket = getTodayAnalyticsBucket();
@@ -1240,7 +1546,7 @@ function handleApkDownload(req, res, app, searchParams, options = {}) {
       appId: app.id,
       appName: `${app.name} (apk)`,
       deviceType,
-      ip: getClientIp(req),
+      ip,
       userAgent: req.headers['user-agent'],
     });
     saveStore(false);
@@ -1335,21 +1641,51 @@ function handleApkDownload(req, res, app, searchParams, options = {}) {
 const server = http.createServer(async (req, res) => {
   try {
     const method = (req.method || 'GET').toUpperCase();
-    const parsedUrl = new URL(req.url || '/', `http://${req.headers.host || 'localhost'}`);
+    const rawUrl = String(req.url || '/');
+    const parsedUrl = new URL(rawUrl, `http://${req.headers.host || 'localhost'}`);
     const pathname = parsedUrl.pathname;
     const searchParams = parsedUrl.searchParams;
 
     // Handle CORS preflight
     if (method === 'OPTIONS') {
-      res.writeHead(204, {
-        'Access-Control-Allow-Origin': '*',
+      const corsOrigin = resolveCorsOrigin(req);
+      const preflightHeaders = {
+        ...SECURITY_HEADERS,
+        'Access-Control-Allow-Origin': corsOrigin,
         'Access-Control-Allow-Headers':
           'Content-Type, Authorization, X-Admin-Token, X-File-Name, X-Upload-Type, Range',
         'Access-Control-Allow-Methods': 'GET, HEAD, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Expose-Headers':
           'Content-Length, Content-Range, Accept-Ranges, Content-Disposition, X-Download-Source, X-Backup-Url, X-KVTV-SHA256',
-      });
+      };
+      if (corsOrigin !== '*') {
+        preflightHeaders.Vary = 'Origin';
+      }
+      res.writeHead(204, preflightHeaders);
       res.end();
+      return;
+    }
+
+    // Exploit / Dotfile Scanner Blocker
+    const rawUrlLower = rawUrl.toLowerCase();
+    const pathLower = pathname.toLowerCase();
+    if (
+      pathLower.startsWith('/.env') ||
+      pathLower.startsWith('/.git') ||
+      pathLower.startsWith('/wp-admin') ||
+      pathLower.startsWith('/wp-login') ||
+      pathLower.startsWith('/phpmyadmin') ||
+      pathLower.startsWith('/actuator') ||
+      pathLower.startsWith('/cgi-bin') ||
+      pathLower.startsWith('/.aws') ||
+      pathname.includes('..') ||
+      rawUrlLower.includes('..') ||
+      rawUrlLower.includes('%2e%2e') ||
+      pathname.includes('\0') ||
+      rawUrlLower.includes('\0') ||
+      rawUrlLower.includes('%00')
+    ) {
+      sendJson(req, res, 403, { ok: false, error: 'Forbidden' });
       return;
     }
 
@@ -1365,12 +1701,34 @@ const server = http.createServer(async (req, res) => {
       return;
     }
 
+    // Tier 2 — Public API Rate Limit (120 requests per 60 seconds per IP)
+    if (
+      pathname === '/api/catalog' ||
+      pathname.startsWith('/api/apps/') ||
+      pathname.startsWith('/api/code/') ||
+      pathname === '/api/qr'
+    ) {
+      const ip = getClientIp(req);
+      const rl = checkRateLimit(publicApiRateMap, ip, 120, 60 * 1000);
+      if (!rl.allowed) {
+        sendJson(
+          req,
+          res,
+          429,
+          { ok: false, error: 'Too many requests. Please slow down.' },
+          { 'Retry-After': String(rl.retryAfterSec) }
+        );
+        return;
+      }
+    }
+
     // 2. GET / HEAD /api/catalog?device=tv|mobile|desktop
     if ((method === 'GET' || method === 'HEAD') && pathname === '/api/catalog') {
       const deviceType = detectDeviceType(req, searchParams);
       const skipTrack = searchParams.get('track') === '0' || method === 'HEAD';
+      const ip = getClientIp(req);
 
-      if (!skipTrack) {
+      if (!skipTrack && shouldRecordAnalyticsEvent(ip, `view:${ip}:${deviceType}`)) {
         const bucket = getTodayAnalyticsBucket();
         if (deviceType === 'tv') {
           bucket.tvViews += 1;
@@ -1389,7 +1747,7 @@ const server = http.createServer(async (req, res) => {
           appId: null,
           appName: `Catalog (${deviceType.toUpperCase()})`,
           deviceType,
-          ip: getClientIp(req),
+          ip,
           userAgent: req.headers['user-agent'],
         });
         saveStore(false);
@@ -1548,11 +1906,12 @@ const server = http.createServer(async (req, res) => {
 
       // Preset download handling (`type=preset`)
       const deviceType = detectDeviceType(req, searchParams);
+      const ip = getClientIp(req);
       const rangeHeader = String(req.headers.range || '').trim();
       const isInitialGet =
         method === 'GET' && (!rangeHeader || /^bytes=0-/i.test(rangeHeader));
 
-      if (isInitialGet) {
+      if (isInitialGet && shouldRecordAnalyticsEvent(ip, `dl:${ip}:${app.id}`)) {
         app.downloads = Number(app.downloads || 0) + 1;
         const bucket = getTodayAnalyticsBucket();
         bucket.downloads += 1;
@@ -1562,7 +1921,7 @@ const server = http.createServer(async (req, res) => {
           appId: app.id,
           appName: `${app.name} (preset)`,
           deviceType,
-          ip: getClientIp(req),
+          ip,
           userAgent: req.headers['user-agent'],
         });
         saveStore(false);
@@ -1603,6 +1962,7 @@ const server = http.createServer(async (req, res) => {
             'Accept-Ranges': 'bytes',
             'Cache-Control': 'no-store',
             'X-KVTV-In-Memory-Preset': 'kodi-kv',
+            ...SECURITY_HEADERS,
           });
           if (method === 'HEAD') {
             res.end();
@@ -1621,6 +1981,7 @@ const server = http.createServer(async (req, res) => {
           'Accept-Ranges': 'bytes',
           'Cache-Control': 'no-store',
           'X-KVTV-In-Memory-Preset': 'cloudstream-kv',
+          ...SECURITY_HEADERS,
         });
         if (method === 'HEAD') {
           res.end();
@@ -1633,6 +1994,7 @@ const server = http.createServer(async (req, res) => {
         res.writeHead(302, {
           Location: app.presetUrl,
           'Cache-Control': 'no-store',
+          ...SECURITY_HEADERS,
         });
         res.end();
         return;
@@ -1668,6 +2030,7 @@ const server = http.createServer(async (req, res) => {
         'Accept-Ranges': 'bytes',
         'Cache-Control': 'no-store',
         'X-KVTV-Demo-Package': 'true',
+        ...SECURITY_HEADERS,
       });
       if (method === 'HEAD') {
         res.end();
@@ -1689,6 +2052,7 @@ const server = http.createServer(async (req, res) => {
         'Content-Type': 'image/svg+xml; charset=utf-8',
         'Cache-Control': 'public, max-age=3600',
         'Content-Length': String(Buffer.byteLength(svg, 'utf8')),
+        ...SECURITY_HEADERS,
       });
       res.end(svg);
       return;
@@ -1700,6 +2064,19 @@ const server = http.createServer(async (req, res) => {
       pathname.startsWith('/api/ads/') &&
       pathname.endsWith('/click')
     ) {
+      const ip = getClientIp(req);
+      const adRate = checkRateLimit(adClickRateMap, ip, 15, 60 * 1000);
+      if (!adRate.allowed) {
+        sendJson(
+          req,
+          res,
+          429,
+          { ok: false, error: 'Too many ad click requests. Please slow down.' },
+          { 'Retry-After': String(adRate.retryAfterSec) }
+        );
+        return;
+      }
+
       const adId = decodeURIComponent(
         pathname.slice('/api/ads/'.length, -'/click'.length)
       );
@@ -1708,8 +2085,10 @@ const server = http.createServer(async (req, res) => {
         sendJson(req, res, 404, { ok: false, error: 'Ad not found' });
         return;
       }
-      ad.clicks = Number(ad.clicks || 0) + 1;
-      saveStore(false);
+      if (shouldRecordAnalyticsEvent(ip, `adclick:${ip}:${adId}`)) {
+        ad.clicks = Number(ad.clicks || 0) + 1;
+        saveStore(false);
+      }
       sendJson(req, res, 200, { ok: true, ad });
       return;
     }
@@ -1743,11 +2122,17 @@ const server = http.createServer(async (req, res) => {
       const ip = getClientIp(req);
       const now = Date.now();
       const attempt = loginAttempts.get(ip);
-      if (attempt && now < attempt.resetAt && attempt.count >= 20) {
-        sendJson(req, res, 429, {
-          ok: false,
-          error: 'Too many login attempts. Please wait a few minutes.',
-        });
+      if (attempt && now < attempt.resetAt && attempt.count >= 10) {
+        sendJson(
+          req,
+          res,
+          429,
+          {
+            ok: false,
+            error: 'Too many login attempts. Please wait 10 minutes.',
+          },
+          { 'Retry-After': '600' }
+        );
         return;
       }
 
@@ -1760,9 +2145,7 @@ const server = http.createServer(async (req, res) => {
       const validPass = verifyPassword(password, store.admin.passwordHash);
 
       if (!validUser || !validPass) {
-        const prev = loginAttempts.get(ip) || { count: 0, resetAt: now + 5 * 60000 };
-        prev.count += 1;
-        loginAttempts.set(ip, prev);
+        checkRateLimit(loginAttempts, ip, 10, 10 * 60 * 1000);
         sendJson(req, res, 401, {
           ok: false,
           error: 'Invalid username or password',
@@ -1770,12 +2153,11 @@ const server = http.createServer(async (req, res) => {
         return;
       }
 
-      loginAttempts.delete(ip);
-
       if (store.admin.totpEnabled) {
         if (totpCode) {
           const isValidOtp = verifyTOTP(store.admin.totpSecret, totpCode, 1);
           if (!isValidOtp) {
+            checkRateLimit(loginAttempts, ip, 10, 10 * 60 * 1000);
             sendJson(req, res, 401, {
               ok: false,
               requires2fa: true,
@@ -1783,6 +2165,7 @@ const server = http.createServer(async (req, res) => {
             });
             return;
           }
+          loginAttempts.delete(ip);
           const token = createAuthToken(store.admin.username, 'session');
           recordTelemetryEvent({
             event: 'admin_login',
@@ -1804,6 +2187,7 @@ const server = http.createServer(async (req, res) => {
           return;
         }
 
+        loginAttempts.delete(ip);
         const tempToken = createAuthToken(store.admin.username, 'temp2fa', 5 * 60 * 1000);
         sendJson(req, res, 200, {
           ok: true,
@@ -1813,6 +2197,7 @@ const server = http.createServer(async (req, res) => {
         return;
       }
 
+      loginAttempts.delete(ip);
       const token = createAuthToken(store.admin.username, 'session');
       sendJson(req, res, 200, {
         ok: true,
@@ -1827,6 +2212,22 @@ const server = http.createServer(async (req, res) => {
 
     // 10. POST /api/admin/verify-2fa
     if (method === 'POST' && pathname === '/api/admin/verify-2fa') {
+      const ip = getClientIp(req);
+      const verifyRate = checkRateLimit(verify2faAttempts, ip, 10, 10 * 60 * 1000);
+      if (!verifyRate.allowed) {
+        sendJson(
+          req,
+          res,
+          429,
+          {
+            ok: false,
+            error: 'Too many 2FA verification attempts. Please wait 10 minutes.',
+          },
+          { 'Retry-After': '600' }
+        );
+        return;
+      }
+
       const body = await readJsonBody(req);
       const tempToken = String(body.tempToken || '').trim();
       const totpCode = String(body.totpCode || body.code || '').trim();
@@ -1839,7 +2240,28 @@ const server = http.createServer(async (req, res) => {
         return;
       }
 
+      let tempTokenObj = temp2faTokens.get(tempToken);
+      if (!tempTokenObj) {
+        tempTokenObj = {
+          username: store.admin.username,
+          createdAt: Date.now(),
+          expiresAt: Date.now() + 5 * 60 * 1000,
+          failedAttempts: 0,
+        };
+        setBoundedSession(temp2faTokens, tempToken, tempTokenObj);
+      }
+
       if (!verifyTOTP(store.admin.totpSecret, totpCode, 1)) {
+        tempTokenObj.failedAttempts = (tempTokenObj.failedAttempts || 0) + 1;
+        if (tempTokenObj.failedAttempts >= 5) {
+          temp2faTokens.delete(tempToken);
+          addRevokedToken(tempToken);
+          sendJson(req, res, 401, {
+            ok: false,
+            error: 'Too many failed 2FA attempts. Session invalidated, please sign in again.',
+          });
+          return;
+        }
         sendJson(req, res, 401, {
           ok: false,
           error: 'Invalid 6-digit Authenticator code. Please try again.',
@@ -1848,13 +2270,15 @@ const server = http.createServer(async (req, res) => {
       }
 
       temp2faTokens.delete(tempToken);
+      addRevokedToken(tempToken);
+      verify2faAttempts.delete(ip);
       const token = createAuthToken(store.admin.username, 'session');
       recordTelemetryEvent({
         event: 'admin_login',
         appId: null,
         appName: 'Admin 2FA Verified',
         deviceType: 'desktop',
-        ip: getClientIp(req),
+        ip,
         userAgent: req.headers['user-agent'],
       });
       saveStore(false);
@@ -2391,6 +2815,10 @@ const server = http.createServer(async (req, res) => {
             getCanonicalApkFileName(a).toLowerCase() === baseUploadName.toLowerCase() ||
             `${a.id}.apk`.toLowerCase() === baseUploadName.toLowerCase()
         );
+        if (matchingApp && baseUploadName.toLowerCase().endsWith('.apk')) {
+          handleApkDownload(req, res, matchingApp, searchParams);
+          return;
+        }
         const localFilePath = path.join(UPLOADS_DIR, baseUploadName);
         if (fs.existsSync(localFilePath) && fs.statSync(localFilePath).isFile() && fs.statSync(localFilePath).size > 0) {
           const extraHeaders = {
@@ -2400,10 +2828,6 @@ const server = http.createServer(async (req, res) => {
           if (baseUploadName.toLowerCase().endsWith('.apk')) {
             extraHeaders['Content-Type'] = 'application/vnd.android.package-archive';
             extraHeaders['Content-Disposition'] = `attachment; filename="${baseUploadName}"`;
-            if (matchingApp) {
-              extraHeaders['X-Backup-Url'] = getBackupApkUrl(matchingApp);
-              extraHeaders['X-KVTV-SHA256'] = matchingApp.sha256 || '';
-            }
           }
           serveFileWithRange(req, res, localFilePath, extraHeaders);
           return;
@@ -2432,6 +2856,12 @@ const server = http.createServer(async (req, res) => {
     }
   }
 });
+
+// Slowloris / slow-header & HTTP server timeout hardening
+server.headersTimeout = 15000;
+server.requestTimeout = 300000;
+server.keepAliveTimeout = 65000;
+server.maxHeadersCount = 64;
 
 if (require.main === module) {
   server.listen(PORT, HOST, () => {

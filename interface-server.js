@@ -11,6 +11,49 @@ const HOST = process.env.HOST || '0.0.0.0';
 const BACKEND_URL = process.env.BACKEND_URL || 'http://kv-tv-backend:3457';
 const PUBLIC_DIR = path.join(__dirname, 'public');
 
+const SECURITY_HEADERS = Object.freeze({
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'SAMEORIGIN',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=()',
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+  'Content-Security-Policy':
+    "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://tv.vndns.net https://tv.khoavo.vndns.net https://git.khoavo.myds.me; frame-ancestors 'self'; base-uri 'self'",
+});
+
+const BLOCKED_PATH_PREFIXES = [
+  '/.env',
+  '/.git',
+  '/wp-admin',
+  '/wp-login',
+  '/phpmyadmin',
+  '/actuator',
+  '/cgi-bin',
+  '/.aws',
+  '/vendor/phpunit',
+];
+
+const MAX_RATE_KEYS = 10000;
+const RATE_WINDOW_MS = 60 * 1000;
+const GENERAL_RATE_LIMIT = 180;
+const ADMIN_POST_RATE_LIMIT = 20;
+const rateBuckets = new Map();
+
+const rateCleanupTimer = setInterval(() => {
+  const cutoff = Date.now() - RATE_WINDOW_MS;
+  for (const [key, timestamps] of rateBuckets.entries()) {
+    const active = timestamps.filter((t) => t > cutoff);
+    if (active.length === 0) {
+      rateBuckets.delete(key);
+    } else {
+      rateBuckets.set(key, active);
+    }
+  }
+}, RATE_WINDOW_MS);
+if (typeof rateCleanupTimer.unref === 'function') {
+  rateCleanupTimer.unref();
+}
+
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
@@ -45,20 +88,103 @@ const COMPRESSIBLE_EXTS = new Set([
 ]);
 
 /**
- * Extract client IP from reverse proxy headers or socket.
+ * Extract trusted client IP from reverse proxy headers or socket.
+ * Priority: CF-Connecting-IP -> X-Real-IP -> first X-Forwarded-For -> socket.remoteAddress.
+ * Normalizes IPv4-mapped IPv6 prefix (`::ffff:`) and caps at 64 characters.
  * @param {http.IncomingMessage} req
  * @returns {string}
  */
 function getClientIp(req) {
-  const forwarded = req.headers['x-forwarded-for'];
-  if (typeof forwarded === 'string' && forwarded.trim()) {
-    return forwarded.split(',')[0].trim();
-  }
+  let raw = '';
+  const cfIp = req.headers['cf-connecting-ip'];
   const realIp = req.headers['x-real-ip'];
-  if (typeof realIp === 'string' && realIp.trim()) {
-    return realIp.trim();
+  const forwarded = req.headers['x-forwarded-for'];
+
+  if (typeof cfIp === 'string' && cfIp.trim()) {
+    raw = cfIp.trim();
+  } else if (typeof realIp === 'string' && realIp.trim()) {
+    raw = realIp.trim();
+  } else if (typeof forwarded === 'string' && forwarded.trim()) {
+    raw = forwarded.split(',')[0].trim();
+  } else {
+    raw = req.socket?.remoteAddress || '127.0.0.1';
   }
-  return req.socket?.remoteAddress || '127.0.0.1';
+
+  if (raw.startsWith('::ffff:')) {
+    raw = raw.slice(7);
+  }
+  return raw.slice(0, 64) || '127.0.0.1';
+}
+
+/**
+ * Check whether a request path targets common exploit/scanner probes or path traversal.
+ * @param {string} pathname
+ * @param {string} rawUrl
+ * @returns {boolean}
+ */
+function isBlockedExploitPath(pathname, rawUrl) {
+  let decoded = pathname;
+  try {
+    decoded = decodeURIComponent(pathname);
+  } catch {
+    return true;
+  }
+
+  if (
+    pathname.includes('..') ||
+    decoded.includes('..') ||
+    pathname.includes('\0') ||
+    decoded.includes('\0') ||
+    rawUrl.includes('\0') ||
+    /%00/i.test(rawUrl)
+  ) {
+    return true;
+  }
+
+  const lowerPath = pathname.toLowerCase();
+  const lowerDecoded = decoded.toLowerCase();
+
+  for (const prefix of BLOCKED_PATH_PREFIXES) {
+    if (lowerPath.startsWith(prefix) || lowerDecoded.startsWith(prefix)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Bounded sliding-window rate limiter.
+ * @param {string} bucketKey
+ * @param {number} maxRequests
+ * @param {number} [windowMs]
+ * @returns {boolean} true if allowed, false if rate-limited
+ */
+function checkSlidingWindowLimit(bucketKey, maxRequests, windowMs = RATE_WINDOW_MS) {
+  const now = Date.now();
+  const cutoff = now - windowMs;
+  let timestamps = rateBuckets.get(bucketKey);
+
+  if (timestamps) {
+    timestamps = timestamps.filter((t) => t > cutoff);
+  } else {
+    if (rateBuckets.size >= MAX_RATE_KEYS) {
+      const oldestKey = rateBuckets.keys().next().value;
+      if (oldestKey !== undefined) {
+        rateBuckets.delete(oldestKey);
+      }
+    }
+    timestamps = [];
+  }
+
+  if (timestamps.length >= maxRequests) {
+    rateBuckets.set(bucketKey, timestamps);
+    return false;
+  }
+
+  timestamps.push(now);
+  rateBuckets.set(bucketKey, timestamps);
+  return true;
 }
 
 /**
@@ -93,8 +219,9 @@ function shouldProxyToBackend(method, pathname) {
 
 /**
  * Zero-buffering HTTP stream reverse-proxy to `BACKEND_URL`.
- * Preserves method, URL, query string, `X-Forwarded-For`, `Range`, `Cookie`,
- * `Authorization`, status code, and all upstream response headers.
+ * Enforces anti-spoofing `X-Real-IP` and `X-Forwarded-For` from `getClientIp(req)`
+ * while preserving method, URL, query string, `Range`, `Cookie`, `Authorization`,
+ * status code, and all upstream response headers.
  * @param {http.IncomingMessage} req
  * @param {http.ServerResponse} res
  */
@@ -108,18 +235,19 @@ function proxyToBackend(req, res) {
 
   const transport = targetBase.protocol === 'https:' ? https : http;
   const clientIp = getClientIp(req);
-  const existingForwardedFor = req.headers['x-forwarded-for'];
 
   const proxyHeaders = {
     ...req.headers,
     host: targetBase.host,
     'x-forwarded-host': req.headers.host || '',
     'x-forwarded-proto': req.headers['x-forwarded-proto'] || 'http',
-    'x-forwarded-for': existingForwardedFor
-      ? `${existingForwardedFor}, ${clientIp}`
-      : clientIp,
-    'x-real-ip': req.headers['x-real-ip'] || clientIp,
+    'x-forwarded-for': clientIp,
+    'x-real-ip': clientIp,
   };
+
+  if (typeof req.headers['cf-connecting-ip'] === 'string' && req.headers['cf-connecting-ip'].trim()) {
+    proxyHeaders['cf-connecting-ip'] = clientIp;
+  }
 
   const options = {
     protocol: targetBase.protocol,
@@ -150,6 +278,7 @@ function proxyToBackend(req, res) {
         detail: err.message,
       });
       res.writeHead(502, {
+        ...SECURITY_HEADERS,
         'Content-Type': 'application/json; charset=utf-8',
         'Cache-Control': 'no-store',
         'Content-Length': String(Buffer.byteLength(body)),
@@ -172,7 +301,7 @@ function proxyToBackend(req, res) {
 }
 
 /**
- * Serve static storefront files from `PUBLIC_DIR` with HTTP Range, HEAD, and gzip support.
+ * Serve static storefront files from `PUBLIC_DIR` with HTTP Range, HEAD, gzip, and security headers.
  * @param {http.IncomingMessage} req
  * @param {http.ServerResponse} res
  * @param {string} relativePath
@@ -182,14 +311,20 @@ function serveStorefrontFile(req, res, relativePath) {
   const fullPath = path.join(PUBLIC_DIR, safeRel);
 
   if (!fullPath.startsWith(PUBLIC_DIR)) {
-    res.writeHead(403, { 'Content-Type': 'application/json; charset=utf-8' });
+    res.writeHead(403, {
+      ...SECURITY_HEADERS,
+      'Content-Type': 'application/json; charset=utf-8',
+    });
     res.end(JSON.stringify({ error: 'Forbidden path' }));
     return;
   }
 
   fs.stat(fullPath, (err, stat) => {
     if (err || !stat.isFile()) {
-      res.writeHead(404, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.writeHead(404, {
+        ...SECURITY_HEADERS,
+        'Content-Type': 'application/json; charset=utf-8',
+      });
       if ((req.method || 'GET').toUpperCase() === 'HEAD') {
         res.end();
         return;
@@ -207,10 +342,10 @@ function serveStorefrontFile(req, res, relativePath) {
       : 'public, max-age=3600';
 
     const headers = {
+      ...SECURITY_HEADERS,
       'Content-Type': contentType,
       'Cache-Control': cacheControl,
       'Accept-Ranges': 'bytes',
-      'X-Content-Type-Options': 'nosniff',
     };
 
     const rangeHeader = req.headers.range;
@@ -280,11 +415,23 @@ function serveStorefrontFile(req, res, relativePath) {
 
 const server = http.createServer((req, res) => {
   const method = (req.method || 'GET').toUpperCase();
-  const parsedUrl = new URL(req.url || '/', `http://${req.headers.host || 'localhost'}`);
+  const rawUrl = req.url || '/';
+  let parsedUrl;
+  try {
+    parsedUrl = new URL(rawUrl, `http://${req.headers.host || 'localhost'}`);
+  } catch {
+    res.writeHead(400, {
+      ...SECURITY_HEADERS,
+      'Content-Type': 'application/json; charset=utf-8',
+    });
+    res.end(JSON.stringify({ ok: false, error: 'Malformed request URL' }));
+    return;
+  }
   const pathname = parsedUrl.pathname;
 
   if (method === 'OPTIONS') {
     res.writeHead(204, {
+      ...SECURITY_HEADERS,
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Headers':
         'Content-Type, Authorization, X-Admin-Token, X-File-Name, X-Upload-Type, Range',
@@ -298,6 +445,7 @@ const server = http.createServer((req, res) => {
   if ((method === 'GET' || method === 'HEAD') && pathname === '/healthz') {
     const body = JSON.stringify({ status: 'ok', service: 'kv-tv-interface' });
     res.writeHead(200, {
+      ...SECURITY_HEADERS,
       'Content-Type': 'application/json; charset=utf-8',
       'Cache-Control': 'no-store',
       'Content-Length': String(Buffer.byteLength(body)),
@@ -308,6 +456,53 @@ const server = http.createServer((req, res) => {
     }
     res.end(body);
     return;
+  }
+
+  // Scanner & exploit path blocker
+  if (isBlockedExploitPath(pathname, rawUrl)) {
+    const body = JSON.stringify({ ok: false, error: 'Forbidden' });
+    res.writeHead(403, {
+      ...SECURITY_HEADERS,
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': 'no-store',
+      'Content-Length': String(Buffer.byteLength(body)),
+    });
+    if (method === 'HEAD') {
+      res.end();
+      return;
+    }
+    res.end(body);
+    return;
+  }
+
+  // Edge sliding-window rate limiter (non-loopback IPs)
+  const clientIp = getClientIp(req);
+  if (clientIp !== '127.0.0.1' && clientIp !== '::1') {
+    const isAdminPost =
+      method === 'POST' && (pathname === '/api/admin' || pathname.startsWith('/api/admin/'));
+
+    if (
+      (isAdminPost && !checkSlidingWindowLimit(`admin:${clientIp}`, ADMIN_POST_RATE_LIMIT)) ||
+      !checkSlidingWindowLimit(`gen:${clientIp}`, GENERAL_RATE_LIMIT)
+    ) {
+      const body = JSON.stringify({
+        ok: false,
+        error: 'Too many requests. Please try again in 60 seconds.',
+      });
+      res.writeHead(429, {
+        ...SECURITY_HEADERS,
+        'Content-Type': 'application/json; charset=utf-8',
+        'Cache-Control': 'no-store',
+        'Retry-After': '60',
+        'Content-Length': String(Buffer.byteLength(body)),
+      });
+      if (method === 'HEAD') {
+        res.end();
+        return;
+      }
+      res.end(body);
+      return;
+    }
   }
 
   // Reverse-proxy admin, API, short-codes, and APK downloads to kv-tv-backend
@@ -357,6 +552,11 @@ const server = http.createServer((req, res) => {
   serveStorefrontFile(req, res, relAsset);
 });
 
+server.headersTimeout = 15000;
+server.requestTimeout = 300000;
+server.keepAliveTimeout = 65000;
+server.maxHeadersCount = 64;
+
 if (require.main === module) {
   server.listen(PORT, HOST, () => {
     console.log(
@@ -365,4 +565,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { server };
+module.exports = { server, getClientIp };

@@ -10,12 +10,16 @@ COPY interface-server.js ./
 COPY public ./public
 
 # Remove admin console assets from public storefront image (proxied to kv-tv-backend)
-RUN rm -f /app/public/admin.html /app/public/admin.js /app/public/admin.css
+# and ensure /app is owned by non-root node:node user
+RUN rm -f /app/public/admin.html /app/public/admin.js /app/public/admin.css \
+ && chown -R node:node /app
 
 ENV NODE_ENV=production
 ENV PORT=3456
 ENV BACKEND_URL=http://kv-tv-backend:3457
 ENV TZ=Asia/Ho_Chi_Minh
+
+USER node
 
 EXPOSE 3456
 

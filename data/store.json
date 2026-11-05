@@ -57,7 +57,7 @@
       "rating": "5.0",
       "minAndroid": "Android TV 5.0+ (API 21+)",
       "arch": "Universal (arm64-v8a + armeabi-v7a)",
-      "sha256": "6a3c9507c38b04f7fbd50368ce9ac44c2cf0024926cb56fc0be90ef6337cb850",
+      "sha256": "516d84a08cc2d299061accd7ef920573c532397e68b91e0c80e2b9d4b4ac7a80",
       "apkFileName": "kv-store.apk",
       "presetFileName": null,
       "apkUrl": "https://tv.vndns.net/uploads/kv-store.apk",
@@ -157,7 +157,7 @@
       ],
       "color": "#17B2E7",
       "iconType": "kodi",
-      "downloads": 773,
+      "downloads": 774,
       "rating": "4.9",
       "minAndroid": "Android TV 7.0+",
       "arch": "Universal (arm64-v8a)",
@@ -438,11 +438,11 @@
     }
   ],
   "admin": {
-    "username": "admin",
-    "passwordHash": "pbkdf2$100000$kvtv2026salt01$3a9c0d968100ce74dae5666d6be80c428d14faca632552a633269953d80d1e50",
+    "username": "vndangkhoa",
+    "passwordHash": "pbkdf2$100000$6d5e2a2f8d7cf6e3f2cd748d1e650f7f$a4e128a4dee1d9409354f48e86411189230d489a5a6cc55021403b3e0b9a8a79",
     "totpSecret": "KVKVTVSTORETWOFASECRETBASE32AABB",
     "totpEnabled": true,
-    "updatedAt": "2026-11-05T03:48:10.908Z"
+    "updatedAt": "2026-11-05T12:48:22.174Z"
   },
   "analytics": {
     "daily": [
@@ -486,10 +486,20 @@
         "date": "2026-11-05",
         "tvViews": 364,
         "webViews": 661,
-        "downloads": 197
+        "downloads": 198
       }
     ],
     "logs": [
+      {
+        "id": "evt-mw3jmhrn-6961",
+        "timestamp": "2026-11-05T12:50:05.555Z",
+        "event": "download",
+        "appId": "kodi-kv",
+        "appName": "Kodi 21 Omega (apk)",
+        "deviceType": "desktop",
+        "ip": "172.26.0.1",
+        "userAgent": ""
+      },
       {
         "id": "evt-mw3incnj-12a7",
         "timestamp": "2026-11-05T12:22:45.967Z",
@@ -1473,16 +1483,6 @@
       {
         "id": "evt-mw3hhc0j-9f4d",
         "timestamp": "2026-11-05T11:50:05.587Z",
-        "event": "view",
-        "appId": null,
-        "appName": "Catalog (DESKTOP)",
-        "deviceType": "desktop",
-        "ip": "127.0.0.1",
-        "userAgent": "node"
-      },
-      {
-        "id": "evt-mw3hgwil-bd37",
-        "timestamp": "2026-11-05T11:49:45.501Z",
         "event": "view",
         "appId": null,
         "appName": "Catalog (DESKTOP)",

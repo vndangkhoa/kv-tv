@@ -8,6 +8,8 @@ services:
     image: vndangkhoa/kv-tv-interface:latest
     container_name: kv-tv-interface
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     ports:
       - "3456:3456"
     environment:
@@ -36,6 +38,8 @@ services:
     image: vndangkhoa/kv-tv-backend:latest
     container_name: kv-tv-backend
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     ports:
       - "3457:3457"
     environment:

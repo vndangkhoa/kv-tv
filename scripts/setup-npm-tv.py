@@ -3,8 +3,8 @@
 Automated Nginx Proxy Manager (NPM) & Let's Encrypt SSL Provisioner for:
   - https://tv.vndns.net (Dedicated Let's Encrypt ECDSA Certificate via HTTP-01 webroot)
   - https://tv.khoavo.vndns.net (Wildcard *.khoavo.vndns.net Certificate npm-2)
-Routes both domains to the KV-TV Store container on 116.118.3.103:3456 with
-512MB APK upload support, WebSocket upgrade headers, and HSTS.
+Routes both domains to the KV-TV Store container on kv-tv:3456 (via proxy-net) with
+550MB APK upload support, unbuffered APK streaming, exploit blocking, WebSocket upgrade headers, and HSTS.
 """
 import subprocess
 import sys
@@ -12,7 +12,7 @@ import sys
 CONNECT_SH = "/mnt/data/Projects/thuevpsgiare/connect.sh"
 NPM_DB_PATH = "/opt/dockhand/stacks/nginx-proxy-manager/data/database.sqlite"
 NPM_PROXY_DIR = "/opt/dockhand/stacks/nginx-proxy-manager/data/nginx/proxy_host"
-FORWARD_HOST = "116.118.3.103"
+FORWARD_HOST = "kv-tv"
 FORWARD_PORT = 3456
 
 
@@ -65,9 +65,9 @@ server {{
   error_log /data/logs/proxy-host-{host_id}_error.log warn;
 
   # Allow large Android TV APK & Pre-Set Pack (.zip) uploads + unbuffered APK streaming
-  client_max_body_size 512m;
   proxy_buffering off;
   proxy_request_buffering off;
+  client_max_body_size 550m;
   proxy_read_timeout 300s;
   proxy_send_timeout 300s;
 
@@ -129,7 +129,7 @@ def upsert_proxy_host(domain, cert_id):
         "SELECT id FROM proxy_host WHERE is_deleted=0 AND domain_names LIKE ?",
         (f'%"{{domain}}"%',)
     ).fetchone()
-    adv = "client_max_body_size 512m;\\nproxy_buffering off;\\nproxy_request_buffering off;"
+    adv = "proxy_buffering off;\\nproxy_request_buffering off;\\nclient_max_body_size 550m;\\nproxy_read_timeout 300s;\\nproxy_send_timeout 300s;"
     if row:
         hid = row[0]
         con.execute('''

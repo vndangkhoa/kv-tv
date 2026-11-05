@@ -60,7 +60,7 @@ const FALLBACK_CATALOG = {
       category: 'Media Center',
       arch: 'Universal (arm64-v8a + armeabi-v7a)',
       downloads: 1248,
-      sha256: '6a3c9507c38b04f7fbd50368ce9ac44c2cf0024926cb56fc0be90ef6337cb850',
+      sha256: '516d84a08cc2d299061accd7ef920573c532397e68b91e0c80e2b9d4b4ac7a80',
       apkFileName: 'kv-store.apk',
       apkUrl: 'https://tv.vndns.net/uploads/kv-store.apk',
       backupApkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-store.apk',

@@ -15,10 +15,10 @@ COPY lib ./lib
 COPY public ./public
 COPY addons ./addons
 
-# Create persistent directories for bind mounts
+# Create persistent directories for bind mounts and set node:node ownership
 # /app/data    -> store.json (catalog, analytics, 2FA secret, ads)
 # /app/uploads -> .apk binaries and .zip pre-set configuration packs
-RUN mkdir -p /app/data /app/uploads
+RUN mkdir -p /app/data /app/uploads && chown -R node:node /app
 
 ENV NODE_ENV=production
 ENV PORT=3456

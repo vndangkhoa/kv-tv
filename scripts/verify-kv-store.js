@@ -11,9 +11,23 @@ const UPLOADS_DIR = path.join(__dirname, '..', 'uploads');
 function request(baseUrl, pathStr, options = {}) {
   return new Promise((resolve, reject) => {
     const url = new URL(pathStr, baseUrl);
+    const headers = { ...(options.headers || {}) };
+    let bodyBuf = null;
+    if (options.body !== undefined && options.body !== null) {
+      bodyBuf = Buffer.isBuffer(options.body)
+        ? options.body
+        : Buffer.from(
+            typeof options.body === 'string' ? options.body : JSON.stringify(options.body),
+            'utf8'
+          );
+      if (!headers['Content-Type'] && !headers['content-type']) {
+        headers['Content-Type'] = 'application/json';
+      }
+      headers['Content-Length'] = String(bodyBuf.length);
+    }
     const req = http.request(
       url,
-      { method: options.method || 'GET', headers: options.headers || {} },
+      { method: options.method || 'GET', headers },
       (res) => {
         const chunks = [];
         res.on('data', (c) => chunks.push(c));
@@ -27,6 +41,9 @@ function request(baseUrl, pathStr, options = {}) {
       }
     );
     req.on('error', reject);
+    if (bodyBuf) {
+      req.write(bodyBuf);
+    }
     req.end();
   });
 }
@@ -158,6 +175,88 @@ async function runTests() {
   assert(
     appJs.includes('installAppWithFallback'),
     'app.js integrates window.KVTVBridge.installAppWithFallback'
+  );
+
+  // 8. Production Security & Anti-Abuse Hardening Tests
+  console.log('\n8. Production Security & Anti-Abuse Hardening Tests:');
+  const uiRootRes = await request(INTERFACE_URL, '/');
+  assert(
+    uiRootRes.headers['x-content-type-options'] === 'nosniff',
+    `Interface / includes X-Content-Type-Options: nosniff (got ${uiRootRes.headers['x-content-type-options']})`
+  );
+  assert(
+    uiRootRes.headers['x-frame-options'] === 'SAMEORIGIN',
+    `Interface / includes X-Frame-Options: SAMEORIGIN (got ${uiRootRes.headers['x-frame-options']})`
+  );
+  assert(
+    Boolean(uiRootRes.headers['strict-transport-security']),
+    `Interface / includes Strict-Transport-Security (${uiRootRes.headers['strict-transport-security']})`
+  );
+  assert(
+    Boolean(uiRootRes.headers['content-security-policy']),
+    'Interface / includes Content-Security-Policy'
+  );
+
+  const backendCatRes = await request(BACKEND_URL, '/api/catalog?track=0');
+  assert(
+    backendCatRes.headers['x-content-type-options'] === 'nosniff',
+    `Backend /api/catalog?track=0 includes X-Content-Type-Options: nosniff (got ${backendCatRes.headers['x-content-type-options']})`
+  );
+  assert(
+    backendCatRes.headers['x-frame-options'] === 'SAMEORIGIN',
+    `Backend /api/catalog?track=0 includes X-Frame-Options: SAMEORIGIN (got ${backendCatRes.headers['x-frame-options']})`
+  );
+  assert(
+    Boolean(backendCatRes.headers['strict-transport-security']),
+    `Backend /api/catalog?track=0 includes Strict-Transport-Security (${backendCatRes.headers['strict-transport-security']})`
+  );
+  assert(
+    Boolean(backendCatRes.headers['content-security-policy']),
+    'Backend /api/catalog?track=0 includes Content-Security-Policy'
+  );
+
+  const envProbeRes = await request(INTERFACE_URL, '/.env');
+  assert(
+    envProbeRes.statusCode === 403,
+    `GET /.env on Interface returns 403 (got ${envProbeRes.statusCode})`
+  );
+  const gitProbeRes = await request(INTERFACE_URL, '/.git/config');
+  assert(
+    gitProbeRes.statusCode === 403,
+    `GET /.git/config on Interface returns 403 (got ${gitProbeRes.statusCode})`
+  );
+
+  const sha256Header = String(headStore.headers['x-kvtv-sha256'] || '').trim();
+  assert(
+    /^[a-f0-9]{64}$/i.test(sha256Header),
+    `HEAD /kv-store.apk?source=vps returns 64-char hex X-KVTV-SHA256 (${sha256Header})`
+  );
+
+  const invalid2faRes = await request(BACKEND_URL, '/api/admin/verify-2fa', {
+    method: 'POST',
+    headers: { 'X-Forwarded-For': '198.51.100.201' },
+    body: { tempToken: 'invalid-forged-temp-token', totpCode: '000000' },
+  });
+  assert(
+    invalid2faRes.statusCode === 401,
+    `POST /api/admin/verify-2fa rejects invalid tempToken with 401 (got ${invalid2faRes.statusCode})`
+  );
+
+  let bruteForceBlocked = false;
+  for (let i = 0; i < 22; i++) {
+    const attemptRes = await request(BACKEND_URL, '/api/admin/verify-2fa', {
+      method: 'POST',
+      headers: { 'X-Forwarded-For': '198.51.100.202' },
+      body: { tempToken: 'brute-force-temp-token', totpCode: String(100000 + i) },
+    });
+    if (attemptRes.statusCode === 429 || attemptRes.statusCode === 401) {
+      bruteForceBlocked = true;
+      if (attemptRes.statusCode === 429) break;
+    }
+  }
+  assert(
+    bruteForceBlocked,
+    'POST /api/admin/verify-2fa enforces token rejection (401) or brute-force rate limiting (429)'
   );
 
   console.log(`\n=== RESULTS: ${passed}/${total} TESTS PASSED ===\n`);

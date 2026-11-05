@@ -25,6 +25,7 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
+import java.security.MessageDigest
 import java.util.zip.ZipInputStream
 
 class KVTVBridge(
@@ -54,6 +55,16 @@ class KVTVBridge(
         const val MIN_VALID_APK_BYTES = 100_000L
         const val FORGEJO_RELEASE_BASE =
             "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0"
+
+        val TRUSTED_DOWNLOAD_HOSTS = setOf(
+            "tv.vndns.net",
+            "tv.khoavo.vndns.net",
+            "git.khoavo.myds.me",
+            "n.khoavo.vndns.net",
+            "127.0.0.1",
+            "10.0.2.2",
+            "localhost"
+        )
 
         val BACKUP_APK_URLS: Map<String, String> = mapOf(
             "kv-store" to "$FORGEJO_RELEASE_BASE/kv-store.apk",
@@ -313,9 +324,30 @@ class KVTVBridge(
         }
     }
 
+    private fun isTrustedDownloadUrl(urlStr: String): Boolean {
+        return try {
+            val normalized = normalizeUrl(urlStr)
+            val url = URL(normalized)
+            val protocol = url.protocol.lowercase()
+            if (protocol != "https" && protocol != "http") {
+                return false
+            }
+            val host = url.host?.lowercase()?.trim() ?: return false
+            if (host.isEmpty()) return false
+            host in TRUSTED_DOWNLOAD_HOSTS ||
+                host.endsWith(".vndns.net") ||
+                host.endsWith(".myds.me")
+        } catch (_: Exception) {
+            false
+        }
+    }
+
     private fun resolveBackupUrl(primaryUrl: String, explicitBackupUrl: String? = null): String? {
         if (!explicitBackupUrl.isNullOrBlank()) {
-            return normalizeUrl(explicitBackupUrl)
+            val normalizedBackup = normalizeUrl(explicitBackupUrl)
+            if (isTrustedDownloadUrl(normalizedBackup)) {
+                return normalizedBackup
+            }
         }
         if (primaryUrl.contains("git.khoavo.myds.me", ignoreCase = true)) {
             return null
@@ -353,6 +385,10 @@ class KVTVBridge(
      */
     @JavascriptInterface
     fun installApp(downloadUrl: String, appName: String) {
+        if (!isTrustedDownloadUrl(downloadUrl)) {
+            showToast("Nguồn tải không hợp lệ hoặc không đáng tin cậy.")
+            return
+        }
         startApkDownloadAndInstall(downloadUrl, null, appName)
     }
 
@@ -361,6 +397,10 @@ class KVTVBridge(
      */
     @JavascriptInterface
     fun installAppWithFallback(downloadUrl: String, backupUrl: String, appName: String) {
+        if (!isTrustedDownloadUrl(downloadUrl) && (backupUrl.isBlank() || !isTrustedDownloadUrl(backupUrl))) {
+            showToast("Nguồn tải không hợp lệ hoặc không đáng tin cậy.")
+            return
+        }
         startApkDownloadAndInstall(downloadUrl, backupUrl, appName)
     }
 
@@ -371,6 +411,12 @@ class KVTVBridge(
     ) {
         val fullPrimaryUrl = normalizeUrl(downloadUrl)
         val resolvedBackupUrl = resolveBackupUrl(fullPrimaryUrl, backupUrl)
+        if (!isTrustedDownloadUrl(fullPrimaryUrl) &&
+            (resolvedBackupUrl.isNullOrBlank() || !isTrustedDownloadUrl(resolvedBackupUrl))
+        ) {
+            showToast("Nguồn tải không hợp lệ hoặc không đáng tin cậy.")
+            return
+        }
 
         cleanTempApks()
         showToast("Đang tải $appName...\nVui lòng đợi giây lát.")
@@ -378,10 +424,15 @@ class KVTVBridge(
         scope.launch {
             isDownloadingApk = true
             try {
-                var apkFile = downloadApkFile(fullPrimaryUrl, appName)
+                var apkFile = if (isTrustedDownloadUrl(fullPrimaryUrl)) {
+                    downloadApkFile(fullPrimaryUrl, appName)
+                } else {
+                    null
+                }
                 if (!isValidApkFile(apkFile) &&
                     !resolvedBackupUrl.isNullOrBlank() &&
-                    resolvedBackupUrl != fullPrimaryUrl
+                    resolvedBackupUrl != fullPrimaryUrl &&
+                    isTrustedDownloadUrl(resolvedBackupUrl)
                 ) {
                     showToast("Đang chuyển sang máy chủ dự phòng (Forgejo) cho $appName...")
                     apkFile = downloadApkFile(resolvedBackupUrl, appName)
@@ -498,14 +549,17 @@ class KVTVBridge(
     }
 
     /**
-     * Follow up to 10 HTTP/HTTPS redirects (e.g. /api/download/smarttube-tv -> github.com -> objects.githubusercontent.com)
+     * Follow up to 10 HTTP/HTTPS redirects on trusted download hosts
      * and return the connected HttpURLConnection with HTTP 200.
      */
     private fun openRedirectingConnection(urlStr: String): HttpURLConnection? {
-        var currentUrl = urlStr
+        var currentUrl = normalizeUrl(urlStr)
         var redirectCount = 0
 
         while (redirectCount < MAX_REDIRECTS) {
+            if (!isTrustedDownloadUrl(currentUrl)) {
+                return null
+            }
             val url = URL(currentUrl)
             val conn = (url.openConnection() as HttpURLConnection).apply {
                 connectTimeout = 30000
@@ -531,6 +585,9 @@ class KVTVBridge(
                 } else {
                     URL(url, loc).toString()
                 }
+                if (!isTrustedDownloadUrl(currentUrl)) {
+                    return null
+                }
                 redirectCount++
                 continue
             }
@@ -546,10 +603,13 @@ class KVTVBridge(
     }
 
     /**
-     * Download APK to a temporary cache file in context.cacheDir with up to 10 redirects
-     * and verify ZIP magic header bytes.
+     * Download APK to a temporary cache file in context.cacheDir with up to 10 redirects,
+     * verify ZIP magic header bytes, and verify optional X-KVTV-SHA256 cryptographic digest.
      */
     private fun downloadApkFile(urlStr: String, appName: String): File? {
+        if (!isTrustedDownloadUrl(urlStr)) {
+            return null
+        }
         val conn = try {
             openRedirectingConnection(urlStr)
         } catch (_: Exception) {
@@ -557,6 +617,9 @@ class KVTVBridge(
         } ?: return null
 
         return try {
+            val expectedSha256 = conn.getHeaderField("X-KVTV-SHA256")?.trim()?.lowercase()
+            val digest = MessageDigest.getInstance("SHA-256")
+
             val stagingDir = File(context.cacheDir, "apk_staging")
             if (!stagingDir.exists()) stagingDir.mkdirs()
 
@@ -566,10 +629,27 @@ class KVTVBridge(
 
             conn.inputStream.use { input ->
                 FileOutputStream(targetFile).use { output ->
-                    input.copyTo(output)
+                    val buffer = ByteArray(8192)
+                    var bytesRead = input.read(buffer)
+                    while (bytesRead != -1) {
+                        if (bytesRead > 0) {
+                            digest.update(buffer, 0, bytesRead)
+                            output.write(buffer, 0, bytesRead)
+                        }
+                        bytesRead = input.read(buffer)
+                    }
+                    output.flush()
                 }
             }
-            if (!isValidApkFile(targetFile)) {
+
+            val computedSha256 = digest.digest().joinToString("") { "%02x".format(it) }
+            val sha256Matches = if (expectedSha256 != null && expectedSha256.length == 64) {
+                computedSha256 == expectedSha256
+            } else {
+                true
+            }
+
+            if (!isValidApkFile(targetFile) || !sha256Matches) {
                 targetFile.delete()
                 null
             } else {
