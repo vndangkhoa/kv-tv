@@ -76,7 +76,7 @@
     {
       "id": "cloudstream-kv",
       "name": "CloudStream 3",
-      "edition": "KV-PreSetup (Full Repos)",
+      "edition": "KV-PreSetup (KV-Netflix 4K VIP)",
       "packageName": "com.lagradost.cloudstream3",
       "version": "4.8.0-kv",
       "size": "68.7 MB",
@@ -84,13 +84,13 @@
       "category": "Streaming",
       "featured": true,
       "preConfigured": true,
-      "presetSummary": "Our already-setup build: Vietnamese & Global repositories pre-installed & auto-updated",
-      "description": "Zero manual repository typing required. Ships with MegaRepo and Vietnamese HD movie/anime extensions pre-activated, Cloudflare DoH enabled, and automatic 4K Vietsub stream selection.",
+      "presetSummary": "Tích hợp sẵn nguồn phim KV-Netflix 4K VIP (n.khoavo.vndns.net), loại bỏ hoàn toàn lỗi nguồn bên thứ ba",
+      "description": "Bản dựng tối ưu hóa riêng cho hệ sinh thái KV: Cài sẵn plugin mở rộng KV-Netflix VIP tốc độ cao, hỗ trợ chuẩn 4K HDR10, âm thanh 5.1 và phụ đề Vietsub đồng bộ.",
       "presetFeatures": [
-        "Pre-configured MegaRepo + Vietnamese HD Movie/Anime extensions",
-        "Auto-selects 1080p/4K highest-bitrate stream with Vietsub",
-        "DNS-over-HTTPS (Cloudflare 1.1.1.1) pre-enabled to bypass ISP blocks",
-        "One-click Pre-Set Backup (.backup) restore included"
+        "Tích hợp sẵn tiện ích mở rộng KV-Netflix (n.khoavo.vndns.net)",
+        "Nguồn phim Full HD / 4K HDR10 riêng không bị chặn hay giật lag",
+        "Tự động đồng bộ kho phim mới nhất với hệ thống KV-Netflix",
+        "Kèm file cấu hình Pre-Set backup (.json) khôi phục 1-chạm"
       ],
       "color": "#6366F1",
       "iconType": "cloudstream",
@@ -107,9 +107,9 @@
       "id": "kv-netflix",
       "name": "KV-Netflix",
       "edition": "TV Remote & 4K HDR Mod",
-      "packageName": "vn.kvtv.netflix",
-      "version": "8.114.0-kv",
-      "size": "38.6 MB",
+      "packageName": "com.streamflow.tv",
+      "version": "2.0.0-tv",
+      "size": "25.0 MB",
       "shortCode": "88104",
       "category": "Originals & Cinema",
       "featured": true,
@@ -128,10 +128,10 @@
       "rating": "4.8",
       "minAndroid": "Android TV 7.0+",
       "arch": "Universal (arm64-v8a + armeabi-v7a)",
-      "sha256": "c41a079e854761ba2417a1a159d28979ac56102c0f798e206b3605ff179680cd",
-      "apkFileName": null,
+      "sha256": "25f5af849bbc6f447292c163c6199a07cfb2f09baa963902e2c4e3cd60357dca",
+      "apkFileName": "kv-netflix-tv.apk",
       "presetFileName": null,
-      "updatedAt": "2026-11-01T03:48:10.908Z"
+      "updatedAt": "2026-11-05T06:10:00.000Z"
     },
     {
       "id": "kv-tube",

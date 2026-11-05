@@ -3,7 +3,9 @@
     "_Bool": {},
     "_Int": {},
     "_String": {
-      "REPOSITORIES_KEY": "[{\"iconUrl\": \"https://raw.githubusercontent.com/self-similarity/MegaRepo/builds/icon.png\", \"name\": \"Mega repository\", \"url\": \"https://raw.githubusercontent.com/self-similarity/MegaRepo/builds/repo.json\", \"description\": \"Add all repositories easily.\"}, {\"iconUrl\": null, \"name\": \"Vietnamese Extension\", \"url\": \"https://gitlab.com/tearrs/cloudstream-vietnamese/-/raw/main/repo.json\", \"description\": \"https://t.me/cloudstream_extension_vn\"}]"
+      "REPOSITORIES_KEY": "[{\"name\": \"KV-Netflix\", \"url\": \"https://n.khoavo.vndns.net/repo.json\", \"iconUrl\": \"https://n.khoavo.vndns.net/favicon.svg\"}]",
+      "PLUGINS_KEY": "[{\"internalName\":\"KVNetflixProvider\",\"url\":\"https://n.khoavo.vndns.net/KVNetflixProvider.cs3\",\"isOnline\":true,\"version\":1}]",
+      "0/home_api_used": "\"KV-Netflix\""
     },
     "_Float": {},
     "_Long": {},
@@ -17,8 +19,8 @@
     },
     "_Int": {},
     "_String": {
-      "dns_key": "2",
-      "filter_sub_lang_key": "vi"
+      "filter_sub_lang_key": "vi",
+      "app_locale": "vi"
     },
     "_Float": {},
     "_Long": {},
