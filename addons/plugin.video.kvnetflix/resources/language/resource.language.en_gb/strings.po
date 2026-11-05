@@ -1,0 +1,49 @@
+# Kodi Media Center language file
+# Addon Name: KV-Netflix
+# Addon id: plugin.video.kvnetflix
+# Addon Provider: KV-TV
+msgid ""
+msgstr ""
+"Project-Id-Version: KV-Netflix\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-05 13:00+0700\n"
+"PO-Revision-Date: 2026-11-05 13:00+0700\n"
+"Last-Translator: KV-TV\n"
+"Language-Team: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en_GB\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "#30000"
+msgid "🔥 Top Movies"
+msgstr "🔥 Top Movies"
+
+msgctxt "#30001"
+msgid "✨ New Releases"
+msgstr "✨ New Releases"
+
+msgctxt "#30002"
+msgid "🌟 Featured Series"
+msgstr "🌟 Featured Series"
+
+msgctxt "#30003"
+msgid "🎬 Genres"
+msgstr "🎬 Genres"
+
+msgctxt "#30004"
+msgid "🔍 Search"
+msgstr "🔍 Search"
+
+msgctxt "#30005"
+msgid "Next Page >>"
+msgstr "Next Page >>"
+
+msgctxt "#30010"
+msgid "Stream Proxy"
+msgstr "Stream Proxy"
+
+msgctxt "#30011"
+msgid "Use kv-netflix Stream Proxy"
+msgstr "Use kv-netflix Stream Proxy"

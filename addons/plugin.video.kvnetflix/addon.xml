@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.kvnetflix"
+       name="KV-Netflix"
+       version="1.0.0"
+       provider-name="KV-TV">
+  <requires>
+    <import addon="xbmc.python" version="3.0.1"/>
+    <import addon="inputstream.adaptive" optional="true"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">KV-Netflix - Vietnamese &amp; Asian Movies &amp; Series</summary>
+    <description lang="en_GB">Watch trending movies, HD/4K series, and top Asian drama with fast streaming from KV-Netflix on Kodi 20/21 Omega.</description>
+    <disclaimer lang="en_GB">Powered by KV-TV network.</disclaimer>
+    <language>en vi</language>
+    <platform>all</platform>
+    <license>GPL-3.0-or-later</license>
+    <assets>
+      <icon>icon.png</icon>
+      <fanart>fanart.jpg</fanart>
+    </assets>
+  </extension>
+</addon>
