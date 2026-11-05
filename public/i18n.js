@@ -55,8 +55,9 @@ export const TRANSLATIONS = {
     },
     tiles: {
       hero_badge: '★ 4K VIP REPO',
-      btn_apk: 'TẢI APK',
-      btn_preset: 'CẤU HÌNH',
+      hero_desc: 'Tích hợp sẵn kho phim KV-Netflix 4K HDR10, âm thanh 5.1, phụ đề Vietsub tự động và vượt chặn ISP qua Cloudflare DoH 1.1.1.1.',
+      btn_apk: 'TẢI APK (88103)',
+      btn_preset: 'GÓI CẤU HÌNH',
       store_badge: 'BẢN CHÍNH THỨC · MÃ 88000',
       store_title: 'kv-store cho android tv',
       store_desc: 'Cài đặt và cập nhật mọi app media 4K HDR bằng remote TV.',
@@ -212,8 +213,9 @@ export const TRANSLATIONS = {
     },
     tiles: {
       hero_badge: '★ 4K VIP REPO',
-      btn_apk: 'GET APK',
-      btn_preset: 'PRESET',
+      hero_desc: 'Pre-loaded with KV-Netflix 4K HDR10 extension, 5.1 surround audio, auto Vietsub, and Cloudflare DoH 1.1.1.1 ISP bypass.',
+      btn_apk: 'GET APK (88103)',
+      btn_preset: 'PRESET CONFIG',
       store_badge: 'OFFICIAL APP · CODE 88000',
       store_title: 'kv-store for android tv',
       store_desc: 'Install and update 4K HDR media apps using your TV remote.',
@@ -331,20 +333,12 @@ export function detectInitialLanguage() {
   if (SUPPORTED_LANGS.includes(langQuery)) {
     return langQuery;
   }
-  const stored = (localStorage.getItem('kv_tv_lang') || '').toLowerCase();
-  if (SUPPORTED_LANGS.includes(stored)) {
-    return stored;
-  }
-  const serverSuggested = (window.__KV_SUGGESTED_LANG__ || '').toLowerCase();
-  if (SUPPORTED_LANGS.includes(serverSuggested)) {
-    return serverSuggested;
-  }
-  const navLangs = navigator.languages || [navigator.language || ''];
-  for (const nl of navLangs) {
-    const code = (nl || '').toLowerCase().slice(0, 2);
-    if (code === 'vi') return 'vi';
-    if (code === 'en') return 'en';
-  }
+  try {
+    const stored = (localStorage.getItem('kv_tv_lang') || '').toLowerCase();
+    if (SUPPORTED_LANGS.includes(stored)) {
+      return stored;
+    }
+  } catch {}
   return DEFAULT_LANG;
 }
 
@@ -432,6 +426,15 @@ export function tField(obj, baseKey, lang = activeLang) {
 
 export function translateDom() {
   document.documentElement.setAttribute('lang', activeLang);
+
+  const btnVi = document.getElementById('lang-btn-vi');
+  const btnEn = document.getElementById('lang-btn-en');
+  if (btnVi && btnEn) {
+    btnVi.classList.toggle('is-active', activeLang === 'vi');
+    btnVi.setAttribute('aria-pressed', String(activeLang === 'vi'));
+    btnEn.classList.toggle('is-active', activeLang === 'en');
+    btnEn.setAttribute('aria-pressed', String(activeLang === 'en'));
+  }
 
   const metaTitle = t('meta.title');
   if (metaTitle && metaTitle !== 'meta.title') {

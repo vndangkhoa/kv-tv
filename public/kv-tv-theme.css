@@ -282,10 +282,8 @@ kbd {
   padding-bottom: 8px;
 }
 
-html[data-pivot="store"] .kv-panorama-header,
 .kv-pivots[hidden],
-.panorama-pivots[hidden],
-#metro-grid [data-app-downloads] {
+.panorama-pivots[hidden] {
   display: none !important;
 }
 
@@ -499,10 +497,11 @@ html[data-pivot="store"] .kv-panorama-header,
 /* Hero 2x2 Bento Micro-Layout */
 .kv-hero-pill {
   font-family: var(--kv-font-mono);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.04em;
-  background-color: rgba(255, 255, 255, 0.22);
+  background-color: rgba(0, 0, 0, 0.48);
+  border: 1px solid rgba(255, 255, 255, 0.45);
   color: #FFFFFF;
   padding: 3px 8px;
 }
@@ -510,31 +509,41 @@ html[data-pivot="store"] .kv-panorama-header,
 .kv-hero-main {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  margin-top: 4px;
+  gap: 6px;
+  margin-top: 6px;
 }
 
 .kv-hero-subtitle {
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #FFFFFF;
   line-height: 1.35;
   margin: 0;
+}
+
+.kv-hero-desc {
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.45;
+  margin-top: 4px;
+  max-width: 44ch;
 }
 
 .kv-hero-tags {
   display: flex;
   flex-wrap: wrap;
+  flex-wrap: balance;
   gap: 6px;
   margin-top: 8px;
 }
 
 .kv-tag-pill {
   font-family: var(--kv-font-mono);
-  font-size: 0.6875rem;
-  background-color: rgba(0, 0, 0, 0.3);
-  color: rgba(255, 255, 255, 0.95);
-  padding: 2px 7px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  font-size: 0.75rem;
+  background-color: rgba(0, 0, 0, 0.38);
+  color: #FFFFFF;
+  padding: 2px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.32);
   letter-spacing: 0.02em;
 }
 
@@ -795,7 +804,7 @@ html[data-pivot="store"] .kv-panorama-header,
   font-size: 0.9375rem;
   font-weight: 500;
   color: var(--kv-fg-primary);
-  line-height: 1.25;
+  line-height: 1.35;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1138,7 +1147,8 @@ dialog::backdrop {
   color: var(--kv-fg-primary);
   font-weight: 600;
   font-size: 0.9375rem;
-  word-break: break-all;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 .feature-list {
@@ -1284,8 +1294,7 @@ dialog::backdrop {
 }
 
 .kv-dpad-simulator,
-.dpad-simulator,
-#metro-lower-strip {
+.dpad-simulator {
   display: none !important;
 }
 
@@ -1359,11 +1368,16 @@ dialog::backdrop {
   font-weight: 700;
 }
 
-@media (max-width: 1220px) {
+@media (max-width: 1180px) {
   .kv-grid,
   .metro-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-auto-rows: minmax(180px, 205px);
+    grid-auto-rows: minmax(180px, auto);
+  }
+
+  /* Fill Row 4 (QR 2x1 + KV-Tube 2x1 = 4 cols) so there is zero empty gap */
+  #metro-grid [data-app-id="kv-tube"] {
+    grid-column: span 2;
   }
 
   .kv-span-3x1,
@@ -1373,10 +1387,31 @@ dialog::backdrop {
 }
 
 @media (max-width: 760px) {
+  .kv-topbar,
+  .mockup-switcher {
+    padding: 10px 16px;
+    gap: 10px;
+  }
+
+  .kv-topbar-nav,
+  .switcher-links {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 6px;
+  }
+
+  .kv-topbar-link,
+  .switcher-link {
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+  }
+
   .kv-grid,
   .metro-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: minmax(160px, auto);
+    grid-auto-rows: minmax(156px, auto);
+    gap: 10px;
   }
 
   .kv-span-2x2,
@@ -1384,13 +1419,15 @@ dialog::backdrop {
   .kv-span-3x1,
   .span-2x2,
   .span-2x1,
-  .span-3x1 {
+  .span-3x1,
+  #metro-grid [data-app-id="kv-tube"] {
     grid-column: span 2;
   }
 
   .kv-span-2x2,
   .span-2x2 {
-    grid-row: span 2;
+    grid-row: span 1;
+    gap: 14px;
   }
 
   .kv-span-1x1,
@@ -1399,13 +1436,75 @@ dialog::backdrop {
   }
 
   .kv-dialog-grid,
-  .dialog-grid {
+  .dialog-grid,
+  .kv-dialog-specs,
+  .dialog-specs {
     grid-template-columns: 1fr;
   }
 
   .kv-store-card-wrap {
     flex-direction: column;
     align-items: flex-start;
+    gap: 12px;
+  }
+
+  .kv-store-card-actions {
+    width: 100%;
+  }
+
+  .kv-store-card-actions .kv-hero-btn {
+    flex: 1 1 auto;
+  }
+
+  /* Responsive Card Table on Mobile */
+  .kv-table thead {
+    display: none;
+  }
+
+  .kv-table,
+  .kv-table tbody,
+  .kv-table tr,
+  .kv-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .kv-table tr {
+    border: 1px solid var(--kv-border-hairline);
+    background-color: var(--kv-bg-oled);
+    margin-bottom: 12px;
+    padding: 8px 12px;
+  }
+
+  .kv-table td {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--kv-border-hairline);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    text-align: right;
+  }
+
+  .kv-table td:last-child {
+    border-bottom: none;
+    padding-top: 10px;
+  }
+
+  .kv-table td::before {
+    content: attr(data-label);
+    font-family: var(--kv-font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--kv-fg-secondary);
+    text-transform: uppercase;
+    text-align: left;
+    flex-shrink: 0;
+  }
+
+  .kv-table-actions {
+    width: 100%;
+    justify-content: flex-end;
   }
 }
 

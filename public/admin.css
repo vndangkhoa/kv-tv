@@ -168,11 +168,11 @@ code {
 .mockup-switcher {
   background-color: var(--bg-chrome);
   border-bottom: 1px solid var(--border-hairline);
-  padding: 10px 32px;
+  padding: 10px clamp(16px, 3vw, 32px);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
   flex-wrap: wrap;
   z-index: 30;
 }
@@ -274,24 +274,24 @@ code {
   width: 100%;
   max-width: 1720px;
   margin: 0 auto;
-  padding: 32px 32px 84px;
+  padding: 20px clamp(16px, 3vw, 32px) 64px;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 24px;
 }
 
 .panorama-header {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   border-bottom: 1px solid var(--border-hairline);
-  padding-bottom: 18px;
+  padding-bottom: 14px;
 }
 
 .panorama-pivots {
   display: flex;
   align-items: baseline;
-  gap: 36px;
+  gap: clamp(16px, 3vw, 36px);
   overflow-x: auto;
   scrollbar-width: none;
   padding: 4px 0;
@@ -308,12 +308,12 @@ code {
   cursor: pointer;
   display: inline-flex;
   align-items: baseline;
-  gap: 10px;
+  gap: 8px;
   font-family: var(--font-sans);
-  font-size: clamp(2.8rem, 5vw, 4.6rem);
-  font-weight: 200;
-  letter-spacing: -0.04em;
-  line-height: 0.95;
+  font-size: clamp(1.35rem, 2.5vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
   color: var(--fg-pivot-inactive);
   text-transform: lowercase;
   white-space: nowrap;

@@ -587,9 +587,12 @@ function renderPresetsMatrix() {
       const versionClean = String(app.version || '').replace(/^v/i, '');
       const localizedEdition = tField(app, 'edition', currentLang);
       const localizedDesc = tField(app, 'description', currentLang);
-      const features = (currentLang === 'vi' && app.presetFeatures_vi)
-        ? app.presetFeatures_vi
-        : (app.presetFeatures || []);
+      const features =
+        currentLang === 'en' && Array.isArray(app.presetFeatures_en)
+          ? app.presetFeatures_en
+          : Array.isArray(app.presetFeatures_vi)
+          ? app.presetFeatures_vi
+          : app.presetFeatures || [];
 
       const featuresHtml = features
         .map(
@@ -807,17 +810,19 @@ function renderPromoPortal() {
 
         return `
           <tr class="tabular">
-            <td>
-              <strong>${escapeHtml(app.name)}</strong>${statusBadgeHtml}
-              <div>${escapeHtml(localizedEdition)}</div>
+            <td data-label="${escapeHtml(t('promo.th_app'))}">
+              <div>
+                <strong>${escapeHtml(app.name)}</strong>${statusBadgeHtml}
+                <div>${escapeHtml(localizedEdition)}</div>
+              </div>
             </td>
-            <td>
+            <td data-label="${escapeHtml(t('promo.th_code'))}">
               <span class="kv-code-stamp ${colorClass}">CODE ${escapeHtml(app.shortCode)}</span>
             </td>
-            <td><code>${escapeHtml(app.packageName)}</code></td>
-            <td>v${escapeHtml(versionClean)} · ${escapeHtml(app.size)}</td>
-            <td>${Number(app.downloads || 0).toLocaleString('en-US')}</td>
-            <td>
+            <td data-label="${escapeHtml(t('promo.th_pkg'))}"><code>${escapeHtml(app.packageName)}</code></td>
+            <td data-label="${escapeHtml(t('promo.th_ver_size'))}">v${escapeHtml(versionClean)} · ${escapeHtml(app.size)}</td>
+            <td data-label="${escapeHtml(t('promo.th_installs'))}">${Number(app.downloads || 0).toLocaleString('en-US')}</td>
+            <td data-label="${escapeHtml(t('promo.th_actions'))}">
               <div class="kv-table-actions">
                 ${actionsHtml}
               </div>
@@ -846,8 +851,8 @@ function hydrateLiveTilesAndStrip() {
       if (!existingTile) {
         const tileColorClass = METRO_TILE_CLASSES[app.id] || 'kv-tile--cobalt';
         const legacyColorClass = tileColorClass.replace('kv-tile--', 'tile-');
-        const newTile = document.createElement('button');
-        newTile.type = 'button';
+        const newTile = document.createElement('div');
+        newTile.setAttribute('role', 'button');
         newTile.className = `kv-tile ${tileColorClass} kv-span-1x1 metro-tile ${legacyColorClass} span-1x1`;
         newTile.setAttribute('tabindex', '-1');
         newTile.setAttribute('data-tile-kind', 'app');
@@ -865,7 +870,7 @@ function hydrateLiveTilesAndStrip() {
               <rect x="5" y="9" width="38" height="30" />
               <polygon points="20,17 32,24 20,31" fill="currentColor" stroke="none" />
             </svg>
-            <span class="kv-code-stamp code-stamp tabular" data-app-stamp="${escapeHtml(app.id)}">${escapeHtml(app.shortCode || '')} · ${escapeHtml(app.size || '')}</span>
+            <span class="kv-code-stamp code-stamp tabular" data-app-stamp="${escapeHtml(app.id)}">${escapeHtml(app.shortCode || '')}</span>
           </div>
           <div class="kv-tile-bottom tile-bottom">
             <span class="kv-tile-title tile-title">${escapeHtml(String(app.name || app.id).toLowerCase())}</span>
@@ -902,7 +907,15 @@ function hydrateLiveTilesAndStrip() {
     }
     const stampEl = document.querySelector(`[data-app-stamp="${CSS.escape(app.id)}"]`);
     if (stampEl && app.shortCode && app.size) {
-      stampEl.textContent = `${app.shortCode} · ${app.size}`;
+      const parentTile = stampEl.closest('.kv-tile');
+      const isSquare1x1 = parentTile && parentTile.classList.contains('kv-span-1x1');
+      if (app.id === 'kv-store') {
+        stampEl.textContent = app.size;
+      } else if (isSquare1x1) {
+        stampEl.textContent = app.shortCode;
+      } else {
+        stampEl.textContent = `${app.shortCode} · ${app.size}`;
+      }
     }
     const verEl = document.querySelector(`[data-app-version="${CSS.escape(app.id)}"]`);
     if (verEl && app.version) {
@@ -920,19 +933,6 @@ function hydrateLiveTilesAndStrip() {
   const totalEl = document.getElementById('telemetry-downloads');
   if (totalEl && totalInstalls > 0) {
     totalEl.textContent = `${totalInstalls.toLocaleString('en-US')} ${t('telemetry.total_installs')}`;
-  }
-
-  const activeAds = (state.catalog.ads || []).filter((ad) => ad.active !== false);
-  if (activeAds.length > 0) {
-    const leadAd = activeAds[0];
-    const titleEl = document.getElementById('sponsor-strip-title');
-    const bodyEl = document.getElementById('sponsor-strip-body');
-    const statsEl = document.getElementById('sponsor-strip-stats');
-    if (titleEl) titleEl.textContent = tField(leadAd, 'title', currentLang).toLowerCase();
-    if (bodyEl) bodyEl.textContent = tField(leadAd, 'subtitle', currentLang);
-    if (statsEl) {
-      statsEl.textContent = `${leadAd.badge || 'SPONSOR'} · ${Number(leadAd.impressions || 0).toLocaleString('en-US')} VIEWS`;
-    }
   }
 }
 
