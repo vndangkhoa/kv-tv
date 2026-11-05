@@ -284,8 +284,12 @@ def ensure_proxy_running():
     if is_proxy_alive():
         return True
     try:
+        import os
         import xbmc
-        xbmc.executebuiltin('RunScript(special://home/addons/plugin.video.kvnetflix/service.py)')
+        import xbmcaddon
+        addon_dir = xbmcaddon.Addon('plugin.video.kvnetflix').getAddonInfo('path')
+        svc_path = os.path.join(addon_dir, 'service.py')
+        xbmc.executebuiltin(f'RunScript({svc_path})')
         for _ in range(15):
             time.sleep(0.1)
             if is_proxy_alive():
@@ -294,6 +298,48 @@ def ensure_proxy_running():
         pass
     start_proxy_server(block=False)
     return is_proxy_alive()
+
+
+def ensure_netflix_skin_settings():
+    """Ensure skin.titan.bingie.mod default Netflix layout settings are initialized on first boot."""
+    try:
+        import os
+        import json
+        import xbmc
+        import xbmcvfs
+        skin_data_dir = xbmcvfs.translatePath('special://userdata/addon_data/skin.titan.bingie.mod')
+        os.makedirs(skin_data_dir, exist_ok=True)
+        settings_file = os.path.join(skin_data_dir, 'settings.xml')
+        if not os.path.exists(settings_file):
+            default_skin_xml = """<settings version="2">
+    <setting id="HomeLayout" type="string">bingie</setting>
+    <setting id="homelayout" type="string">bingie</setting>
+    <setting id="HomeLayout.label" type="string">[UPPERCASE]Bingie[/UPPERCASE]</setting>
+    <setting id="widgetstyle" type="string">poster</setting>
+    <setting id="widgetstyle.label" type="string">Poster</setting>
+    <setting id="ShowAllWidgets" type="bool">true</setting>
+    <setting id="showallwidgets" type="bool">true</setting>
+    <setting id="BingieFirstStartupDone" type="bool">true</setting>
+    <setting id="BingieSecondStartupDone" type="bool">true</setting>
+    <setting id="HomeMenuDefaults46" type="bool">true</setting>
+    <setting id="EnableBingieModLogo" type="bool">true</setting>
+    <setting id="EnableFixedFrameWidgets" type="bool">true</setting>
+    <setting id="MovieDetailsHome" type="bool">true</setting>
+    <setting id="UseBingieOSD" type="bool">true</setting>
+    <setting id="UseBingieInfoDialog" type="bool">true</setting>
+    <setting id="WidgetsGlobalLimit" type="string">30</setting>
+</settings>
+"""
+            with open(settings_file, 'w', encoding='utf-8') as f:
+                f.write(default_skin_xml)
+        xbmc.executebuiltin('Skin.SetString(HomeLayout,bingie)')
+        xbmc.executebuiltin('Skin.SetString(widgetstyle,poster)')
+        xbmc.executebuiltin('Skin.SetString(widgetstyle.label,Poster)')
+        xbmc.executebuiltin('Skin.SetBool(ShowAllWidgets)')
+        xbmc.executebuiltin('Skin.SetBool(BingieFirstStartupDone)')
+        xbmc.executebuiltin('Skin.SetBool(BingieSecondStartupDone)')
+    except Exception:
+        pass
 
 
 def build_proxy_play_url(stream_url, embed_url=''):
@@ -306,6 +352,7 @@ def build_proxy_play_url(stream_url, embed_url=''):
 
 
 def start_proxy_server(block=False):
+    ensure_netflix_skin_settings()
     try:
         server = ReusableThreadingHTTPServer((PROXY_HOST, PROXY_PORT), StreamProxyHandler)
     except OSError:
