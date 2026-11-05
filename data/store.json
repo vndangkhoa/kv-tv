@@ -78,8 +78,8 @@
       "name": "CloudStream 3",
       "edition": "KV-PreSetup (Full Repos)",
       "packageName": "com.lagradost.cloudstream3",
-      "version": "4.4.1-kv",
-      "size": "24.2 MB",
+      "version": "4.8.0-kv",
+      "size": "68.7 MB",
       "shortCode": "88103",
       "category": "Streaming",
       "featured": true,
@@ -94,13 +94,13 @@
       ],
       "color": "#6366F1",
       "iconType": "cloudstream",
-      "downloads": 4151,
+      "downloads": 4155,
       "rating": "5.0",
       "minAndroid": "Android TV 6.0+",
-      "arch": "Universal (arm64-v8a + armeabi-v7a)",
-      "sha256": "9b423b14f254b94be464f087216b2d1a313aab0647934d8258c4da88bdc44e0d",
-      "apkFileName": null,
-      "presetFileName": null,
+      "arch": "Universal (arm64-v8a, armeabi-v7a, x86, x86_64)",
+      "sha256": "348c3f09551f2dda4fba25ba348928ee7b82a47ce98a6b1eae3295d4c127877c",
+      "apkFileName": "cloudstream-kv-apk.apk",
+      "presetFileName": "cloudstream-kv-preset.json",
       "updatedAt": "2026-11-04T03:48:10.908Z"
     },
     {
@@ -174,7 +174,7 @@
       "ctaUrl": "#catalog",
       "gradient": "linear-gradient(135deg, #00A4DC 0%, #6366F1 100%)",
       "active": true,
-      "impressions": 4858,
+      "impressions": 4859,
       "clicks": 612,
       "createdAt": "2026-10-30T03:48:10.908Z"
     },
@@ -187,7 +187,7 @@
       "ctaUrl": "/tv",
       "gradient": "linear-gradient(135deg, #10B981 0%, #0EA5E9 100%)",
       "active": true,
-      "impressions": 3228,
+      "impressions": 3229,
       "clicks": 284,
       "createdAt": "2026-10-31T03:48:10.908Z"
     },
@@ -200,7 +200,7 @@
       "ctaUrl": "/go/88103",
       "gradient": "linear-gradient(135deg, #6366F1 0%, #EC4899 100%)",
       "active": true,
-      "impressions": 5448,
+      "impressions": 5449,
       "clicks": 890,
       "createdAt": "2026-11-03T03:48:10.908Z"
     }
@@ -208,7 +208,7 @@
   "admin": {
     "username": "admin",
     "passwordHash": "pbkdf2$100000$kvtv2026salt01$3a9c0d968100ce74dae5666d6be80c428d14faca632552a633269953d80d1e50",
-    "totpSecret": "KVKVTV2026STORE2FASECRETBASE32AA",
+    "totpSecret": "KVKVTVSTORETWOFASECRETBASE32AABB",
     "totpEnabled": true,
     "updatedAt": "2026-11-05T03:48:10.908Z"
   },
@@ -253,11 +253,61 @@
       {
         "date": "2026-11-05",
         "tvViews": 519,
-        "webViews": 322,
-        "downloads": 340
+        "webViews": 323,
+        "downloads": 344
       }
     ],
     "logs": [
+      {
+        "id": "evt-mw33pp58-6afa",
+        "timestamp": "2026-11-05T05:24:41.228Z",
+        "event": "download",
+        "appId": "cloudstream-kv",
+        "appName": "CloudStream 3 (preset)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "curl/8.18.0"
+      },
+      {
+        "id": "evt-mw33pp33-e56e",
+        "timestamp": "2026-11-05T05:24:41.151Z",
+        "event": "download",
+        "appId": "cloudstream-kv",
+        "appName": "CloudStream 3 (apk)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "curl/8.18.0"
+      },
+      {
+        "id": "evt-mw33ohfe-5f97",
+        "timestamp": "2026-11-05T05:23:44.570Z",
+        "event": "download",
+        "appId": "cloudstream-kv",
+        "appName": "CloudStream 3 (apk)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "curl/8.18.0"
+      },
+      {
+        "id": "evt-mw33oczo-65c3",
+        "timestamp": "2026-11-05T05:23:38.820Z",
+        "event": "download",
+        "appId": "cloudstream-kv",
+        "appName": "CloudStream 3 (apk)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "curl/8.18.0"
+      },
+      {
+        "id": "evt-mw33oau0-d337",
+        "timestamp": "2026-11-05T05:23:36.025Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "curl/8.18.0"
+      },
       {
         "id": "evt-mw32su1s-05c5",
         "timestamp": "2026-11-05T04:59:07.936Z",
