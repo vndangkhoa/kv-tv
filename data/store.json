@@ -63,7 +63,10 @@
       "apkUrl": "https://tv.vndns.net/uploads/kv-store.apk",
       "presetUrl": null,
       "updatedAt": "2026-11-05T16:45:00.000Z",
-      "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-store.apk"
+      "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-store.apk",
+      "shortPath": "tv.vndns.net/88000",
+      "ultraShortPath": "tv.vndns.net/0",
+      "aftvCode": null
     },
     {
       "id": "jellyfin-kv",
@@ -115,7 +118,10 @@
       "apkUrl": "https://tv.vndns.net/uploads/jellyfin-kv.apk",
       "presetUrl": null,
       "updatedAt": "2026-11-05T16:45:00.000Z",
-      "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/jellyfin-kv.apk"
+      "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/jellyfin-kv.apk",
+      "shortPath": "tv.vndns.net/88101",
+      "ultraShortPath": "tv.vndns.net/1",
+      "aftvCode": null
     },
     {
       "id": "kodi-kv",
@@ -157,7 +163,7 @@
       ],
       "color": "#17B2E7",
       "iconType": "kodi",
-      "downloads": 774,
+      "downloads": 775,
       "rating": "4.9",
       "minAndroid": "Android TV 7.0+",
       "arch": "Universal (arm64-v8a)",
@@ -167,7 +173,10 @@
       "apkUrl": "https://tv.vndns.net/uploads/kodi-kv.apk",
       "presetUrl": "https://tv.vndns.net/api/download/kodi-kv?type=preset",
       "updatedAt": "2026-11-05T16:45:00.000Z",
-      "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kodi-kv.apk"
+      "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kodi-kv.apk",
+      "shortPath": "tv.vndns.net/88102",
+      "ultraShortPath": "tv.vndns.net/2",
+      "aftvCode": null
     },
     {
       "id": "cloudstream-kv",
@@ -219,7 +228,10 @@
       "apkUrl": "https://tv.vndns.net/uploads/cloudstream-kv.apk",
       "presetUrl": "https://n.khoavo.vndns.net/repo.json",
       "updatedAt": "2026-11-05T16:45:00.000Z",
-      "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/cloudstream-kv.apk"
+      "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/cloudstream-kv.apk",
+      "shortPath": "tv.vndns.net/88103",
+      "ultraShortPath": "tv.vndns.net/3",
+      "aftvCode": null
     },
     {
       "id": "kv-netflix",
@@ -271,7 +283,10 @@
       "apkUrl": "https://tv.vndns.net/uploads/kv-netflix-tv.apk",
       "presetUrl": "https://n.khoavo.vndns.net/repo.json",
       "updatedAt": "2026-11-05T16:45:00.000Z",
-      "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-netflix-tv.apk"
+      "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-netflix-tv.apk",
+      "shortPath": "tv.vndns.net/88104",
+      "ultraShortPath": "tv.vndns.net/4",
+      "aftvCode": null
     },
     {
       "id": "kv-tube",
@@ -323,7 +338,10 @@
       "apkUrl": "https://tv.vndns.net/uploads/kv-tube.apk",
       "presetUrl": null,
       "updatedAt": "2026-11-05T16:45:00.000Z",
-      "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-tube.apk"
+      "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-tube.apk",
+      "shortPath": "tv.vndns.net/88105",
+      "ultraShortPath": "tv.vndns.net/5",
+      "aftvCode": null
     },
     {
       "id": "smarttube-tv",
@@ -375,7 +393,10 @@
       "apkUrl": "https://tv.vndns.net/uploads/smarttube-tv.apk",
       "presetUrl": null,
       "updatedAt": "2026-11-05T16:45:00.000Z",
-      "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/smarttube-tv.apk"
+      "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/smarttube-tv.apk",
+      "shortPath": "tv.vndns.net/88106",
+      "ultraShortPath": "tv.vndns.net/6",
+      "aftvCode": null
     }
   ],
   "ads": [
@@ -486,10 +507,20 @@
         "date": "2026-11-05",
         "tvViews": 364,
         "webViews": 661,
-        "downloads": 198
+        "downloads": 199
       }
     ],
     "logs": [
+      {
+        "id": "evt-mw3m53fx-9351",
+        "timestamp": "2026-11-05T14:00:32.685Z",
+        "event": "download",
+        "appId": "kodi-kv",
+        "appName": "Kodi 21 Omega (apk)",
+        "deviceType": "desktop",
+        "ip": "172.26.0.1",
+        "userAgent": ""
+      },
       {
         "id": "evt-mw3jmhrn-6961",
         "timestamp": "2026-11-05T12:50:05.555Z",
@@ -1473,16 +1504,6 @@
       {
         "id": "evt-mw3hhri7-d49d",
         "timestamp": "2026-11-05T11:50:25.663Z",
-        "event": "view",
-        "appId": null,
-        "appName": "Catalog (DESKTOP)",
-        "deviceType": "desktop",
-        "ip": "127.0.0.1",
-        "userAgent": "node"
-      },
-      {
-        "id": "evt-mw3hhc0j-9f4d",
-        "timestamp": "2026-11-05T11:50:05.587Z",
         "event": "view",
         "appId": null,
         "appName": "Catalog (DESKTOP)",

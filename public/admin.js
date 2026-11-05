@@ -415,9 +415,19 @@
               <span class="table-cell-sub">${escapeHtml(app.edition)}</span>
             </th>
             <td>
-              <a href="/go/${encodeURIComponent(app.shortCode)}" target="_blank" rel="noopener" class="mono-num">
+              <a href="/${encodeURIComponent(app.shortCode)}" target="_blank" rel="noopener" class="mono-num">
                 ${escapeHtml(app.shortCode)}
               </a>
+              ${
+                app.ultraShortPath
+                  ? `<span class="table-cell-sub mono-num">${escapeHtml(app.ultraShortPath)}</span>`
+                  : ''
+              }
+              ${
+                app.aftvCode
+                  ? `<span class="table-cell-sub mono-num">AFTV: ${escapeHtml(app.aftvCode)}</span>`
+                  : ''
+              }
             </td>
             <td class="mono-num">
               v${escapeHtml(app.version)}
@@ -571,6 +581,16 @@
                     ${app.hasPrimaryVpsFile ? 'VPS Disk Active (1Gbps)' : 'VPS + Forgejo Auto-Fallback'}
                   </span>
                   <span class="badge badge-sky mono-num">Code: ${escapeHtml(app.shortCode)}</span>
+                  ${
+                    app.ultraShortPath
+                      ? `<span class="badge badge-subtle mono-num">${escapeHtml(app.ultraShortPath)}</span>`
+                      : ''
+                  }
+                  ${
+                    app.aftvCode
+                      ? `<span class="badge badge-emerald mono-num">AFTV: ${escapeHtml(app.aftvCode)}</span>`
+                      : ''
+                  }
                   <span class="app-edition-tag">${escapeHtml(app.edition)}</span>
                 </div>
 
@@ -733,6 +753,10 @@
     document.getElementById('appFormShortCode').value = existing
       ? existing.shortCode
       : '';
+    const aftvCodeEl = document.getElementById('appFormAftvCode');
+    if (aftvCodeEl) {
+      aftvCodeEl.value = existing && existing.aftvCode ? existing.aftvCode : '';
+    }
     document.getElementById('appFormVersion').value = existing
       ? existing.version
       : '1.0.0-kv';
@@ -795,6 +819,7 @@
       edition: document.getElementById('appFormEdition').value.trim(),
       packageName: document.getElementById('appFormPackage').value.trim(),
       shortCode: document.getElementById('appFormShortCode').value.trim(),
+      aftvCode: document.getElementById('appFormAftvCode')?.value.trim() || null,
       version: document.getElementById('appFormVersion').value.trim(),
       size: document.getElementById('appFormSize').value.trim(),
       category: document.getElementById('appFormCategory').value,
@@ -1079,6 +1104,21 @@
     document
       .getElementById('appModalForm')
       .addEventListener('submit', handleSaveAppModal);
+    const openAftvBtn = document.getElementById('openAftvGeneratorBtn');
+    if (openAftvBtn) {
+      openAftvBtn.addEventListener('click', () => {
+        const rawCode =
+          document.getElementById('appFormShortCode')?.value.trim() || '88000';
+        const targetUrl = `https://tv.vndns.net/${rawCode}`;
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+          navigator.clipboard.writeText(targetUrl).catch(() => {});
+        }
+        window.open('https://go.aftvnews.com', '_blank', 'noopener,noreferrer');
+        showToast(
+          `Đã sao chép ${targetUrl} — Hãy dán vào go.aftvnews.com, giải reCAPTCHA và nhập mã số vào ô AFTVnews Code.`
+        );
+      });
+    }
     document
       .getElementById('adModalForm')
       .addEventListener('submit', handleSaveAdModal);

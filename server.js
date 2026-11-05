@@ -1094,6 +1094,52 @@ function resolveLocalApkPath(app) {
   return null;
 }
 
+const ULTRA_SHORT_TO_CODE = Object.freeze({
+  '0': '88000',
+  '1': '88101',
+  '2': '88102',
+  '3': '88103',
+  '4': '88104',
+  '5': '88105',
+  '6': '88106',
+});
+
+const CODE_TO_ULTRA_SHORT = Object.freeze({
+  '88000': '0',
+  '88101': '1',
+  '88102': '2',
+  '88103': '3',
+  '88104': '4',
+  '88105': '5',
+  '88106': '6',
+});
+
+/**
+ * Find an app in `store.apps` by `id`, 5-digit `shortCode` (`88000`, `88101`–`88106`),
+ * single-digit ultra-short code (`0`–`6`), or `aftvCode` (from `go.aftvnews.com`).
+ * @param {string} identifier
+ * @returns {object | undefined}
+ */
+function findAppByIdentifier(identifier) {
+  const norm = String(identifier ?? '').trim().toLowerCase();
+  if (!norm) return undefined;
+  const mappedCode = ULTRA_SHORT_TO_CODE[norm] || norm;
+
+  return store.apps.find((a) => {
+    if (!a) return false;
+    if (String(a.id || '').toLowerCase() === norm) return true;
+    if (String(a.shortCode || '').toLowerCase() === mappedCode) return true;
+    if (a.aftvCode && String(a.aftvCode).trim().toLowerCase() === norm) return true;
+    if (
+      a.ultraShortPath &&
+      String(a.ultraShortPath).trim().toLowerCase().endsWith(`/${norm}`)
+    ) {
+      return true;
+    }
+    return false;
+  });
+}
+
 /**
  * Enrich app object with primary VPS and automatic Forgejo backup download URLs.
  * @param {object} app
@@ -1109,9 +1155,23 @@ function decorateAppForPublic(app) {
     app.apkUrl && !String(app.apkUrl).includes('git.khoavo.myds.me')
       ? app.apkUrl
       : defaultPrimaryUrl;
+  const shortCodeStr = String(app.shortCode || '').trim();
+  const ultraDigit = CODE_TO_ULTRA_SHORT[shortCodeStr];
+  const shortPath =
+    app.shortPath || (shortCodeStr ? `tv.vndns.net/${shortCodeStr}` : null);
+  const ultraShortPath =
+    app.ultraShortPath ||
+    (ultraDigit !== undefined ? `tv.vndns.net/${ultraDigit}` : null);
+  const aftvCode =
+    app.aftvCode && String(app.aftvCode).trim()
+      ? String(app.aftvCode).trim()
+      : null;
 
   return {
     ...app,
+    shortPath,
+    ultraShortPath,
+    aftvCode,
     apkFileName: fileName,
     apkUrl,
     backupApkUrl,
@@ -1781,11 +1841,7 @@ const server = http.createServer(async (req, res) => {
     // 2.2 GET / HEAD /api/apps/:id
     if ((method === 'GET' || method === 'HEAD') && pathname.startsWith('/api/apps/')) {
       const rawId = decodeURIComponent(pathname.slice('/api/apps/'.length)).trim();
-      const app = store.apps.find(
-        (a) =>
-          String(a.id).toLowerCase() === rawId.toLowerCase() ||
-          String(a.shortCode).toLowerCase() === rawId.toLowerCase()
-      );
+      const app = findAppByIdentifier(rawId);
       if (!app) {
         sendJson(req, res, 404, { ok: false, error: `App "${rawId}" not found` });
         return;
@@ -1806,6 +1862,9 @@ const server = http.createServer(async (req, res) => {
         id: 'kv-store',
         name: 'KV-Store TV',
         shortCode: '88000',
+        shortPath: 'tv.vndns.net/88000',
+        ultraShortPath: 'tv.vndns.net/0',
+        aftvCode: null,
         downloads: 8800,
         apkFileName: 'kv-store.apk',
         apkUrl: 'https://tv.vndns.net/uploads/kv-store.apk',
@@ -1818,16 +1877,14 @@ const server = http.createServer(async (req, res) => {
       }
     }
 
-    // Direct 5-digit shortcode routes for Downloader app (e.g. /88000 or /88101–/88106)
-    if ((method === 'GET' || method === 'HEAD') && /^\/(\d{5})\/?$/.test(pathname)) {
+    // Direct 1-digit (/0–/6) and 5-digit (/88000, /88101–/88106) shortcode routes for Downloader app
+    if ((method === 'GET' || method === 'HEAD') && /^\/(\d|\d{5})\/?$/.test(pathname)) {
       const directCode = pathname.replace(/^\//, '').replace(/\/$/, '');
-      const app = store.apps.find(
-        (a) => String(a.shortCode).toLowerCase() === directCode.toLowerCase()
-      );
+      const app = findAppByIdentifier(directCode);
       if (!app) {
         sendJson(req, res, 404, {
           found: false,
-          error: `Short-code "${directCode}" not found. Valid codes: 88000, 88101–88106.`,
+          error: `Short-code "${directCode}" not found. Valid codes: 0–6, 88000, 88101–88106.`,
         });
         return;
       }
@@ -1838,15 +1895,11 @@ const server = http.createServer(async (req, res) => {
     // 3. GET / HEAD /api/code/:shortCode
     if ((method === 'GET' || method === 'HEAD') && pathname.startsWith('/api/code/')) {
       const code = decodeURIComponent(pathname.slice('/api/code/'.length)).trim();
-      const app = store.apps.find(
-        (a) =>
-          String(a.shortCode).toLowerCase() === code.toLowerCase() ||
-          String(a.id).toLowerCase() === code.toLowerCase()
-      );
+      const app = findAppByIdentifier(code);
       if (!app) {
         sendJson(req, res, 404, {
           found: false,
-          error: `No app found for Downloader code "${code}". Valid codes: 88000, 88101–88106.`,
+          error: `No app found for Downloader code "${code}". Valid codes: 0–6, 88000, 88101–88106.`,
         });
         return;
       }
@@ -1869,11 +1922,7 @@ const server = http.createServer(async (req, res) => {
     // 4. GET / HEAD /go/:shortCode -> Serve APK directly from VPS (with automatic Forgejo fallback)
     if ((method === 'GET' || method === 'HEAD') && pathname.startsWith('/go/')) {
       const code = decodeURIComponent(pathname.slice('/go/'.length)).trim();
-      const app = store.apps.find(
-        (a) =>
-          String(a.shortCode).toLowerCase() === code.toLowerCase() ||
-          String(a.id).toLowerCase() === code.toLowerCase()
-      );
+      const app = findAppByIdentifier(code);
       if (!app) {
         sendJson(req, res, 404, {
           found: false,
@@ -1888,11 +1937,7 @@ const server = http.createServer(async (req, res) => {
     // 5. GET / HEAD /api/download/:appId?type=apk|preset&source=vps|backup
     if ((method === 'GET' || method === 'HEAD') && pathname.startsWith('/api/download/')) {
       const rawId = decodeURIComponent(pathname.slice('/api/download/'.length)).trim();
-      const app = store.apps.find(
-        (a) =>
-          String(a.id).toLowerCase() === rawId.toLowerCase() ||
-          String(a.shortCode).toLowerCase() === rawId.toLowerCase()
-      );
+      const app = findAppByIdentifier(rawId);
       if (!app) {
         sendJson(req, res, 404, { error: `App "${rawId}" not found` });
         return;
@@ -2424,6 +2469,21 @@ const server = http.createServer(async (req, res) => {
             : existing?.backupApkUrl ||
               `https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/${resolvedApkFileName}`;
 
+        const ultraDigit = CODE_TO_ULTRA_SHORT[shortCode];
+        const resolvedShortPath =
+          body.shortPath !== undefined && String(body.shortPath).trim()
+            ? String(body.shortPath).trim()
+            : existing?.shortPath || `tv.vndns.net/${shortCode}`;
+        const resolvedUltraShortPath =
+          body.ultraShortPath !== undefined && String(body.ultraShortPath).trim()
+            ? String(body.ultraShortPath).trim()
+            : existing?.ultraShortPath ||
+              (ultraDigit !== undefined ? `tv.vndns.net/${ultraDigit}` : null);
+        const resolvedAftvCode =
+          body.aftvCode !== undefined
+            ? String(body.aftvCode).trim().replace(/[^0-9a-zA-Z_-]/g, '') || null
+            : existing?.aftvCode || null;
+
         const appRecord = {
           id: slugId,
           name: rawName || existing?.name || slugId,
@@ -2437,6 +2497,9 @@ const server = http.createServer(async (req, res) => {
           versionCode: Number(body.versionCode || existing?.versionCode || 1),
           size: String(body.size || existing?.size || '25.0 MB').trim(),
           shortCode,
+          shortPath: resolvedShortPath,
+          ultraShortPath: resolvedUltraShortPath,
+          aftvCode: resolvedAftvCode,
           category: String(body.category || existing?.category || 'Media Center').trim(),
           featured:
             body.featured !== undefined

@@ -532,16 +532,43 @@ function showToast(message) {
   }, 3200);
 }
 
+const SHORT_DIGIT_TO_CODE = {
+  '0': '88000',
+  '1': '88101',
+  '2': '88102',
+  '3': '88103',
+  '4': '88104',
+  '5': '88105',
+  '6': '88106',
+};
+
+const CODE_TO_SHORT_DIGIT = {
+  '88000': '0',
+  '88101': '1',
+  '88102': '2',
+  '88103': '3',
+  '88104': '4',
+  '88105': '5',
+  '88106': '6',
+};
+
 function findApp(identifier) {
-  if (!identifier) return state.catalog.apps[0];
+  if (identifier === undefined || identifier === null || identifier === '') return state.catalog.apps[0];
   const needle = String(identifier).trim().toLowerCase();
+  const mappedCode = SHORT_DIGIT_TO_CODE[needle] || needle;
   return (
-    state.catalog.apps.find(
-      (a) =>
-        String(a.id).toLowerCase() === needle ||
-        String(a.shortCode).toLowerCase() === needle ||
-        String(a.id).toLowerCase().startsWith(needle)
-    ) || null
+    state.catalog.apps.find((a) => {
+      const idLower = String(a.id || '').toLowerCase();
+      const codeLower = String(a.shortCode || '').toLowerCase();
+      const aftvLower = String(a.aftvCode || '').trim().toLowerCase();
+      return (
+        idLower === needle ||
+        codeLower === needle ||
+        codeLower === mappedCode ||
+        (aftvLower && aftvLower === needle) ||
+        (needle.length > 1 && idLower.startsWith(needle))
+      );
+    }) || null
   );
 }
 
@@ -821,24 +848,42 @@ function renderShortCodesDirectory() {
       const colorClass = METRO_TILE_CLASSES[app.id] || 'kv-tile--cobalt';
       const versionClean = String(app.version || '').replace(/^v/i, '');
       const localizedEdition = tField(app, 'edition', currentLang);
+      const shortDigit = CODE_TO_SHORT_DIGIT[String(app.shortCode)] ?? '';
+      const aftvCode = String(app.aftvCode || '').trim();
+      const copyTarget = aftvCode || `tv.vndns.net/${app.shortCode}`;
+      const copyLabel = `${t('directory.btn_copy')} tv.vndns.net/${app.shortCode}`;
+      const shortDigitHint = shortDigit
+        ? currentLang === 'en'
+          ? ` · Short: <strong>tv.vndns.net/${escapeHtml(shortDigit)}</strong>`
+          : ` · Ngắn: <strong>tv.vndns.net/${escapeHtml(shortDigit)}</strong>`
+        : '';
+      const aftvBadgeHtml = aftvCode
+        ? `<span class="kv-code-stamp kv-tile--amber tabular" style="margin-left: 8px;">Mã AFTVnews: ${escapeHtml(aftvCode)}</span>`
+        : '';
+
       return `
         <article class="kv-shortcode-row">
           <div class="kv-shortcode-id">
             <span class="kv-shortcode-num ${colorClass} tabular">${escapeHtml(app.shortCode)}</span>
             <div>
-              <h3 class="kv-shortcode-info-title">${escapeHtml(app.name.toLowerCase())}</h3>
+              <h3 class="kv-shortcode-info-title">
+                ${escapeHtml(app.name.toLowerCase())}${aftvBadgeHtml}
+              </h3>
               <p class="kv-shortcode-info-sub tabular">
                 ${escapeHtml(localizedEdition)} · v${escapeHtml(versionClean)} · ${escapeHtml(app.size)}
+              </p>
+              <p class="kv-shortcode-info-sub tabular" style="margin-top: 2px;">
+                Downloader URL: <strong>tv.vndns.net/${escapeHtml(app.shortCode)}</strong>${shortDigitHint}
               </p>
             </div>
           </div>
           <div class="kv-shortcode-btns">
-            <button type="button" class="kv-btn kv-btn--emerald" data-copy-code="${escapeHtml(app.shortCode)}">
-              <span>${t('directory.btn_copy')} ${escapeHtml(app.shortCode)}</span>
+            <button type="button" class="kv-btn kv-btn--emerald" data-copy-code="${escapeHtml(copyTarget)}">
+              <span>${escapeHtml(copyLabel)}</span>
             </button>
             <a
               class="kv-btn kv-btn--primary"
-              href="/api/download/${encodeURIComponent(app.id)}?type=apk"
+              href="${app.id === 'kv-store' ? '/kv-store.apk' : `/api/download/${encodeURIComponent(app.id)}?type=apk`}"
               data-app-download="${escapeHtml(app.id)}"
             >
               <span>${t('directory.btn_apk')}</span>
@@ -1955,12 +2000,14 @@ function bindInteractions() {
     });
   }
 
-  document.getElementById('guide-copy-code-btn')?.addEventListener('click', async () => {
+  document.getElementById('guide-copy-code-btn')?.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    const link = 'https://tv.vndns.net/88000';
     try {
-      await navigator.clipboard.writeText('88000');
-      showToast('Đã chép mã 88000 vào bộ nhớ tạm');
+      await navigator.clipboard.writeText(link);
+      showToast(t('toasts.copied', { code: link }));
     } catch {
-      showToast('Mã Downloader: 88000');
+      showToast(`Downloader URL: ${link}`);
     }
   });
 

@@ -210,7 +210,7 @@ function shouldProxyToBackend(method, pathname) {
     pathname.startsWith('/go/') ||
     pathname === '/uploads' ||
     pathname.startsWith('/uploads/') ||
-    /^\/(\d{5})\/?$/.test(pathname)
+    /^\/(\d|\d{5})\/?$/.test(pathname)
   ) {
     return true;
   }
