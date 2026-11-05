@@ -349,7 +349,7 @@
             </div>
           </div>
           <div class="kv-store-card-actions">
-            <a class="kv-hero-btn" id="kv-store-inline-dl-btn" href="/kv-store.apk" download="kv-store.apk" data-i18n="tiles.store_btn_dl">TẢI APP TV (88000)</a>
+            <a class="kv-hero-btn" id="kv-store-inline-dl-btn" href="/kv-store.apk" download="kv-store.apk" data-app-download="kv-store" data-i18n="tiles.store_btn_dl">TẢI APP TV (88000)</a>
             <button type="button" class="kv-hero-btn kv-hero-btn--secondary" id="kv-store-inline-guide-btn" data-i18n="tiles.store_btn_guide">HƯỚNG DẪN</button>
           </div>
         </div>
@@ -430,7 +430,7 @@
           <p class="kv-section-desc" data-i18n="directory.dialer_desc">Nhập mã 5 số để tải APK ngay lập tức hoặc xem thông số kỹ thuật.</p>
           <div class="dialer-readout">
             <span id="inline-dialer-digits" class="tabular">88103</span>
-            <span class="dialer-status" id="inline-dialer-status">CloudStream 3 · 24.2 MB</span>
+            <span class="dialer-status" id="inline-dialer-status">CloudStream 3 · 68.8 MB</span>
           </div>
           <div class="dialer-presets">
             <button type="button" class="dialer-preset-chip" data-preset-code="88101">88101 · Jellyfin</button>
@@ -608,7 +608,7 @@
             </div>
             <div class="spec-item">
               <span class="spec-label" data-i18n="dialog_app.spec_ver_size">PHIÊN BẢN &amp; DUNG LƯỢNG</span>
-              <span class="spec-value tabular" id="metro-dialog-version">v4.4.1-kv · 24.2 MB</span>
+              <span class="spec-value tabular" id="metro-dialog-version">v4.8.0-kv · 68.8 MB</span>
             </div>
             <div class="spec-item">
               <span class="spec-label" data-i18n="dialog_app.spec_pkg">MÃ GÓI (PACKAGE ID)</span>
@@ -635,7 +635,10 @@
       </div>
       <div class="kv-dialog-actions dialog-actions">
         <a class="kv-btn kv-btn--primary metro-action-btn" id="metro-dialog-apk-btn" href="/api/download/cloudstream-kv?type=apk" data-app-download="cloudstream-kv">
-          <span data-i18n="dialog_app.btn_apk">TẢI APK CÀI ĐẶT SẴN</span>
+          <span data-i18n="dialog_app.btn_apk">TẢI &amp; CÀI ĐẶT NGAY (VPS)</span>
+        </a>
+        <a class="kv-btn metro-action-btn secondary" id="metro-dialog-backup-btn" href="https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/cloudstream-kv.apk" data-app-backup-download="cloudstream-kv">
+          <span data-i18n="dialog_app.btn_backup">LINK DỰ PHÒNG (FORGEJO)</span>
         </a>
         <a class="kv-btn metro-action-btn secondary" id="metro-dialog-preset-btn" href="/api/download/cloudstream-kv?type=preset" data-app-download="cloudstream-kv">
           <span data-i18n="dialog_app.btn_preset">TẢI GÓI CẤU HÌNH (.ZIP)</span>
@@ -664,7 +667,7 @@
     <div class="kv-dialog-body dialog-body">
       <div class="dialer-readout">
         <span id="dialer-digits" class="tabular">88103</span>
-        <span class="dialer-status" id="dialer-match-label">CloudStream 3 · 24.2 MB</span>
+        <span class="dialer-status" id="dialer-match-label">CloudStream 3 · 68.8 MB</span>
       </div>
       <div class="dialer-presets" aria-label="Quick Short-Code Presets">
         <button type="button" class="dialer-preset-chip" data-preset-code="88000">88000 · KV-Store TV</button>
@@ -797,7 +800,7 @@
         </div>
       </div>
       <div class="kv-dialog-actions dialog-actions">
-        <a class="kv-btn kv-btn--primary metro-action-btn" href="/kv-store.apk" download="kv-store.apk">
+        <a class="kv-btn kv-btn--primary metro-action-btn" href="/kv-store.apk" download="kv-store.apk" data-app-download="kv-store">
           <span>TẢI TRỰC TIẾP FILE APK (2.5 MB)</span>
         </a>
         <button type="button" class="kv-btn secondary" id="guide-copy-code-btn" data-copy-code="88000">

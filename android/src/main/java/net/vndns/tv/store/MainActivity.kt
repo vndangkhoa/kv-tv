@@ -153,8 +153,12 @@ class MainActivity : AppCompatActivity() {
                 request: WebResourceRequest?
             ): Boolean {
                 val url = request?.url?.toString() ?: return false
+                val path = request.url?.path ?: ""
                 // Handle downloads or non-http schemes
-                if (url.endsWith(".apk") || url.contains("/api/download/")) {
+                if (path.endsWith(".apk", ignoreCase = true) ||
+                    url.endsWith(".apk", ignoreCase = true) ||
+                    url.contains("/api/download/")
+                ) {
                     bridge.installApp(url, "Ứng dụng")
                     return true
                 }

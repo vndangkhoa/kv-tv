@@ -21,6 +21,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.BufferedInputStream
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
@@ -50,6 +51,33 @@ class KVTVBridge(
         const val CLOUDSTREAM_REPO_URL = "https://n.khoavo.vndns.net/repo.json"
         const val CLOUDSTREAM_PLUGIN_URL = "https://n.khoavo.vndns.net/KVNetflixProvider.cs3"
         const val MAX_REDIRECTS = 10
+        const val MIN_VALID_APK_BYTES = 100_000L
+        const val FORGEJO_RELEASE_BASE =
+            "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0"
+
+        val BACKUP_APK_URLS: Map<String, String> = mapOf(
+            "kv-store" to "$FORGEJO_RELEASE_BASE/kv-store.apk",
+            "kv-store.apk" to "$FORGEJO_RELEASE_BASE/kv-store.apk",
+            "88000" to "$FORGEJO_RELEASE_BASE/kv-store.apk",
+            "jellyfin-kv" to "$FORGEJO_RELEASE_BASE/jellyfin-kv.apk",
+            "jellyfin-kv.apk" to "$FORGEJO_RELEASE_BASE/jellyfin-kv.apk",
+            "88101" to "$FORGEJO_RELEASE_BASE/jellyfin-kv.apk",
+            "kodi-kv" to "$FORGEJO_RELEASE_BASE/kodi-kv.apk",
+            "kodi-kv.apk" to "$FORGEJO_RELEASE_BASE/kodi-kv.apk",
+            "88102" to "$FORGEJO_RELEASE_BASE/kodi-kv.apk",
+            "cloudstream-kv" to "$FORGEJO_RELEASE_BASE/cloudstream-kv.apk",
+            "cloudstream-kv.apk" to "$FORGEJO_RELEASE_BASE/cloudstream-kv.apk",
+            "88103" to "$FORGEJO_RELEASE_BASE/cloudstream-kv.apk",
+            "kv-netflix-tv.apk" to "$FORGEJO_RELEASE_BASE/kv-netflix-tv.apk",
+            "kv-netflix" to "$FORGEJO_RELEASE_BASE/kv-netflix-tv.apk",
+            "88104" to "$FORGEJO_RELEASE_BASE/kv-netflix-tv.apk",
+            "kv-tube" to "$FORGEJO_RELEASE_BASE/kv-tube.apk",
+            "kv-tube.apk" to "$FORGEJO_RELEASE_BASE/kv-tube.apk",
+            "88105" to "$FORGEJO_RELEASE_BASE/kv-tube.apk",
+            "smarttube-tv" to "$FORGEJO_RELEASE_BASE/smarttube-tv.apk",
+            "smarttube-tv.apk" to "$FORGEJO_RELEASE_BASE/smarttube-tv.apk",
+            "88106" to "$FORGEJO_RELEASE_BASE/smarttube-tv.apk"
+        )
 
         val PACKAGE_ALIASES: Map<String, List<String>> = mapOf(
             "org.smarttube.stable" to listOf("org.smarttube.stable", "com.teamsmart.videomanager.tv", "app.smarttube.fdroid", "com.liskovsoft.smarttubetv"),
@@ -275,18 +303,74 @@ class KVTVBridge(
         }
     }
 
+    private fun normalizeUrl(rawUrl: String): String {
+        val trimmed = rawUrl.trim()
+        return if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+            trimmed
+        } else {
+            val cleanedPath = if (trimmed.startsWith("/")) trimmed else "/$trimmed"
+            "$BASE_URL$cleanedPath"
+        }
+    }
+
+    private fun resolveBackupUrl(primaryUrl: String, explicitBackupUrl: String? = null): String? {
+        if (!explicitBackupUrl.isNullOrBlank()) {
+            return normalizeUrl(explicitBackupUrl)
+        }
+        if (primaryUrl.contains("git.khoavo.myds.me", ignoreCase = true)) {
+            return null
+        }
+        val lower = primaryUrl.lowercase()
+        for ((token, backupTarget) in BACKUP_APK_URLS) {
+            if (lower.contains(token.lowercase())) {
+                return backupTarget
+            }
+        }
+        return null
+    }
+
+    private fun isValidApkFile(file: File?): Boolean {
+        if (file == null || !file.exists() || !file.isFile || file.length() <= MIN_VALID_APK_BYTES) {
+            return false
+        }
+        return try {
+            val header = ByteArray(4)
+            val bytesRead = FileInputStream(file).use { fis -> fis.read(header) }
+            bytesRead == 4 &&
+                header[0] == 0x50.toByte() && // 'P'
+                header[1] == 0x4B.toByte() && // 'K'
+                header[2] == 0x03.toByte() &&
+                header[3] == 0x04.toByte()
+        } catch (_: Exception) {
+            false
+        }
+    }
+
     /**
      * Download from a link-only endpoint (following up to 10 HTTP/HTTPS redirects)
-     * into a temporary cache file and trigger Android's native PackageInstaller.
+     * into a temporary cache file and trigger Android's native PackageInstaller,
+     * with automatic fallback to the Forgejo release mirror if the primary URL fails.
      */
     @JavascriptInterface
     fun installApp(downloadUrl: String, appName: String) {
-        val fullUrl = if (downloadUrl.startsWith("http://") || downloadUrl.startsWith("https://")) {
-            downloadUrl
-        } else {
-            val cleanedPath = if (downloadUrl.startsWith("/")) downloadUrl else "/$downloadUrl"
-            "$BASE_URL$cleanedPath"
-        }
+        startApkDownloadAndInstall(downloadUrl, null, appName)
+    }
+
+    /**
+     * 1-Click Direct Download & Install with explicit primary VPS URL and backup Forgejo URL.
+     */
+    @JavascriptInterface
+    fun installAppWithFallback(downloadUrl: String, backupUrl: String, appName: String) {
+        startApkDownloadAndInstall(downloadUrl, backupUrl, appName)
+    }
+
+    private fun startApkDownloadAndInstall(
+        downloadUrl: String,
+        backupUrl: String?,
+        appName: String
+    ) {
+        val fullPrimaryUrl = normalizeUrl(downloadUrl)
+        val resolvedBackupUrl = resolveBackupUrl(fullPrimaryUrl, backupUrl)
 
         cleanTempApks()
         showToast("Đang tải $appName...\nVui lòng đợi giây lát.")
@@ -294,12 +378,24 @@ class KVTVBridge(
         scope.launch {
             isDownloadingApk = true
             try {
-                val apkFile = downloadApkFile(fullUrl, appName)
+                var apkFile = downloadApkFile(fullPrimaryUrl, appName)
+                if (!isValidApkFile(apkFile) &&
+                    !resolvedBackupUrl.isNullOrBlank() &&
+                    resolvedBackupUrl != fullPrimaryUrl
+                ) {
+                    showToast("Đang chuyển sang máy chủ dự phòng (Forgejo) cho $appName...")
+                    apkFile = downloadApkFile(resolvedBackupUrl, appName)
+                }
+
                 isDownloadingApk = false
-                if (apkFile != null && apkFile.exists() && apkFile.length() > 0) {
-                    if (fullUrl.contains("kodi", ignoreCase = true)) {
+                if (apkFile != null && isValidApkFile(apkFile)) {
+                    if (fullPrimaryUrl.contains("kodi", ignoreCase = true) ||
+                        appName.contains("kodi", ignoreCase = true)
+                    ) {
                         preConfigureApp(PKG_KODI)
-                    } else if (fullUrl.contains("cloudstream", ignoreCase = true)) {
+                    } else if (fullPrimaryUrl.contains("cloudstream", ignoreCase = true) ||
+                        appName.contains("cloudstream", ignoreCase = true)
+                    ) {
                         preConfigureApp(PKG_CLOUDSTREAM)
                     }
                     withContext(Dispatchers.Main) {
@@ -450,10 +546,16 @@ class KVTVBridge(
     }
 
     /**
-     * Download APK to a temporary cache file in context.cacheDir with up to 10 redirects.
+     * Download APK to a temporary cache file in context.cacheDir with up to 10 redirects
+     * and verify ZIP magic header bytes.
      */
     private fun downloadApkFile(urlStr: String, appName: String): File? {
-        val conn = openRedirectingConnection(urlStr) ?: return null
+        val conn = try {
+            openRedirectingConnection(urlStr)
+        } catch (_: Exception) {
+            null
+        } ?: return null
+
         return try {
             val stagingDir = File(context.cacheDir, "apk_staging")
             if (!stagingDir.exists()) stagingDir.mkdirs()
@@ -467,7 +569,14 @@ class KVTVBridge(
                     input.copyTo(output)
                 }
             }
-            targetFile
+            if (!isValidApkFile(targetFile)) {
+                targetFile.delete()
+                null
+            } else {
+                targetFile
+            }
+        } catch (_: Exception) {
+            null
         } finally {
             conn.disconnect()
         }

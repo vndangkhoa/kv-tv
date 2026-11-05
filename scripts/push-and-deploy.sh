@@ -18,8 +18,9 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 CONNECT_SH="/mnt/data/Projects/thuevpsgiare/connect.sh"
-DOCKER_IMAGE="vndangkhoa/kv-tv:latest"
-COMMIT_MSG="${1:-feat: rollout KV-TV Store with kv-tv-theme design system}"
+DOCKER_IMAGE_INTERFACE="vndangkhoa/kv-tv-interface:latest"
+DOCKER_IMAGE_BACKEND="vndangkhoa/kv-tv-backend:latest"
+COMMIT_MSG="${1:-feat: split Docker images (interface + backend) and enable 1-click VPS download with Forgejo fallback}"
 
 cd "${PROJECT_DIR}"
 
@@ -109,17 +110,27 @@ fi
 
 echo ""
 echo "======================================================================"
-echo " [2/5] Building & Pushing Docker Image (${DOCKER_IMAGE})"
+echo " [2/5] Building & Pushing Split Docker Images"
+echo "       - Interface : ${DOCKER_IMAGE_INTERFACE}"
+echo "       - Backend   : ${DOCKER_IMAGE_BACKEND}"
 echo "======================================================================"
-docker build -t "${DOCKER_IMAGE}" .
-docker push "${DOCKER_IMAGE}"
-echo "[Docker] ✓ Pushed ${DOCKER_IMAGE} to Docker Hub"
+docker build -f Dockerfile.interface -t "${DOCKER_IMAGE_INTERFACE}" .
+docker push "${DOCKER_IMAGE_INTERFACE}"
+echo "[Docker] ✓ Pushed ${DOCKER_IMAGE_INTERFACE} to Docker Hub"
+
+docker build -f Dockerfile.backend -t "${DOCKER_IMAGE_BACKEND}" .
+docker push "${DOCKER_IMAGE_BACKEND}"
+echo "[Docker] ✓ Pushed ${DOCKER_IMAGE_BACKEND} to Docker Hub"
 
 echo ""
 echo "======================================================================"
-echo " [3/5] Deploying ${DOCKER_IMAGE} to thuevpsgiare VPS (/opt/dockhand/stacks/kv-tv)"
+echo " [3/5] Deploying Interface + Backend to thuevpsgiare VPS (/opt/dockhand/stacks/kv-tv)"
 echo "======================================================================"
 "${CONNECT_SH}" "mkdir -p /opt/dockhand/stacks/kv-tv/data /opt/dockhand/stacks/kv-tv/uploads"
+
+if [ -n "${FORGEJO_TOKEN:-}" ]; then
+  echo "FORGEJO_TOKEN=${FORGEJO_TOKEN}" | "${CONNECT_SH}" "cat > /opt/dockhand/stacks/kv-tv/.env && chmod 600 /opt/dockhand/stacks/kv-tv/.env"
+fi
 
 # Seed initial store.json on VPS only if it does not exist yet (never overwrite live catalog!)
 if [ -f "${PROJECT_DIR}/data/store.json" ]; then

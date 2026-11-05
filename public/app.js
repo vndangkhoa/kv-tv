@@ -60,8 +60,10 @@ const FALLBACK_CATALOG = {
       category: 'Media Center',
       arch: 'Universal (arm64-v8a + armeabi-v7a)',
       downloads: 1248,
-      sha256: 'e1f9e1116f273126885004f1bbccfe43906fdb921933594cfdd12a09dfe284a8',
-      apkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-store.apk',
+      sha256: '6a3c9507c38b04f7fbd50368ce9ac44c2cf0024926cb56fc0be90ef6337cb850',
+      apkFileName: 'kv-store.apk',
+      apkUrl: 'https://tv.vndns.net/uploads/kv-store.apk',
+      backupApkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-store.apk',
       description:
         'Ứng dụng chính thức của KV-Store dành cho Android TV / Google TV. Tích hợp quản lý ứng dụng, cài đặt 1-chạm không cần chuột, tự động phát hiện phiên bản và khởi chạy ứng dụng media, phim ảnh 4K HDR.',
       presetFeatures: [
@@ -88,7 +90,9 @@ const FALLBACK_CATALOG = {
       arch: 'Universal (arm64-v8a + armeabi-v7a)',
       downloads: 952,
       sha256: '9afb6d317b70ccd30a5b0eb8c7972c629d82c8c9beec5a25a3ba24dedf27e13c',
-      apkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/cloudstream-kv.apk',
+      apkFileName: 'cloudstream-kv.apk',
+      apkUrl: 'https://tv.vndns.net/uploads/cloudstream-kv.apk',
+      backupApkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/cloudstream-kv.apk',
       description: 'Bản dựng tối ưu hóa riêng cho hệ sinh thái KV: Cài sẵn plugin mở rộng KV-Netflix VIP tốc độ cao, hỗ trợ chuẩn 4K HDR10, âm thanh 5.1 và phụ đề Vietsub đồng bộ.',
       description_vi: 'Bản dựng tối ưu hóa riêng cho hệ sinh thái KV: Cài sẵn plugin mở rộng KV-Netflix VIP tốc độ cao, hỗ trợ chuẩn 4K HDR10, âm thanh 5.1 và phụ đề Vietsub đồng bộ.',
       description_en: 'Custom-engineered for the KV ecosystem: Pre-loaded with private high-speed KV-Netflix VIP extension, 4K HDR10, 5.1 surround audio, and synchronized Vietsub.',
@@ -128,7 +132,9 @@ const FALLBACK_CATALOG = {
       arch: 'Universal (arm64-v8a + armeabi-v7a)',
       downloads: 635,
       sha256: '04a486b3f7c3148e3e400d313de12af121f9008f354857ef519cdea495f74f3c',
-      apkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/jellyfin-kv.apk',
+      apkFileName: 'jellyfin-kv.apk',
+      apkUrl: 'https://tv.vndns.net/uploads/jellyfin-kv.apk',
+      backupApkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/jellyfin-kv.apk',
       description: 'Bản dựng Jellyfin tùy biến cho Android TV với khả năng tự động kết nối máy chủ KV Media, phát trực tiếp 4K HEVC 10-bit không cần transcode và hỗ trợ phụ đề tiếng Việt / tiếng Anh.',
       description_vi: 'Bản dựng Jellyfin tùy biến cho Android TV với khả năng tự động kết nối máy chủ KV Media, phát trực tiếp 4K HEVC 10-bit không cần transcode và hỗ trợ phụ đề tiếng Việt / tiếng Anh.',
       description_en: 'Custom Android TV build of Jellyfin with pre-configured KV Media Server discovery, Direct Play 4K HEVC 10-bit profiles, and styled Vietnamese/English subtitles.',
@@ -160,7 +166,7 @@ const FALLBACK_CATALOG = {
       packageName: 'org.xbmc.kodi',
       version: '21.3-Omega',
       versionCode: 2103000,
-      size: '66.8 MB',
+      size: '127.0 MB',
       shortCode: '88102',
       category: 'Media Center',
       category_vi: 'Trung Tâm Giải Trí',
@@ -168,24 +174,26 @@ const FALLBACK_CATALOG = {
       arch: 'Universal (arm64-v8a)',
       downloads: 764,
       sha256: '0c95c81202e449da3165dbbb134fdea9e1687ce84ec49cc3ac3181e706eddf58',
-      apkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kodi-kv.apk',
-      description: 'Bản Kodi 21.3 Omega dựng sẵn với Addon KV-Netflix ngay trên màn hình chính, vào thẳng kho phim 4K không hỏi quyền rườm rà, tinh chỉnh bộ nhớ đệm cho TV Box và phụ đề tiếng Việt.',
-      description_vi: 'Bản Kodi 21.3 Omega dựng sẵn với Addon KV-Netflix ngay trên màn hình chính, vào thẳng kho phim 4K không hỏi quyền rườm rà, tinh chỉnh bộ nhớ đệm cho TV Box và phụ đề tiếng Việt.',
-      description_en: 'Ready-to-run Kodi 21.3 Omega build featuring the KV-Netflix 4K poster wall on the Home screen, zero-prompt launch, tuned memory cache for TV boxes, and pre-installed Vietnamese subtitles.',
+      apkFileName: 'kodi-kv.apk',
+      apkUrl: 'https://tv.vndns.net/uploads/kodi-kv.apk',
+      backupApkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kodi-kv.apk',
+      description: 'Bản Kodi 21.3 Omega dựng sẵn với Addon KV-Netflix & giao diện Netflix Bingie Mod ngay trên màn hình chính, vào thẳng kho phim 4K không hỏi quyền rườm rà, tinh chỉnh bộ nhớ đệm cho TV Box và phụ đề tiếng Việt.',
+      description_vi: 'Bản Kodi 21.3 Omega dựng sẵn với Addon KV-Netflix & giao diện Netflix Bingie Mod ngay trên màn hình chính, vào thẳng kho phim 4K không hỏi quyền rườm rà, tinh chỉnh bộ nhớ đệm cho TV Box và phụ đề tiếng Việt.',
+      description_en: 'Ready-to-run Kodi 21.3 Omega build featuring the KV-Netflix 4K poster wall & Netflix Bingie Mod on the Home screen, zero-prompt launch, tuned memory cache for TV boxes, and pre-installed Vietnamese subtitles.',
       presetFeatures: [
-        'Cài sẵn Addon KV-Netflix (plugin.video.kvnetflix) trên màn hình chính',
+        'Cài sẵn Addon KV-Netflix (plugin.video.kvnetflix) & Netflix Bingie Mod',
         'Khởi chạy tức thì vào kho phim 4K không hỏi quyền truy cập tệp',
         'Tệp advancedsettings.xml tối ưu bộ nhớ đệm cho Box 1GB/2GB RAM',
         'Passthrough âm thanh Dolby Atmos / DTS-HD & phụ đề tiếng Việt',
       ],
       presetFeatures_vi: [
-        'Cài sẵn Addon KV-Netflix (plugin.video.kvnetflix) trên màn hình chính',
+        'Cài sẵn Addon KV-Netflix (plugin.video.kvnetflix) & Netflix Bingie Mod',
         'Khởi chạy tức thì vào kho phim 4K không hỏi quyền truy cập tệp',
         'Tệp advancedsettings.xml tối ưu bộ nhớ đệm cho Box 1GB/2GB RAM',
         'Passthrough âm thanh Dolby Atmos / DTS-HD & phụ đề tiếng Việt',
       ],
       presetFeatures_en: [
-        'Pre-installed KV-Netflix Addon (plugin.video.kvnetflix) on Home screen',
+        'Pre-installed KV-Netflix Addon (plugin.video.kvnetflix) & Netflix Bingie Mod',
         'Zero-prompt instant launch directly into 4K poster wall',
         'advancedsettings.xml tuned for 1GB/2GB RAM TV Boxes',
         'Dolby Atmos / DTS-HD audio passthrough & Vietnamese subtitles',
@@ -208,7 +216,9 @@ const FALLBACK_CATALOG = {
       arch: 'Universal (arm64-v8a + armeabi-v7a)',
       downloads: 1180,
       sha256: '25f5af849bbc6f447292c163c6199a07cfb2f09baa963902e2c4e3cd60357dca',
-      apkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-netflix-tv.apk',
+      apkFileName: 'kv-netflix-tv.apk',
+      apkUrl: 'https://tv.vndns.net/uploads/kv-netflix-tv.apk',
+      backupApkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-netflix-tv.apk',
       description: 'Tối ưu hóa cho các dòng Android TV Box không đạt chứng chỉ Netflix gốc. Hỗ trợ điều hướng remote D-Pad mượt mà không cần chuột bay, tự thích ứng Widevine L1/L3 và âm thanh 5.1.',
       description_vi: 'Tối ưu hóa cho các dòng Android TV Box không đạt chứng chỉ Netflix gốc. Hỗ trợ điều hướng remote D-Pad mượt mà không cần chuột bay, tự thích ứng Widevine L1/L3 và âm thanh 5.1.',
       description_en: 'Engineered for Android TV boxes that fail Netflix certification checks. Provides native D-Pad remote focus navigation without an air-mouse, adaptive Widevine L1/L3 fallback, and 5.1 audio.',
@@ -248,7 +258,9 @@ const FALLBACK_CATALOG = {
       arch: 'Universal (arm64-v8a + armeabi-v7a + x86_64)',
       downloads: 812,
       sha256: '4ea32693a42fbd03dfa86864af58234b5d971851d03935faa3f1219eb5263d3b',
-      apkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-tube.apk',
+      apkFileName: 'kv-tube.apk',
+      apkUrl: 'https://tv.vndns.net/uploads/kv-tube.apk',
+      backupApkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-tube.apk',
       description: 'Ứng dụng KV-Tube Android TV chính chủ (Compose for TV & Media3 ExoPlayer). Tích hợp sẵn máy chủ Invidious riêng (yt.khoavo.vndns.net) và dịch vụ ghép đôi tài khoản từ web u.khoavo.vndns.net — mở lên xem ngay video & nhạc Việt Nam không quảng cáo.',
       description_vi: 'Ứng dụng KV-Tube Android TV chính chủ (Compose for TV & Media3 ExoPlayer). Tích hợp sẵn máy chủ Invidious riêng (yt.khoavo.vndns.net) và dịch vụ ghép đôi tài khoản từ web u.khoavo.vndns.net — mở lên xem ngay video & nhạc Việt Nam không quảng cáo.',
       description_en: 'Official KV-Tube Android TV app built with Compose for TV and Media3 ExoPlayer. Pre-configured with the private Invidious backend (yt.khoavo.vndns.net) and 6-digit TV pairing via u.khoavo.vndns.net for instant ad-free streaming.',
@@ -288,7 +300,9 @@ const FALLBACK_CATALOG = {
       arch: 'Universal (arm64-v8a + armeabi-v7a + x86)',
       downloads: 1420,
       sha256: '355b3abc7fb71b6d07ee3dd6dc056e6e36df6a6042a95902a56c2c17e99202a4',
-      apkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/smarttube-tv.apk',
+      apkFileName: 'smarttube-tv.apk',
+      apkUrl: 'https://tv.vndns.net/uploads/smarttube-tv.apk',
+      backupApkUrl: 'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/smarttube-tv.apk',
       description: 'Ứng dụng xem YouTube không quảng cáo tốt nhất cho Android TV / Google TV / TV Box (yuliskov/SmartTube). Chặn 100% quảng cáo, tích hợp sẵn SponsorBlock tự bỏ qua đoạn giới thiệu, hỗ trợ 4K 60fps HDR & điều khiển bằng remote TV mượt mà.',
       description_vi: 'Ứng dụng xem YouTube không quảng cáo tốt nhất cho Android TV / Google TV / TV Box (yuliskov/SmartTube). Chặn 100% quảng cáo, tích hợp sẵn SponsorBlock tự bỏ qua đoạn giới thiệu, hỗ trợ 4K 60fps HDR & điều khiển bằng remote TV mượt mà.',
       description_en: 'Official SmartTube Stable universal release for Android TV & TV Boxes. 100% ad-free YouTube experience with built-in SponsorBlock, DeArrow, 4K 60fps HDR VP9/AV1 hardware decoding, and full D-Pad remote control.',
@@ -366,6 +380,8 @@ const FALLBACK_CATALOG = {
     },
   ],
 };
+
+const DEFAULT_CATALOG = FALLBACK_CATALOG;
 
 const PIVOT_DESCRIPTIONS = {
   store:
@@ -471,7 +487,7 @@ function updateAppStatusBadges() {
             heroPrimaryBtn.onclick = (e) => {
               e.preventDefault();
               e.stopPropagation();
-              window.KVTVBridge?.installApp('/api/download/cloudstream-kv?type=apk', app.name);
+              triggerOneClickApkDownload(app);
             };
           }
         }
@@ -482,6 +498,7 @@ function updateAppStatusBadges() {
         if (storeBtn) {
           storeBtn.removeAttribute('href');
           storeBtn.removeAttribute('download');
+          storeBtn.removeAttribute('data-app-download');
           storeBtn.textContent = isVi ? `✓ ĐANG CHẠY v${app.version}` : `✓ RUNNING v${app.version}`;
           storeBtn.onclick = (e) => {
             e.preventDefault();
@@ -526,6 +543,82 @@ function findApp(identifier) {
         String(a.id).toLowerCase().startsWith(needle)
     ) || null
   );
+}
+
+function triggerHiddenAnchorDownload(url, downloadFilename) {
+  const a = document.createElement('a');
+  a.href = url;
+  if (downloadFilename) {
+    a.setAttribute('download', downloadFilename);
+  }
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => a.remove(), 1000);
+}
+
+/**
+ * 1-Click Direct Download & Install + Automatic Fallback
+ */
+async function triggerOneClickApkDownload(app, options = {}) {
+  if (!app) return;
+  const { useBackup = false } = options;
+  const primaryUrl =
+    app.id === 'kv-store'
+      ? '/kv-store.apk?source=vps'
+      : `/api/download/${encodeURIComponent(app.id)}?type=apk&source=vps`;
+  const backupUrl =
+    app.fallbackDownloadUrl ||
+    `/api/download/${encodeURIComponent(app.id)}?type=apk&source=backup`;
+  const fileName = app.apkFileName || `${app.id}.apk`;
+
+  app.downloads = Number(app.downloads || 0) + 1;
+  hydrateLiveTilesAndStrip();
+  renderPromoPortal();
+
+  if (state.isTVApp && window.KVTVBridge) {
+    if (useBackup) {
+      window.KVTVBridge.installApp(backupUrl, app.name);
+    } else if (typeof window.KVTVBridge.installAppWithFallback === 'function') {
+      window.KVTVBridge.installAppWithFallback(primaryUrl, backupUrl, app.name);
+    } else {
+      window.KVTVBridge.installApp(primaryUrl, app.name);
+    }
+    return;
+  }
+
+  if (useBackup) {
+    showToast(t('toasts.fallback_dl', { name: app.name }));
+    triggerHiddenAnchorDownload(backupUrl, fileName);
+    return;
+  }
+
+  showToast(t('toasts.starting_dl', { name: app.name, code: app.shortCode }));
+
+  let usePrimary = false;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 4000);
+  try {
+    const res = await fetch(primaryUrl, {
+      method: 'HEAD',
+      signal: controller.signal,
+      cache: 'no-store',
+    });
+    clearTimeout(timer);
+    if (res.ok) {
+      usePrimary = true;
+    }
+  } catch {
+    clearTimeout(timer);
+    usePrimary = false;
+  }
+
+  if (usePrimary) {
+    triggerHiddenAnchorDownload(primaryUrl, fileName);
+  } else {
+    showToast(t('toasts.fallback_dl', { name: app.name }));
+    triggerHiddenAnchorDownload(backupUrl, fileName);
+  }
 }
 
 /**
@@ -1092,11 +1185,34 @@ function openAppDialog(appIdentifier) {
   }
 
   const apkBtn = document.getElementById('metro-dialog-apk-btn');
+  const backupBtn = document.getElementById('metro-dialog-backup-btn');
   const presetBtn = document.getElementById('metro-dialog-preset-btn');
   const copyBtn = document.getElementById('metro-dialog-copy-btn');
   const uninstallBtn = document.getElementById('metro-dialog-uninstall-btn');
 
-  const downloadApkUrl = app.id === 'kv-store' ? '/kv-store.apk' : `/api/download/${encodeURIComponent(app.id)}?type=apk`;
+  const downloadApkUrl =
+    app.id === 'kv-store'
+      ? '/kv-store.apk?source=vps'
+      : `/api/download/${encodeURIComponent(app.id)}?type=apk&source=vps`;
+  const backupApkUrl =
+    app.fallbackDownloadUrl ||
+    `/api/download/${encodeURIComponent(app.id)}?type=apk&source=backup`;
+  const hasPreset =
+    Boolean(app.presetUrl) ||
+    app.id === 'cloudstream-kv' ||
+    app.id === 'kodi-kv' ||
+    app.id === 'jellyfin-kv';
+
+  if (backupBtn) {
+    backupBtn.href = backupApkUrl;
+    backupBtn.setAttribute('data-app-backup-download', app.id);
+    backupBtn.setAttribute('tabindex', '0');
+    const bSpan = backupBtn.querySelector('span');
+    if (bSpan) {
+      bSpan.textContent = t('dialog_app.btn_backup') || 'LINK DỰ PHÒNG (FORGEJO)';
+    }
+    backupBtn.onclick = null;
+  }
 
   if (state.isTVApp && window.KVTVBridge) {
     const status =
@@ -1106,6 +1222,7 @@ function openAppDialog(appIdentifier) {
     if (status === 'INSTALLED') {
       if (apkBtn) {
         apkBtn.removeAttribute('href');
+        apkBtn.removeAttribute('data-app-download');
         apkBtn.setAttribute('tabindex', '0');
         apkBtn.setAttribute('role', 'button');
         const span = apkBtn.querySelector('span');
@@ -1126,41 +1243,48 @@ function openAppDialog(appIdentifier) {
         };
       }
       if (presetBtn) {
-        presetBtn.style.display = 'inline-flex';
-        presetBtn.setAttribute('tabindex', '0');
-        if (app.id === 'cloudstream-kv' || app.id === 'kodi-kv') {
-          presetBtn.removeAttribute('href');
-          presetBtn.setAttribute('role', 'button');
-          const pSpan = presetBtn.querySelector('span');
-          if (pSpan) {
-            pSpan.textContent =
-              currentLang === 'vi'
-                ? '[ NẠP CẤU HÌNH KV-NETFLIX ]'
-                : '[ APPLY KV-NETFLIX PRE-SET ]';
-          }
-          presetBtn.onclick = (e) => {
-            e.preventDefault();
-            if (window.KVTVBridge.preConfigureApp) {
-              window.KVTVBridge.preConfigureApp(app.packageName);
-            }
-          };
+        if (!hasPreset) {
+          presetBtn.style.display = 'none';
         } else {
-          presetBtn.href = `/api/download/${encodeURIComponent(app.id)}?type=preset`;
-          const pSpan = presetBtn.querySelector('span');
-          if (pSpan) pSpan.textContent = t('dialog_app.btn_preset') || 'TẢI GÓI CẤU HÌNH (.ZIP)';
-          presetBtn.onclick = null;
+          presetBtn.style.display = 'inline-flex';
+          presetBtn.setAttribute('tabindex', '0');
+          if (app.id === 'cloudstream-kv' || app.id === 'kodi-kv') {
+            presetBtn.removeAttribute('href');
+            presetBtn.removeAttribute('data-app-download');
+            presetBtn.setAttribute('role', 'button');
+            const pSpan = presetBtn.querySelector('span');
+            if (pSpan) {
+              pSpan.textContent =
+                currentLang === 'vi'
+                  ? '[ NẠP CẤU HÌNH KV-NETFLIX ]'
+                  : '[ APPLY KV-NETFLIX PRE-SET ]';
+            }
+            presetBtn.onclick = (e) => {
+              e.preventDefault();
+              if (window.KVTVBridge.preConfigureApp) {
+                window.KVTVBridge.preConfigureApp(app.packageName);
+              }
+            };
+          } else {
+            presetBtn.href = `/api/download/${encodeURIComponent(app.id)}?type=preset`;
+            presetBtn.setAttribute('data-app-download', app.id);
+            const pSpan = presetBtn.querySelector('span');
+            if (pSpan) pSpan.textContent = t('dialog_app.btn_preset') || 'TẢI GÓI CẤU HÌNH (.ZIP)';
+            presetBtn.onclick = null;
+          }
         }
       }
     } else if (status === 'UPDATE') {
       if (apkBtn) {
         apkBtn.removeAttribute('href');
+        apkBtn.removeAttribute('data-app-download');
         apkBtn.setAttribute('tabindex', '0');
         apkBtn.setAttribute('role', 'button');
         const span = apkBtn.querySelector('span');
         if (span) span.textContent = `[ ${t('dialog_app.btn_update') || 'CẬP NHẬT'} ]`;
         apkBtn.onclick = (e) => {
           e.preventDefault();
-          window.KVTVBridge.installApp(downloadApkUrl, app.name);
+          triggerOneClickApkDownload(app);
         };
       }
       if (uninstallBtn) {
@@ -1169,6 +1293,7 @@ function openAppDialog(appIdentifier) {
       if (presetBtn) {
         presetBtn.style.display = 'inline-flex';
         presetBtn.removeAttribute('href');
+        presetBtn.removeAttribute('data-app-download');
         presetBtn.setAttribute('tabindex', '0');
         presetBtn.setAttribute('role', 'button');
         const pSpan = presetBtn.querySelector('span');
@@ -1182,25 +1307,31 @@ function openAppDialog(appIdentifier) {
       // NOT_INSTALLED
       if (apkBtn) {
         apkBtn.removeAttribute('href');
+        apkBtn.removeAttribute('data-app-download');
         apkBtn.setAttribute('tabindex', '0');
         apkBtn.setAttribute('role', 'button');
         const span = apkBtn.querySelector('span');
         if (span) span.textContent = `[ ${t('dialog_app.btn_install') || 'CÀI ĐẶT'} ]`;
         apkBtn.onclick = (e) => {
           e.preventDefault();
-          window.KVTVBridge.installApp(downloadApkUrl, app.name);
+          triggerOneClickApkDownload(app);
         };
       }
       if (uninstallBtn) {
         uninstallBtn.style.display = 'none';
       }
       if (presetBtn) {
-        presetBtn.style.display = 'inline-flex';
-        presetBtn.setAttribute('tabindex', '0');
-        presetBtn.href = `/api/download/${encodeURIComponent(app.id)}?type=preset`;
-        const pSpan = presetBtn.querySelector('span');
-        if (pSpan) pSpan.textContent = t('dialog_app.btn_preset') || 'TẢI GÓI CẤU HÌNH (.ZIP)';
-        presetBtn.onclick = null;
+        if (!hasPreset) {
+          presetBtn.style.display = 'none';
+        } else {
+          presetBtn.style.display = 'inline-flex';
+          presetBtn.setAttribute('tabindex', '0');
+          presetBtn.href = `/api/download/${encodeURIComponent(app.id)}?type=preset`;
+          presetBtn.setAttribute('data-app-download', app.id);
+          const pSpan = presetBtn.querySelector('span');
+          if (pSpan) pSpan.textContent = t('dialog_app.btn_preset') || 'TẢI GÓI CẤU HÌNH (.ZIP)';
+          presetBtn.onclick = null;
+        }
       }
     }
   } else {
@@ -1209,15 +1340,20 @@ function openAppDialog(appIdentifier) {
       apkBtn.href = downloadApkUrl;
       apkBtn.setAttribute('data-app-download', app.id);
       const span = apkBtn.querySelector('span');
-      if (span) span.textContent = t('dialog_app.btn_apk') || 'TẢI APK CÀI ĐẶT SẴN';
+      if (span) span.textContent = t('dialog_app.btn_apk') || 'TẢI & CÀI ĐẶT NGAY (VPS)';
       apkBtn.onclick = null;
     }
     if (presetBtn) {
-      presetBtn.href = `/api/download/${encodeURIComponent(app.id)}?type=preset`;
-      presetBtn.setAttribute('data-app-download', app.id);
-      const span = presetBtn.querySelector('span');
-      if (span) span.textContent = t('dialog_app.btn_preset') || 'TẢI GÓI CẤU HÌNH (.ZIP)';
-      presetBtn.onclick = null;
+      if (!hasPreset) {
+        presetBtn.style.display = 'none';
+      } else {
+        presetBtn.style.display = 'inline-flex';
+        presetBtn.href = `/api/download/${encodeURIComponent(app.id)}?type=preset`;
+        presetBtn.setAttribute('data-app-download', app.id);
+        const span = presetBtn.querySelector('span');
+        if (span) span.textContent = t('dialog_app.btn_preset') || 'TẢI GÓI CẤU HÌNH (.ZIP)';
+        presetBtn.onclick = null;
+      }
     }
     if (uninstallBtn) {
       uninstallBtn.style.display = 'none';
@@ -1583,12 +1719,8 @@ function bindInteractions() {
 
   const triggerDialerFetch = () => {
     const match = findApp(state.currentCode) || state.catalog.apps[0];
-    const dlUrl = match.id === 'kv-store' ? '/kv-store.apk' : `/api/download/${encodeURIComponent(match.id)}?type=apk`;
-    if (state.isTVApp && window.KVTVBridge) {
-      window.KVTVBridge.installApp(dlUrl, match.name);
-    } else {
-      showToast(t('toasts.fetching', { code: match.shortCode }));
-      window.location.href = dlUrl;
+    if (match) {
+      triggerOneClickApkDownload(match);
     }
   };
 
@@ -1629,18 +1761,18 @@ function bindInteractions() {
     renderPromoPortal();
   });
 
-  // 8. Delegated clicks for [data-open-app], [data-copy-code], [data-ad-id], [data-app-download]
+  // 8. Delegated clicks for [data-open-app], [data-copy-code], [data-ad-id], [data-app-backup-download], [data-app-download]
   document.addEventListener('click', async (e) => {
     const target = e.target instanceof Element ? e.target : null;
     if (!target) return;
 
     const tvInstallBtn = target.closest('[data-tv-install]');
     if (tvInstallBtn) {
+      e.preventDefault();
       const appId = tvInstallBtn.getAttribute('data-tv-install');
       const app = findApp(appId);
-      if (app && window.KVTVBridge) {
-        const url = app.id === 'kv-store' ? '/kv-store.apk' : `/api/download/${encodeURIComponent(app.id)}?type=apk`;
-        window.KVTVBridge.installApp(url, app.name);
+      if (app) {
+        await triggerOneClickApkDownload(app);
       }
       return;
     }
@@ -1690,15 +1822,33 @@ function bindInteractions() {
       return;
     }
 
+    const backupDlBtn = target.closest('[data-app-backup-download]');
+    if (backupDlBtn) {
+      e.preventDefault();
+      const appId = backupDlBtn.getAttribute('data-app-backup-download');
+      const app = findApp(appId);
+      if (app) {
+        await triggerOneClickApkDownload(app, { useBackup: true });
+      }
+      return;
+    }
+
     const dlBtn = target.closest('[data-app-download]');
     if (dlBtn) {
       const appId = dlBtn.getAttribute('data-app-download');
       const app = findApp(appId);
+      const href = dlBtn.getAttribute('href') || '';
+      const isPreset = href.includes('type=preset');
       if (app) {
-        app.downloads = Number(app.downloads || 0) + 1;
-        hydrateLiveTilesAndStrip();
-        renderPromoPortal();
-        showToast(t('toasts.starting_dl', { name: app.name, code: app.shortCode }));
+        if (!isPreset) {
+          e.preventDefault();
+          await triggerOneClickApkDownload(app);
+        } else {
+          app.downloads = Number(app.downloads || 0) + 1;
+          hydrateLiveTilesAndStrip();
+          renderPromoPortal();
+          showToast(t('toasts.starting_dl', { name: app.name, code: app.shortCode }));
+        }
       }
     }
   });
@@ -1792,22 +1942,16 @@ function bindInteractions() {
     document.getElementById('metro-guide-dialog')?.showModal();
   });
 
-  // 11b. Dialer Tile Quick Preset Chips & Hero Action Clicks
+  // 11b. Dialer Tile Quick Preset Chips
   for (const chip of document.querySelectorAll('.kv-tile-chip[data-preset-code]')) {
     chip.addEventListener('click', (e) => {
       e.stopPropagation();
       const code = chip.getAttribute('data-preset-code');
       if (code) {
-        state.dialerCode = code;
+        state.currentCode = code;
         updateDialerReadouts();
-        openDialerDialog();
+        openDialerDialog(code);
       }
-    });
-  }
-
-  for (const btn of document.querySelectorAll('.kv-hero-btn')) {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
     });
   }
 

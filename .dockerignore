@@ -9,6 +9,8 @@ yarn-error.log*
 # takes <2 seconds even when you have gigabytes of Kodi/Jellyfin APKs in ./uploads.
 data
 uploads
+android
+.env*
 
 # Git & editor files
 .git

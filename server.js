@@ -1,6 +1,7 @@
 'use strict';
 
 const http = require('node:http');
+const https = require('node:https');
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
@@ -217,17 +218,20 @@ function recordTelemetryEvent(entry) {
 function sendJson(req, res, statusCode, payload) {
   const jsonStr = JSON.stringify(payload);
   const acceptEncoding = String(req.headers['accept-encoding'] || '');
+  const isHead = (req.method || 'GET').toUpperCase() === 'HEAD';
   const headers = {
     'Content-Type': 'application/json; charset=utf-8',
     'Cache-Control': 'no-store, no-cache, must-revalidate',
     'X-Content-Type-Options': 'nosniff',
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers':
-      'Content-Type, Authorization, X-Admin-Token, X-File-Name, X-Upload-Type',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Content-Type, Authorization, X-Admin-Token, X-File-Name, X-Upload-Type, Range',
+    'Access-Control-Allow-Methods': 'GET, HEAD, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Expose-Headers':
+      'Content-Length, Content-Range, Accept-Ranges, Content-Disposition, X-Download-Source, X-Backup-Url, X-KVTV-SHA256',
   };
 
-  if (jsonStr.length > 1024 && acceptEncoding.includes('gzip')) {
+  if (!isHead && jsonStr.length > 1024 && acceptEncoding.includes('gzip')) {
     const compressed = zlib.gzipSync(Buffer.from(jsonStr, 'utf8'));
     headers['Content-Encoding'] = 'gzip';
     headers['Content-Length'] = String(compressed.length);
@@ -239,6 +243,10 @@ function sendJson(req, res, statusCode, payload) {
   const buf = Buffer.from(jsonStr, 'utf8');
   headers['Content-Length'] = String(buf.length);
   res.writeHead(statusCode, headers);
+  if (isHead) {
+    res.end();
+    return;
+  }
   res.end(buf);
 }
 
@@ -760,13 +768,232 @@ async function parseUploadPayload(req, searchParams) {
 }
 
 /**
- * Serve static files from `baseDir` safely with directory traversal prevention and gzip.
+ * Resolve canonical APK file name for an app entry.
+ * @param {object} app
+ * @returns {string}
+ */
+function getCanonicalApkFileName(app) {
+  if (app && app.apkFileName) {
+    return path.basename(String(app.apkFileName).trim());
+  }
+  if (app && app.id === 'kv-netflix') {
+    return 'kv-netflix-tv.apk';
+  }
+  return `${app?.id || 'app'}.apk`;
+}
+
+/**
+ * Resolve Forgejo backup APK URL for an app entry.
+ * @param {object} app
+ * @returns {string}
+ */
+function getBackupApkUrl(app) {
+  const fileName = getCanonicalApkFileName(app);
+  if (app && typeof app.backupApkUrl === 'string' && app.backupApkUrl.trim()) {
+    return app.backupApkUrl.trim();
+  }
+  if (
+    app &&
+    typeof app.apkUrl === 'string' &&
+    app.apkUrl.includes('git.khoavo.myds.me')
+  ) {
+    return app.apkUrl.trim();
+  }
+  return `https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/${fileName}`;
+}
+
+/**
+ * Resolve local APK file on VPS disk (`UPLOADS_DIR` or `PUBLIC_DIR`) if present and non-empty.
+ * @param {object} app
+ * @returns {{ filePath: string, stat: fs.Stats, fileName: string } | null}
+ */
+function resolveLocalApkPath(app) {
+  const canonicalName = getCanonicalApkFileName(app);
+  const candidateNames = Array.from(
+    new Set(
+      [
+        canonicalName,
+        app?.id ? `${app.id}.apk` : null,
+        app?.id ? `${app.id}-apk.apk` : null,
+      ].filter(Boolean)
+    )
+  );
+
+  for (const name of candidateNames) {
+    const base = path.basename(name);
+    for (const dir of [UPLOADS_DIR, PUBLIC_DIR]) {
+      const fullPath = path.join(dir, base);
+      try {
+        if (fs.existsSync(fullPath)) {
+          const stat = fs.statSync(fullPath);
+          if (stat.isFile() && stat.size > 0) {
+            return { filePath: fullPath, stat, fileName: canonicalName };
+          }
+        }
+      } catch {
+        // Ignore stat error
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Enrich app object with primary VPS and automatic Forgejo backup download URLs.
+ * @param {object} app
+ * @returns {object}
+ */
+function decorateAppForPublic(app) {
+  if (!app) return app;
+  const fileName = getCanonicalApkFileName(app);
+  const localApk = resolveLocalApkPath(app);
+  const backupApkUrl = getBackupApkUrl(app);
+  const defaultPrimaryUrl = `https://tv.vndns.net/uploads/${fileName}`;
+  const apkUrl =
+    app.apkUrl && !String(app.apkUrl).includes('git.khoavo.myds.me')
+      ? app.apkUrl
+      : defaultPrimaryUrl;
+
+  return {
+    ...app,
+    apkFileName: fileName,
+    apkUrl,
+    backupApkUrl,
+    apkDownloadUrl:
+      app.id === 'kv-store' ? '/kv-store.apk' : `/api/download/${app.id}?type=apk`,
+    primaryApkUrl: `/api/download/${app.id}?type=apk&source=vps`,
+    fallbackDownloadUrl: `/api/download/${app.id}?type=apk&source=backup`,
+    hasPrimaryVpsFile: Boolean(localApk),
+  };
+}
+
+/**
+ * Serve a file with full HTTP Range (`206 Partial Content`), `Accept-Ranges: bytes`,
+ * `HEAD` support, and optional gzip for small text assets.
+ * @param {http.IncomingMessage} req
+ * @param {http.ServerResponse} res
+ * @param {string} filePath
+ * @param {object} [extraHeaders={}]
+ */
+function serveFileWithRange(req, res, filePath, extraHeaders = {}) {
+  fs.stat(filePath, (err, stat) => {
+    if (err || !stat.isFile()) {
+      sendJson(req, res, 404, { error: 'File not found' });
+      return;
+    }
+
+    const method = (req.method || 'GET').toUpperCase();
+    const ext = path.extname(filePath).toLowerCase();
+    const contentType =
+      extraHeaders['Content-Type'] || MIME_TYPES[ext] || 'application/octet-stream';
+    const isHtml = ext === '.html';
+    const cacheControl =
+      extraHeaders['Cache-Control'] ||
+      (isHtml ? 'no-cache, must-revalidate' : 'public, max-age=3600');
+
+    const headers = {
+      'Content-Type': contentType,
+      'Cache-Control': cacheControl,
+      'Accept-Ranges': 'bytes',
+      'X-Content-Type-Options': 'nosniff',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Expose-Headers':
+        'Content-Length, Content-Range, Accept-Ranges, Content-Disposition, X-Download-Source, X-Backup-Url, X-KVTV-SHA256',
+      ...extraHeaders,
+    };
+
+    const rangeHeader = req.headers.range;
+    if (typeof rangeHeader === 'string' && rangeHeader.trim().startsWith('bytes=')) {
+      const rangeMatch = /^bytes=(\d*)-(\d*)$/i.exec(rangeHeader.trim());
+      if (!rangeMatch || stat.size === 0) {
+        headers['Content-Range'] = `bytes */${stat.size}`;
+        res.writeHead(416, headers);
+        res.end();
+        return;
+      }
+
+      const rawStart = rangeMatch[1];
+      const rawEnd = rangeMatch[2];
+      let start = 0;
+      let end = stat.size - 1;
+
+      if (rawStart === '' && rawEnd !== '') {
+        const suffixLen = parseInt(rawEnd, 10);
+        if (!Number.isFinite(suffixLen) || suffixLen <= 0) {
+          headers['Content-Range'] = `bytes */${stat.size}`;
+          res.writeHead(416, headers);
+          res.end();
+          return;
+        }
+        start = Math.max(0, stat.size - suffixLen);
+      } else {
+        start = rawStart !== '' ? parseInt(rawStart, 10) : 0;
+        end = rawEnd !== '' ? parseInt(rawEnd, 10) : stat.size - 1;
+        if (end >= stat.size) {
+          end = stat.size - 1;
+        }
+      }
+
+      if (
+        !Number.isFinite(start) ||
+        !Number.isFinite(end) ||
+        start < 0 ||
+        start >= stat.size ||
+        start > end
+      ) {
+        headers['Content-Range'] = `bytes */${stat.size}`;
+        res.writeHead(416, headers);
+        res.end();
+        return;
+      }
+
+      const chunkSize = end - start + 1;
+      headers['Content-Range'] = `bytes ${start}-${end}/${stat.size}`;
+      headers['Content-Length'] = String(chunkSize);
+      res.writeHead(206, headers);
+      if (method === 'HEAD') {
+        res.end();
+        return;
+      }
+      fs.createReadStream(filePath, { start, end }).pipe(res);
+      return;
+    }
+
+    const acceptEncoding = String(req.headers['accept-encoding'] || '');
+    const isAttachment = Boolean(headers['Content-Disposition']);
+    if (
+      method === 'GET' &&
+      !isAttachment &&
+      COMPRESSIBLE_EXTS.has(ext) &&
+      stat.size > 512 &&
+      stat.size < 5 * 1024 * 1024 &&
+      acceptEncoding.includes('gzip')
+    ) {
+      headers['Content-Encoding'] = 'gzip';
+      res.writeHead(200, headers);
+      fs.createReadStream(filePath).pipe(zlib.createGzip()).pipe(res);
+      return;
+    }
+
+    headers['Content-Length'] = String(stat.size);
+    res.writeHead(200, headers);
+    if (method === 'HEAD') {
+      res.end();
+      return;
+    }
+    fs.createReadStream(filePath).pipe(res);
+  });
+}
+
+/**
+ * Serve static files from `baseDir` safely with directory traversal prevention, Range, and HEAD support.
  * @param {http.IncomingMessage} req
  * @param {http.ServerResponse} res
  * @param {string} baseDir
  * @param {string} relativePath
+ * @param {object} [extraHeaders={}]
  */
-function serveStaticFile(req, res, baseDir, relativePath) {
+function serveStaticFile(req, res, baseDir, relativePath, extraHeaders = {}) {
   const safeRel = path.normalize(relativePath).replace(/^(\.\.(\/|\\|$))+/, '');
   const fullPath = path.join(baseDir, safeRel);
 
@@ -775,42 +1002,331 @@ function serveStaticFile(req, res, baseDir, relativePath) {
     return;
   }
 
-  fs.stat(fullPath, (err, stat) => {
-    if (err || !stat.isFile()) {
-      sendJson(req, res, 404, { error: 'File not found' });
+  serveFileWithRange(req, res, fullPath, extraHeaders);
+}
+
+// Track active background APK cache streams to avoid duplicate simultaneous writes
+const activeBackgroundCaches = new Set();
+
+/**
+ * Stream/proxy APK from Forgejo `backupUrl` directly to the client while caching to
+ * `UPLOADS_DIR/<fileName>` in the background; falls back to a 302 redirect if upstream fails.
+ * @param {http.IncomingMessage} req
+ * @param {http.ServerResponse} res
+ * @param {object} app
+ * @param {string} backupUrl
+ * @param {string} fileName
+ */
+function streamFromBackupWithCache(req, res, app, backupUrl, fileName) {
+  const method = (req.method || 'GET').toUpperCase();
+  const maxRedirects = 5;
+
+  const fallbackRedirect = () => {
+    if (res.headersSent) {
+      res.end();
+      return;
+    }
+    res.writeHead(302, {
+      Location: backupUrl,
+      'Cache-Control': 'no-store',
+      'X-Download-Source': 'forgejo-backup-redirect',
+      'X-Backup-Url': backupUrl,
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Expose-Headers': 'Location, X-Download-Source, X-Backup-Url',
+    });
+    res.end();
+  };
+
+  function fetchUpstream(targetUrl, redirectsLeft) {
+    let parsed;
+    try {
+      parsed = new URL(targetUrl);
+    } catch {
+      fallbackRedirect();
       return;
     }
 
-    const ext = path.extname(fullPath).toLowerCase();
-    const contentType = MIME_TYPES[ext] || 'application/octet-stream';
-    const isHtml = ext === '.html';
-    const cacheControl = isHtml
-      ? 'no-cache, must-revalidate'
-      : 'public, max-age=3600';
-
-    const headers = {
-      'Content-Type': contentType,
-      'Cache-Control': cacheControl,
-      'X-Content-Type-Options': 'nosniff',
+    const transport = parsed.protocol === 'https:' ? https : http;
+    const reqHeaders = {
+      'User-Agent': req.headers['user-agent'] || 'KV-TV-Store-Proxy/1.0',
+      Accept: '*/*',
     };
-
-    const acceptEncoding = String(req.headers['accept-encoding'] || '');
-    if (
-      COMPRESSIBLE_EXTS.has(ext) &&
-      stat.size > 512 &&
-      stat.size < 5 * 1024 * 1024 &&
-      acceptEncoding.includes('gzip')
-    ) {
-      headers['Content-Encoding'] = 'gzip';
-      res.writeHead(200, headers);
-      fs.createReadStream(fullPath).pipe(zlib.createGzip()).pipe(res);
-      return;
+    const forgejoToken = (process.env.FORGEJO_TOKEN || '').trim();
+    if (forgejoToken && parsed.hostname === 'git.khoavo.myds.me') {
+      reqHeaders.Authorization = `token ${forgejoToken}`;
+    }
+    if (req.headers.range) {
+      reqHeaders.Range = req.headers.range;
     }
 
-    headers['Content-Length'] = String(stat.size);
-    res.writeHead(200, headers);
-    fs.createReadStream(fullPath).pipe(res);
+    const upstreamReq = transport.request(
+      parsed,
+      {
+        method: method === 'HEAD' ? 'HEAD' : 'GET',
+        headers: reqHeaders,
+        timeout: 12000,
+      },
+      (upstreamRes) => {
+        const statusCode = upstreamRes.statusCode || 502;
+
+        // Follow 301/302/303/307/308 redirects transparently (unless redirecting to login page)
+        if (
+          [301, 302, 303, 307, 308].includes(statusCode) &&
+          upstreamRes.headers.location
+        ) {
+          const loc = String(upstreamRes.headers.location);
+          upstreamRes.resume();
+          if (redirectsLeft <= 0 || loc.includes('/user/login')) {
+            fallbackRedirect();
+            return;
+          }
+          const nextUrl = new URL(loc, parsed).toString();
+          fetchUpstream(nextUrl, redirectsLeft - 1);
+          return;
+        }
+
+        const contentType = String(upstreamRes.headers['content-type'] || '').toLowerCase();
+        if ((statusCode !== 200 && statusCode !== 206) || contentType.includes('text/html')) {
+          upstreamRes.resume();
+          fallbackRedirect();
+          return;
+        }
+
+        const outHeaders = {
+          'Content-Type': 'application/vnd.android.package-archive',
+          'Content-Disposition': `attachment; filename="${fileName}"`,
+          'Accept-Ranges': 'bytes',
+          'Cache-Control': 'no-store',
+          'X-Download-Source': 'forgejo-backup-proxy',
+          'X-Backup-Url': backupUrl,
+          'X-KVTV-SHA256': app?.sha256 || '',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Expose-Headers':
+            'Content-Length, Content-Range, Accept-Ranges, Content-Disposition, X-Download-Source, X-Backup-Url, X-KVTV-SHA256',
+        };
+
+        if (upstreamRes.headers['content-length']) {
+          outHeaders['Content-Length'] = String(upstreamRes.headers['content-length']);
+        }
+        if (upstreamRes.headers['content-range']) {
+          outHeaders['Content-Range'] = String(upstreamRes.headers['content-range']);
+        }
+
+        res.writeHead(statusCode, outHeaders);
+        if (method === 'HEAD') {
+          upstreamRes.resume();
+          res.end();
+          return;
+        }
+
+        // Background cache to UPLOADS_DIR when streaming a full 200 response
+        const shouldCache =
+          statusCode === 200 &&
+          !req.headers.range &&
+          !activeBackgroundCaches.has(fileName);
+
+        if (shouldCache) {
+          activeBackgroundCaches.add(fileName);
+          const tmpFile = path.join(
+            UPLOADS_DIR,
+            `.${fileName}.tmp-${process.pid}-${Date.now()}`
+          );
+          const finalFile = path.join(UPLOADS_DIR, fileName);
+          let bytesWritten = 0;
+          let cacheAborted = false;
+          const fileStream = fs.createWriteStream(tmpFile);
+
+          fileStream.on('error', () => {
+            cacheAborted = true;
+            activeBackgroundCaches.delete(fileName);
+            try {
+              if (fs.existsSync(tmpFile)) fs.unlinkSync(tmpFile);
+            } catch {
+              // Ignore
+            }
+          });
+
+          upstreamRes.on('data', (chunk) => {
+            if (!cacheAborted) {
+              bytesWritten += chunk.length;
+              fileStream.write(chunk);
+            }
+          });
+
+          upstreamRes.on('end', () => {
+            if (cacheAborted) return;
+            fileStream.end(() => {
+              activeBackgroundCaches.delete(fileName);
+              try {
+                const expectedLen = Number(upstreamRes.headers['content-length'] || 0);
+                if (
+                  bytesWritten > 1024 &&
+                  (!expectedLen || bytesWritten === expectedLen)
+                ) {
+                  fs.renameSync(tmpFile, finalFile);
+                  if (app && !app.apkFileName) {
+                    app.apkFileName = fileName;
+                    saveStore(false);
+                  }
+                } else if (fs.existsSync(tmpFile)) {
+                  fs.unlinkSync(tmpFile);
+                }
+              } catch {
+                try {
+                  if (fs.existsSync(tmpFile)) fs.unlinkSync(tmpFile);
+                } catch {
+                  // Ignore
+                }
+              }
+            });
+          });
+
+          upstreamRes.on('error', () => {
+            cacheAborted = true;
+            activeBackgroundCaches.delete(fileName);
+            fileStream.destroy();
+            try {
+              if (fs.existsSync(tmpFile)) fs.unlinkSync(tmpFile);
+            } catch {
+              // Ignore
+            }
+          });
+        }
+
+        upstreamRes.pipe(res);
+      }
+    );
+
+    upstreamReq.on('timeout', () => {
+      upstreamReq.destroy(new Error('Upstream timeout'));
+    });
+
+    upstreamReq.on('error', () => {
+      fallbackRedirect();
+    });
+
+    upstreamReq.end();
+  }
+
+  fetchUpstream(backupUrl, maxRedirects);
+}
+
+/**
+ * Unified APK download handler with Primary VPS disk serving (HTTP Range + HEAD)
+ * and automatic Forgejo backup streaming/fallback.
+ * @param {http.IncomingMessage} req
+ * @param {http.ServerResponse} res
+ * @param {object} app
+ * @param {URLSearchParams} searchParams
+ * @param {object} [options={}]
+ */
+function handleApkDownload(req, res, app, searchParams, options = {}) {
+  const method = (req.method || 'GET').toUpperCase();
+  const fileName = getCanonicalApkFileName(app);
+  const backupUrl = getBackupApkUrl(app);
+  const source = String(searchParams.get('source') || '').toLowerCase();
+  const fallback = searchParams.get('fallback');
+  const rangeHeader = String(req.headers.range || '').trim();
+  const isInitialGet =
+    method === 'GET' && (!rangeHeader || /^bytes=0-/i.test(rangeHeader));
+
+  if (isInitialGet && options.trackDownload !== false) {
+    const deviceType = detectDeviceType(req, searchParams);
+    app.downloads = Number(app.downloads || 0) + 1;
+    const bucket = getTodayAnalyticsBucket();
+    bucket.downloads += 1;
+    recordTelemetryEvent({
+      event: 'download',
+      appId: app.id,
+      appName: `${app.name} (apk)`,
+      deviceType,
+      ip: getClientIp(req),
+      userAgent: req.headers['user-agent'],
+    });
+    saveStore(false);
+  }
+
+  // Explicit backup/Forgejo request
+  if (source === 'backup' || source === 'forgejo' || fallback === '1') {
+    if (searchParams.get('redirect') !== '1') {
+      streamFromBackupWithCache(req, res, app, backupUrl, fileName);
+      return;
+    }
+    res.writeHead(302, {
+      Location: backupUrl,
+      'Cache-Control': 'no-store',
+      'X-Download-Source': 'forgejo-backup',
+      'X-Backup-Url': backupUrl,
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Expose-Headers': 'Location, X-Download-Source, X-Backup-Url',
+    });
+    res.end();
+    return;
+  }
+
+  // Primary VPS check in UPLOADS_DIR (or PUBLIC_DIR)
+  const localApk = resolveLocalApkPath(app);
+  if (localApk) {
+    serveFileWithRange(req, res, localApk.filePath, {
+      'Content-Type': 'application/vnd.android.package-archive',
+      'Content-Disposition': `attachment; filename="${fileName}"`,
+      'Cache-Control': 'no-store',
+      'X-Download-Source': 'vps-primary',
+      'X-Backup-Url': backupUrl,
+      'X-KVTV-SHA256': app.sha256 || '',
+    });
+    return;
+  }
+
+  // If frontend probe specifically checks `source=vps` via HEAD and file is not on local disk
+  if (source === 'vps' && method === 'HEAD') {
+    res.writeHead(404, {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': 'no-store',
+      'X-Download-Source': 'vps-missing',
+      'X-Backup-Url': backupUrl,
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Expose-Headers': 'X-Download-Source, X-Backup-Url',
+    });
+    res.end();
+    return;
+  }
+
+  // Local VPS file not present: stream/proxy transparently from Forgejo backupUrl
+  // (while caching to UPLOADS_DIR in background) and fall back to 302 redirect if upstream fails
+  if (backupUrl) {
+    streamFromBackupWithCache(req, res, app, backupUrl, fileName);
+    return;
+  }
+
+  // Final synthetic fallback if neither local file nor backupUrl exists
+  const manifestData = {
+    store: 'KV-TV Store (https://tv.vndns.net)',
+    appId: app.id,
+    name: app.name,
+    edition: app.edition,
+    packageName: app.packageName,
+    version: app.version,
+    shortCode: app.shortCode,
+    type: 'apk',
+    generatedAt: new Date().toISOString(),
+  };
+  const archiveBuf = buildMinimalZipArchive(
+    'assets/kv-tv-manifest.json',
+    Buffer.from(JSON.stringify(manifestData, null, 2), 'utf8')
+  );
+  res.writeHead(200, {
+    'Content-Type': 'application/vnd.android.package-archive',
+    'Content-Disposition': `attachment; filename="${fileName}"`,
+    'Content-Length': String(archiveBuf.length),
+    'Cache-Control': 'no-store',
+    'X-KVTV-Demo-Package': 'true',
   });
+  if (method === 'HEAD') {
+    res.end();
+    return;
+  }
+  res.end(archiveBuf);
 }
 
 /**
@@ -828,29 +1344,31 @@ const server = http.createServer(async (req, res) => {
       res.writeHead(204, {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers':
-          'Content-Type, Authorization, X-Admin-Token, X-File-Name, X-Upload-Type',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Content-Type, Authorization, X-Admin-Token, X-File-Name, X-Upload-Type, Range',
+        'Access-Control-Allow-Methods': 'GET, HEAD, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Expose-Headers':
+          'Content-Length, Content-Range, Accept-Ranges, Content-Disposition, X-Download-Source, X-Backup-Url, X-KVTV-SHA256',
       });
       res.end();
       return;
     }
 
-    // 1. Healthcheck endpoint
-    if (method === 'GET' && pathname === '/api/health') {
+    // 1. Healthcheck endpoints
+    if ((method === 'GET' || method === 'HEAD') && (pathname === '/api/health' || pathname === '/healthz')) {
       sendJson(req, res, 200, {
         ok: true,
         status: 'healthy',
-        service: 'kv-tv-store',
+        service: 'kv-tv-backend',
         uptime: Math.floor(process.uptime()),
         timestamp: new Date().toISOString(),
       });
       return;
     }
 
-    // 2. GET /api/catalog?device=tv|mobile|desktop
-    if (method === 'GET' && pathname === '/api/catalog') {
+    // 2. GET / HEAD /api/catalog?device=tv|mobile|desktop
+    if ((method === 'GET' || method === 'HEAD') && pathname === '/api/catalog') {
       const deviceType = detectDeviceType(req, searchParams);
-      const skipTrack = searchParams.get('track') === '0';
+      const skipTrack = searchParams.get('track') === '0' || method === 'HEAD';
 
       if (!skipTrack) {
         const bucket = getTodayAnalyticsBucket();
@@ -889,7 +1407,7 @@ const server = http.createServer(async (req, res) => {
         },
         suggestedLang,
         clientCountry: cfCountry || xCountry || 'UNKNOWN',
-        apps: store.apps,
+        apps: store.apps.map(decorateAppForPublic),
         ads: store.ads.filter((a) => a.active !== false),
         categories: store.categories || [
           'All',
@@ -902,85 +1420,65 @@ const server = http.createServer(async (req, res) => {
       return;
     }
 
+    // 2.2 GET / HEAD /api/apps/:id
+    if ((method === 'GET' || method === 'HEAD') && pathname.startsWith('/api/apps/')) {
+      const rawId = decodeURIComponent(pathname.slice('/api/apps/'.length)).trim();
+      const app = store.apps.find(
+        (a) =>
+          String(a.id).toLowerCase() === rawId.toLowerCase() ||
+          String(a.shortCode).toLowerCase() === rawId.toLowerCase()
+      );
+      if (!app) {
+        sendJson(req, res, 404, { ok: false, error: `App "${rawId}" not found` });
+        return;
+      }
+      sendJson(req, res, 200, {
+        ok: true,
+        app: decorateAppForPublic(app),
+      });
+      return;
+    }
+
     // 2.5 Dedicated /kv-store.apk and /api/download/kv-store endpoint
-    if ((method === 'GET' || method === 'HEAD') && (pathname === '/kv-store.apk' || pathname === '/api/download/kv-store')) {
+    if (
+      (method === 'GET' || method === 'HEAD') &&
+      (pathname === '/kv-store.apk' || pathname === '/api/download/kv-store')
+    ) {
       const app = store.apps.find((a) => a.id === 'kv-store') || {
         id: 'kv-store',
         name: 'KV-Store TV',
         shortCode: '88000',
         downloads: 8800,
         apkFileName: 'kv-store.apk',
+        apkUrl: 'https://tv.vndns.net/uploads/kv-store.apk',
+        backupApkUrl:
+          'https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-store.apk',
       };
-
-      const deviceType = detectDeviceType(req, searchParams);
-      if (method === 'GET') {
-        app.downloads = Number(app.downloads || 0) + 1;
-        const bucket = getTodayAnalyticsBucket();
-        bucket.downloads += 1;
-        recordTelemetryEvent({
-          event: 'download',
-          appId: 'kv-store',
-          appName: 'KV-Store TV (apk)',
-          deviceType,
-          ip: getClientIp(req),
-          userAgent: req.headers['user-agent'],
-        });
-        saveStore(false);
-      }
-
-      const possiblePaths = [
-        path.join(PUBLIC_DIR, 'kv-store.apk'),
-        path.join(UPLOADS_DIR, 'kv-store.apk'),
-      ];
-      const apkFilePath = possiblePaths.find((p) => fs.existsSync(p) && fs.statSync(p).isFile());
-
-      if (apkFilePath) {
-        const stat = fs.statSync(apkFilePath);
-        res.writeHead(200, {
-          'Content-Type': 'application/vnd.android.package-archive',
-          'Content-Disposition': 'attachment; filename="kv-store.apk"',
-          'Content-Length': String(stat.size),
-          'Cache-Control': 'no-store',
-        });
-        if (method === 'HEAD') {
-          res.end();
-          return;
-        }
-        fs.createReadStream(apkFilePath).pipe(res);
-        return;
-      }
-
-      if (app.apkUrl) {
-        res.writeHead(302, {
-          Location: app.apkUrl,
-          'Cache-Control': 'no-store',
-        });
-        res.end();
+      if (searchParams.get('type') !== 'preset') {
+        handleApkDownload(req, res, app, searchParams);
         return;
       }
     }
 
-    // Direct 5-digit shortcode routes for Downloader app (e.g. /88000 or /88103)
-    if ((method === 'GET' || method === 'HEAD') && /^\/88\d{3}\/?$/.test(pathname)) {
+    // Direct 5-digit shortcode routes for Downloader app (e.g. /88000 or /88101–/88106)
+    if ((method === 'GET' || method === 'HEAD') && /^\/(\d{5})\/?$/.test(pathname)) {
       const directCode = pathname.replace(/^\//, '').replace(/\/$/, '');
-      if (directCode === '88000') {
-        res.writeHead(302, {
-          Location: '/kv-store.apk',
-          'Cache-Control': 'no-store',
+      const app = store.apps.find(
+        (a) => String(a.shortCode).toLowerCase() === directCode.toLowerCase()
+      );
+      if (!app) {
+        sendJson(req, res, 404, {
+          found: false,
+          error: `Short-code "${directCode}" not found. Valid codes: 88000, 88101–88106.`,
         });
-        res.end();
         return;
       }
-      res.writeHead(302, {
-        Location: `/go/${directCode}`,
-        'Cache-Control': 'no-store',
-      });
-      res.end();
+      handleApkDownload(req, res, app, searchParams);
       return;
     }
 
-    // 3. GET /api/code/:shortCode
-    if (method === 'GET' && pathname.startsWith('/api/code/')) {
+    // 3. GET / HEAD /api/code/:shortCode
+    if ((method === 'GET' || method === 'HEAD') && pathname.startsWith('/api/code/')) {
       const code = decodeURIComponent(pathname.slice('/api/code/'.length)).trim();
       const app = store.apps.find(
         (a) =>
@@ -994,28 +1492,25 @@ const server = http.createServer(async (req, res) => {
         });
         return;
       }
+      const decorated = decorateAppForPublic(app);
       sendJson(req, res, 200, {
         found: true,
-        app,
-        downloadUrl: app.id === 'kv-store' ? '/kv-store.apk' : `/api/download/${app.id}`,
+        app: decorated,
+        downloadUrl: decorated.apkDownloadUrl,
+        primaryApkUrl: decorated.primaryApkUrl,
+        backupApkUrl: decorated.backupApkUrl,
+        fallbackDownloadUrl: decorated.fallbackDownloadUrl,
         presetUrl: app.presetUrl || `/api/download/${app.id}?type=preset`,
-        apkUrl: app.apkUrl || null,
-        linkOnly: !app.apkFileName,
+        apkUrl: decorated.apkUrl,
+        hasPrimaryVpsFile: decorated.hasPrimaryVpsFile,
+        linkOnly: !decorated.hasPrimaryVpsFile,
       });
       return;
     }
 
-    // 4. GET /go/:shortCode -> 302 redirect to /api/download/:appId
+    // 4. GET / HEAD /go/:shortCode -> Serve APK directly from VPS (with automatic Forgejo fallback)
     if ((method === 'GET' || method === 'HEAD') && pathname.startsWith('/go/')) {
       const code = decodeURIComponent(pathname.slice('/go/'.length)).trim();
-      if (code === '88000' || code.toLowerCase() === 'kv-store') {
-        res.writeHead(302, {
-          Location: '/kv-store.apk',
-          'Cache-Control': 'no-store',
-        });
-        res.end();
-        return;
-      }
       const app = store.apps.find(
         (a) =>
           String(a.shortCode).toLowerCase() === code.toLowerCase() ||
@@ -1028,15 +1523,11 @@ const server = http.createServer(async (req, res) => {
         });
         return;
       }
-      res.writeHead(302, {
-        Location: `/api/download/${app.id}`,
-        'Cache-Control': 'no-store',
-      });
-      res.end();
+      handleApkDownload(req, res, app, searchParams);
       return;
     }
 
-    // 5. GET /api/download/:appId?type=apk|preset
+    // 5. GET / HEAD /api/download/:appId?type=apk|preset&source=vps|backup
     if ((method === 'GET' || method === 'HEAD') && pathname.startsWith('/api/download/')) {
       const rawId = decodeURIComponent(pathname.slice('/api/download/'.length)).trim();
       const app = store.apps.find(
@@ -1050,9 +1541,18 @@ const server = http.createServer(async (req, res) => {
       }
 
       const downloadType = searchParams.get('type') === 'preset' ? 'preset' : 'apk';
-      const deviceType = detectDeviceType(req, searchParams);
+      if (downloadType === 'apk') {
+        handleApkDownload(req, res, app, searchParams);
+        return;
+      }
 
-      if (method === 'GET') {
+      // Preset download handling (`type=preset`)
+      const deviceType = detectDeviceType(req, searchParams);
+      const rangeHeader = String(req.headers.range || '').trim();
+      const isInitialGet =
+        method === 'GET' && (!rangeHeader || /^bytes=0-/i.test(rangeHeader));
+
+      if (isInitialGet) {
         app.downloads = Number(app.downloads || 0) + 1;
         const bucket = getTodayAnalyticsBucket();
         bucket.downloads += 1;
@@ -1060,7 +1560,7 @@ const server = http.createServer(async (req, res) => {
         recordTelemetryEvent({
           event: 'download',
           appId: app.id,
-          appName: `${app.name} (${downloadType})`,
+          appName: `${app.name} (preset)`,
           deviceType,
           ip: getClientIp(req),
           userAgent: req.headers['user-agent'],
@@ -1068,91 +1568,77 @@ const server = http.createServer(async (req, res) => {
         saveStore(false);
       }
 
-      // Check if an uploaded binary exists on disk
-      const uploadedName =
-        downloadType === 'preset' ? app.presetFileName : app.apkFileName;
+      // Check if an uploaded preset binary exists on disk
+      const uploadedName = app.presetFileName;
       if (uploadedName) {
         const possibleUploadPaths = [
           path.join(UPLOADS_DIR, path.basename(uploadedName)),
           path.join(PUBLIC_DIR, path.basename(uploadedName)),
         ];
-        const uploadedPath = possibleUploadPaths.find((p) => fs.existsSync(p) && fs.statSync(p).isFile());
+        const uploadedPath = possibleUploadPaths.find(
+          (p) => fs.existsSync(p) && fs.statSync(p).isFile()
+        );
         if (uploadedPath) {
-          const stat = fs.statSync(uploadedPath);
-          const cType =
-            downloadType === 'preset'
-              ? (uploadedName.endsWith('.json') ? 'application/json' : 'application/zip')
-              : 'application/vnd.android.package-archive';
-          res.writeHead(200, {
+          const cType = uploadedName.endsWith('.json')
+            ? 'application/json; charset=utf-8'
+            : 'application/zip';
+          serveFileWithRange(req, res, uploadedPath, {
             'Content-Type': cType,
             'Content-Disposition': `attachment; filename="${path.basename(uploadedName)}"`,
-            'Content-Length': String(stat.size),
             'Cache-Control': 'no-store',
             'X-KVTV-SHA256': app.sha256 || '',
           });
-          if (method === 'HEAD') {
-            res.end();
-            return;
-          }
-          fs.createReadStream(uploadedPath).pipe(res);
           return;
         }
       }
 
-      // Link-Only & In-Memory Preset handling when no file is stored in uploads/
-      if (downloadType === 'preset') {
-        if (app.id === 'kodi-kv') {
-          const kodiZip = buildKodiAddonZipBuffer();
-          if (kodiZip) {
-            res.writeHead(200, {
-              'Content-Type': 'application/zip',
-              'Content-Disposition': 'attachment; filename="plugin.video.kvnetflix.zip"',
-              'Content-Length': String(kodiZip.length),
-              'Cache-Control': 'no-store',
-              'X-KVTV-In-Memory-Preset': 'kodi-kv',
-            });
-            if (method === 'HEAD') {
-              res.end();
-              return;
-            }
-            res.end(kodiZip);
-            return;
-          }
-        }
-        if (app.id === 'cloudstream-kv') {
-          const csPreset = buildCloudStreamPresetBuffer();
+      // In-Memory Preset handling when no file is stored in uploads/
+      if (app.id === 'kodi-kv') {
+        const kodiZip = buildKodiAddonZipBuffer();
+        if (kodiZip) {
           res.writeHead(200, {
-            'Content-Type': 'application/json; charset=utf-8',
-            'Content-Disposition': 'attachment; filename="cloudstream-kv-preset.json"',
-            'Content-Length': String(csPreset.length),
+            'Content-Type': 'application/zip',
+            'Content-Disposition': 'attachment; filename="plugin.video.kvnetflix.zip"',
+            'Content-Length': String(kodiZip.length),
+            'Accept-Ranges': 'bytes',
             'Cache-Control': 'no-store',
-            'X-KVTV-In-Memory-Preset': 'cloudstream-kv',
+            'X-KVTV-In-Memory-Preset': 'kodi-kv',
           });
           if (method === 'HEAD') {
             res.end();
             return;
           }
-          res.end(csPreset);
+          res.end(kodiZip);
           return;
         }
-        if (app.presetUrl) {
-          res.writeHead(302, {
-            Location: app.presetUrl,
-            'Cache-Control': 'no-store',
-          });
+      }
+      if (app.id === 'cloudstream-kv') {
+        const csPreset = buildCloudStreamPresetBuffer();
+        res.writeHead(200, {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Content-Disposition': 'attachment; filename="cloudstream-kv-preset.json"',
+          'Content-Length': String(csPreset.length),
+          'Accept-Ranges': 'bytes',
+          'Cache-Control': 'no-store',
+          'X-KVTV-In-Memory-Preset': 'cloudstream-kv',
+        });
+        if (method === 'HEAD') {
           res.end();
           return;
         }
-      } else if (downloadType === 'apk' && app.apkUrl) {
+        res.end(csPreset);
+        return;
+      }
+      if (app.presetUrl) {
         res.writeHead(302, {
-          Location: app.apkUrl,
+          Location: app.presetUrl,
           'Cache-Control': 'no-store',
         });
         res.end();
         return;
       }
 
-      // Generate realistic downloadable APK / Preset bundle on the fly
+      // Generate realistic downloadable Preset bundle on the fly
       const manifestData = {
         store: 'KV-TV Store (https://tv.vndns.net)',
         appId: app.id,
@@ -1161,40 +1647,32 @@ const server = http.createServer(async (req, res) => {
         packageName: app.packageName,
         version: app.version,
         shortCode: app.shortCode,
-        type: downloadType,
+        type: 'preset',
         preConfigured: app.preConfigured,
         presetSummary: app.presetSummary,
         presetFeatures: app.presetFeatures,
         generatedAt: new Date().toISOString(),
-        note:
-          downloadType === 'preset'
-            ? 'KV-TV Pre-Set Configuration Backup Archive. Import via App Settings -> Restore Backup.'
-            : 'KV-TV Pre-Configured Android TV Package. Upload your production signed APK in /admin to replace this demo package.',
+        note: 'KV-TV Pre-Set Configuration Backup Archive. Import via App Settings -> Restore Backup.',
       };
 
-      const innerEntryName =
-        downloadType === 'preset'
-          ? 'kv-preset-config.json'
-          : 'assets/kv-tv-manifest.json';
       const archiveBuf = buildMinimalZipArchive(
-        innerEntryName,
+        'kv-preset-config.json',
         Buffer.from(JSON.stringify(manifestData, null, 2), 'utf8')
       );
-      const outFileName =
-        downloadType === 'preset'
-          ? `${app.id}-kv-preset-backup.zip`
-          : `${app.id}-${app.version}.apk`;
+      const outFileName = `${app.id}-kv-preset-backup.zip`;
 
       res.writeHead(200, {
-        'Content-Type':
-          downloadType === 'preset'
-            ? 'application/zip'
-            : 'application/vnd.android.package-archive',
+        'Content-Type': 'application/zip',
         'Content-Disposition': `attachment; filename="${outFileName}"`,
         'Content-Length': String(archiveBuf.length),
+        'Accept-Ranges': 'bytes',
         'Cache-Control': 'no-store',
         'X-KVTV-Demo-Package': 'true',
       });
+      if (method === 'HEAD') {
+        res.end();
+        return;
+      }
       res.end(archiveBuf);
       return;
     }
@@ -1432,7 +1910,7 @@ const server = http.createServer(async (req, res) => {
         sendJson(req, res, 200, {
           ok: true,
           storeInfo: store.storeInfo,
-          apps: store.apps,
+          apps: store.apps.map(decorateAppForPublic),
           ads: store.ads,
           analytics: {
             daily: store.analytics?.daily || [],
@@ -1457,17 +1935,20 @@ const server = http.createServer(async (req, res) => {
         return;
       }
 
-      // 12. POST /api/admin/apps (Create or update an app)
+      // 12. POST /api/admin/apps or PUT /api/admin/apps/:appId (Create or update an app)
       if ((method === 'POST' || method === 'PUT') && pathname.startsWith('/api/admin/apps')) {
         const body = await readJsonBody(req);
+        const urlAppId = pathname.startsWith('/api/admin/apps/')
+          ? decodeURIComponent(pathname.slice('/api/admin/apps/'.length)).trim()
+          : '';
         const rawName = String(body.name || '').trim();
-        if (!rawName) {
+        if (!rawName && !urlAppId) {
           sendJson(req, res, 400, { ok: false, error: 'App name is required' });
           return;
         }
 
         const slugId =
-          String(body.id || '')
+          String(body.id || urlAppId || '')
             .trim()
             .toLowerCase()
             .replace(/[^a-z0-9-]+/g, '-')
@@ -1477,6 +1958,9 @@ const server = http.createServer(async (req, res) => {
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/^-|-$/g, '');
 
+        const existingIdx = store.apps.findIndex((a) => a.id === slugId);
+        const existing = existingIdx >= 0 ? store.apps[existingIdx] : null;
+
         let features = body.presetFeatures;
         if (typeof features === 'string') {
           features = features
@@ -1484,14 +1968,11 @@ const server = http.createServer(async (req, res) => {
             .map((s) => s.trim())
             .filter(Boolean);
         } else if (!Array.isArray(features)) {
-          features = [
+          features = existing?.presetFeatures || [
             'Pre-configured for Android TV D-Pad remote',
             'Hardware-accelerated 4K playback profile',
           ];
         }
-
-        const existingIdx = store.apps.findIndex((a) => a.id === slugId);
-        const existing = existingIdx >= 0 ? store.apps[existingIdx] : null;
 
         // Auto-assign next shortCode if not provided
         let shortCode = String(body.shortCode || (existing ? existing.shortCode : '')).trim();
@@ -1503,9 +1984,25 @@ const server = http.createServer(async (req, res) => {
           shortCode = String(maxCode + 1);
         }
 
+        const resolvedApkFileName =
+          body.apkFileName !== undefined && String(body.apkFileName).trim()
+            ? path.basename(String(body.apkFileName).trim())
+            : existing?.apkFileName || (slugId === 'kv-netflix' ? 'kv-netflix-tv.apk' : `${slugId}.apk`);
+
+        const resolvedApkUrl =
+          body.apkUrl !== undefined && String(body.apkUrl).trim()
+            ? String(body.apkUrl).trim()
+            : existing?.apkUrl || `https://tv.vndns.net/uploads/${resolvedApkFileName}`;
+
+        const resolvedBackupApkUrl =
+          body.backupApkUrl !== undefined && String(body.backupApkUrl).trim()
+            ? String(body.backupApkUrl).trim()
+            : existing?.backupApkUrl ||
+              `https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/${resolvedApkFileName}`;
+
         const appRecord = {
           id: slugId,
-          name: rawName,
+          name: rawName || existing?.name || slugId,
           edition: String(body.edition || existing?.edition || 'KV-Optimized Edition').trim(),
           edition_vi: String(body.edition_vi || body.edition || existing?.edition_vi || existing?.edition || 'KV-Optimized Edition').trim(),
           edition_en: String(body.edition_en || body.edition || existing?.edition_en || existing?.edition || 'KV-Optimized Edition').trim(),
@@ -1592,16 +2089,13 @@ const server = http.createServer(async (req, res) => {
           sha256:
             existing?.sha256 ||
             crypto.createHash('sha256').update(`${slugId}-${Date.now()}`).digest('hex'),
-          apkFileName:
-            body.apkFileName !== undefined ? body.apkFileName : existing?.apkFileName || null,
+          apkFileName: resolvedApkFileName,
           presetFileName:
             body.presetFileName !== undefined
               ? body.presetFileName
               : existing?.presetFileName || null,
-          apkUrl:
-            body.apkUrl !== undefined
-              ? String(body.apkUrl).trim() || null
-              : existing?.apkUrl || null,
+          apkUrl: resolvedApkUrl,
+          backupApkUrl: resolvedBackupApkUrl,
           presetUrl:
             body.presetUrl !== undefined
               ? String(body.presetUrl).trim() || null
@@ -1618,8 +2112,8 @@ const server = http.createServer(async (req, res) => {
         saveStore(true);
         sendJson(req, res, 200, {
           ok: true,
-          app: appRecord,
-          apps: store.apps,
+          app: decorateAppForPublic(appRecord),
+          apps: store.apps.map(decorateAppForPublic),
         });
         return;
       }
@@ -1679,7 +2173,10 @@ const server = http.createServer(async (req, res) => {
           .replace(/^-|-$/g, '');
         const ext =
           path.extname(cleanBase) || (uploadType === 'preset' ? '.zip' : '.apk');
-        const safeFileName = `${app.id}-${uploadType}${ext}`;
+        const safeFileName =
+          uploadType === 'apk'
+            ? getCanonicalApkFileName(app)
+            : `${app.id}-${uploadType}${ext}`;
         const targetPath = path.join(UPLOADS_DIR, safeFileName);
 
         // Remove previous file if different name
@@ -1701,6 +2198,7 @@ const server = http.createServer(async (req, res) => {
           app.presetFileName = safeFileName;
         } else {
           app.apkFileName = safeFileName;
+          app.apkUrl = `https://tv.vndns.net/uploads/${safeFileName}`;
           app.size = formattedSize;
           app.sha256 = sha256;
         }
@@ -1709,7 +2207,7 @@ const server = http.createServer(async (req, res) => {
         saveStore(true);
         sendJson(req, res, 200, {
           ok: true,
-          app,
+          app: decorateAppForPublic(app),
           uploadType,
           fileName: safeFileName,
           bytes: fileBuffer.length,
@@ -1864,7 +2362,7 @@ const server = http.createServer(async (req, res) => {
         serveStaticFile(req, res, PUBLIC_DIR, 'mockup-3.html');
         return;
       }
-      if (pathname === '/' || pathname === '/tv' || pathname === '/tv/') {
+      if (pathname === '/' || pathname === '/tv' || pathname === '/tv/' || pathname === '/web' || pathname === '/web/') {
         const mockupParam = parsedUrl.searchParams.get('mockup');
         if (mockupParam === '1') {
           serveStaticFile(req, res, PUBLIC_DIR, 'mockup-1.html');
@@ -1887,6 +2385,33 @@ const server = http.createServer(async (req, res) => {
       }
       if (pathname.startsWith('/uploads/')) {
         const relUpload = decodeURIComponent(pathname.slice('/uploads/'.length));
+        const baseUploadName = path.basename(relUpload);
+        const matchingApp = store.apps.find(
+          (a) =>
+            getCanonicalApkFileName(a).toLowerCase() === baseUploadName.toLowerCase() ||
+            `${a.id}.apk`.toLowerCase() === baseUploadName.toLowerCase()
+        );
+        const localFilePath = path.join(UPLOADS_DIR, baseUploadName);
+        if (fs.existsSync(localFilePath) && fs.statSync(localFilePath).isFile() && fs.statSync(localFilePath).size > 0) {
+          const extraHeaders = {
+            'Cache-Control': 'no-store',
+            'X-Download-Source': 'vps-primary',
+          };
+          if (baseUploadName.toLowerCase().endsWith('.apk')) {
+            extraHeaders['Content-Type'] = 'application/vnd.android.package-archive';
+            extraHeaders['Content-Disposition'] = `attachment; filename="${baseUploadName}"`;
+            if (matchingApp) {
+              extraHeaders['X-Backup-Url'] = getBackupApkUrl(matchingApp);
+              extraHeaders['X-KVTV-SHA256'] = matchingApp.sha256 || '';
+            }
+          }
+          serveFileWithRange(req, res, localFilePath, extraHeaders);
+          return;
+        }
+        if (matchingApp) {
+          handleApkDownload(req, res, matchingApp, searchParams);
+          return;
+        }
         serveStaticFile(req, res, UPLOADS_DIR, relUpload);
         return;
       }

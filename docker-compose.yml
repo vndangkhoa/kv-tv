@@ -1,22 +1,51 @@
 name: kv-tv
 
 services:
-  kv-tv:
+  kv-tv-interface:
     build:
       context: .
-      dockerfile: Dockerfile
-    image: vndangkhoa/kv-tv:latest
-    container_name: kv-tv
+      dockerfile: Dockerfile.interface
+    image: vndangkhoa/kv-tv-interface:latest
+    container_name: kv-tv-interface
     restart: unless-stopped
     ports:
       - "3456:3456"
     environment:
       - NODE_ENV=production
       - PORT=3456
+      - BACKEND_URL=http://kv-tv-backend:3457
       - TZ=Asia/Ho_Chi_Minh
+    depends_on:
+      - kv-tv-backend
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3456/healthz').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  kv-tv-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    image: vndangkhoa/kv-tv-backend:latest
+    container_name: kv-tv-backend
+    restart: unless-stopped
+    ports:
+      - "3457:3457"
+    environment:
+      - NODE_ENV=production
+      - PORT=3457
       - PUBLIC_BASE_URL=${PUBLIC_BASE_URL:-https://tv.vndns.net}
+      - FORGEJO_TOKEN=${FORGEJO_TOKEN:-}
       - ADMIN_DEFAULT_USER=${ADMIN_DEFAULT_USER:-vndangkhoa}
       - ADMIN_DEFAULT_PASS=${ADMIN_DEFAULT_PASS:-thieugia}
+      - TZ=Asia/Ho_Chi_Minh
     volumes:
       # =========================================================================
       # PERSISTENT HOST BIND-MOUNTS (ZERO-REBUILD APK & CATALOG UPDATES)
@@ -36,7 +65,7 @@ services:
         max-size: "10m"
         max-file: "3"
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3456/api/catalog').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3457/api/catalog?track=0').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
       interval: 20s
       timeout: 5s
       retries: 3

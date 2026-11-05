@@ -404,8 +404,8 @@
     const perfBody = document.getElementById('perfTableBody');
     perfBody.innerHTML = apps
       .map((app) => {
-        const hasRealApk = Boolean(app.apkFileName);
-        const hasExternalApk = Boolean(!app.apkFileName && app.apkUrl);
+        const hasVpsPrimary = Boolean(app.hasPrimaryVpsFile);
+        const hasBackupApk = Boolean(app.backupApkUrl);
         const hasPresetZip = Boolean(app.presetFileName);
         const hasExternalPreset = Boolean(!app.presetFileName && app.presetUrl);
         return `
@@ -425,11 +425,14 @@
             </td>
             <td>
               ${
-                hasRealApk
-                  ? `<span class="badge badge-emerald">Uploaded (${escapeHtml(app.apkFileName)})</span>`
-                  : hasExternalApk
-                  ? `<span class="badge badge-emerald">External Link (Link-Only)</span>`
-                  : `<span class="badge badge-sky">Pre-Seeded Demo APK</span>`
+                hasVpsPrimary
+                  ? `<span class="badge badge-emerald">VPS Primary (/uploads/${escapeHtml(app.apkFileName)})</span>`
+                  : `<span class="badge badge-sky">VPS Target: /uploads/${escapeHtml(app.apkFileName || app.id + '.apk')}</span>`
+              }
+              ${
+                hasBackupApk
+                  ? `<span class="table-cell-sub mono-num">Fallback: Forgejo Release Ready</span>`
+                  : ''
               }
             </td>
             <td>
@@ -539,11 +542,13 @@
       .map((app) => {
         const features = Array.isArray(app.presetFeatures) ? app.presetFeatures : [];
         const shaShort = app.sha256 ? `${String(app.sha256).slice(0, 12)}…` : '—';
-        const apkStatus = app.apkFileName
-          ? `Host file: /uploads/${app.apkFileName} (${app.size})`
-          : app.apkUrl
-          ? `External Link: ${app.apkUrl}`
-          : `Serving pre-seeded demo package (${app.size}) until .apk uploaded`;
+        const fileName = app.apkFileName || `${app.id}.apk`;
+        const apkStatus = app.hasPrimaryVpsFile
+          ? `Primary VPS File Active: /uploads/${fileName} (${app.size})`
+          : `Primary VPS Target: /uploads/${fileName} (Auto-Streaming from Forgejo until uploaded)`;
+        const backupApkStatus =
+          app.backupApkUrl ||
+          `https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/${fileName}`;
         const presetStatus = app.presetFileName
           ? `Host file: /uploads/${app.presetFileName}`
           : app.presetUrl
@@ -562,11 +567,9 @@
                   <span class="badge ${app.preConfigured ? 'badge-emerald' : 'badge-subtle'}">
                     ${app.preConfigured ? 'Pre-Set Ready' : 'Standard APK'}
                   </span>
-                  ${
-                    !app.apkFileName && app.apkUrl
-                      ? `<span class="badge badge-emerald">External Link (Link-Only)</span>`
-                      : ''
-                  }
+                  <span class="badge ${app.hasPrimaryVpsFile ? 'badge-emerald' : 'badge-sky'}">
+                    ${app.hasPrimaryVpsFile ? 'VPS Disk Active (1Gbps)' : 'VPS + Forgejo Auto-Fallback'}
+                  </span>
                   <span class="badge badge-sky mono-num">Code: ${escapeHtml(app.shortCode)}</span>
                   <span class="app-edition-tag">${escapeHtml(app.edition)}</span>
                 </div>
@@ -590,8 +593,9 @@
               <!-- Slot 1: Primary .APK Binary Upload -->
               <div class="binary-slot-row">
                 <div class="binary-slot-info">
-                  <strong>Android TV Binary (.apk)</strong>
+                  <strong>Primary VPS APK (${escapeHtml(fileName)})</strong>
                   <span class="mono-num">${escapeHtml(apkStatus)}</span>
+                  <span class="mono-num table-cell-sub">Backup Forgejo: ${escapeHtml(backupApkStatus)}</span>
                 </div>
                 <label class="btn btn-primary btn-xs file-upload-btn-label">
                   <span>[ UPLOAD .APK ]</span>
@@ -633,7 +637,8 @@
 
               <div class="app-card-actions">
                 <div class="row-actions">
-                  <a href="/api/download/${encodeURIComponent(app.id)}" class="btn btn-secondary btn-xs">[ DOWNLOAD APK ]</a>
+                  <a href="/api/download/${encodeURIComponent(app.id)}?type=apk" class="btn btn-secondary btn-xs">[ PRIMARY APK ]</a>
+                  <a href="/api/download/${encodeURIComponent(app.id)}?type=apk&amp;source=backup" target="_blank" rel="noopener" class="btn btn-secondary btn-xs">[ BACKUP APK ]</a>
                   <a href="/api/download/${encodeURIComponent(app.id)}?type=preset" class="btn btn-secondary btn-xs">[ PRE-SET ZIP ]</a>
                 </div>
                 <div class="row-actions">
@@ -747,9 +752,17 @@
     document.getElementById('appFormFeatured').checked = existing
       ? Boolean(existing.featured)
       : true;
+    const apkFileNameEl = document.getElementById('appFormApkFileName');
+    if (apkFileNameEl) {
+      apkFileNameEl.value = existing ? existing.apkFileName || '' : '';
+    }
     const apkUrlEl = document.getElementById('appFormApkUrl');
     if (apkUrlEl) {
       apkUrlEl.value = existing ? existing.apkUrl || '' : '';
+    }
+    const backupApkUrlEl = document.getElementById('appFormBackupApkUrl');
+    if (backupApkUrlEl) {
+      backupApkUrlEl.value = existing ? existing.backupApkUrl || '' : '';
     }
     const presetUrlEl = document.getElementById('appFormPresetUrl');
     if (presetUrlEl) {
@@ -789,7 +802,9 @@
       color: document.getElementById('appFormColor').value.trim(),
       preConfigured: document.getElementById('appFormPreConfigured').checked,
       featured: document.getElementById('appFormFeatured').checked,
+      apkFileName: document.getElementById('appFormApkFileName')?.value.trim() || '',
       apkUrl: document.getElementById('appFormApkUrl')?.value.trim() || '',
+      backupApkUrl: document.getElementById('appFormBackupApkUrl')?.value.trim() || '',
       presetUrl: document.getElementById('appFormPresetUrl')?.value.trim() || '',
       presetSummary: document.getElementById('appFormPresetSummary').value.trim(),
       description: document.getElementById('appFormDescription').value.trim(),

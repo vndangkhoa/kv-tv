@@ -5,6 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "start:backend": "PORT=3457 node server.js",
+    "start:interface": "PORT=3456 node interface-server.js",
     "dev": "node --watch server.js",
     "2fa": "bash scripts/get-2fa.sh",
     "seed": "node -e \"require('./lib/seed').ensureSeeded(true)\""

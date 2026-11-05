@@ -705,6 +705,7 @@ proxy_send_timeout 600s;</pre>
           <div class="field-group">
             <label for="appFormIconType" class="field-label">Icon Artwork Preset</label>
             <select id="appFormIconType" class="select-input">
+              <option value="store">KV-Store TV</option>
               <option value="jellyfin">Jellyfin TV</option>
               <option value="kodi">Kodi Omega</option>
               <option value="cloudstream">CloudStream 3</option>
@@ -738,12 +739,24 @@ proxy_send_timeout 600s;</pre>
 
         <div class="form-grid-2">
           <div class="field-group">
-            <label for="appFormApkUrl" class="field-label">Direct External APK Link (apkUrl — Link-Only Mode)</label>
-            <input type="url" id="appFormApkUrl" class="text-input mono-num" placeholder="https://github.com/yuliskov/SmartTube/releases/download/.../SmartTube.apk">
+            <label for="appFormApkFileName" class="field-label">Primary VPS APK File (`apkFileName` in `/uploads`)</label>
+            <input type="text" id="appFormApkFileName" class="text-input mono-num" placeholder="e.g. jellyfin-kv.apk">
           </div>
 
           <div class="field-group">
-            <label for="appFormPresetUrl" class="field-label">External Pre-Set / Repo Link (presetUrl)</label>
+            <label for="appFormApkUrl" class="field-label">Primary APK URL (`apkUrl` — VPS Direct)</label>
+            <input type="url" id="appFormApkUrl" class="text-input mono-num" placeholder="https://tv.vndns.net/uploads/jellyfin-kv.apk">
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="field-group">
+            <label for="appFormBackupApkUrl" class="field-label">Backup Forgejo APK URL (`backupApkUrl` — Auto-Fallback)</label>
+            <input type="url" id="appFormBackupApkUrl" class="text-input mono-num" placeholder="https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/jellyfin-kv.apk">
+          </div>
+
+          <div class="field-group">
+            <label for="appFormPresetUrl" class="field-label">External Pre-Set / Repo Link (`presetUrl`)</label>
             <input type="url" id="appFormPresetUrl" class="text-input mono-num" placeholder="https://n.khoavo.vndns.net/repo.json">
           </div>
         </div>

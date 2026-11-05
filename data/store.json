@@ -53,16 +53,17 @@
       ],
       "color": "#00A4DC",
       "iconType": "store",
-      "downloads": 8804,
+      "downloads": 1264,
       "rating": "5.0",
       "minAndroid": "Android TV 5.0+ (API 21+)",
       "arch": "Universal (arm64-v8a + armeabi-v7a)",
-      "sha256": "e1f9e1116f273126885004f1bbccfe43906fdb921933594cfdd12a09dfe284a8",
-      "apkFileName": null,
+      "sha256": "6a3c9507c38b04f7fbd50368ce9ac44c2cf0024926cb56fc0be90ef6337cb850",
+      "apkFileName": "kv-store.apk",
       "presetFileName": null,
-      "apkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-store.apk",
+      "apkUrl": "https://tv.vndns.net/uploads/kv-store.apk",
       "presetUrl": null,
-      "updatedAt": "2026-11-05T11:11:20.438Z"
+      "updatedAt": "2026-11-05T16:45:00.000Z",
+      "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-store.apk"
     },
     {
       "id": "jellyfin-kv",
@@ -109,11 +110,12 @@
       "minAndroid": "Android TV 7.0+",
       "arch": "Universal (arm64-v8a + armeabi-v7a)",
       "sha256": "04a486b3f7c3148e3e400d313de12af121f9008f354857ef519cdea495f74f3c",
-      "apkFileName": null,
+      "apkFileName": "jellyfin-kv.apk",
       "presetFileName": null,
-      "apkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/jellyfin-kv.apk",
+      "apkUrl": "https://tv.vndns.net/uploads/jellyfin-kv.apk",
       "presetUrl": null,
-      "updatedAt": "2026-11-03T11:11:20.438Z"
+      "updatedAt": "2026-11-05T16:45:00.000Z",
+      "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/jellyfin-kv.apk"
     },
     {
       "id": "kodi-kv",
@@ -155,16 +157,17 @@
       ],
       "color": "#17B2E7",
       "iconType": "kodi",
-      "downloads": 764,
+      "downloads": 773,
       "rating": "4.9",
       "minAndroid": "Android TV 7.0+",
-      "arch": "Universal (arm64-v8a / x86)",
+      "arch": "Universal (arm64-v8a)",
       "sha256": "6b7ccd87ae89f572ccdff1b8786df9cf9a77b5124f0980206340984f4ea2d337",
-      "apkFileName": null,
+      "apkFileName": "kodi-kv.apk",
       "presetFileName": null,
-      "apkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kodi-kv.apk",
+      "apkUrl": "https://tv.vndns.net/uploads/kodi-kv.apk",
       "presetUrl": "https://tv.vndns.net/api/download/kodi-kv?type=preset",
-      "updatedAt": "2026-11-05T11:11:20.438Z"
+      "updatedAt": "2026-11-05T16:45:00.000Z",
+      "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kodi-kv.apk"
     },
     {
       "id": "cloudstream-kv",
@@ -206,16 +209,17 @@
       ],
       "color": "#6366F1",
       "iconType": "cloudstream",
-      "downloads": 952,
+      "downloads": 960,
       "rating": "5.0",
       "minAndroid": "Android TV 6.0+",
       "arch": "Universal (arm64-v8a, armeabi-v7a, x86, x86_64)",
       "sha256": "9afb6d317b70ccd30a5b0eb8c7972c629d82c8c9beec5a25a3ba24dedf27e13c",
-      "apkFileName": null,
+      "apkFileName": "cloudstream-kv.apk",
       "presetFileName": null,
-      "apkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/cloudstream-kv.apk",
+      "apkUrl": "https://tv.vndns.net/uploads/cloudstream-kv.apk",
       "presetUrl": "https://n.khoavo.vndns.net/repo.json",
-      "updatedAt": "2026-11-04T11:11:20.438Z"
+      "updatedAt": "2026-11-05T16:45:00.000Z",
+      "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/cloudstream-kv.apk"
     },
     {
       "id": "kv-netflix",
@@ -262,11 +266,12 @@
       "minAndroid": "Android TV 7.0+",
       "arch": "Universal (arm64-v8a + armeabi-v7a)",
       "sha256": "25f5af849bbc6f447292c163c6199a07cfb2f09baa963902e2c4e3cd60357dca",
-      "apkFileName": null,
+      "apkFileName": "kv-netflix-tv.apk",
       "presetFileName": null,
-      "apkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-netflix-tv.apk",
+      "apkUrl": "https://tv.vndns.net/uploads/kv-netflix-tv.apk",
       "presetUrl": "https://n.khoavo.vndns.net/repo.json",
-      "updatedAt": "2026-11-01T11:11:20.438Z"
+      "updatedAt": "2026-11-05T16:45:00.000Z",
+      "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-netflix-tv.apk"
     },
     {
       "id": "kv-tube",
@@ -310,14 +315,15 @@
       "iconType": "tube",
       "downloads": 812,
       "rating": "5.0",
-      "minAndroid": "Android TV 7.0+",
+      "minAndroid": "Android TV 6.0+",
       "arch": "Universal (arm64-v8a + armeabi-v7a + x86_64)",
       "sha256": "4ea32693a42fbd03dfa86864af58234b5d971851d03935faa3f1219eb5263d3b",
-      "apkFileName": null,
+      "apkFileName": "kv-tube.apk",
       "presetFileName": null,
-      "apkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-tube.apk",
+      "apkUrl": "https://tv.vndns.net/uploads/kv-tube.apk",
       "presetUrl": null,
-      "updatedAt": "2026-11-04T23:11:20.438Z"
+      "updatedAt": "2026-11-05T16:45:00.000Z",
+      "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-tube.apk"
     },
     {
       "id": "smarttube-tv",
@@ -359,31 +365,38 @@
       ],
       "color": "#FF0033",
       "iconType": "tube",
-      "downloads": 1420,
+      "downloads": 1428,
       "rating": "5.0",
       "minAndroid": "Android TV 5.0+ (API 21+)",
       "arch": "Universal (arm64-v8a, armeabi-v7a, x86)",
       "sha256": "355b3abc7fb71b6d07ee3dd6dc056e6e36df6a6042a95902a56c2c17e99202a4",
-      "apkFileName": null,
+      "apkFileName": "smarttube-tv.apk",
       "presetFileName": null,
-      "apkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/smarttube-tv.apk",
+      "apkUrl": "https://tv.vndns.net/uploads/smarttube-tv.apk",
       "presetUrl": null,
-      "updatedAt": "2026-11-05T05:11:20.438Z"
+      "updatedAt": "2026-11-05T16:45:00.000Z",
+      "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/smarttube-tv.apk"
     }
   ],
   "ads": [
     {
       "id": "ad-vip-box",
       "title": "KV-TV VIP Box Setup — Turn any Android TV into a 4K Cinema Hub",
-      "subtitle": "Pre-tuned Jellyfin, Kodi 21 Omega, CloudStream Vietsub & Ad-Free 4K60 SmartTube TV ready in 60 seconds.",
+      "subtitle": "Pre-tuned Jellyfin, Kodi 21 Omega, CloudStream Vietsub & Ad-Free 4K60 KV-Tube ready in 60 seconds.",
       "badge": "FEATURED",
       "ctaText": "Explore Pre-Set Apps",
       "ctaUrl": "#catalog",
       "gradient": "linear-gradient(135deg, #00A4DC 0%, #6366F1 100%)",
       "active": true,
-      "impressions": 4820,
+      "impressions": 5303,
       "clicks": 612,
-      "createdAt": "2026-10-30T11:11:20.438Z"
+      "createdAt": "2026-10-30T03:48:10.908Z",
+      "title_vi": "Cài Đặt Hộp KV-TV VIP — Biến Mọi Android TV Thành Rạp Phim 4K",
+      "title_en": "KV-TV VIP Box Setup — Turn any Android TV into a 4K Cinema Hub",
+      "subtitle_vi": "Jellyfin, Kodi 21 Omega, CloudStream Vietsub & KV-Tube 4K60 không quảng cáo sẵn sàng trong 60 giây.",
+      "subtitle_en": "Pre-tuned Jellyfin, Kodi 21 Omega, CloudStream Vietsub & Ad-Free 4K60 KV-Tube ready in 60 seconds.",
+      "ctaText_vi": "Khám Phá Bản Cài Sẵn",
+      "ctaText_en": "Explore Pre-Set Apps"
     },
     {
       "id": "ad-vps-cdn",
@@ -394,126 +407,1088 @@
       "ctaUrl": "/tv",
       "gradient": "linear-gradient(135deg, #10B981 0%, #0EA5E9 100%)",
       "active": true,
-      "impressions": 3190,
+      "impressions": 3673,
       "clicks": 284,
-      "createdAt": "2026-10-31T11:11:20.438Z"
+      "createdAt": "2026-10-31T03:48:10.908Z",
+      "title_vi": "Mạng ThueVPSGiaRe Tốc Độ Cao VN — Tải Trực Tiếp APK 1Gbps",
+      "title_en": "ThueVPSGiaRe High-Speed VN Edge CDN — 1Gbps Direct APK Downloads",
+      "subtitle_vi": "Máy chủ NVMe VPS độ trễ thấp tại Việt Nam với mã tải Downloader 5 số (88101–88106).",
+      "subtitle_en": "Hosted on low-latency Vietnam NVMe VPS with instant AFTVnews Downloader short-codes (88101–88106).",
+      "ctaText_vi": "Nhập Mã Số",
+      "ctaText_en": "Dial Short-Code"
     },
     {
       "id": "ad-cloudstream-44",
-      "title": "CloudStream KV-PreSetup v4.8 Released — KV-Netflix 4K VIP Provider",
-      "subtitle": "Includes KV-Netflix VIP repo, 4K Vietsub stream selector, and Cloudflare 1.1.1.1 DoH bypass.",
+      "title": "CloudStream KV-PreSetup v4.4 Released — All VN Movie Extensions Ready",
+      "subtitle": "Includes pre-loaded MegaRepo, 4K Vietsub auto-selector, and Cloudflare 1.1.1.1 DoH bypass.",
       "badge": "NEW RELEASE",
       "ctaText": "Code: 88103",
       "ctaUrl": "/go/88103",
       "gradient": "linear-gradient(135deg, #6366F1 0%, #EC4899 100%)",
       "active": true,
-      "impressions": 5410,
+      "impressions": 5893,
       "clicks": 890,
-      "createdAt": "2026-11-03T11:11:20.438Z"
+      "createdAt": "2026-11-03T03:48:10.908Z",
+      "title_vi": "Phát Hành CloudStream KV-PreSetup v4.8 — Tích Hợp Kho Phim KV-Netflix VIP",
+      "title_en": "CloudStream KV-PreSetup v4.8 Released — KV-Netflix 4K VIP Provider",
+      "subtitle_vi": "Bản quyền riêng, kho phim 4K Vietsub mượt mà và bypass chặn nhà mạng qua Cloudflare DoH 1.1.1.1.",
+      "subtitle_en": "Includes KV-Netflix VIP repo, 4K Vietsub stream selector, and Cloudflare 1.1.1.1 DoH bypass.",
+      "ctaText_vi": "Mã: 88103",
+      "ctaText_en": "Code: 88103"
     }
   ],
   "admin": {
-    "username": "vndangkhoa",
-    "passwordHash": "pbkdf2$100000$187778b6bceeb7474336fdd95dd96785$651337cf91d176650cad63c4876632f0b182aab2ff4325dfbeaee259a28b5513",
+    "username": "admin",
+    "passwordHash": "pbkdf2$100000$kvtv2026salt01$3a9c0d968100ce74dae5666d6be80c428d14faca632552a633269953d80d1e50",
     "totpSecret": "KVKVTVSTORETWOFASECRETBASE32AABB",
     "totpEnabled": true,
-    "updatedAt": "2026-11-05T11:11:20.438Z"
+    "updatedAt": "2026-11-05T03:48:10.908Z"
   },
   "analytics": {
     "daily": [
       {
         "date": "2026-10-30",
-        "tvViews": 310,
-        "webViews": 195,
-        "downloads": 184
+        "tvViews": 140,
+        "webViews": 85,
+        "downloads": 48
       },
       {
         "date": "2026-10-31",
-        "tvViews": 345,
-        "webViews": 220,
-        "downloads": 215
+        "tvViews": 165,
+        "webViews": 110,
+        "downloads": 64
       },
       {
         "date": "2026-11-01",
-        "tvViews": 390,
-        "webViews": 260,
-        "downloads": 248
+        "tvViews": 195,
+        "webViews": 130,
+        "downloads": 78
       },
       {
         "date": "2026-11-02",
-        "tvViews": 412,
-        "webViews": 240,
-        "downloads": 269
+        "tvViews": 230,
+        "webViews": 155,
+        "downloads": 92
       },
       {
         "date": "2026-11-03",
-        "tvViews": 468,
-        "webViews": 305,
-        "downloads": 312
+        "tvViews": 275,
+        "webViews": 180,
+        "downloads": 115
       },
       {
         "date": "2026-11-04",
-        "tvViews": 520,
-        "webViews": 342,
-        "downloads": 364
+        "tvViews": 310,
+        "webViews": 215,
+        "downloads": 138
       },
       {
         "date": "2026-11-05",
-        "tvViews": 485,
-        "webViews": 318,
-        "downloads": 339
+        "tvViews": 364,
+        "webViews": 661,
+        "downloads": 197
       }
     ],
     "logs": [
       {
-        "id": "evt-seed-1",
-        "timestamp": "2026-11-05T10:53:20.438Z",
+        "id": "evt-mw3incnj-12a7",
+        "timestamp": "2026-11-05T12:22:45.967Z",
         "event": "download",
-        "appId": "smarttube-tv",
-        "appName": "SmartTube TV (apk)",
-        "deviceType": "tv",
-        "ip": "113.161.72.14",
-        "userAgent": "Mozilla/5.0 (Linux; Android 11; MIBOX4 Build/RTM3.210722.001) TV Bro/2.0.1"
+        "appId": "kodi-kv",
+        "appName": "Kodi 21 Omega (apk)",
+        "deviceType": "desktop",
+        "ip": "172.26.0.1",
+        "userAgent": ""
       },
       {
-        "id": "evt-seed-2",
-        "timestamp": "2026-11-05T10:57:20.438Z",
-        "event": "download",
-        "appId": "cloudstream-kv",
-        "appName": "CloudStream 3 (apk)",
-        "deviceType": "tv",
-        "ip": "27.72.98.210",
-        "userAgent": "AFTVnews Downloader/1.4.4 (Android TV; BRAVIA 4K VH2)"
-      },
-      {
-        "id": "evt-seed-3",
-        "timestamp": "2026-11-05T11:02:20.438Z",
-        "event": "download",
-        "appId": "kv-netflix",
-        "appName": "KV-Netflix (apk)",
-        "deviceType": "tv",
-        "ip": "14.232.160.55",
-        "userAgent": "Mozilla/5.0 (Linux; Android 12; Chromecast HD) AppleWebKit/537.36"
-      },
-      {
-        "id": "evt-seed-4",
-        "timestamp": "2026-11-05T11:06:20.438Z",
+        "id": "evt-mw3in445-df90",
+        "timestamp": "2026-11-05T12:22:34.901Z",
         "event": "view",
         "appId": null,
-        "appName": "Catalog View",
-        "deviceType": "tv",
-        "ip": "171.244.18.92",
-        "userAgent": "Mozilla/5.0 (Linux; Android 10; Shield Android TV) AppleWebKit/537.36"
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
       },
       {
-        "id": "evt-seed-5",
-        "timestamp": "2026-11-05T11:09:20.438Z",
-        "event": "download",
-        "appId": "jellyfin-kv",
-        "appName": "Jellyfin TV (apk)",
+        "id": "evt-mw3imoly-1dcd",
+        "timestamp": "2026-11-05T12:22:14.806Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
         "deviceType": "desktop",
-        "ip": "118.69.54.101",
-        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) Chrome/130.0.0.0 Safari/537.36"
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3im93n-ba1a",
+        "timestamp": "2026-11-05T12:21:54.707Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3iltl5-78ef",
+        "timestamp": "2026-11-05T12:21:34.601Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3ile39-f005",
+        "timestamp": "2026-11-05T12:21:14.517Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3ikyki-deac",
+        "timestamp": "2026-11-05T12:20:54.402Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3ikj1z-f95f",
+        "timestamp": "2026-11-05T12:20:34.295Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3ik3jm-0ca7",
+        "timestamp": "2026-11-05T12:20:14.194Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3ijo19-653c",
+        "timestamp": "2026-11-05T12:19:54.093Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3ij8j5-cf23",
+        "timestamp": "2026-11-05T12:19:34.001Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3iit0e-8ea0",
+        "timestamp": "2026-11-05T12:19:13.886Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3iidi5-c4ac",
+        "timestamp": "2026-11-05T12:18:53.789Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3ihxzi-26ea",
+        "timestamp": "2026-11-05T12:18:33.678Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3ihihn-469c",
+        "timestamp": "2026-11-05T12:18:13.595Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3ih2zg-dee2",
+        "timestamp": "2026-11-05T12:17:53.500Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3ignha-5dd8",
+        "timestamp": "2026-11-05T12:17:33.406Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3ig7z4-dee7",
+        "timestamp": "2026-11-05T12:17:13.312Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3ifsgx-ffa9",
+        "timestamp": "2026-11-05T12:16:53.217Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3ifcyw-5986",
+        "timestamp": "2026-11-05T12:16:33.128Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3iexgm-32a2",
+        "timestamp": "2026-11-05T12:16:13.030Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3iehya-2853",
+        "timestamp": "2026-11-05T12:15:52.931Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3ie2ga-1a55",
+        "timestamp": "2026-11-05T12:15:32.842Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3idmye-a2e5",
+        "timestamp": "2026-11-05T12:15:12.758Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3id7g5-921f",
+        "timestamp": "2026-11-05T12:14:52.661Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3icry7-e253",
+        "timestamp": "2026-11-05T12:14:32.575Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3iccfm-4123",
+        "timestamp": "2026-11-05T12:14:12.466Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3ibwxm-d51c",
+        "timestamp": "2026-11-05T12:13:52.378Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3ibhfh-1077",
+        "timestamp": "2026-11-05T12:13:32.285Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3ib1xh-9380",
+        "timestamp": "2026-11-05T12:13:12.197Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3iamev-60a6",
+        "timestamp": "2026-11-05T12:12:52.087Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3ia6ws-3c9f",
+        "timestamp": "2026-11-05T12:12:31.996Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i9ref-34be",
+        "timestamp": "2026-11-05T12:12:11.895Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i9bvp-e79d",
+        "timestamp": "2026-11-05T12:11:51.781Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i8wdc-74e8",
+        "timestamp": "2026-11-05T12:11:31.680Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i8gv0-efdf",
+        "timestamp": "2026-11-05T12:11:11.580Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i81cg-1793",
+        "timestamp": "2026-11-05T12:10:51.472Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i7lu8-3b6a",
+        "timestamp": "2026-11-05T12:10:31.376Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i76c4-a828",
+        "timestamp": "2026-11-05T12:10:11.284Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i6qtp-8037",
+        "timestamp": "2026-11-05T12:09:51.181Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i6bbi-6e9e",
+        "timestamp": "2026-11-05T12:09:31.086Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i5vsq-7bd3",
+        "timestamp": "2026-11-05T12:09:10.970Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i5gao-39b9",
+        "timestamp": "2026-11-05T12:08:50.880Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i50sb-33f2",
+        "timestamp": "2026-11-05T12:08:30.779Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i4l9p-58a4",
+        "timestamp": "2026-11-05T12:08:10.669Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i45rg-398a",
+        "timestamp": "2026-11-05T12:07:50.572Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i3q9n-4f1f",
+        "timestamp": "2026-11-05T12:07:30.491Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i3ara-cf99",
+        "timestamp": "2026-11-05T12:07:10.390Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i2v8p-e2c5",
+        "timestamp": "2026-11-05T12:06:50.281Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i2fqq-d6c8",
+        "timestamp": "2026-11-05T12:06:30.194Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i208x-26e8",
+        "timestamp": "2026-11-05T12:06:10.113Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i1kqr-a2ca",
+        "timestamp": "2026-11-05T12:05:50.019Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i158j-00ba",
+        "timestamp": "2026-11-05T12:05:29.923Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i0pqh-81ea",
+        "timestamp": "2026-11-05T12:05:09.833Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3i0a8d-7416",
+        "timestamp": "2026-11-05T12:04:49.741Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hzuqf-123f",
+        "timestamp": "2026-11-05T12:04:29.656Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hzf8f-5499",
+        "timestamp": "2026-11-05T12:04:09.567Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hyzq1-4a83",
+        "timestamp": "2026-11-05T12:03:49.465Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hyk83-16a3",
+        "timestamp": "2026-11-05T12:03:29.379Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hy4q1-b21c",
+        "timestamp": "2026-11-05T12:03:09.289Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hxp7x-c41b",
+        "timestamp": "2026-11-05T12:02:49.197Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hx9py-9bac",
+        "timestamp": "2026-11-05T12:02:29.110Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hwu75-8e3d",
+        "timestamp": "2026-11-05T12:02:08.993Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hweou-19d0",
+        "timestamp": "2026-11-05T12:01:48.894Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hvz62-6a69",
+        "timestamp": "2026-11-05T12:01:28.778Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hvjo3-d995",
+        "timestamp": "2026-11-05T12:01:08.692Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hv468-e8e6",
+        "timestamp": "2026-11-05T12:00:48.608Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3huonn-d11e",
+        "timestamp": "2026-11-05T12:00:28.499Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hu95i-96a7",
+        "timestamp": "2026-11-05T12:00:08.406Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3httnr-63d6",
+        "timestamp": "2026-11-05T11:59:48.327Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hte5o-d582",
+        "timestamp": "2026-11-05T11:59:28.236Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hsynt-4fff",
+        "timestamp": "2026-11-05T11:59:08.153Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hsj5b-b5bb",
+        "timestamp": "2026-11-05T11:58:48.047Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hs3nb-2eac",
+        "timestamp": "2026-11-05T11:58:27.959Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hro5c-f036",
+        "timestamp": "2026-11-05T11:58:07.872Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hr8mz-d9a4",
+        "timestamp": "2026-11-05T11:57:47.771Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hqt55-bc6d",
+        "timestamp": "2026-11-05T11:57:27.689Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hqdnc-419d",
+        "timestamp": "2026-11-05T11:57:07.608Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hpy4t-ed42",
+        "timestamp": "2026-11-05T11:56:47.501Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hpimk-621a",
+        "timestamp": "2026-11-05T11:56:27.404Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hp34f-2e31",
+        "timestamp": "2026-11-05T11:56:07.311Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3honlt-faf1",
+        "timestamp": "2026-11-05T11:55:47.201Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3ho83s-efa5",
+        "timestamp": "2026-11-05T11:55:27.112Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hnslc-c0e7",
+        "timestamp": "2026-11-05T11:55:07.008Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hnd2u-e059",
+        "timestamp": "2026-11-05T11:54:46.902Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hmxl3-9d0d",
+        "timestamp": "2026-11-05T11:54:26.823Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hmi2n-256b",
+        "timestamp": "2026-11-05T11:54:06.719Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hm2ks-3907",
+        "timestamp": "2026-11-05T11:53:46.636Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hln2j-798e",
+        "timestamp": "2026-11-05T11:53:26.539Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hl7jw-bef3",
+        "timestamp": "2026-11-05T11:53:06.428Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hks1s-7e9b",
+        "timestamp": "2026-11-05T11:52:46.336Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hkcjr-34a0",
+        "timestamp": "2026-11-05T11:52:26.247Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hjx17-5db9",
+        "timestamp": "2026-11-05T11:52:06.139Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hjhj1-fa04",
+        "timestamp": "2026-11-05T11:51:46.046Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hj20l-d29d",
+        "timestamp": "2026-11-05T11:51:25.941Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3himi4-61c1",
+        "timestamp": "2026-11-05T11:51:05.836Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hi706-49bb",
+        "timestamp": "2026-11-05T11:50:45.750Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hhri7-d49d",
+        "timestamp": "2026-11-05T11:50:25.663Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hhc0j-9f4d",
+        "timestamp": "2026-11-05T11:50:05.587Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3hgwil-bd37",
+        "timestamp": "2026-11-05T11:49:45.501Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
       }
     ]
   }
