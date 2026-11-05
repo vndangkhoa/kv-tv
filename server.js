@@ -920,8 +920,12 @@ const server = http.createServer(async (req, res) => {
       return;
     }
 
-    // 8. GET /api/admin/demo-hint (Local convenience helper for testing Login + 2FA)
+    // 8. GET /api/admin/demo-hint (Disabled in production for security)
     if (method === 'GET' && pathname === '/api/admin/demo-hint') {
+      if (process.env.NODE_ENV === 'production' || process.env.ALLOW_DEV_HINTS !== 'true') {
+        sendJson(req, res, 404, { ok: false, error: 'Endpoint disabled in production' });
+        return;
+      }
       const otpAuthUrl = getOtpAuthUrl(
         store.admin.totpSecret,
         `${store.admin.username}@tv.vndns.net`,
@@ -931,7 +935,6 @@ const server = http.createServer(async (req, res) => {
       sendJson(req, res, 200, {
         ok: true,
         username: store.admin.username,
-        defaultPasswordHint: 'kvtv2026',
         totpEnabled: Boolean(store.admin.totpEnabled),
         totpSecret: store.admin.totpSecret,
         currentDemoTotpCode: generateTOTP(store.admin.totpSecret),

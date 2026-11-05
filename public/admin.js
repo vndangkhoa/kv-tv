@@ -15,9 +15,7 @@
     logFilter: 'all',
     catalogQuery: '',
     overview: null,
-    demoHint: null,
     pendingDelete: null, // { type: 'app' | 'ad', id: string, label: string }
-    demoTimerId: null,
   };
 
   // ---------------------------------------------------------------------------
@@ -172,56 +170,8 @@
   }
 
   // ---------------------------------------------------------------------------
-  // 3. Local Dev & 2FA Testing Helper + Auth Gate
+  // 3. Production Authentication Gate (Username/Password + RFC 6238 TOTP 2FA)
   // ---------------------------------------------------------------------------
-  async function loadDemoHint() {
-    try {
-      const res = await fetch('/api/admin/demo-hint');
-      if (!res.ok) return;
-      const data = await res.json();
-      state.demoHint = data;
-
-      const codeEl = document.getElementById('demoLiveCode');
-      const secretEl = document.getElementById('demoTotpSecret');
-      const badgeEl = document.getElementById('demo2faBadge');
-      const qrImg = document.getElementById('demoQrImage');
-
-      if (codeEl) codeEl.textContent = data.currentDemoTotpCode || '------';
-      if (secretEl) secretEl.textContent = data.totpSecret || '';
-      if (badgeEl) {
-        badgeEl.textContent = data.totpEnabled ? '2FA Active (RFC 6238)' : '2FA Disabled';
-        badgeEl.className = data.totpEnabled ? 'badge badge-emerald' : 'badge badge-amber';
-      }
-      if (qrImg && data.qrSvg) {
-        qrImg.src = svgToDataUri(data.qrSvg);
-        qrImg.hidden = false;
-      }
-    } catch {
-      // Non-fatal if offline
-    }
-  }
-
-  function startDemoCountdown() {
-    if (state.demoTimerId) clearInterval(state.demoTimerId);
-    let lastWindow = Math.floor(Date.now() / 30000);
-
-    state.demoTimerId = setInterval(() => {
-      const authView = document.getElementById('authView');
-      if (authView && authView.hidden) return;
-
-      const nowSec = Math.floor(Date.now() / 1000);
-      const remaining = 30 - (nowSec % 30);
-      const timerEl = document.getElementById('demoCodeTimer');
-      if (timerEl) timerEl.textContent = `${remaining}s`;
-
-      const currentWindow = Math.floor(Date.now() / 30000);
-      if (currentWindow !== lastWindow) {
-        lastWindow = currentWindow;
-        loadDemoHint();
-      }
-    }, 1000);
-  }
-
   async function handleStep1Login(event) {
     event.preventDefault();
     showAuthAlert('');
@@ -229,6 +179,11 @@
     const username = document.getElementById('loginUsername').value.trim();
     const password = document.getElementById('loginPassword').value;
     const submitBtn = document.getElementById('loginSubmitBtn');
+
+    if (!username || !password) {
+      showAuthAlert('Please enter both administrator username and password.');
+      return;
+    }
 
     try {
       submitBtn.disabled = true;
@@ -244,11 +199,8 @@
         totpForm.hidden = false;
         setAuthStepUI('totp');
         const codeInput = document.getElementById('totpCodeInput');
-        if (state.demoHint && state.demoHint.currentDemoTotpCode) {
-          codeInput.value = state.demoHint.currentDemoTotpCode;
-        }
+        codeInput.value = '';
         codeInput.focus();
-        codeInput.select();
         return;
       }
 
@@ -286,46 +238,6 @@
       showAuthAlert(err.message);
     } finally {
       submitBtn.disabled = false;
-    }
-  }
-
-  async function handleOneClickDemoLogin() {
-    showAuthAlert('');
-    const btn = document.getElementById('oneClickDemoLoginBtn');
-    try {
-      btn.disabled = true;
-      await loadDemoHint();
-
-      const username = (state.demoHint && state.demoHint.username) || 'admin';
-      const password = (state.demoHint && state.demoHint.defaultPasswordHint) || 'kvtv2026';
-      const totpCode = (state.demoHint && state.demoHint.currentDemoTotpCode) || '';
-
-      document.getElementById('loginUsername').value = username;
-      document.getElementById('loginPassword').value = password;
-
-      const data = await apiFetch('/api/admin/login', {
-        method: 'POST',
-        body: JSON.stringify({ username, password, totpCode }),
-      });
-
-      if (data.token) {
-        completeLoginSession(data.token);
-      } else if (data.requires2fa && data.tempToken) {
-        const verifyData = await apiFetch('/api/admin/verify-2fa', {
-          method: 'POST',
-          body: JSON.stringify({
-            tempToken: data.tempToken,
-            totpCode,
-          }),
-        });
-        if (verifyData.token) {
-          completeLoginSession(verifyData.token);
-        }
-      }
-    } catch (err) {
-      showAuthAlert(err.message);
-    } finally {
-      btn.disabled = false;
     }
   }
 
@@ -1085,9 +997,6 @@
       .getElementById('loginForm')
       .addEventListener('submit', handleStep1Login);
     document.getElementById('totpForm').addEventListener('submit', handleStep2Totp);
-    document
-      .getElementById('oneClickDemoLoginBtn')
-      .addEventListener('click', handleOneClickDemoLogin);
     document.getElementById('backToLoginBtn').addEventListener('click', () => {
       document.getElementById('totpForm').hidden = true;
       document.getElementById('loginForm').hidden = false;
@@ -1246,8 +1155,6 @@
 
   function init() {
     bindEvents();
-    loadDemoHint();
-    startDemoCountdown();
 
     if (state.token) {
       document.getElementById('authView').hidden = true;

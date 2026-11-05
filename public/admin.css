@@ -431,26 +431,24 @@ code {
 }
 
 .auth-stage {
-  max-width: 1360px;
+  max-width: 640px;
+  margin: 0 auto;
 }
 
 .auth-container {
   width: 100%;
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: 16px;
-  align-items: stretch;
+  display: block;
 }
 
-/* Left Column: Sharp #121212 Bordered Login + 6-Digit TOTP 2FA Gate */
+/* Sharp #121212 Bordered Login + 6-Digit TOTP 2FA Gate */
 .auth-panel {
   background-color: var(--bg-surface);
   border: 1px solid var(--border-hairline);
-  padding: 28px;
+  padding: 32px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 20px;
+  gap: 24px;
 }
 
 .auth-header {
@@ -618,153 +616,12 @@ code {
   text-decoration: underline;
 }
 
-/* Right Column: Solid Metro Cobalt & Metro Emerald Live Tile Helper */
-.demo-helper-panel {
-  background-color: var(--metro-cobalt);
-  border: 1px solid var(--fg-primary);
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 18px;
-  color: var(--fg-primary);
-}
-
-.demo-helper-top {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.demo-helper-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  background-color: rgba(0, 0, 0, 0.28);
-  padding: 12px 14px;
-}
-
-.demo-helper-title {
-  font-size: clamp(1.35rem, 1.8vw, 1.85rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
-  text-transform: lowercase;
-  color: var(--fg-primary);
-}
-
-.demo-helper-desc {
-  color: var(--fg-primary);
-  background-color: var(--bg-chrome);
-  border: 1px solid var(--fg-primary);
-  padding: 12px 14px;
-  font-size: 0.9375rem;
-  line-height: 1.45;
-}
-
-.demo-credential-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.demo-cred-item {
-  background-color: var(--bg-chrome);
-  border: 1px solid var(--fg-primary);
-  padding: 12px 14px;
-}
-
-.demo-cred-item dt {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--fg-secondary);
-  margin-bottom: 4px;
-}
-
-.demo-cred-item dd {
-  font-size: 0.9375rem;
-  font-weight: 700;
-  color: var(--fg-primary);
-}
-
-.demo-cred-live-tile {
-  background-color: var(--metro-emerald);
-  border: 1px solid var(--fg-primary);
-}
-
-.demo-cred-live-tile dt {
-  color: var(--fg-primary);
-}
-
-.demo-live-code-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.live-totp-digits {
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: var(--fg-primary);
-  letter-spacing: 0.08em;
-}
-
-.totp-timer-pill {
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 4px 8px;
-  background-color: var(--bg-oled);
-  border: 1px solid var(--fg-primary);
-  color: var(--fg-primary);
-}
-
-.secret-truncate {
-  font-size: 0.75rem !important;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.demo-oneclick-bar {
-  margin-top: 2px;
-}
-
-.demo-qr-box {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px;
-  background-color: var(--bg-chrome);
-  border: 1px solid var(--fg-primary);
-}
-
+/* QR Preview Image */
 .qr-preview-img {
   background: #FFFFFF;
   padding: 6px;
   flex-shrink: 0;
   display: block;
-}
-
-.demo-qr-meta strong {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--fg-primary);
-  margin-bottom: 4px;
-}
-
-.demo-qr-meta p {
-  font-size: 0.75rem;
-  color: var(--fg-secondary);
-  line-height: 1.4;
 }
 
 /* ==========================================================================

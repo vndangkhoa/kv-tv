@@ -76,7 +76,7 @@
                 id="loginUsername"
                 name="username"
                 class="text-input mono-num"
-                value="admin"
+                placeholder="Enter username"
                 autocomplete="username"
                 required
               >
@@ -90,7 +90,7 @@
                   id="loginPassword"
                   name="password"
                   class="text-input mono-num"
-                  value="kvtv2026"
+                  placeholder="Enter password"
                   autocomplete="current-password"
                   required
                 >
@@ -167,58 +167,6 @@
             </a>
           </footer>
         </section>
-
-        <!-- Right Column: Solid Metro Cobalt & Metro Emerald Live Tile Helper -->
-        <aside id="demoHintPanel" class="demo-helper-panel" aria-labelledby="demoHelperTitle">
-          <div class="demo-helper-top">
-            <div class="demo-helper-header">
-              <h2 id="demoHelperTitle" class="demo-helper-title">local dev &amp; 2fa live tile</h2>
-              <span id="demo2faBadge" class="badge badge-emerald">RFC 6238 TOTP Live</span>
-            </div>
-            <p class="demo-helper-desc">
-              Sandbox live tile for immediate two-step verification on localhost, or scan the QR code below into Google Authenticator / Authy.
-            </p>
-
-            <dl class="demo-credential-grid">
-              <div class="demo-cred-item">
-                <dt>Default Username</dt>
-                <dd class="mono-num">admin</dd>
-              </div>
-              <div class="demo-cred-item">
-                <dt>Default Password</dt>
-                <dd class="mono-num">kvtv2026</dd>
-              </div>
-              <div class="demo-cred-item demo-cred-live-tile">
-                <dt>Live 6-Digit TOTP Code</dt>
-                <dd class="demo-live-code-wrap">
-                  <strong id="demoLiveCode" class="mono-num live-totp-digits">------</strong>
-                  <span id="demoCodeTimer" class="mono-num totp-timer-pill">30s</span>
-                </dd>
-              </div>
-              <div class="demo-cred-item">
-                <dt>TOTP Base32 Secret</dt>
-                <dd id="demoTotpSecret" class="mono-num secret-truncate">KVKVTV2026STORE2FASECRETBASE32AA</dd>
-              </div>
-            </dl>
-
-            <div class="demo-oneclick-bar">
-              <button type="button" id="oneClickDemoLoginBtn" class="btn btn-emerald btn-full">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
-                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                </svg>
-                <span>[ AUTO-FILL LOGIN &amp; 2FA ]</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="demo-qr-box">
-            <img id="demoQrImage" class="qr-preview-img" src="/api/qr?text=otpauth%3A%2F%2Ftotp%2FKV-TV%2520Store%3Aadmin%40tv.vndns.net%3Fsecret%3DKVKVTV2026STORE2FASECRETBASE32AA" alt="TOTP 2FA QR Code for Google Authenticator" width="116" height="116">
-            <div class="demo-qr-meta">
-              <strong>Scan in Authenticator App</strong>
-              <p>Standard 30-second SHA-1 RFC 6238 TOTP token. Compatible with Google Authenticator, Authy, 1Password, and Bitwarden.</p>
-            </div>
-          </div>
-        </aside>
       </div>
     </div>
   </main>
