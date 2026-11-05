@@ -88,23 +88,28 @@ server {{
 """
 
 
-def run_vps(cmd: str, check: bool = True) -> subprocess.CompletedProcess:
-    return subprocess.run([CONNECT_SH, cmd], capture_output=True, text=True, check=check)
+def run_vps(cmd: str, stdin_text: str | None = None, check: bool = True) -> subprocess.CompletedProcess:
+    return subprocess.run(
+        [CONNECT_SH, cmd],
+        input=stdin_text,
+        capture_output=True,
+        text=True,
+        check=check,
+    )
 
 
 def main():
     print("[NPM] Connecting to thuevpsgiare VPS to configure tv.vndns.net & tv.khoavo.vndns.net...")
 
-    # Step 1: Upsert certificate & proxy_host rows in NPM SQLite database
-    db_script = f"""
-import sqlite3, datetime, json
+    # Step 1: Upsert certificate & proxy_host rows in NPM SQLite database via stdin
+    db_script = f"""import sqlite3, datetime, json
 
 con = sqlite3.connect('{NPM_DB_PATH}')
 now = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
 
-# 1. Ensure certificate row for tv.vndns.net exists
 cert_row = con.execute(
-    "SELECT id FROM certificate WHERE is_deleted=0 AND domain_names LIKE '%\"tv.vndns.net\"%'"
+    "SELECT id FROM certificate WHERE is_deleted=0 AND domain_names LIKE ?",
+    ('%"tv.vndns.net"%',)
 ).fetchone()
 if cert_row:
     tv_cert_id = cert_row[0]
@@ -161,7 +166,7 @@ sub_host_id = upsert_proxy_host('tv.khoavo.vndns.net', 2)
 con.commit()
 print(f"IDS:{{tv_cert_id}}:{{tv_host_id}}:{{sub_host_id}}")
 """
-    res = run_vps(f"python3 -c {subprocess.list2cmdline([db_script])}")
+    res = run_vps("python3 -", stdin_text=db_script)
     ids_line = [line for line in res.stdout.splitlines() if line.startswith("IDS:")][-1]
     _, tv_cert_id_str, tv_host_id_str, sub_host_id_str = ids_line.split(":")
     tv_cert_id = int(tv_cert_id_str)
@@ -179,8 +184,8 @@ print(f"IDS:{{tv_cert_id}}:{{tv_host_id}}:{{sub_host_id}}")
     tv_conf_bootstrap = build_nginx_conf("tv.vndns.net", tv_host_id, bootstrap_cert_id)
     sub_conf = build_nginx_conf("tv.khoavo.vndns.net", sub_host_id, 2)
 
-    run_vps(f"cat << 'EOF' > {NPM_PROXY_DIR}/{tv_host_id}.conf\n{tv_conf_bootstrap}\nEOF")
-    run_vps(f"cat << 'EOF' > {NPM_PROXY_DIR}/{sub_host_id}.conf\n{sub_conf}\nEOF")
+    run_vps(f"cat > {NPM_PROXY_DIR}/{tv_host_id}.conf", stdin_text=tv_conf_bootstrap)
+    run_vps(f"cat > {NPM_PROXY_DIR}/{sub_host_id}.conf", stdin_text=sub_conf)
     run_vps("docker exec nginx-proxy-manager nginx -t && docker exec nginx-proxy-manager nginx -s reload")
 
     # Step 3: Request Let's Encrypt certificate for tv.vndns.net if not yet issued
@@ -205,7 +210,7 @@ print(f"IDS:{{tv_cert_id}}:{{tv_host_id}}:{{sub_host_id}}")
     )
     if "EXISTS" in verify_cert.stdout:
         final_tv_conf = build_nginx_conf("tv.vndns.net", tv_host_id, tv_cert_id)
-        run_vps(f"cat << 'EOF' > {NPM_PROXY_DIR}/{tv_host_id}.conf\n{final_tv_conf}\nEOF")
+        run_vps(f"cat > {NPM_PROXY_DIR}/{tv_host_id}.conf", stdin_text=final_tv_conf)
         run_vps("docker exec nginx-proxy-manager nginx -t && docker exec nginx-proxy-manager nginx -s reload")
         print(f"[NPM] ✓ Let's Encrypt SSL active for https://tv.vndns.net (npm-{tv_cert_id}) and https://tv.khoavo.vndns.net (npm-2)!")
     else:

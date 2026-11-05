@@ -174,7 +174,7 @@
       "ctaUrl": "#catalog",
       "gradient": "linear-gradient(135deg, #00A4DC 0%, #6366F1 100%)",
       "active": true,
-      "impressions": 4857,
+      "impressions": 4858,
       "clicks": 612,
       "createdAt": "2026-10-30T03:48:10.908Z"
     },
@@ -187,7 +187,7 @@
       "ctaUrl": "/tv",
       "gradient": "linear-gradient(135deg, #10B981 0%, #0EA5E9 100%)",
       "active": true,
-      "impressions": 3227,
+      "impressions": 3228,
       "clicks": 284,
       "createdAt": "2026-10-31T03:48:10.908Z"
     },
@@ -200,7 +200,7 @@
       "ctaUrl": "/go/88103",
       "gradient": "linear-gradient(135deg, #6366F1 0%, #EC4899 100%)",
       "active": true,
-      "impressions": 5447,
+      "impressions": 5448,
       "clicks": 890,
       "createdAt": "2026-11-03T03:48:10.908Z"
     }
@@ -252,12 +252,22 @@
       },
       {
         "date": "2026-11-05",
-        "tvViews": 518,
+        "tvViews": 519,
         "webViews": 322,
         "downloads": 340
       }
     ],
     "logs": [
+      {
+        "id": "evt-mw32su1s-05c5",
+        "timestamp": "2026-11-05T04:59:07.936Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
       {
         "id": "evt-mw329pdn-0b5d",
         "timestamp": "2026-11-05T04:44:15.419Z",
