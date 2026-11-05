@@ -66,7 +66,7 @@
       "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-store.apk",
       "shortPath": "tv.vndns.net/88000",
       "ultraShortPath": "tv.vndns.net/0",
-      "aftvCode": null
+      "aftvCode": "2179554"
     },
     {
       "id": "jellyfin-kv",
@@ -121,7 +121,7 @@
       "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/jellyfin-kv.apk",
       "shortPath": "tv.vndns.net/88101",
       "ultraShortPath": "tv.vndns.net/1",
-      "aftvCode": null
+      "aftvCode": "5798721"
     },
     {
       "id": "kodi-kv",
@@ -163,7 +163,7 @@
       ],
       "color": "#17B2E7",
       "iconType": "kodi",
-      "downloads": 775,
+      "downloads": 777,
       "rating": "4.9",
       "minAndroid": "Android TV 7.0+",
       "arch": "Universal (arm64-v8a)",
@@ -176,7 +176,7 @@
       "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kodi-kv.apk",
       "shortPath": "tv.vndns.net/88102",
       "ultraShortPath": "tv.vndns.net/2",
-      "aftvCode": null
+      "aftvCode": "3939162"
     },
     {
       "id": "cloudstream-kv",
@@ -231,7 +231,7 @@
       "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/cloudstream-kv.apk",
       "shortPath": "tv.vndns.net/88103",
       "ultraShortPath": "tv.vndns.net/3",
-      "aftvCode": null
+      "aftvCode": "1037083"
     },
     {
       "id": "kv-netflix",
@@ -507,10 +507,30 @@
         "date": "2026-11-05",
         "tvViews": 364,
         "webViews": 661,
-        "downloads": 199
+        "downloads": 201
       }
     ],
     "logs": [
+      {
+        "id": "evt-mw3mtqag-77bc",
+        "timestamp": "2026-11-05T14:19:42.040Z",
+        "event": "download",
+        "appId": "kodi-kv",
+        "appName": "Kodi 21 Omega (apk)",
+        "deviceType": "desktop",
+        "ip": "172.26.0.1",
+        "userAgent": ""
+      },
+      {
+        "id": "evt-mw3mrayd-0ac5",
+        "timestamp": "2026-11-05T14:17:48.853Z",
+        "event": "download",
+        "appId": "kodi-kv",
+        "appName": "Kodi 21 Omega (apk)",
+        "deviceType": "desktop",
+        "ip": "172.26.0.1",
+        "userAgent": ""
+      },
       {
         "id": "evt-mw3m53fx-9351",
         "timestamp": "2026-11-05T14:00:32.685Z",
@@ -1484,26 +1504,6 @@
       {
         "id": "evt-mw3himi4-61c1",
         "timestamp": "2026-11-05T11:51:05.836Z",
-        "event": "view",
-        "appId": null,
-        "appName": "Catalog (DESKTOP)",
-        "deviceType": "desktop",
-        "ip": "127.0.0.1",
-        "userAgent": "node"
-      },
-      {
-        "id": "evt-mw3hi706-49bb",
-        "timestamp": "2026-11-05T11:50:45.750Z",
-        "event": "view",
-        "appId": null,
-        "appName": "Catalog (DESKTOP)",
-        "deviceType": "desktop",
-        "ip": "127.0.0.1",
-        "userAgent": "node"
-      },
-      {
-        "id": "evt-mw3hhri7-d49d",
-        "timestamp": "2026-11-05T11:50:25.663Z",
         "event": "view",
         "appId": null,
         "appName": "Catalog (DESKTOP)",

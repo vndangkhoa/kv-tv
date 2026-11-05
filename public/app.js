@@ -57,6 +57,7 @@ const FALLBACK_CATALOG = {
       versionCode: 1,
       size: '2.5 MB',
       shortCode: '88000',
+      aftvCode: '2179554',
       category: 'Media Center',
       arch: 'Universal (arm64-v8a + armeabi-v7a)',
       downloads: 1248,
@@ -84,6 +85,7 @@ const FALLBACK_CATALOG = {
       versionCode: 68,
       size: '68.8 MB',
       shortCode: '88103',
+      aftvCode: '1037083',
       category: 'Streaming',
       category_vi: 'Phim & Trực Tuyến',
       category_en: 'Streaming',
@@ -126,6 +128,7 @@ const FALLBACK_CATALOG = {
       versionCode: 191099,
       size: '20.9 MB',
       shortCode: '88101',
+      aftvCode: '5798721',
       category: 'Media Center',
       category_vi: 'Máy Chủ Phim & Nhạc',
       category_en: 'Media Center',
@@ -168,6 +171,7 @@ const FALLBACK_CATALOG = {
       versionCode: 2103000,
       size: '127.0 MB',
       shortCode: '88102',
+      aftvCode: '3939162',
       category: 'Media Center',
       category_vi: 'Trung Tâm Giải Trí',
       category_en: 'Media Center',
@@ -851,20 +855,27 @@ function renderShortCodesDirectory() {
       const shortDigit = CODE_TO_SHORT_DIGIT[String(app.shortCode)] ?? '';
       const aftvCode = String(app.aftvCode || '').trim();
       const copyTarget = aftvCode || `tv.vndns.net/${app.shortCode}`;
-      const copyLabel = `${t('directory.btn_copy')} tv.vndns.net/${app.shortCode}`;
+      const copyLabel = aftvCode
+        ? `${t('directory.btn_copy')} MÃ ${aftvCode}`
+        : `${t('directory.btn_copy')} tv.vndns.net/${app.shortCode}`;
       const shortDigitHint = shortDigit
         ? currentLang === 'en'
           ? ` · Short: <strong>tv.vndns.net/${escapeHtml(shortDigit)}</strong>`
           : ` · Ngắn: <strong>tv.vndns.net/${escapeHtml(shortDigit)}</strong>`
         : '';
       const aftvBadgeHtml = aftvCode
-        ? `<span class="kv-code-stamp kv-tile--amber tabular" style="margin-left: 8px;">Mã AFTVnews: ${escapeHtml(aftvCode)}</span>`
+        ? `<span class="kv-code-stamp kv-tile--amber tabular" style="margin-left: 8px;">AFTVnews: ${escapeHtml(aftvCode)}</span>`
         : '';
+      const downloaderLineHtml = aftvCode
+        ? currentLang === 'en'
+          ? `Downloader Code: <strong class="tabular">${escapeHtml(aftvCode)}</strong> (aftv.news/${escapeHtml(aftvCode)}) · URL: <strong>tv.vndns.net/${escapeHtml(app.shortCode)}</strong>${shortDigitHint}`
+          : `Mã Downloader: <strong class="tabular">${escapeHtml(aftvCode)}</strong> (aftv.news/${escapeHtml(aftvCode)}) · Link: <strong>tv.vndns.net/${escapeHtml(app.shortCode)}</strong>${shortDigitHint}`
+        : `Downloader URL: <strong>tv.vndns.net/${escapeHtml(app.shortCode)}</strong>${shortDigitHint}`;
 
       return `
         <article class="kv-shortcode-row">
           <div class="kv-shortcode-id">
-            <span class="kv-shortcode-num ${colorClass} tabular">${escapeHtml(app.shortCode)}</span>
+            <span class="kv-shortcode-num ${colorClass} tabular">${escapeHtml(aftvCode || app.shortCode)}</span>
             <div>
               <h3 class="kv-shortcode-info-title">
                 ${escapeHtml(app.name.toLowerCase())}${aftvBadgeHtml}
@@ -873,7 +884,7 @@ function renderShortCodesDirectory() {
                 ${escapeHtml(localizedEdition)} · v${escapeHtml(versionClean)} · ${escapeHtml(app.size)}
               </p>
               <p class="kv-shortcode-info-sub tabular" style="margin-top: 2px;">
-                Downloader URL: <strong>tv.vndns.net/${escapeHtml(app.shortCode)}</strong>${shortDigitHint}
+                ${downloaderLineHtml}
               </p>
             </div>
           </div>
@@ -943,6 +954,7 @@ function renderPromoPortal() {
         app.name,
         tField(app, 'edition', currentLang),
         app.shortCode,
+        app.aftvCode || '',
         app.packageName,
         tField(app, 'description', currentLang),
         ...(currentLang === 'vi' && app.presetFeatures_vi ? app.presetFeatures_vi : (app.presetFeatures || [])),
@@ -1000,8 +1012,8 @@ function renderPromoPortal() {
             <button
               type="button"
               class="kv-btn kv-btn--sm"
-              data-copy-code="${escapeHtml(app.shortCode)}"
-            >${t('directory.btn_copy')} ${escapeHtml(app.shortCode)}</button>
+              data-copy-code="${escapeHtml(app.aftvCode || app.shortCode)}"
+            >${t('directory.btn_copy')} ${escapeHtml(app.aftvCode || app.shortCode)}</button>
             <button
               type="button"
               class="kv-btn kv-btn--sm"
@@ -1009,6 +1021,10 @@ function renderPromoPortal() {
             >${t('directory.btn_qr')}</button>
           `;
         }
+
+        const codeBadgeText = app.aftvCode
+          ? `AFTV ${app.aftvCode} · ${app.shortCode}`
+          : `CODE ${app.shortCode}`;
 
         return `
           <tr class="tabular">
@@ -1019,7 +1035,7 @@ function renderPromoPortal() {
               </div>
             </td>
             <td data-label="${escapeHtml(t('promo.th_code'))}">
-              <span class="kv-code-stamp ${colorClass}">CODE ${escapeHtml(app.shortCode)}</span>
+              <span class="kv-code-stamp ${colorClass}">${escapeHtml(codeBadgeText)}</span>
             </td>
             <td data-label="${escapeHtml(t('promo.th_pkg'))}"><code>${escapeHtml(app.packageName)}</code></td>
             <td data-label="${escapeHtml(t('promo.th_ver_size'))}">v${escapeHtml(versionClean)} · ${escapeHtml(app.size)}</td>
@@ -1114,9 +1130,11 @@ function hydrateLiveTilesAndStrip() {
       if (app.id === 'kv-store') {
         stampEl.textContent = app.size;
       } else if (isSquare1x1) {
-        stampEl.textContent = app.shortCode;
+        stampEl.textContent = app.aftvCode ? `${app.aftvCode} · ${app.shortCode}` : app.shortCode;
       } else {
-        stampEl.textContent = `${app.shortCode} · ${app.size}`;
+        stampEl.textContent = app.aftvCode
+          ? `${app.aftvCode} · ${app.shortCode} · ${app.size}`
+          : `${app.shortCode} · ${app.size}`;
       }
     }
     const verEl = document.querySelector(`[data-app-version="${CSS.escape(app.id)}"]`);
@@ -1197,7 +1215,11 @@ function openAppDialog(appIdentifier) {
   if (titleEl) titleEl.textContent = app.name.toLowerCase();
   if (editionEl) editionEl.textContent = tField(app, 'edition', currentLang);
   if (descEl) descEl.textContent = tField(app, 'description', currentLang);
-  if (codeEl) codeEl.textContent = app.shortCode;
+  if (codeEl) {
+    codeEl.textContent = app.aftvCode
+      ? `${app.aftvCode} (AFTVnews) · tv.vndns.net/${app.shortCode}`
+      : `${app.shortCode} (tv.vndns.net/${app.shortCode})`;
+  }
   if (verEl) verEl.textContent = `v${versionClean} · ${app.size}`;
   if (pkgEl) pkgEl.textContent = app.packageName;
   if (archEl) archEl.textContent = app.arch || 'Universal (arm64-v8a + armeabi-v7a)';
@@ -1405,7 +1427,7 @@ function openAppDialog(appIdentifier) {
     }
   }
   if (copyBtn) {
-    copyBtn.setAttribute('data-copy-code', app.shortCode);
+    copyBtn.setAttribute('data-copy-code', app.aftvCode || app.shortCode);
   }
 
   if (!appDialog.open) {
@@ -1420,14 +1442,21 @@ function openAppDialog(appIdentifier) {
  * Update both modal and inline Short-Code Dialer readouts
  */
 function updateDialerReadouts() {
-  const padded = state.currentCode.padEnd(5, '_');
+  const padded =
+    state.currentCode.length > 5
+      ? state.currentCode.padEnd(7, '_')
+      : state.currentCode.padEnd(5, '_');
   const match = findApp(state.currentCode);
   const isVi = getCurrentLanguage() === 'vi';
-  let statusText = isVi ? 'Nhập mã 5 số...' : 'Type 5-digit code...';
+  let statusText = isVi ? 'Nhập mã 7 số hoặc 5 số...' : 'Type 7-digit or 5-digit code...';
   if (match) {
-    statusText = `${match.name} · ${match.size}`;
-  } else if (state.currentCode.length === 5) {
-    statusText = isVi ? 'Mã hợp lệ: 88000, 88101–88106' : 'Valid codes: 88000, 88101–88106';
+    statusText = match.aftvCode
+      ? `${match.name} · AFTV ${match.aftvCode} (${match.shortCode}) · ${match.size}`
+      : `${match.name} · ${match.shortCode} · ${match.size}`;
+  } else if (state.currentCode.length >= 5) {
+    statusText = isVi
+      ? 'Mã hợp lệ: 2179554, 5798721, 3939162, 1037083 hoặc 88000–88106'
+      : 'Valid: 2179554, 5798721, 3939162, 1037083 or 88000–88106';
   }
 
   for (const id of ['dialer-digits', 'inline-dialer-digits']) {
@@ -1746,7 +1775,7 @@ function bindInteractions() {
         state.currentCode = '';
       } else if (key === 'DEL') {
         state.currentCode = state.currentCode.slice(0, -1);
-      } else if (state.currentCode.length < 5) {
+      } else if (state.currentCode.length < 7) {
         state.currentCode += key;
       } else {
         state.currentCode = key;
@@ -2002,12 +2031,12 @@ function bindInteractions() {
 
   document.getElementById('guide-copy-code-btn')?.addEventListener('click', async (e) => {
     e.stopPropagation();
-    const link = 'https://tv.vndns.net/88000';
+    const link = '2179554';
     try {
       await navigator.clipboard.writeText(link);
       showToast(t('toasts.copied', { code: link }));
     } catch {
-      showToast(`Downloader URL: ${link}`);
+      showToast(`Downloader Code: ${link}`);
     }
   });
 

@@ -1864,7 +1864,7 @@ const server = http.createServer(async (req, res) => {
         shortCode: '88000',
         shortPath: 'tv.vndns.net/88000',
         ultraShortPath: 'tv.vndns.net/0',
-        aftvCode: null,
+        aftvCode: '2179554',
         downloads: 8800,
         apkFileName: 'kv-store.apk',
         apkUrl: 'https://tv.vndns.net/uploads/kv-store.apk',
@@ -1877,14 +1877,14 @@ const server = http.createServer(async (req, res) => {
       }
     }
 
-    // Direct 1-digit (/0–/6) and 5-digit (/88000, /88101–/88106) shortcode routes for Downloader app
-    if ((method === 'GET' || method === 'HEAD') && /^\/(\d|\d{5})\/?$/.test(pathname)) {
+    // Direct 1-digit (/0–/6), 5-digit (/88000, /88101–/88106), and 7-digit AFTVnews (/2179554, etc.) shortcode routes for Downloader app
+    if ((method === 'GET' || method === 'HEAD') && /^\/(\d|\d{5,8})\/?$/.test(pathname)) {
       const directCode = pathname.replace(/^\//, '').replace(/\/$/, '');
       const app = findAppByIdentifier(directCode);
       if (!app) {
         sendJson(req, res, 404, {
           found: false,
-          error: `Short-code "${directCode}" not found. Valid codes: 0–6, 88000, 88101–88106.`,
+          error: `Short-code "${directCode}" not found. Valid codes: 0–6, 88000, 88101–88106, or AFTVnews codes 2179554, 5798721, 3939162, 1037083.`,
         });
         return;
       }

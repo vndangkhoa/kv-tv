@@ -143,6 +143,33 @@ async function runTests() {
     `KV-Tube backupApkUrl points to Forgejo release (${dataTube.app?.backupApkUrl})`
   );
 
+  // 4b. Test Direct Short-Code Routes (/88000–/88103, /0–/3, and AFTVnews /2179554, /5798721, /3939162, /1037083)
+  console.log('\n4b. Testing AFTVnews Downloader Codes & Ultra-Short Routes:');
+  const aftvCases = [
+    { aftv: '2179554', code: '88000', ultra: '0', file: 'kv-store.apk' },
+    { aftv: '5798721', code: '88101', ultra: '1', file: 'jellyfin-kv.apk' },
+    { aftv: '3939162', code: '88102', ultra: '2', file: 'kodi-kv.apk' },
+    { aftv: '1037083', code: '88103', ultra: '3', file: 'cloudstream-kv.apk' },
+  ];
+  for (const tc of aftvCases) {
+    const resCode = await request(INTERFACE_URL, `/${tc.code}`, { method: 'HEAD' });
+    assert(
+      resCode.statusCode === 200 && resCode.headers['content-disposition']?.includes(tc.file),
+      `HEAD /${tc.code} serves ${tc.file} (status ${resCode.statusCode})`
+    );
+    const resAftv = await request(INTERFACE_URL, `/${tc.aftv}`, { method: 'HEAD' });
+    assert(
+      resAftv.statusCode === 200 && resAftv.headers['content-disposition']?.includes(tc.file),
+      `HEAD /${tc.aftv} (AFTVnews code) serves ${tc.file} (status ${resAftv.statusCode})`
+    );
+    const resApiAftv = await request(INTERFACE_URL, `/api/code/${tc.aftv}`);
+    const jsonApiAftv = JSON.parse(resApiAftv.body.toString('utf8'));
+    assert(
+      resApiAftv.statusCode === 200 && jsonApiAftv.app?.aftvCode === tc.aftv,
+      `GET /api/code/${tc.aftv} resolves app with aftvCode=${tc.aftv}`
+    );
+  }
+
   // 5. Test Forgejo Backup Fallback Endpoint (?source=backup)
   console.log('\n5. Testing Automatic Fallback Endpoint (/api/download/kv-store?type=apk&source=backup):');
   const backupRes = await request(INTERFACE_URL, '/api/download/kv-store?type=apk&source=backup', {
