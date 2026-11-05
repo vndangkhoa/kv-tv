@@ -381,7 +381,7 @@
       "ctaUrl": "#catalog",
       "gradient": "linear-gradient(135deg, #00A4DC 0%, #6366F1 100%)",
       "active": true,
-      "impressions": 4898,
+      "impressions": 4908,
       "clicks": 612,
       "createdAt": "2026-10-30T03:48:10.908Z",
       "title_vi": "Cài Đặt Hộp KV-TV VIP — Biến Mọi Android TV Thành Rạp Phim 4K",
@@ -400,7 +400,7 @@
       "ctaUrl": "/tv",
       "gradient": "linear-gradient(135deg, #10B981 0%, #0EA5E9 100%)",
       "active": true,
-      "impressions": 3268,
+      "impressions": 3278,
       "clicks": 284,
       "createdAt": "2026-10-31T03:48:10.908Z",
       "title_vi": "Mạng ThueVPSGiaRe Tốc Độ Cao VN — Tải Trực Tiếp APK 1Gbps",
@@ -419,7 +419,7 @@
       "ctaUrl": "/go/88103",
       "gradient": "linear-gradient(135deg, #6366F1 0%, #EC4899 100%)",
       "active": true,
-      "impressions": 5488,
+      "impressions": 5498,
       "clicks": 890,
       "createdAt": "2026-11-03T03:48:10.908Z",
       "title_vi": "Phát Hành CloudStream KV-PreSetup v4.8 — Tích Hợp Kho Phim KV-Netflix VIP",
@@ -478,11 +478,111 @@
       {
         "date": "2026-11-05",
         "tvViews": 364,
-        "webViews": 256,
+        "webViews": 266,
         "downloads": 166
       }
     ],
     "logs": [
+      {
+        "id": "evt-mw3dxayk-1d02",
+        "timestamp": "2026-11-05T10:10:32.252Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3dwvg0-68d1",
+        "timestamp": "2026-11-05T10:10:12.144Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3dwfxb-dd1b",
+        "timestamp": "2026-11-05T10:09:52.031Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3dw0ep-d41a",
+        "timestamp": "2026-11-05T10:09:31.921Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3dvkw0-9054",
+        "timestamp": "2026-11-05T10:09:11.808Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3dv5da-c9c2",
+        "timestamp": "2026-11-05T10:08:51.694Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3dupuj-16be",
+        "timestamp": "2026-11-05T10:08:31.579Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3duace-215d",
+        "timestamp": "2026-11-05T10:08:11.486Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3dtutv-a4a6",
+        "timestamp": "2026-11-05T10:07:51.379Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw3dtfbu-1dd6",
+        "timestamp": "2026-11-05T10:07:31.290Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
       {
         "id": "evt-mw3dszt9-1b2e",
         "timestamp": "2026-11-05T10:07:11.181Z",
