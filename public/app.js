@@ -214,6 +214,7 @@ const FALLBACK_CATALOG = {
       versionCode: 117,
       size: '24.1 MB',
       shortCode: '88104',
+      aftvCode: '4523598',
       category: 'Originals & Cinema',
       category_vi: 'Điện Ảnh & Phim Gốc',
       category_en: 'Originals & Cinema',
@@ -256,6 +257,7 @@ const FALLBACK_CATALOG = {
       versionCode: 8,
       size: '16.9 MB',
       shortCode: '88105',
+      aftvCode: '3001533',
       category: 'Video & Music',
       category_vi: 'Video & Âm Nhạc',
       category_en: 'Video & Music',
@@ -298,6 +300,7 @@ const FALLBACK_CATALOG = {
       versionCode: 2458,
       size: '33.4 MB',
       shortCode: '88106',
+      aftvCode: '6908499',
       category: 'Video & Music',
       category_vi: 'Video & Âm Nhạc',
       category_en: 'Video & Music',
@@ -1455,8 +1458,8 @@ function updateDialerReadouts() {
       : `${match.name} · ${match.shortCode} · ${match.size}`;
   } else if (state.currentCode.length >= 5) {
     statusText = isVi
-      ? 'Mã hợp lệ: 2179554, 5798721, 3939162, 1037083 hoặc 88000–88106'
-      : 'Valid: 2179554, 5798721, 3939162, 1037083 or 88000–88106';
+      ? 'Mã hợp lệ: 2179554, 5798721, 3939162, 1037083, 4523598, 3001533, 6908499 (hoặc 88000–88106)'
+      : 'Valid: 2179554, 5798721, 3939162, 1037083, 4523598, 3001533, 6908499 (or 88000–88106)';
   }
 
   for (const id of ['dialer-digits', 'inline-dialer-digits']) {

@@ -150,6 +150,9 @@ async function runTests() {
     { aftv: '5798721', code: '88101', ultra: '1', file: 'jellyfin-kv.apk' },
     { aftv: '3939162', code: '88102', ultra: '2', file: 'kodi-kv.apk' },
     { aftv: '1037083', code: '88103', ultra: '3', file: 'cloudstream-kv.apk' },
+    { aftv: '4523598', code: '88104', ultra: '4', file: 'kv-netflix-tv.apk' },
+    { aftv: '3001533', code: '88105', ultra: '5', file: 'kv-tube.apk' },
+    { aftv: '6908499', code: '88106', ultra: '6', file: 'smarttube-tv.apk' },
   ];
   for (const tc of aftvCases) {
     const resCode = await request(INTERFACE_URL, `/${tc.code}`, { method: 'HEAD' });

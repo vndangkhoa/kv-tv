@@ -163,7 +163,7 @@
       ],
       "color": "#17B2E7",
       "iconType": "kodi",
-      "downloads": 777,
+      "downloads": 778,
       "rating": "4.9",
       "minAndroid": "Android TV 7.0+",
       "arch": "Universal (arm64-v8a)",
@@ -286,7 +286,7 @@
       "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-netflix-tv.apk",
       "shortPath": "tv.vndns.net/88104",
       "ultraShortPath": "tv.vndns.net/4",
-      "aftvCode": null
+      "aftvCode": "4523598"
     },
     {
       "id": "kv-tube",
@@ -341,7 +341,7 @@
       "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/kv-tube.apk",
       "shortPath": "tv.vndns.net/88105",
       "ultraShortPath": "tv.vndns.net/5",
-      "aftvCode": null
+      "aftvCode": "3001533"
     },
     {
       "id": "smarttube-tv",
@@ -396,7 +396,7 @@
       "backupApkUrl": "https://git.khoavo.myds.me/vndangkhoa/kv-tv/releases/download/v1.0.0/smarttube-tv.apk",
       "shortPath": "tv.vndns.net/88106",
       "ultraShortPath": "tv.vndns.net/6",
-      "aftvCode": null
+      "aftvCode": "6908499"
     }
   ],
   "ads": [
@@ -507,10 +507,20 @@
         "date": "2026-11-05",
         "tvViews": 364,
         "webViews": 661,
-        "downloads": 201
+        "downloads": 202
       }
     ],
     "logs": [
+      {
+        "id": "evt-mw3n0two-c09e",
+        "timestamp": "2026-11-05T14:25:13.320Z",
+        "event": "download",
+        "appId": "kodi-kv",
+        "appName": "Kodi 21 Omega (apk)",
+        "deviceType": "desktop",
+        "ip": "172.26.0.1",
+        "userAgent": ""
+      },
       {
         "id": "evt-mw3mtqag-77bc",
         "timestamp": "2026-11-05T14:19:42.040Z",
@@ -1494,16 +1504,6 @@
       {
         "id": "evt-mw3hj20l-d29d",
         "timestamp": "2026-11-05T11:51:25.941Z",
-        "event": "view",
-        "appId": null,
-        "appName": "Catalog (DESKTOP)",
-        "deviceType": "desktop",
-        "ip": "127.0.0.1",
-        "userAgent": "node"
-      },
-      {
-        "id": "evt-mw3himi4-61c1",
-        "timestamp": "2026-11-05T11:51:05.836Z",
         "event": "view",
         "appId": null,
         "appName": "Catalog (DESKTOP)",
