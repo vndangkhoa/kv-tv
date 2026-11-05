@@ -1106,6 +1106,8 @@ function openAppDialog(appIdentifier) {
     if (status === 'INSTALLED') {
       if (apkBtn) {
         apkBtn.removeAttribute('href');
+        apkBtn.setAttribute('tabindex', '0');
+        apkBtn.setAttribute('role', 'button');
         const span = apkBtn.querySelector('span');
         if (span) span.textContent = `[ ${t('dialog_app.btn_open') || 'MỞ ỨNG DỤNG'} ]`;
         apkBtn.onclick = (e) => {
@@ -1115,6 +1117,7 @@ function openAppDialog(appIdentifier) {
       }
       if (uninstallBtn) {
         uninstallBtn.style.display = 'inline-flex';
+        uninstallBtn.setAttribute('tabindex', '0');
         const uSpan = uninstallBtn.querySelector('span');
         if (uSpan) uSpan.textContent = `[ ${t('dialog_app.btn_uninstall') || 'GỠ CÀI ĐẶT'} ]`;
         uninstallBtn.onclick = (e) => {
@@ -1124,8 +1127,10 @@ function openAppDialog(appIdentifier) {
       }
       if (presetBtn) {
         presetBtn.style.display = 'inline-flex';
+        presetBtn.setAttribute('tabindex', '0');
         if (app.id === 'cloudstream-kv' || app.id === 'kodi-kv') {
           presetBtn.removeAttribute('href');
+          presetBtn.setAttribute('role', 'button');
           const pSpan = presetBtn.querySelector('span');
           if (pSpan) {
             pSpan.textContent =
@@ -1149,6 +1154,8 @@ function openAppDialog(appIdentifier) {
     } else if (status === 'UPDATE') {
       if (apkBtn) {
         apkBtn.removeAttribute('href');
+        apkBtn.setAttribute('tabindex', '0');
+        apkBtn.setAttribute('role', 'button');
         const span = apkBtn.querySelector('span');
         if (span) span.textContent = `[ ${t('dialog_app.btn_update') || 'CẬP NHẬT'} ]`;
         apkBtn.onclick = (e) => {
@@ -1162,6 +1169,8 @@ function openAppDialog(appIdentifier) {
       if (presetBtn) {
         presetBtn.style.display = 'inline-flex';
         presetBtn.removeAttribute('href');
+        presetBtn.setAttribute('tabindex', '0');
+        presetBtn.setAttribute('role', 'button');
         const pSpan = presetBtn.querySelector('span');
         if (pSpan) pSpan.textContent = `[ ${t('dialog_app.btn_open') || 'MỞ BẢN HIỆN TẠI'} ]`;
         presetBtn.onclick = (e) => {
@@ -1173,6 +1182,8 @@ function openAppDialog(appIdentifier) {
       // NOT_INSTALLED
       if (apkBtn) {
         apkBtn.removeAttribute('href');
+        apkBtn.setAttribute('tabindex', '0');
+        apkBtn.setAttribute('role', 'button');
         const span = apkBtn.querySelector('span');
         if (span) span.textContent = `[ ${t('dialog_app.btn_install') || 'CÀI ĐẶT'} ]`;
         apkBtn.onclick = (e) => {
@@ -1185,6 +1196,7 @@ function openAppDialog(appIdentifier) {
       }
       if (presetBtn) {
         presetBtn.style.display = 'inline-flex';
+        presetBtn.setAttribute('tabindex', '0');
         presetBtn.href = `/api/download/${encodeURIComponent(app.id)}?type=preset`;
         const pSpan = presetBtn.querySelector('span');
         if (pSpan) pSpan.textContent = t('dialog_app.btn_preset') || 'TẢI GÓI CẤU HÌNH (.ZIP)';
@@ -1217,6 +1229,9 @@ function openAppDialog(appIdentifier) {
 
   if (!appDialog.open) {
     appDialog.showModal();
+  }
+  if (apkBtn) {
+    requestAnimationFrame(() => apkBtn.focus());
   }
 }
 

@@ -1424,6 +1424,37 @@ html.is-tv-app .kv-store-card-info .kv-tile-edition {
   overflow: hidden;
 }
 
+html.is-tv-app .kv-dialog {
+  max-height: 94vh;
+  width: min(94vw, 820px);
+}
+
+html.is-tv-app .kv-dialog-banner {
+  padding: 12px 20px;
+}
+
+html.is-tv-app .kv-dialog-title {
+  font-size: 1.75rem;
+}
+
+html.is-tv-app .kv-dialog-body {
+  padding: 14px 20px;
+  gap: 10px;
+}
+
+html.is-tv-app .kv-dialog-specs {
+  padding: 8px 12px;
+  gap: 8px;
+}
+
+html.is-tv-app .kv-feature-list {
+  gap: 4px;
+}
+
+html.is-tv-app .kv-dialog-actions {
+  padding-top: 8px;
+}
+
 @media (max-width: 760px) {
   .kv-topbar,
   .mockup-switcher {
