@@ -1,0 +1,418 @@
+/* ==========================================================================
+   KV-TV Storefront & Promo Portal Stylesheet (styles.css)
+   Extends /kv-tv-theme.css (Canonical Metro Typographic Panorama Theme)
+   ========================================================================== */
+
+/* 1. Secondary Panorama Strip (3-Column Metro Utility & Sponsor Ledger) */
+.panorama-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  padding-top: 6px;
+}
+
+.strip-block {
+  background-color: var(--kv-bg-surface);
+  border: 1px solid var(--kv-border-hairline);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.strip-block-title {
+  font-size: clamp(1.35rem, 1.8vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--kv-fg-primary);
+  text-transform: lowercase;
+}
+
+.strip-block-body {
+  font-size: 0.9375rem;
+  color: var(--kv-fg-secondary);
+  line-height: 1.45;
+  max-width: 68ch;
+}
+
+.strip-block-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--kv-border-hairline);
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  color: var(--kv-fg-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 2. Pivot Stage Panels (Pre-Sets, Short-Codes, Phone & Promo Hub) */
+.kv-pivot-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 4px;
+}
+
+.kv-pivot-section[hidden],
+.metro-grid[hidden],
+.panorama-strip[hidden] {
+  display: none !important;
+}
+
+.kv-section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.kv-section-title {
+  font-size: clamp(1.35rem, 1.8vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--kv-fg-primary);
+  text-transform: lowercase;
+}
+
+.kv-section-desc {
+  font-size: 0.9375rem;
+  color: var(--kv-fg-secondary);
+  max-width: 70ch;
+  margin-top: 6px;
+}
+
+/* 3. Pre-Set Backup Packs Matrix (pivot: pre-sets) */
+.kv-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 12px;
+}
+
+.kv-preset-card {
+  background-color: var(--kv-bg-surface);
+  border: 1px solid var(--kv-border-hairline);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.kv-preset-banner {
+  padding: 16px 20px;
+  color: var(--kv-fg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.kv-preset-banner-title {
+  font-size: clamp(1.35rem, 1.8vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  text-transform: lowercase;
+}
+
+.kv-preset-body {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+}
+
+.kv-preset-summary {
+  font-size: 0.9375rem;
+  color: var(--kv-fg-secondary);
+  max-width: 65ch;
+}
+
+.kv-preset-actions {
+  padding: 14px 20px;
+  border-top: 1px solid var(--kv-border-hairline);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* 4. Short-Codes Directory & Inline Dialer Matrix (pivot: short-codes) */
+.kv-shortcodes-layout {
+  display: grid;
+  grid-template-columns: 1.35fr 0.85fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.kv-shortcode-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.kv-shortcode-row {
+  background-color: var(--kv-bg-surface);
+  border: 1px solid var(--kv-border-hairline);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.kv-shortcode-id {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.kv-shortcode-num {
+  font-family: var(--kv-font-mono);
+  font-size: clamp(1.35rem, 1.8vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  padding: 8px 12px;
+  color: var(--kv-fg-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.kv-shortcode-info-title {
+  font-size: clamp(1.35rem, 1.8vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  text-transform: lowercase;
+}
+
+.kv-shortcode-info-sub {
+  font-size: 0.9375rem;
+  color: var(--kv-fg-secondary);
+  margin-top: 2px;
+}
+
+.kv-shortcode-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.kv-inline-dialer-box {
+  background-color: var(--kv-bg-surface);
+  border: 2px solid var(--kv-emerald);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* 5. Phone & Desktop Promo Portal (pivot: phone-qr / ?mode=promo) */
+.kv-promo-hero {
+  display: grid;
+  grid-template-columns: 1.45fr 0.75fr;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.kv-promo-hero-main {
+  background-color: var(--kv-cobalt);
+  color: var(--kv-fg-primary);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.kv-promo-hero-title {
+  font-size: clamp(2.2rem, 3.2vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  text-transform: lowercase;
+  color: var(--kv-fg-primary);
+}
+
+.kv-promo-hero-lead {
+  font-size: 0.9375rem;
+  color: var(--kv-fg-primary);
+  max-width: 68ch;
+  line-height: 1.45;
+}
+
+.kv-promo-hero-cta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.kv-device-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px;
+  background-color: rgba(0, 0, 0, 0.24);
+}
+
+.kv-promo-qr-aside {
+  background-color: var(--kv-emerald);
+  color: var(--kv-fg-primary);
+  padding: clamp(20px, 2.5vw, 30px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.kv-promo-qr-title {
+  font-size: clamp(1.35rem, 1.8vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  text-transform: lowercase;
+}
+
+.kv-promo-qr-frame {
+  background-color: #FFFFFF;
+  padding: 8px;
+  display: inline-block;
+}
+
+.kv-promo-qr-img {
+  width: 168px;
+  height: 168px;
+  display: block;
+}
+
+.kv-promo-qr-caption {
+  font-size: 0.9375rem;
+  color: var(--kv-fg-primary);
+  max-width: 34ch;
+}
+
+/* 3-Step Setup Guide (Inline SVG + Heading side-by-side) */
+.kv-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.kv-step-card {
+  background-color: var(--kv-bg-surface);
+  border: 1px solid var(--kv-border-hairline);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.kv-step-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kv-step-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--kv-fg-primary);
+  flex-shrink: 0;
+}
+
+.kv-step-title {
+  font-size: clamp(1.35rem, 1.8vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  text-transform: lowercase;
+  color: var(--kv-fg-primary);
+}
+
+.kv-step-body {
+  font-size: 0.9375rem;
+  color: var(--kv-fg-secondary);
+  line-height: 1.45;
+  max-width: 60ch;
+}
+
+/* Active Promotional & Sponsor Ad Tiles */
+.kv-ads-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.kv-ad-tile {
+  padding: 20px;
+  color: var(--kv-fg-primary);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.kv-ad-title {
+  font-size: clamp(1.35rem, 1.8vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  text-transform: lowercase;
+}
+
+.kv-ad-subtitle {
+  font-size: 0.9375rem;
+  color: var(--kv-fg-primary);
+  line-height: 1.45;
+  max-width: 62ch;
+}
+
+.kv-ad-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+}
+
+.kv-search-wrap {
+  width: min(100%, 340px);
+}
+
+.kv-dialog-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.kv-table-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1220px) {
+  .panorama-strip,
+  .kv-steps-grid,
+  .kv-ads-grid,
+  .kv-shortcodes-layout,
+  .kv-promo-hero {
+    grid-template-columns: 1fr;
+  }
+}

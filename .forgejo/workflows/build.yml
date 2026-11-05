@@ -1,0 +1,21 @@
+name: Forgejo CI - Verify KV-TV Store
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: native
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify Node.js syntax
+        run: |
+          node --check server.js
+          node --check lib/totp.js
+          node --check lib/seed.js
+          node --check public/app.js
+          node --check public/admin.js

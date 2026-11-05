@@ -1,0 +1,1206 @@
+/* ==========================================================================
+   KV-TV THEME (kv-tv-theme.css) — v1.0 Canonical Design System
+   Lineage: Digital Design Canon — Metro Typographic Panorama (Zune HD / WP7)
+   Target: Android TV 10-Foot Leanback Storefront, Phone/Promo Hub & Admin
+   ========================================================================== */
+
+:root {
+  /* Surface Tokens */
+  --kv-bg-oled: #000000;
+  --kv-bg-chrome: #0A0A0A;
+  --kv-bg-surface: #121212;
+  --kv-bg-elevated: #1C1C1C;
+
+  /* Typography & Ink Tokens */
+  --kv-fg-primary: #FFFFFF;
+  --kv-fg-secondary: #D4D4D4;
+  --kv-fg-muted: #8E8E8E;
+  --kv-fg-pivot-inactive: rgba(255, 255, 255, 0.58);
+
+  /* Structural Hairline Tokens */
+  --kv-border-hairline: #262626;
+  --kv-border-strong: #454545;
+  --kv-border-focus: #FFFFFF;
+
+  /* Committed Flat Metro Color-Block Palette (#0078D7 / #008272 / #D83B01 / #B45309 tonal ramp WCAG AA) */
+  --kv-cobalt: #0063B0;
+  --kv-violet: #6B21A8;
+  --kv-teal: #005E52;
+  --kv-crimson: #B33000;
+  --kv-vermilion: #B91C1C;
+  --kv-emerald: #107C10;
+  --kv-amber: #994507;
+
+  /* Typography Stacks */
+  --kv-font-sans: 'Work Sans', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  --kv-font-mono: 'JetBrains Mono', monospace;
+
+  /* Geometry & Motion */
+  --kv-radius: 0px;
+  --kv-ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Compatibility Aliases for Mockup 1 & Shared Modules */
+  --bg-oled: var(--kv-bg-oled);
+  --bg-chrome: var(--kv-bg-chrome);
+  --bg-surface: var(--kv-bg-surface);
+  --bg-surface-elevated: var(--kv-bg-elevated);
+  --fg-primary: var(--kv-fg-primary);
+  --fg-secondary: var(--kv-fg-secondary);
+  --fg-muted: var(--kv-fg-muted);
+  --fg-pivot-inactive: var(--kv-fg-pivot-inactive);
+  --border-hairline: var(--kv-border-hairline);
+  --border-strong: var(--kv-border-strong);
+  --metro-cobalt: var(--kv-cobalt);
+  --metro-violet: var(--kv-violet);
+  --metro-teal: var(--kv-teal);
+  --metro-crimson: var(--kv-crimson);
+  --metro-vermilion: var(--kv-vermilion);
+  --metro-emerald: var(--kv-emerald);
+  --metro-amber: var(--kv-amber);
+  --font-sans: var(--kv-font-sans);
+  --font-mono: var(--kv-font-mono);
+  --ease-out-expo: var(--kv-ease-out-expo);
+}
+
+/* ==========================================================================
+   1. Reset, Browser Surface Theming & Numeric Discipline
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-radius: 0px;
+  box-shadow: none;
+}
+
+::selection {
+  background-color: var(--kv-cobalt);
+  color: var(--kv-fg-primary);
+}
+
+html {
+  background-color: var(--kv-bg-oled);
+  color: var(--kv-fg-primary);
+  font-family: var(--kv-font-sans);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color-scheme: dark;
+  scrollbar-width: thin;
+  scrollbar-color: var(--kv-cobalt) var(--kv-bg-chrome);
+  caret-color: var(--kv-fg-primary);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--kv-bg-chrome);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--kv-cobalt);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--kv-fg-primary);
+}
+
+body {
+  background-color: var(--kv-bg-oled);
+  color: var(--kv-fg-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: inherit;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.tabular,
+.tabular-nums,
+code,
+time,
+kbd,
+.kv-code-stamp,
+.code-stamp,
+.kv-telemetry-pill,
+.telemetry-pill,
+.watermark-code,
+.dialer-key,
+.dialer-readout,
+.stat-num,
+.kv-table td {
+  font-variant-numeric: tabular-nums;
+}
+
+kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--kv-fg-primary);
+  background-color: var(--kv-bg-elevated);
+  border: 1px solid var(--kv-border-strong);
+}
+
+/* ==========================================================================
+   2. Persistent Top System Bar (.kv-topbar / .mockup-switcher)
+   ========================================================================== */
+
+.kv-topbar,
+.mockup-switcher {
+  background-color: var(--kv-bg-chrome);
+  border-bottom: 1px solid var(--kv-border-hairline);
+  padding: 8px clamp(16px, 3.5vw, 48px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  z-index: 30;
+}
+
+.kv-topbar-brand,
+.switcher-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--kv-fg-primary);
+  text-decoration: none;
+}
+
+.kv-topbar-brand-mark,
+.switcher-brand-mark {
+  width: 12px;
+  height: 12px;
+  background-color: var(--kv-cobalt);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.kv-topbar-badge {
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--kv-fg-primary);
+  background-color: var(--kv-cobalt);
+  padding: 2px 8px;
+}
+
+.kv-topbar-nav,
+.switcher-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.kv-topbar-link,
+.switcher-link {
+  appearance: none;
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--kv-fg-secondary);
+  text-decoration: none;
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  background-color: transparent;
+  cursor: pointer;
+  transition:
+    background-color 140ms var(--kv-ease-out-expo),
+    color 140ms var(--kv-ease-out-expo),
+    border-color 140ms var(--kv-ease-out-expo);
+}
+
+.kv-topbar-link:hover,
+.kv-topbar-link:focus-visible,
+.switcher-link:hover,
+.switcher-link:focus-visible {
+  color: var(--kv-fg-primary);
+  border-color: var(--kv-fg-primary);
+  background-color: var(--kv-bg-surface);
+  outline: none;
+}
+
+.kv-topbar-link[aria-current="page"],
+.kv-topbar-link.is-active,
+.switcher-link[aria-current="page"] {
+  background-color: var(--kv-cobalt);
+  color: var(--kv-fg-primary);
+  border-color: var(--kv-fg-primary);
+}
+
+/* ==========================================================================
+   3. Metro Panorama Header & Giant Lowercase Pivot Rail
+   ========================================================================== */
+
+.kv-stage,
+.metro-stage {
+  flex: 1;
+  width: 100%;
+  max-width: 1720px;
+  margin: 0 auto;
+  padding: clamp(20px, 3vw, 42px) clamp(16px, 3.5vw, 48px) 110px;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 2.6vw, 34px);
+}
+
+.kv-panorama-header,
+.panorama-header {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-bottom: 1px solid var(--kv-border-hairline);
+  padding-bottom: 18px;
+}
+
+.kv-pivots,
+.panorama-pivots {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(20px, 3.2vw, 48px);
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 4px 0;
+}
+
+.kv-pivots::-webkit-scrollbar,
+.panorama-pivots::-webkit-scrollbar {
+  display: none;
+}
+
+.kv-pivot-btn,
+.pivot-btn {
+  appearance: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--kv-font-sans);
+  font-size: clamp(2.8rem, 5vw, 4.6rem);
+  font-weight: 200;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  color: var(--kv-fg-pivot-inactive);
+  text-transform: lowercase;
+  white-space: nowrap;
+  padding: 4px 2px;
+  transition: color 180ms var(--kv-ease-out-expo), transform 180ms var(--kv-ease-out-expo);
+}
+
+.kv-pivot-btn:hover,
+.pivot-btn:hover {
+  color: var(--kv-fg-secondary);
+}
+
+.kv-pivot-btn[aria-selected="true"],
+.kv-pivot-btn.is-active,
+.pivot-btn[aria-selected="true"] {
+  color: var(--kv-fg-primary);
+}
+
+.kv-pivot-btn:focus-visible,
+.pivot-btn:focus-visible {
+  outline: 3px solid var(--kv-fg-primary);
+  outline-offset: 4px;
+  color: var(--kv-fg-primary);
+}
+
+.kv-panorama-subbar,
+.panorama-subbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.kv-panorama-deck,
+.panorama-deck {
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: var(--kv-fg-secondary);
+  max-width: 72ch;
+}
+
+.kv-panorama-deck strong,
+.panorama-deck strong {
+  color: var(--kv-fg-primary);
+  font-weight: 600;
+}
+
+.kv-panorama-telemetry,
+.panorama-telemetry {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  color: var(--kv-fg-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.kv-telemetry-pill,
+.telemetry-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  background-color: var(--kv-bg-surface);
+  border: 1px solid var(--kv-border-hairline);
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  color: var(--kv-fg-secondary);
+}
+
+.kv-telemetry-dot,
+.telemetry-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--kv-emerald);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   4. Asymmetric 2D Panorama Live Tile Grid (.kv-grid / .kv-tile)
+   ========================================================================== */
+
+.kv-grid,
+.metro-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-auto-rows: minmax(215px, 240px);
+  gap: 12px;
+  background-color: var(--kv-bg-oled);
+}
+
+.kv-tile,
+.metro-tile {
+  position: relative;
+  appearance: none;
+  border: none;
+  box-shadow: none;
+  text-align: left;
+  color: var(--kv-fg-primary);
+  font-family: var(--kv-font-sans);
+  cursor: pointer;
+  padding: clamp(18px, 2vw, 26px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  user-select: none;
+  text-decoration: none;
+  transition: transform 160ms var(--kv-ease-out-expo), opacity 160ms var(--kv-ease-out-expo);
+}
+
+/* Solid Flat Metro Color Blocks */
+.kv-tile--cobalt,
+.tile-cobalt {
+  background-color: var(--kv-cobalt);
+}
+
+.kv-tile--violet,
+.tile-violet {
+  background-color: var(--kv-violet);
+}
+
+.kv-tile--teal,
+.tile-teal {
+  background-color: var(--kv-teal);
+}
+
+.kv-tile--crimson,
+.tile-crimson {
+  background-color: var(--kv-crimson);
+}
+
+.kv-tile--vermilion,
+.tile-vermilion {
+  background-color: var(--kv-vermilion);
+}
+
+.kv-tile--emerald,
+.tile-emerald {
+  background-color: var(--kv-emerald);
+}
+
+.kv-tile--amber,
+.tile-amber {
+  background-color: var(--kv-amber);
+}
+
+.kv-tile--surface {
+  background-color: var(--kv-bg-surface);
+  border: 1px solid var(--kv-border-hairline);
+}
+
+/* Tile Spans in the 6x2 Panorama Matrix */
+.kv-span-2x2,
+.span-2x2 {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.kv-span-2x1,
+.span-2x1 {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+.kv-span-1x1,
+.span-1x1 {
+  grid-column: span 1;
+  grid-row: span 1;
+}
+
+/* Razor-Sharp 10-Foot TV Focus States (Zero blurred glow!) */
+.kv-tile:focus,
+.kv-tile:focus-visible,
+.metro-tile:focus,
+.metro-tile:focus-visible {
+  outline: 4px solid #FFFFFF;
+  outline-offset: 2px;
+  transform: scale(1.02);
+  z-index: 5;
+  box-shadow: none;
+}
+
+.kv-tile:hover:not(:focus),
+.metro-tile:hover:not(:focus) {
+  transform: scale(1.01);
+  z-index: 3;
+}
+
+.kv-tile.is-dimmed,
+.metro-tile.is-dimmed {
+  opacity: 0.28;
+}
+
+/* Tile Internal Geometry */
+.kv-tile-top,
+.tile-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.kv-tile-glyph,
+.tile-glyph {
+  width: 40px;
+  height: 40px;
+  color: var(--kv-fg-primary);
+  flex-shrink: 0;
+}
+
+.kv-span-2x2 .kv-tile-glyph,
+.kv-span-2x2 .tile-glyph,
+.span-2x2 .kv-tile-glyph,
+.span-2x2 .tile-glyph {
+  width: 56px;
+  height: 56px;
+}
+
+.kv-code-stamp,
+.code-stamp {
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--kv-fg-primary);
+  background-color: rgba(0, 0, 0, 0.34);
+  padding: 4px 8px;
+  white-space: nowrap;
+}
+
+.kv-watermark-code,
+.watermark-code {
+  position: absolute;
+  top: 76px;
+  right: 16px;
+  width: 220px;
+  height: 76px;
+  color: rgba(255, 255, 255, 0.2);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.kv-tile-bottom,
+.tile-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  margin-top: auto;
+}
+
+.kv-tile-title,
+.tile-title {
+  font-size: clamp(1.35rem, 1.8vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--kv-fg-primary);
+  text-transform: lowercase;
+}
+
+.kv-span-2x2 .kv-tile-title,
+.kv-span-2x2 .tile-title,
+.span-2x2 .kv-tile-title,
+.span-2x2 .tile-title {
+  font-size: clamp(2.2rem, 3.2vw, 3.25rem);
+  letter-spacing: -0.035em;
+}
+
+.kv-tile-edition,
+.tile-edition {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--kv-fg-primary);
+  line-height: 1.3;
+}
+
+.kv-span-2x2 .kv-tile-edition,
+.kv-span-2x2 .tile-edition,
+.span-2x2 .kv-tile-edition,
+.span-2x2 .tile-edition {
+  font-size: 0.9375rem;
+}
+
+.kv-tile-meta-row,
+.tile-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  color: var(--kv-fg-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.kv-live-status-strip,
+.live-status-strip {
+  margin-top: 8px;
+  background-color: rgba(0, 0, 0, 0.36);
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  color: var(--kv-fg-primary);
+}
+
+.kv-live-status-text,
+.live-status-text {
+  font-weight: 600;
+  transition: opacity 220ms var(--kv-ease-out-expo), transform 220ms var(--kv-ease-out-expo);
+}
+
+.kv-live-status-badge,
+.live-status-badge {
+  background-color: var(--kv-fg-primary);
+  color: var(--kv-bg-oled);
+  font-weight: 700;
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.kv-qr-tile-preview,
+.qr-tile-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+
+.kv-qr-tile-img,
+.qr-tile-img {
+  width: 68px;
+  height: 68px;
+  background-color: #FFFFFF;
+  padding: 4px;
+  display: block;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   5. Buttons, Inputs, Selects & Tables (.kv-btn, .kv-input, .kv-table)
+   ========================================================================== */
+
+.kv-btn,
+.metro-action-btn,
+.metro-inline-btn {
+  appearance: none;
+  text-decoration: none;
+  border: 2px solid var(--kv-fg-primary);
+  padding: 10px 16px;
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--kv-bg-oled);
+  color: var(--kv-fg-primary);
+  transition:
+    transform 120ms var(--kv-ease-out-expo),
+    background-color 120ms var(--kv-ease-out-expo),
+    color 120ms var(--kv-ease-out-expo),
+    border-color 120ms var(--kv-ease-out-expo);
+}
+
+.kv-btn--primary,
+.metro-action-btn:not(.secondary),
+.metro-inline-btn {
+  background-color: var(--kv-fg-primary);
+  color: var(--kv-bg-oled);
+  border-color: var(--kv-fg-primary);
+}
+
+.kv-btn--cobalt {
+  background-color: var(--kv-cobalt);
+  color: var(--kv-fg-primary);
+  border-color: var(--kv-fg-primary);
+}
+
+.kv-btn--emerald {
+  background-color: var(--kv-emerald);
+  color: var(--kv-fg-primary);
+  border-color: var(--kv-fg-primary);
+}
+
+.kv-btn--crimson {
+  background-color: var(--kv-crimson);
+  color: var(--kv-fg-primary);
+  border-color: var(--kv-fg-primary);
+}
+
+.kv-btn--amber {
+  background-color: var(--kv-amber);
+  color: var(--kv-fg-primary);
+  border-color: var(--kv-fg-primary);
+}
+
+.kv-btn--sm,
+.metro-inline-btn {
+  padding: 6px 12px;
+  border-width: 1px;
+}
+
+.kv-btn:hover,
+.kv-btn:focus-visible,
+.metro-action-btn:hover,
+.metro-action-btn:focus-visible,
+.metro-inline-btn:hover,
+.metro-inline-btn:focus-visible {
+  background-color: var(--kv-cobalt);
+  color: var(--kv-fg-primary);
+  border-color: var(--kv-fg-primary);
+  outline: 3px solid var(--kv-fg-primary);
+  outline-offset: 2px;
+}
+
+.kv-input,
+.kv-select,
+.kv-textarea {
+  appearance: none;
+  width: 100%;
+  background-color: var(--kv-bg-oled);
+  color: var(--kv-fg-primary);
+  border: 2px solid var(--kv-border-strong);
+  padding: 10px 14px;
+  font-family: var(--kv-font-sans);
+  font-size: 0.9375rem;
+}
+
+.kv-input::placeholder,
+.kv-textarea::placeholder {
+  color: var(--kv-fg-muted);
+}
+
+.kv-input:focus,
+.kv-select:focus,
+.kv-textarea:focus {
+  border-color: var(--kv-fg-primary);
+  outline: 2px solid var(--kv-cobalt);
+  outline-offset: 2px;
+}
+
+.kv-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  background-color: var(--kv-bg-surface);
+  border: 1px solid var(--kv-border-hairline);
+  padding: 16px;
+}
+
+.kv-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9375rem;
+}
+
+.kv-table th,
+.kv-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--kv-border-hairline);
+  vertical-align: middle;
+}
+
+.kv-table th {
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--kv-fg-secondary);
+  background-color: var(--kv-bg-chrome);
+}
+
+.kv-table tbody tr:hover {
+  background-color: var(--kv-bg-elevated);
+}
+
+/* ==========================================================================
+   6. Native Modal Dialogs (dialog, .kv-dialog) — Scroll-Contained
+   ========================================================================== */
+
+dialog,
+.kv-dialog {
+  margin: auto;
+  background-color: var(--kv-bg-surface);
+  color: var(--kv-fg-primary);
+  border: 2px solid var(--kv-fg-primary);
+  padding: 0;
+  width: min(92vw, 760px);
+  max-height: 88vh;
+}
+
+dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.85);
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+.kv-dialog-banner,
+.dialog-banner {
+  padding: 22px 26px;
+  background-color: var(--kv-cobalt);
+  color: var(--kv-fg-primary);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.kv-dialog-title,
+.dialog-title {
+  font-size: clamp(2.2rem, 3.2vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  text-transform: lowercase;
+}
+
+.kv-dialog-subtitle,
+.dialog-subtitle {
+  font-size: 0.9375rem;
+  color: var(--kv-fg-primary);
+  margin-top: 4px;
+}
+
+.kv-dialog-close-btn,
+.dialog-close-btn {
+  appearance: none;
+  background-color: var(--kv-bg-oled);
+  color: var(--kv-fg-primary);
+  border: 2px solid var(--kv-fg-primary);
+  padding: 6px 12px;
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.kv-dialog-close-btn:hover,
+.kv-dialog-close-btn:focus-visible,
+.dialog-close-btn:hover,
+.dialog-close-btn:focus-visible {
+  background-color: var(--kv-fg-primary);
+  color: var(--kv-bg-oled);
+  outline: none;
+}
+
+.kv-dialog-body,
+.dialog-body {
+  padding: 24px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.kv-dialog-grid,
+.dialog-grid {
+  display: grid;
+  grid-template-columns: 1fr 190px;
+  gap: 20px;
+  align-items: start;
+}
+
+.kv-dialog-specs,
+.dialog-specs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  background-color: var(--kv-bg-oled);
+  border: 1px solid var(--kv-border-hairline);
+  padding: 14px;
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.spec-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.spec-label {
+  color: var(--kv-fg-muted);
+  font-size: 0.75rem;
+}
+
+.spec-value {
+  color: var(--kv-fg-primary);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  word-break: break-all;
+}
+
+.feature-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feature-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.9375rem;
+  color: var(--kv-fg-secondary);
+}
+
+.feature-bullet {
+  width: 8px;
+  height: 8px;
+  background-color: var(--kv-cobalt);
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.kv-dialog-qr-panel,
+.dialog-qr-panel {
+  background-color: var(--kv-bg-oled);
+  border: 1px solid var(--kv-border-hairline);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.kv-dialog-qr-img,
+.dialog-qr-img {
+  width: 148px;
+  height: 148px;
+  background-color: #FFFFFF;
+  padding: 6px;
+  display: block;
+}
+
+.dialog-qr-caption {
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  color: var(--kv-fg-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.kv-dialog-actions,
+.dialog-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 8px;
+  border-top: 1px solid var(--kv-border-hairline);
+}
+
+/* ==========================================================================
+   7. Short-Code Dialer & Compact D-Pad Remote Simulator
+   ========================================================================== */
+
+.dialer-readout {
+  background-color: var(--kv-bg-oled);
+  border: 2px solid var(--kv-fg-primary);
+  padding: 14px 18px;
+  font-family: var(--kv-font-mono);
+  font-size: clamp(2.2rem, 3.2vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--kv-fg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dialer-status {
+  font-family: var(--kv-font-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--kv-fg-secondary);
+}
+
+.dialer-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.dialer-key {
+  appearance: none;
+  background-color: var(--kv-bg-oled);
+  color: var(--kv-fg-primary);
+  border: 1px solid var(--kv-border-strong);
+  padding: 14px;
+  font-family: var(--kv-font-mono);
+  font-size: clamp(1.35rem, 1.8vw, 1.85rem);
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+}
+
+.dialer-key:hover,
+.dialer-key:focus-visible {
+  background-color: var(--kv-emerald);
+  border-color: var(--kv-fg-primary);
+  outline: 2px solid var(--kv-fg-primary);
+  outline-offset: 1px;
+}
+
+.dialer-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.dialer-preset-chip {
+  appearance: none;
+  background-color: var(--kv-bg-oled);
+  color: var(--kv-fg-primary);
+  border: 1px solid var(--kv-border-hairline);
+  padding: 6px 10px;
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+}
+
+.dialer-preset-chip:hover,
+.dialer-preset-chip:focus-visible,
+.dialer-preset-chip.is-active {
+  background-color: var(--kv-emerald);
+  border-color: var(--kv-fg-primary);
+  outline: none;
+}
+
+.kv-dpad-simulator,
+.dpad-simulator {
+  position: fixed;
+  right: 20px;
+  bottom: 12px;
+  background-color: var(--kv-bg-chrome);
+  border: 2px solid var(--kv-fg-primary);
+  padding: 6px 10px;
+  z-index: 40;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.kv-dpad-header,
+.dpad-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--kv-fg-primary);
+}
+
+.kv-dpad-grid,
+.dpad-grid {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.kv-dpad-btn,
+.dpad-btn {
+  appearance: none;
+  background-color: var(--kv-bg-elevated);
+  color: var(--kv-fg-primary);
+  border: 1px solid var(--kv-border-strong);
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  min-height: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kv-dpad-btn:hover,
+.kv-dpad-btn:focus-visible,
+.kv-dpad-btn.is-pressed,
+.dpad-btn:hover,
+.dpad-btn:focus-visible,
+.dpad-btn.is-pressed {
+  background-color: var(--kv-cobalt);
+  border-color: var(--kv-fg-primary);
+  outline: none;
+}
+
+.kv-dpad-btn.dpad-ok,
+.dpad-btn.dpad-ok {
+  background-color: var(--kv-cobalt);
+}
+
+.kv-dpad-btn.dpad-back,
+.dpad-btn.dpad-back {
+  background-color: var(--kv-crimson);
+}
+
+.kv-toast {
+  position: fixed;
+  left: 20px;
+  bottom: 12px;
+  z-index: 60;
+  background-color: var(--kv-cobalt);
+  color: var(--kv-fg-primary);
+  border: 2px solid var(--kv-fg-primary);
+  padding: 8px 14px;
+  font-family: var(--kv-font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+@media (max-width: 1220px) {
+  .kv-grid,
+  .metro-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: minmax(200px, 225px);
+  }
+}
+
+@media (max-width: 760px) {
+  .kv-grid,
+  .metro-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: minmax(185px, auto);
+  }
+
+  .kv-span-2x2,
+  .kv-span-2x1,
+  .span-2x2,
+  .span-2x1 {
+    grid-column: span 2;
+  }
+
+  .kv-span-1x1,
+  .span-1x1 {
+    grid-column: span 1;
+  }
+
+  .kv-dialog-grid,
+  .dialog-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kv-dpad-simulator,
+  .dpad-simulator {
+    right: 12px;
+    bottom: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

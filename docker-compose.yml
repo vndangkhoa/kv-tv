@@ -1,0 +1,43 @@
+name: kv-tv
+
+services:
+  kv-tv:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: vndangkhoa/kv-tv:latest
+    container_name: kv-tv
+    restart: unless-stopped
+    ports:
+      - "3456:3456"
+    environment:
+      - NODE_ENV=production
+      - PORT=3456
+      - TZ=Asia/Ho_Chi_Minh
+      - PUBLIC_BASE_URL=${PUBLIC_BASE_URL:-https://tv.vndns.net}
+      - ADMIN_DEFAULT_USER=${ADMIN_DEFAULT_USER:-admin}
+      - ADMIN_DEFAULT_PASS=${ADMIN_DEFAULT_PASS:-kvtv2026}
+    volumes:
+      # =========================================================================
+      # PERSISTENT HOST BIND-MOUNTS (ZERO-REBUILD APK & CATALOG UPDATES)
+      # =========================================================================
+      # Because ./data (catalog JSON, analytics telemetry, TOTP 2FA config, ads)
+      # and ./uploads (.apk binaries and .zip pre-set config packs) live directly
+      # on your VPS host disk via bind mounts:
+      #   1. Uploading or deleting .apk files in https://tv.vndns.net/admin saves
+      #      instantly to ./uploads on the host WITHOUT rebuilding Docker.
+      #   2. Editing app versions, short-codes, or ads saves to ./data/store.json
+      #      and survives container restarts, updates, and `docker system prune`.
+      - ./data:/app/data
+      - ./uploads:/app/uploads
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3456/api/catalog').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

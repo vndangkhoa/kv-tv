@@ -1,0 +1,17 @@
+{
+  "name": "kv-tv-store",
+  "version": "1.0.0",
+  "description": "KV-TV Android TV App Store, Pre-Set Media APK Distribution & Admin Portal (https://tv.vndns.net)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node -e \"require('./lib/seed').ensureSeeded(true)\""
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  }
+}

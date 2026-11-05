@@ -1,0 +1,2585 @@
+<!doctype html>
+<html lang="en" data-view="concourse">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ECEEEF">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="KV-TV Store (tv.vndns.net) — Mockup 2: Solari Udine Split-Flap Concourse & Dieter Rams Daylight Broadcast Master Rack for Android TV.">
+  <title>KV-TV Store · tv.vndns.net — Split-Flap Broadcast Ledger (Mockup 2)</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Chakra+Petch:wght@600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23141412'/%3E%3Crect x='6' y='6' width='52' height='52' fill='none' stroke='%23C23800' stroke-width='4'/%3E%3Cpath d='M24 20L44 32L24 44V20Z' fill='%23C23800'/%3E%3C/svg%3E">
+  <style>
+    /* ==========================================================================
+       KV-TV Mockup 2: Concourse Split-Flap & Broadcast Master Rack
+       Visual World: Solari Udine 1970s Rail Board + Dieter Rams / Braun Daylight
+       ========================================================================== */
+
+    :root {
+      --stone-ground: #ECEEEF;
+      --stone-recessed: #DFE3E6;
+      --stone-panel: #F7F8F9;
+      --stone-muted-fill: #D3D8DC;
+
+      --carbon-beam: #141412;
+      --carbon-flap-top: #22221F;
+      --carbon-flap-bot: #181815;
+      --carbon-well: #0C0C0A;
+
+      --ink-primary: #141412;
+      --ink-secondary: #323639;
+      --ink-muted: #4A4F54;
+      --ink-on-dark: #F8FAFC;
+      --ink-muted-on-dark: #C2C6CC;
+
+      --signal-orange: #C23800;
+      --signal-orange-deep: #9E2D00;
+      --bottle-green: #086640;
+      --amber-lamp: #F59E0B;
+
+      --rule-hairline: 1px solid #181816;
+      --rule-carbon: 1px solid #2E2E2A;
+
+      --font-display: 'Chakra Petch', sans-serif;
+      --font-sans: 'Archivo', sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    ::selection {
+      background-color: var(--signal-orange);
+      color: #FFFFFF;
+    }
+
+    html {
+      font-size: 16px;
+      scrollbar-width: thin;
+      scrollbar-color: #181816 #E7E2D8;
+      caret-color: var(--signal-orange);
+      background-color: var(--stone-ground);
+      color: var(--ink-primary);
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--stone-recessed);
+      border-left: var(--rule-hairline);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--ink-primary);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--signal-orange);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background-color: var(--stone-ground);
+      color: var(--ink-primary);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* ==========================================================================
+       1. Persistent Top Mockup Switcher Bar
+       ========================================================================== */
+    .mockup-switcher-bar {
+      background-color: var(--stone-panel);
+      border-bottom: var(--rule-hairline);
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      min-height: 48px;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .switcher-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 20px;
+      border-right: var(--rule-hairline);
+      text-decoration: none;
+      color: var(--ink-primary);
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.875rem;
+      letter-spacing: 0.02em;
+      background-color: var(--stone-recessed);
+    }
+
+    .switcher-brand:focus-visible {
+      outline: 2px solid var(--signal-orange);
+      outline-offset: -2px;
+    }
+
+    .switcher-brand-mark {
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--ink-primary);
+      color: #FFFFFF;
+      flex-shrink: 0;
+    }
+
+    .switcher-links {
+      display: flex;
+      align-items: stretch;
+      flex-wrap: wrap;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .switcher-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--ink-primary);
+      border-left: var(--rule-hairline);
+      background-color: var(--stone-panel);
+      transition: background-color 140ms var(--ease-out-expo), color 140ms var(--ease-out-expo);
+      white-space: nowrap;
+    }
+
+    .switcher-link:hover {
+      background-color: var(--stone-recessed);
+    }
+
+    .switcher-link:focus-visible {
+      outline: 2px solid var(--signal-orange);
+      outline-offset: -2px;
+    }
+
+    .switcher-link.is-active {
+      background-color: var(--signal-orange);
+      color: #FFFFFF;
+      font-weight: 700;
+    }
+
+    /* ==========================================================================
+       2. Mechanical Split-Flap Telemetry Header Beam (Solari Udine)
+       ========================================================================== */
+    .concourse-beam {
+      background-color: var(--carbon-beam);
+      color: var(--ink-on-dark);
+      border-bottom: var(--rule-hairline);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      padding: 12px 20px;
+      gap: 16px;
+    }
+
+    .flap-clusters-row {
+      display: flex;
+      align-items: stretch;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .flap-cluster {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background-color: #1A1A17;
+      border: var(--rule-carbon);
+    }
+
+    .flap-cluster-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .flap-cluster-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--ink-muted-on-dark);
+      text-transform: uppercase;
+    }
+
+    .flap-bank {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background-color: var(--carbon-well);
+      padding: 5px;
+      border: 1px solid #2C2C28;
+    }
+
+    .flap-cell {
+      position: relative;
+      width: 30px;
+      height: 42px;
+      background: linear-gradient(
+        180deg,
+        var(--carbon-flap-top) 0%,
+        var(--carbon-flap-top) 49%,
+        #000000 50%,
+        var(--carbon-flap-bot) 51%,
+        var(--carbon-flap-bot) 100%
+      );
+      border: 1px solid #33332E;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ink-on-dark);
+      font-variant-numeric: tabular-nums;
+      user-select: none;
+      overflow: hidden;
+      transform-origin: center center;
+    }
+
+    .flap-cell::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 1px;
+      background-color: #050504;
+      pointer-events: none;
+    }
+
+    .flap-cell--code {
+      color: #FF6B2B;
+      border-color: #4A3222;
+    }
+
+    .flap-cell--status {
+      width: 26px;
+      height: 38px;
+      font-size: 1rem;
+      color: #34D399;
+    }
+
+    .flap-cell--wide {
+      width: 26px;
+      height: 38px;
+      font-size: 1.05rem;
+    }
+
+    .flap-cell.is-flipping {
+      animation: mechanicalFlapFlip 220ms var(--ease-out-expo);
+    }
+
+    @keyframes mechanicalFlapFlip {
+      0% {
+        transform: perspective(260px) rotateX(0deg);
+      }
+      45% {
+        transform: perspective(260px) rotateX(-78deg);
+        background-color: var(--signal-orange);
+        color: #FFFFFF;
+      }
+      100% {
+        transform: perspective(260px) rotateX(0deg);
+      }
+    }
+
+    .status-lamp-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #34D399;
+      font-weight: 600;
+    }
+
+    .status-lamp {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background-color: #10B981;
+      border: 1px solid #052E16;
+      display: inline-block;
+    }
+
+    .beam-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .beam-btn {
+      appearance: none;
+      border: var(--rule-carbon);
+      background-color: #1D1D1A;
+      color: var(--ink-on-dark);
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      min-height: 52px;
+      padding: 12px 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: background-color 140ms var(--ease-out-expo), color 140ms var(--ease-out-expo);
+      white-space: nowrap;
+    }
+
+    .beam-btn:hover {
+      background-color: #2B2B26;
+    }
+
+    .beam-btn:focus-visible {
+      outline: 3px solid var(--signal-orange);
+      outline-offset: -3px;
+      background-color: var(--signal-orange);
+      color: #FFFFFF;
+    }
+
+    .beam-btn--primary {
+      background-color: var(--signal-orange);
+      color: #FFFFFF;
+    }
+
+    .beam-btn--primary:hover {
+      background-color: var(--signal-orange-deep);
+    }
+
+    .beam-btn[aria-pressed="true"] {
+      background-color: var(--stone-ground);
+      color: var(--ink-primary);
+    }
+
+    /* ==========================================================================
+       3. Master-Detail Split Layout Topology (60% Left Directory / 40% Right Dock)
+       ========================================================================== */
+    .master-rack-workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 60%) minmax(360px, 40%);
+      flex: 1;
+      align-items: stretch;
+      border-bottom: var(--rule-hairline);
+    }
+
+    html[data-view="companion"] .master-rack-workspace {
+      grid-template-columns: minmax(0, 48%) minmax(420px, 52%);
+    }
+
+    /* Left 60%: Ruled Broadcast Channel Directory */
+    .channel-ledger-pane {
+      border-right: var(--rule-hairline);
+      display: flex;
+      flex-direction: column;
+      background-color: var(--stone-ground);
+    }
+
+    .ledger-command-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 14px 20px;
+      background-color: var(--stone-recessed);
+      border-bottom: var(--rule-hairline);
+    }
+
+    .ledger-title-group {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .ledger-heading {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 1.375rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--ink-primary);
+    }
+
+    .ledger-count-pill {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      background-color: var(--stone-panel);
+      border: var(--rule-hairline);
+      color: var(--ink-secondary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .ledger-filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .category-filter-btn {
+      appearance: none;
+      border: var(--rule-hairline);
+      background-color: var(--stone-panel);
+      color: var(--ink-primary);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 6px 11px;
+      cursor: pointer;
+      transition: background-color 120ms var(--ease-out-expo), color 120ms var(--ease-out-expo);
+    }
+
+    .category-filter-btn:hover {
+      background-color: var(--stone-muted-fill);
+    }
+
+    .category-filter-btn:focus-visible {
+      outline: 2px solid var(--signal-orange);
+      outline-offset: 1px;
+    }
+
+    .category-filter-btn.is-active {
+      background-color: var(--ink-primary);
+      color: #FFFFFF;
+    }
+
+    /* Schedule Table Header */
+    .channel-table-header {
+      display: grid;
+      grid-template-columns: 64px 96px minmax(210px, 1.25fr) minmax(220px, 1.45fr) 124px;
+      align-items: center;
+      background-color: var(--stone-muted-fill);
+      border-bottom: var(--rule-hairline);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--ink-secondary);
+      text-transform: uppercase;
+    }
+
+    .th-cell {
+      padding: 10px 14px;
+      border-right: var(--rule-hairline);
+    }
+
+    .th-cell:last-child {
+      border-right: 0;
+      text-align: right;
+    }
+
+    /* Channel Rows List */
+    .channel-rows-container {
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .channel-row {
+      display: grid;
+      grid-template-columns: 64px 96px minmax(210px, 1.25fr) minmax(220px, 1.45fr) 124px;
+      align-items: stretch;
+      min-height: 92px;
+      border-bottom: var(--rule-hairline);
+      background-color: var(--stone-ground);
+      color: var(--ink-primary);
+      cursor: pointer;
+      transition: background-color 120ms var(--ease-out-expo), color 120ms var(--ease-out-expo);
+      text-align: left;
+      width: 100%;
+    }
+
+    .channel-row:hover {
+      background-color: var(--stone-recessed);
+    }
+
+    .channel-row:focus {
+      outline: none;
+    }
+
+    /* Active D-Pad Selection Row: International Signal Orange Flood + White Ink */
+    .channel-row.is-selected,
+    .channel-row[aria-selected="true"] {
+      background-color: var(--signal-orange);
+      color: #FFFFFF;
+    }
+
+    .channel-row:focus-visible {
+      outline: 3px solid var(--ink-primary);
+      outline-offset: -3px;
+    }
+
+    .row-cell {
+      padding: 14px;
+      border-right: var(--rule-hairline);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .row-cell:last-child {
+      border-right: 0;
+      align-items: flex-end;
+      text-align: right;
+    }
+
+    .cell-ch-num {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.02em;
+    }
+
+    .cell-ch-sub {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--ink-secondary);
+    }
+
+    .channel-row.is-selected .cell-ch-sub {
+      color: #FFFFFF;
+    }
+
+    .code-flap-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 10px;
+      background-color: var(--carbon-beam);
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      font-variant-numeric: tabular-nums;
+      border: 1px solid #000000;
+    }
+
+    .channel-row.is-selected .code-flap-pill {
+      background-color: #141412;
+      color: #FFFFFF;
+      border-color: #FFFFFF;
+    }
+
+    .app-identity-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .app-emblem-box {
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--stone-panel);
+      border: var(--rule-hairline);
+      color: var(--ink-primary);
+    }
+
+    .channel-row.is-selected .app-emblem-box {
+      background-color: #141412;
+      color: #FFFFFF;
+      border-color: #141412;
+    }
+
+    .app-title-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .row-app-name {
+      font-family: var(--font-display);
+      font-size: 1.125rem;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+
+    .row-app-edition {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--ink-secondary);
+    }
+
+    .channel-row.is-selected .row-app-edition {
+      color: #FFFFFF;
+    }
+
+    .preset-summary-text {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      line-height: 1.38;
+      color: var(--ink-secondary);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .channel-row.is-selected .preset-summary-text {
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    .preset-verified-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 5px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--bottle-green);
+    }
+
+    .channel-row.is-selected .preset-verified-tag {
+      color: #FFFFFF;
+    }
+
+    .build-ver-num {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .build-size-num {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      font-variant-numeric: tabular-nums;
+      margin-top: 3px;
+    }
+
+    .channel-row.is-selected .build-size-num {
+      color: #FFFFFF;
+    }
+
+    /* ==========================================================================
+       Sponsor & Broadcast Bulletin Strip (Left Pane Bottom)
+       ========================================================================== */
+    .bulletin-strip-section {
+      margin-top: auto;
+      background-color: var(--stone-recessed);
+    }
+
+    .bulletin-strip-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      background-color: var(--stone-muted-fill);
+      border-bottom: var(--rule-hairline);
+    }
+
+    .bulletin-strip-heading {
+      margin: 0;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-primary);
+    }
+
+    .bulletin-strip-meta {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--ink-secondary);
+    }
+
+    .bulletin-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .bulletin-notice {
+      padding: 16px 18px;
+      border-right: var(--rule-hairline);
+      background-color: var(--stone-panel);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .bulletin-notice:last-child {
+      border-right: 0;
+    }
+
+    .bulletin-notice-top {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .bulletin-notice-title {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--ink-primary);
+    }
+
+    .bulletin-badge-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .bulletin-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      background-color: var(--ink-primary);
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .bulletin-metrics {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--ink-secondary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .bulletin-notice-desc {
+      margin: 0;
+      font-size: 0.8125rem;
+      line-height: 1.42;
+      color: var(--ink-secondary);
+    }
+
+    .bulletin-cta-btn {
+      appearance: none;
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      background-color: var(--stone-recessed);
+      color: var(--ink-primary);
+      border: var(--rule-hairline);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 120ms var(--ease-out-expo), color 120ms var(--ease-out-expo);
+    }
+
+    .bulletin-cta-btn:hover,
+    .bulletin-cta-btn:focus-visible {
+      background-color: var(--signal-orange);
+      color: #FFFFFF;
+      outline: none;
+    }
+
+    /* ==========================================================================
+       4. Right 40%: Live Hardware & Pre-Set Inspector Dock
+       ========================================================================== */
+    .inspector-dock-pane {
+      background-color: var(--stone-panel);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Inspector Top Header Compartment */
+    .inspector-header-box {
+      padding: 20px 24px;
+      border-bottom: var(--rule-hairline);
+      background-color: var(--stone-ground);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .inspector-title-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .inspector-app-heading {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--ink-primary);
+    }
+
+    .inspector-code-stamp {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      background-color: var(--carbon-beam);
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+    }
+
+    .inspector-badges-bar {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .verified-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background-color: var(--bottle-green);
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .edition-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      background-color: var(--stone-panel);
+      border: var(--rule-hairline);
+      color: var(--ink-primary);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .inspector-description {
+      margin: 0;
+      font-size: 0.9375rem;
+      line-height: 1.55;
+      color: var(--ink-secondary);
+      max-width: 65ch;
+    }
+
+    /* Hardware Telemetry Spec Matrix */
+    .telemetry-spec-matrix {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-bottom: var(--rule-hairline);
+      background-color: var(--stone-panel);
+    }
+
+    .spec-cell {
+      padding: 12px 20px;
+      border-right: var(--rule-hairline);
+      border-bottom: var(--rule-hairline);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .spec-cell:nth-child(2n) {
+      border-right: 0;
+    }
+
+    .spec-cell:nth-last-child(-n+2) {
+      border-bottom: 0;
+    }
+
+    .spec-key {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .spec-val {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--ink-primary);
+      font-variant-numeric: tabular-nums;
+      word-break: break-all;
+    }
+
+    /* Pre-Configured Optimization Checklist */
+    .checklist-compartment {
+      border-bottom: var(--rule-hairline);
+      background-color: var(--stone-panel);
+    }
+
+    .compartment-bar {
+      padding: 10px 24px;
+      background-color: var(--stone-recessed);
+      border-bottom: var(--rule-hairline);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .compartment-heading {
+      margin: 0;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-primary);
+    }
+
+    .compartment-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--bottle-green);
+    }
+
+    .preset-checklist {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .preset-check-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 24px;
+      border-bottom: var(--rule-hairline);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--ink-primary);
+    }
+
+    .preset-check-row:last-child {
+      border-bottom: 0;
+    }
+
+    .check-icon-box {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bottle-green);
+      color: #FFFFFF;
+    }
+
+    /* Two Heavy Tactile Hardware Buttons */
+    .hardware-actions-compartment {
+      padding: 20px 24px;
+      border-bottom: var(--rule-hairline);
+      background-color: var(--stone-ground);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tactile-hw-btn {
+      appearance: none;
+      width: 100%;
+      min-height: 54px;
+      padding: 12px 18px;
+      border: var(--rule-hairline);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 120ms var(--ease-out-expo), color 120ms var(--ease-out-expo), transform 120ms var(--ease-out-expo);
+    }
+
+    .tactile-hw-btn--primary {
+      background-color: var(--signal-orange);
+      color: #FFFFFF;
+    }
+
+    .tactile-hw-btn--primary:hover {
+      background-color: var(--signal-orange-deep);
+    }
+
+    .tactile-hw-btn--secondary {
+      background-color: var(--stone-panel);
+      color: var(--ink-primary);
+    }
+
+    .tactile-hw-btn--secondary:hover {
+      background-color: var(--ink-primary);
+      color: #FFFFFF;
+    }
+
+    .tactile-hw-btn:focus-visible {
+      outline: 3px solid var(--ink-primary);
+      outline-offset: 2px;
+    }
+
+    .tactile-hw-btn--secondary:focus-visible {
+      background-color: var(--signal-orange);
+      color: #FFFFFF;
+    }
+
+    .hw-btn-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hw-btn-meta {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      background-color: rgba(20, 20, 18, 0.18);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Live Companion QR Plate */
+    .qr-companion-compartment {
+      padding: 20px 24px;
+      background-color: var(--stone-panel);
+      display: grid;
+      grid-template-columns: 128px minmax(0, 1fr);
+      gap: 20px;
+      align-items: center;
+      margin-top: auto;
+    }
+
+    .qr-frame-box {
+      width: 128px;
+      height: 128px;
+      padding: 8px;
+      background-color: #FFFFFF;
+      border: var(--rule-hairline);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qr-frame-box img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .qr-instructions-col {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .qr-plate-heading {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: var(--ink-primary);
+    }
+
+    .qr-plate-copy {
+      margin: 0;
+      font-size: 0.8125rem;
+      line-height: 1.45;
+      color: var(--ink-secondary);
+    }
+
+    .qr-route-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 6px 10px;
+      background-color: var(--stone-recessed);
+      border: var(--rule-hairline);
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--ink-primary);
+    }
+
+    .sha-digest-line {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ==========================================================================
+       5. Native <dialog closedby="any"> Short-Code Keypad Modal
+       ========================================================================== */
+    dialog:modal {
+      overscroll-behavior: contain;
+    }
+
+    dialog::backdrop {
+      overflow: hidden;
+      overscroll-behavior: contain;
+      background-color: rgba(20, 20, 18, 0.72);
+      backdrop-filter: blur(2px);
+    }
+
+    .flap-dialer-modal {
+      padding: 0;
+      border: 2px solid #181816;
+      background-color: var(--stone-ground);
+      color: var(--ink-primary);
+      width: min(520px, 94vw);
+      box-shadow: 0 24px 48px -12px rgba(20, 20, 18, 0.55);
+    }
+
+    .dialer-modal-header {
+      padding: 16px 20px;
+      background-color: var(--carbon-beam);
+      color: var(--ink-on-dark);
+      border-bottom: var(--rule-hairline);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .dialer-modal-title {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .dialer-close-btn {
+      appearance: none;
+      border: 1px solid #3F3F3A;
+      background-color: #22221F;
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+
+    .dialer-close-btn:hover,
+    .dialer-close-btn:focus-visible {
+      background-color: var(--signal-orange);
+      border-color: var(--signal-orange);
+      outline: none;
+    }
+
+    .dialer-modal-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .dialer-readout-well {
+      background-color: var(--carbon-beam);
+      padding: 16px;
+      border: var(--rule-hairline);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .dialer-status-msg {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--ink-on-dark);
+    }
+
+    .dialer-presets-strip {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .dialer-preset-chip {
+      appearance: none;
+      border: var(--rule-hairline);
+      background-color: var(--stone-panel);
+      color: var(--ink-primary);
+      padding: 8px 6px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .dialer-preset-chip:hover,
+    .dialer-preset-chip:focus-visible {
+      background-color: var(--signal-orange);
+      color: #FFFFFF;
+      outline: none;
+    }
+
+    .dialer-keypad-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .keypad-key {
+      appearance: none;
+      border: var(--rule-hairline);
+      background-color: var(--stone-panel);
+      color: var(--ink-primary);
+      min-height: 50px;
+      font-family: var(--font-mono);
+      font-size: 1.125rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 100ms var(--ease-out-expo), color 100ms var(--ease-out-expo);
+    }
+
+    .keypad-key:hover,
+    .keypad-key:focus-visible {
+      background-color: var(--ink-primary);
+      color: #FFFFFF;
+      outline: none;
+    }
+
+    .keypad-key--action {
+      font-size: 0.8125rem;
+      background-color: var(--stone-recessed);
+    }
+
+    .keypad-submit-btn {
+      appearance: none;
+      border: var(--rule-hairline);
+      background-color: var(--signal-orange);
+      color: #FFFFFF;
+      min-height: 50px;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .keypad-submit-btn:hover,
+    .keypad-submit-btn:focus-visible {
+      background-color: var(--signal-orange-deep);
+      outline: 2px solid var(--ink-primary);
+    }
+
+    /* ==========================================================================
+       6. Compact Bottom-Right D-Pad Remote Simulator
+       ========================================================================== */
+    .dpad-remote-dock {
+      position: fixed;
+      left: 16px;
+      bottom: 12px;
+      z-index: 35;
+      background-color: var(--carbon-beam);
+      color: var(--ink-on-dark);
+      border: 1px solid #000000;
+      box-shadow: 0 14px 28px -8px rgba(20, 20, 18, 0.45);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      user-select: none;
+    }
+
+    .dpad-dock-bar {
+      padding: 4px 8px;
+      background-color: #0C0C0A;
+      border: 1px solid #2E2E2A;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .dpad-led {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--signal-orange);
+      display: inline-block;
+      transition: transform 120ms ease;
+    }
+
+    .dpad-led.is-active {
+      background-color: #34D399;
+      transform: scale(1.35);
+    }
+
+    .dpad-cross-grid {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .dpad-sim-btn {
+      appearance: none;
+      border: 1px solid #383833;
+      background-color: #22221F;
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      min-height: 30px;
+      padding: 4px 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 100ms ease;
+    }
+
+    .dpad-sim-btn:hover,
+    .dpad-sim-btn:focus-visible,
+    .dpad-sim-btn--sub:hover,
+    .dpad-sim-btn--sub:focus-visible {
+      background-color: var(--signal-orange);
+      border-color: var(--signal-orange);
+      color: #FFFFFF;
+      outline: none;
+    }
+
+    .dpad-sim-btn--ok {
+      background-color: var(--signal-orange);
+      border-color: #FF783D;
+      color: #FFFFFF;
+    }
+
+    .dpad-sim-btn--sub {
+      background-color: #161614;
+      color: #D4D7DD;
+    }
+
+    /* ==========================================================================
+       7. Responsive Layout Breakpoints
+       ========================================================================== */
+    @media (max-width: 1180px) {
+      .master-rack-workspace,
+      html[data-view="companion"] .master-rack-workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .channel-ledger-pane {
+        border-right: 0;
+        border-bottom: var(--rule-hairline);
+      }
+    }
+
+    @media (max-width: 820px) {
+      .channel-table-header {
+        display: none;
+      }
+
+      .channel-row {
+        grid-template-columns: 56px 88px 1fr;
+        grid-template-areas:
+          "ch code app"
+          "preset preset build";
+      }
+
+      .row-cell:nth-child(1) { grid-area: ch; }
+      .row-cell:nth-child(2) { grid-area: code; }
+      .row-cell:nth-child(3) { grid-area: app; border-right: 0; }
+      .row-cell:nth-child(4) { grid-area: preset; border-top: var(--rule-hairline); }
+      .row-cell:nth-child(5) { grid-area: build; border-top: var(--rule-hairline); }
+
+      .bulletin-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .bulletin-notice {
+        border-right: 0;
+        border-bottom: var(--rule-hairline);
+      }
+
+      .qr-companion-compartment {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 1. Persistent Top Mockup Switcher Bar -->
+  <header class="mockup-switcher-bar" aria-label="Mockup Comparison Switcher">
+    <a href="/mockup-2" class="switcher-brand" aria-label="KV-TV Store Broadcast Console">
+      <span class="switcher-brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true">
+          <path d="M5 4L16 10L5 16V4Z" fill="currentColor"/>
+        </svg>
+      </span>
+      <span>KV-TV STORE · tv.vndns.net</span>
+    </a>
+
+    <nav aria-label="Design Mockup Selection">
+      <ul class="switcher-links">
+        <li><a href="/mockup-1" class="switcher-link">[ 1 · Metro Panorama Tiles ]</a></li>
+        <li><a href="/mockup-2" class="switcher-link is-active" aria-current="page">[ 2 · Split-Flap Broadcast Ledger ]</a></li>
+        <li><a href="/mockup-3" class="switcher-link">[ 3 · Full-Bleed Cinema Stage ]</a></li>
+        <li><a href="/?mode=classic" class="switcher-link">[ Classic View ]</a></li>
+        <li><a href="/admin" class="switcher-link">[ Admin Console ]</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- 2. Mechanical Split-Flap Telemetry Header Beam -->
+  <section class="concourse-beam" aria-label="Solari Split-Flap Telemetry Readout">
+    <div class="flap-clusters-row">
+      <!-- DIAL CODE (5 mechanical flap cells) -->
+      <div class="flap-cluster">
+        <div class="flap-cluster-header">
+          <span class="flap-cluster-tag">DIAL CODE</span>
+          <span class="flap-cluster-tag">AFTV / DIRECT</span>
+        </div>
+        <div class="flap-bank" id="flap-bank-code" aria-live="polite" aria-label="Active Short-Code">
+          <span class="flap-cell flap-cell--code">8</span>
+          <span class="flap-cell flap-cell--code">8</span>
+          <span class="flap-cell flap-cell--code">1</span>
+          <span class="flap-cell flap-cell--code">0</span>
+          <span class="flap-cell flap-cell--code">3</span>
+        </div>
+      </div>
+
+      <!-- ACTIVE BUILD (14 mechanical flap cells) -->
+      <div class="flap-cluster">
+        <div class="flap-cluster-header">
+          <span class="flap-cluster-tag">ACTIVE BUILD</span>
+          <span class="flap-cluster-tag" id="flap-edition-readout">KV-PRESETUP (FULL REPOS)</span>
+        </div>
+        <div class="flap-bank" id="flap-bank-build" aria-live="polite" aria-label="Focused Application Build">
+          <span class="flap-cell flap-cell--wide">C</span>
+          <span class="flap-cell flap-cell--wide">L</span>
+          <span class="flap-cell flap-cell--wide">O</span>
+          <span class="flap-cell flap-cell--wide">U</span>
+          <span class="flap-cell flap-cell--wide">D</span>
+          <span class="flap-cell flap-cell--wide">S</span>
+          <span class="flap-cell flap-cell--wide">T</span>
+          <span class="flap-cell flap-cell--wide">R</span>
+          <span class="flap-cell flap-cell--wide">E</span>
+          <span class="flap-cell flap-cell--wide">A</span>
+          <span class="flap-cell flap-cell--wide">M</span>
+          <span class="flap-cell flap-cell--wide">&nbsp;</span>
+          <span class="flap-cell flap-cell--wide">3</span>
+          <span class="flap-cell flap-cell--wide">&nbsp;</span>
+        </div>
+      </div>
+
+      <!-- STATUS (amber/green lamp + [P][R][E][-][S][E][T]) -->
+      <div class="flap-cluster">
+        <div class="flap-cluster-header">
+          <span class="flap-cluster-tag">STATUS</span>
+          <span class="status-lamp-wrap">
+            <span class="status-lamp" aria-hidden="true"></span>
+            <span id="telemetry-sync-text">VERIFIED</span>
+          </span>
+        </div>
+        <div class="flap-bank" id="flap-bank-status" aria-label="Build Configuration Status">
+          <span class="flap-cell flap-cell--status">P</span>
+          <span class="flap-cell flap-cell--status">R</span>
+          <span class="flap-cell flap-cell--status">E</span>
+          <span class="flap-cell flap-cell--status">-</span>
+          <span class="flap-cell flap-cell--status">S</span>
+          <span class="flap-cell flap-cell--status">E</span>
+          <span class="flap-cell flap-cell--status">T</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="beam-controls">
+      <button type="button" class="beam-btn beam-btn--primary" id="open-dialer-btn" aria-haspopup="dialog" aria-controls="flap-dialer-dialog">
+        <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">
+          <rect x="3" y="2" width="14" height="16" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          <rect x="6" y="5" width="2" height="2" fill="currentColor"/>
+          <rect x="9" y="5" width="2" height="2" fill="currentColor"/>
+          <rect x="12" y="5" width="2" height="2" fill="currentColor"/>
+          <rect x="6" y="9" width="2" height="2" fill="currentColor"/>
+          <rect x="9" y="9" width="2" height="2" fill="currentColor"/>
+          <rect x="12" y="9" width="2" height="2" fill="currentColor"/>
+          <rect x="6" y="13" width="8" height="2" fill="currentColor"/>
+        </svg>
+        <span>[ DIAL SHORT-CODE ]</span>
+      </button>
+
+      <button type="button" class="beam-btn" id="toggle-companion-btn" aria-pressed="false">
+        <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">
+          <rect x="5" y="2" width="10" height="16" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          <line x1="8" y1="15" x2="12" y2="15" stroke="currentColor" stroke-width="1.8"/>
+        </svg>
+        <span id="toggle-companion-label">[ PHONE / AD VIEW ]</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- 3. Master-Detail Split Workspace (60% Left Directory / 40% Right Dock) -->
+  <main class="master-rack-workspace" id="catalog">
+    <!-- Left 60% — Ruled Broadcast Channel Directory -->
+    <section class="channel-ledger-pane" aria-labelledby="directory-heading">
+      <div class="ledger-command-strip">
+        <div class="ledger-title-group">
+          <h1 class="ledger-heading" id="directory-heading">Broadcast Channel Directory</h1>
+          <span class="ledger-count-pill" id="channel-count-pill">05 CHANNELS ONLINE · D-PAD READY</span>
+        </div>
+
+        <div class="ledger-filter-bar" role="toolbar" aria-label="Channel Category Filter" id="category-filter-bar">
+          <button type="button" class="category-filter-btn is-active" data-category="All">ALL (05)</button>
+          <button type="button" class="category-filter-btn" data-category="Media Center">MEDIA CENTER</button>
+          <button type="button" class="category-filter-btn" data-category="Streaming">STREAMING</button>
+          <button type="button" class="category-filter-btn" data-category="Originals & Cinema">CINEMA</button>
+          <button type="button" class="category-filter-btn" data-category="Video & Music">VIDEO &amp; MUSIC</button>
+        </div>
+      </div>
+
+      <!-- Precision Schedule Column Headers -->
+      <div class="channel-table-header" aria-hidden="true">
+        <div class="th-cell">CH</div>
+        <div class="th-cell">CODE</div>
+        <div class="th-cell">APPLICATION &amp; EDITION</div>
+        <div class="th-cell">PRE-SET CONFIGURATION</div>
+        <div class="th-cell">BUILD</div>
+      </div>
+
+      <!-- Roving Tabindex Channel Rows -->
+      <div class="channel-rows-container" role="listbox" aria-label="KV-TV Pre-Configured Applications" id="channel-rows-list">
+        <!-- Populated dynamically with immediate initial render -->
+      </div>
+
+      <!-- Sponsor & Broadcast Bulletin Strip (store.ads) -->
+      <aside class="bulletin-strip-section" aria-labelledby="bulletin-strip-heading">
+        <div class="bulletin-strip-header">
+          <h2 class="bulletin-strip-heading" id="bulletin-strip-heading">Sponsor &amp; Broadcast Bulletin Strip</h2>
+          <span class="bulletin-strip-meta" id="bulletin-telemetry-summary">VERIFIED NETWORK NOTICES</span>
+        </div>
+        <div class="bulletin-grid" id="bulletin-ads-grid">
+          <!-- Populated from store.ads -->
+        </div>
+      </aside>
+    </section>
+
+    <!-- Right 40% — Live Hardware & Pre-Set Inspector Dock -->
+    <aside class="inspector-dock-pane" aria-labelledby="inspector-app-title" aria-live="polite">
+      <div class="inspector-header-box">
+        <div class="inspector-title-row">
+          <h2 class="inspector-app-heading" id="inspector-app-title">CloudStream 3</h2>
+          <span class="inspector-code-stamp" id="inspector-code-stamp">CH 03 · 88103</span>
+        </div>
+
+        <div class="inspector-badges-bar">
+          <span class="verified-status-pill">
+            <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
+              <path d="M3 8.5L6.5 12L13 4.5" fill="none" stroke="currentColor" stroke-width="2.2"/>
+            </svg>
+            <span>PRE-SET VERIFIED</span>
+          </span>
+          <span class="edition-pill" id="inspector-edition-pill">KV-PreSetup (Full Repos)</span>
+          <span class="edition-pill" id="inspector-category-pill">Streaming</span>
+        </div>
+
+        <p class="inspector-description" id="inspector-description">
+          Zero manual repository typing required. Ships with MegaRepo and Vietnamese HD movie/anime extensions pre-activated, Cloudflare DoH enabled, and automatic 4K Vietsub stream selection.
+        </p>
+      </div>
+
+      <!-- Hardware Telemetry Spec Matrix -->
+      <div class="telemetry-spec-matrix" aria-label="Package Technical Specifications">
+        <div class="spec-cell">
+          <span class="spec-key">PACKAGE IDENTIFIER</span>
+          <span class="spec-val" id="spec-package">com.lagradost.cloudstream3</span>
+        </div>
+        <div class="spec-cell">
+          <span class="spec-key">BUILD VERSION &amp; SIZE</span>
+          <span class="spec-val" id="spec-version-size">v4.4.1-kv · 24.2 MB</span>
+        </div>
+        <div class="spec-cell">
+          <span class="spec-key">TARGET ARCHITECTURE</span>
+          <span class="spec-val" id="spec-arch">Universal (arm64-v8a + armeabi-v7a)</span>
+        </div>
+        <div class="spec-cell">
+          <span class="spec-key">TOTAL VERIFIED INSTALLS</span>
+          <span class="spec-val" id="spec-downloads">4,150 INSTALLS · 5.0 RATING</span>
+        </div>
+      </div>
+
+      <!-- Pre-Configured Optimization Checklist -->
+      <div class="checklist-compartment">
+        <div class="compartment-bar">
+          <h3 class="compartment-heading">Pre-Configured Optimization Checklist</h3>
+          <span class="compartment-tag">4 / 4 BUNDLED</span>
+        </div>
+        <ul class="preset-checklist" id="inspector-checklist">
+          <!-- Populated dynamically -->
+        </ul>
+      </div>
+
+      <!-- Two Heavy Tactile Hardware Buttons -->
+      <div class="hardware-actions-compartment" id="inspector-actions-group">
+        <a href="/api/download/cloudstream-kv?type=apk" class="tactile-hw-btn tactile-hw-btn--primary" id="hw-btn-apk" data-hw-action="apk">
+          <span class="hw-btn-left">
+            <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+              <path d="M10 3V13M10 13L6 9M10 13L14 9M4 16H16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"/>
+            </svg>
+            <span>[ INSTALL OPTIMIZED APK ]</span>
+          </span>
+          <span class="hw-btn-meta" id="hw-apk-meta">24.2 MB · DIRECT</span>
+        </a>
+
+        <a href="/api/download/cloudstream-kv?type=preset" class="tactile-hw-btn tactile-hw-btn--secondary" id="hw-btn-preset" data-hw-action="preset">
+          <span class="hw-btn-left">
+            <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+              <rect x="3" y="4" width="14" height="12" fill="none" stroke="currentColor" stroke-width="1.9"/>
+              <path d="M7 8H13M7 12H11" stroke="currentColor" stroke-width="1.9"/>
+            </svg>
+            <span>[ DOWNLOAD PRE-SET PACK (.ZIP) ]</span>
+          </span>
+          <span class="hw-btn-meta" id="hw-preset-meta">CONFIG BACKUP</span>
+        </a>
+      </div>
+
+      <!-- Live Companion QR Plate -->
+      <div class="qr-companion-compartment">
+        <div class="qr-frame-box">
+          <img id="inspector-qr-img" src="/api/qr?text=https%3A%2F%2Ftv.vndns.net%2Fgo%2F88103&amp;size=220&amp;dark=%23141412&amp;light=%23FFFFFF" alt="Companion QR code for direct APK download" width="112" height="112">
+        </div>
+        <div class="qr-instructions-col">
+          <h3 class="qr-plate-heading">Live Companion QR Plate</h3>
+          <p class="qr-plate-copy">
+            Scan with phone camera or enter short-code in Android TV Downloader for zero-config deployment.
+          </p>
+          <div class="qr-route-box">
+            <span id="inspector-route-url">tv.vndns.net/go/88103</span>
+            <span id="inspector-shortcode-tag">CODE 88103</span>
+          </div>
+          <div class="sha-digest-line" id="inspector-sha-line">
+            SHA-256: 9b423b14f254b94be464f087...dc44e0d
+          </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- 4. Native <dialog closedby="any"> Short-Code Keypad Modal -->
+  <dialog class="flap-dialer-modal" id="flap-dialer-dialog" closedby="any" aria-labelledby="flap-dialer-title">
+    <div class="dialer-modal-header">
+      <h2 class="dialer-modal-title" id="flap-dialer-title">Solari Short-Code Tele-Dialer</h2>
+      <button type="button" class="dialer-close-btn" id="close-dialer-btn">[ ESC / CLOSE ]</button>
+    </div>
+
+    <div class="dialer-modal-body">
+      <div class="dialer-readout-well">
+        <div class="flap-bank" id="dialer-flap-readout" aria-live="polite">
+          <span class="flap-cell flap-cell--code">8</span>
+          <span class="flap-cell flap-cell--code">8</span>
+          <span class="flap-cell flap-cell--code">1</span>
+          <span class="flap-cell flap-cell--code">0</span>
+          <span class="flap-cell flap-cell--code">3</span>
+        </div>
+        <span class="dialer-status-msg" id="dialer-status-msg">READY: CLOUDSTREAM 3</span>
+      </div>
+
+      <div class="dialer-presets-strip" aria-label="Quick Channel Presets">
+        <button type="button" class="dialer-preset-chip" data-preset-code="88101">
+          <span>88101</span>
+          <span>Jellyfin</span>
+        </button>
+        <button type="button" class="dialer-preset-chip" data-preset-code="88102">
+          <span>88102</span>
+          <span>Kodi 21</span>
+        </button>
+        <button type="button" class="dialer-preset-chip" data-preset-code="88103">
+          <span>88103</span>
+          <span>CloudStrm</span>
+        </button>
+        <button type="button" class="dialer-preset-chip" data-preset-code="88104">
+          <span>88104</span>
+          <span>KV-Netflix</span>
+        </button>
+        <button type="button" class="dialer-preset-chip" data-preset-code="88105">
+          <span>88105</span>
+          <span>KV-Tube</span>
+        </button>
+      </div>
+
+      <div class="dialer-keypad-grid" role="group" aria-label="Numeric Short-Code Keypad">
+        <button type="button" class="keypad-key" data-key="1">1</button>
+        <button type="button" class="keypad-key" data-key="2">2</button>
+        <button type="button" class="keypad-key" data-key="3">3</button>
+        <button type="button" class="keypad-key" data-key="4">4</button>
+        <button type="button" class="keypad-key" data-key="5">5</button>
+        <button type="button" class="keypad-key" data-key="6">6</button>
+        <button type="button" class="keypad-key" data-key="7">7</button>
+        <button type="button" class="keypad-key" data-key="8">8</button>
+        <button type="button" class="keypad-key" data-key="9">9</button>
+        <button type="button" class="keypad-key keypad-key--action" data-key="CLR">CLR</button>
+        <button type="button" class="keypad-key" data-key="0">0</button>
+        <button type="button" class="keypad-key keypad-key--action" data-key="DEL">DEL</button>
+      </div>
+
+      <button type="button" class="keypad-submit-btn" id="dialer-launch-btn">
+        <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">
+          <path d="M4 10H16M16 10L11 5M16 10L11 15" fill="none" stroke="currentColor" stroke-width="2.2"/>
+        </svg>
+        <span>[ LOCK CHANNEL &amp; FETCH APK ]</span>
+      </button>
+    </div>
+  </dialog>
+
+  <!-- 5. Compact Bottom-Right D-Pad Remote Simulator -->
+  <aside class="dpad-remote-dock" aria-label="10-Foot D-Pad Remote Simulator">
+    <div class="dpad-dock-bar">
+      <span>D-PAD REMOTE SIM</span>
+      <span class="dpad-led" id="dpad-led" aria-hidden="true"></span>
+    </div>
+    <div class="dpad-cross-grid">
+      <button type="button" class="dpad-sim-btn dpad-sim-btn--sub" data-dpad="DIAL" title="Open Short-Code Dialer">DIAL</button>
+      <button type="button" class="dpad-sim-btn" data-dpad="UP" aria-label="D-Pad Up">UP</button>
+      <button type="button" class="dpad-sim-btn dpad-sim-btn--sub" data-dpad="BACK" aria-label="D-Pad Back">BACK</button>
+      <button type="button" class="dpad-sim-btn" data-dpad="LEFT" aria-label="D-Pad Left">LEFT</button>
+      <button type="button" class="dpad-sim-btn dpad-sim-btn--ok" data-dpad="OK" aria-label="D-Pad OK Select">OK</button>
+      <button type="button" class="dpad-sim-btn" data-dpad="RIGHT" aria-label="D-Pad Right">RIGHT</button>
+      <button type="button" class="dpad-sim-btn dpad-sim-btn--sub" data-dpad="CH1" title="Jump to CH 01">CH 1</button>
+      <button type="button" class="dpad-sim-btn" data-dpad="DOWN" aria-label="D-Pad Down">DOWN</button>
+      <button type="button" class="dpad-sim-btn dpad-sim-btn--sub" data-dpad="CH5" title="Jump to CH 05">CH 5</button>
+    </div>
+  </aside>
+
+  <script type="module">
+    /**
+     * KV-TV Store Mockup 2: Concourse Split-Flap & Broadcast Master Rack
+     * Self-contained client engine with live /api/catalog sync, mechanical split-flap
+     * animations, roving tabindex 2D D-Pad navigation, and <dialog closedby="any"> fallback.
+     */
+
+    const FALLBACK_STORE = {
+      storeInfo: {
+        name: 'KV-TV App Store',
+        domain: 'https://tv.vndns.net',
+        downloaderCodePrefix: '88',
+      },
+      apps: [
+        {
+          id: 'jellyfin-kv',
+          name: 'Jellyfin TV',
+          edition: 'KV-Optimized Edition',
+          packageName: 'org.jellyfin.androidtv.kv',
+          version: '0.18.4-kv2',
+          size: '42.8 MB',
+          shortCode: '88101',
+          category: 'Media Center',
+          preConfigured: true,
+          presetSummary: 'Pre-linked to KV Media Server + Direct Play 4K HDR10/Dolby Vision ExoPlayer profile',
+          description: 'Custom Android TV build of Jellyfin with pre-configured KV Media Server discovery, Direct Play 4K HEVC 10-bit profiles, and styled Vietnamese/English subtitles.',
+          presetFeatures: [
+            'Auto-discovery & pre-filled server URL',
+            'Hardware-accelerated ExoPlayer + libVLC fallback',
+            'Zero-transcode 4K HEVC 10-bit Direct Play',
+            'Vietnamese & English default subtitle styling',
+          ],
+          iconType: 'jellyfin',
+          downloads: 1420,
+          rating: '4.9',
+          minAndroid: 'Android TV 7.0+',
+          arch: 'Universal (arm64-v8a + armeabi-v7a)',
+          sha256: '99d98a40e11b84a33bd0de9eb51a3fdb434901c8d9016d9b54a6332f8651d2ae',
+        },
+        {
+          id: 'kodi-kv',
+          name: 'Kodi 21 Omega',
+          edition: 'KV-Build All-in-One',
+          packageName: 'org.xbmc.kodi',
+          version: '21.2-kv-build',
+          size: '94.5 MB',
+          shortCode: '88102',
+          category: 'Media Center',
+          preConfigured: true,
+          presetSummary: 'Pre-loaded Arctic Zephyr 2 Leanback Skin + VN Subtitle Addons + RAM Cache Tuned',
+          description: 'Ready-to-run Kodi 21.2 Omega build featuring the lightweight Arctic Zephyr 2 10-foot TV skin, tuned memory cache for 1GB/2GB TV boxes, and pre-installed Vietnamese subtitle addons.',
+          presetFeatures: [
+            'Arctic Zephyr 2 10-foot TV remote skin pre-activated',
+            'advancedsettings.xml tuned for 1GB/2GB RAM TV Boxes',
+            'Pre-installed Vietnamese subtitle providers (Subscene/OpenSubtitles)',
+            'TorrServer & Elementum streaming buffer optimization',
+          ],
+          iconType: 'kodi',
+          downloads: 2890,
+          rating: '4.9',
+          minAndroid: 'Android TV 7.0+',
+          arch: 'Universal (arm64-v8a + armeabi-v7a)',
+          sha256: '547112484959b4a8e6a2f6bd1d44741fed6dc04adcfc3910cac56b95c32228de',
+        },
+        {
+          id: 'cloudstream-kv',
+          name: 'CloudStream 3',
+          edition: 'KV-PreSetup (Full Repos)',
+          packageName: 'com.lagradost.cloudstream3',
+          version: '4.4.1-kv',
+          size: '24.2 MB',
+          shortCode: '88103',
+          category: 'Streaming',
+          preConfigured: true,
+          presetSummary: 'Our already-setup build: Vietnamese & Global repositories pre-installed & auto-updated',
+          description: 'Zero manual repository typing required. Ships with MegaRepo and Vietnamese HD movie/anime extensions pre-activated, Cloudflare DoH enabled, and automatic 4K Vietsub stream selection.',
+          presetFeatures: [
+            'Pre-configured MegaRepo + Vietnamese HD Movie/Anime extensions',
+            'Auto-selects 1080p/4K highest-bitrate stream with Vietsub',
+            'DNS-over-HTTPS (Cloudflare 1.1.1.1) pre-enabled to bypass ISP blocks',
+            'One-click Pre-Set Backup (.backup) restore included',
+          ],
+          iconType: 'cloudstream',
+          downloads: 4150,
+          rating: '5.0',
+          minAndroid: 'Android TV 6.0+',
+          arch: 'Universal (arm64-v8a + armeabi-v7a)',
+          sha256: '9b423b14f254b94be464f087216b2d1a313aab0647934d8258c4da88bdc44e0d',
+        },
+        {
+          id: 'kv-netflix',
+          name: 'KV-Netflix',
+          edition: 'TV Remote & 4K HDR Mod',
+          packageName: 'vn.kvtv.netflix',
+          version: '8.114.0-kv',
+          size: '38.6 MB',
+          shortCode: '88104',
+          category: 'Originals & Cinema',
+          preConfigured: true,
+          presetSummary: 'Works on both certified & uncertified Android TV boxes with full D-Pad navigation',
+          description: 'Engineered for Android TV boxes that fail Netflix certification checks. Provides native D-Pad remote focus navigation without an air-mouse, adaptive Widevine L1/L3 fallback, and 5.1 audio.',
+          presetFeatures: [
+            'Native D-Pad directional navigation (no air-mouse needed)',
+            'Widevine L1/L3 adaptive fallback for uncertified TV boxes',
+            'Pre-tuned Dolby Digital Plus 5.1 & HDR10 playback flags',
+            'Ultra-fast cold start on Amlogic & Rockchip chips',
+          ],
+          iconType: 'netflix',
+          downloads: 3680,
+          rating: '4.8',
+          minAndroid: 'Android TV 7.0+',
+          arch: 'Universal (arm64-v8a + armeabi-v7a)',
+          sha256: 'c41a079e854761ba2417a1a159d28979ac56102c0f798e206b3605ff179680cd',
+        },
+        {
+          id: 'kv-tube',
+          name: 'KV-Tube',
+          edition: 'Ad-Free 4K60 + SponsorBlock',
+          packageName: 'vn.kvtv.tube',
+          version: '24.85-kv',
+          size: '19.4 MB',
+          shortCode: '88105',
+          category: 'Video & Music',
+          preConfigured: true,
+          presetSummary: 'Zero ads, SponsorBlock auto-skip, 4K 60fps HDR VP9/AV1, and Voice Search ready',
+          description: 'Next-gen SmartTube/KV-Tube client for Android TV. Blocks 100% of video and banner ads, automatically skips sponsor reads via SponsorBlock, and unlocks 4K 60fps HDR on any TV box.',
+          presetFeatures: [
+            '100% Ad-free playback (no pre-roll, mid-roll, or banner ads)',
+            'SponsorBlock pre-configured (skips intros, self-promo & sponsor segments)',
+            'AV1 & VP9 hardware codec selector for smooth 4K 60fps',
+            'Works without Google Play Services on any Android TV box',
+          ],
+          iconType: 'tube',
+          downloads: 5920,
+          rating: '5.0',
+          minAndroid: 'Android TV 6.0+',
+          arch: 'Universal (arm64-v8a + armeabi-v7a)',
+          sha256: '629784a302008b3497ee53e341ab48d51841b46f0a5a41540dcb4947150f17d1',
+        },
+      ],
+      ads: [
+        {
+          id: 'ad-vip-box',
+          title: 'KV-TV VIP Box Setup — Turn any Android TV into a 4K Cinema Hub',
+          subtitle: 'Pre-tuned Jellyfin, Kodi 21 Omega, CloudStream Vietsub & Ad-Free 4K60 KV-Tube ready in 60 seconds.',
+          badge: 'FEATURED',
+          ctaText: 'Explore Pre-Set Apps',
+          ctaUrl: '#catalog',
+          impressions: 4823,
+          clicks: 612,
+        },
+        {
+          id: 'ad-vps-cdn',
+          title: 'ThueVPSGiaRe High-Speed VN Edge CDN — 1Gbps Direct APK Downloads',
+          subtitle: 'Hosted on low-latency Vietnam NVMe VPS with instant AFTVnews Downloader short-codes (88101–88105).',
+          badge: 'SPONSOR',
+          ctaText: 'Dial 88101',
+          ctaUrl: '/go/88101',
+          impressions: 3193,
+          clicks: 284,
+        },
+        {
+          id: 'ad-cloudstream-44',
+          title: 'CloudStream KV-PreSetup v4.4 Released — All VN Movie Extensions Ready',
+          subtitle: 'Includes pre-loaded MegaRepo, 4K Vietsub auto-selector, and Cloudflare 1.1.1.1 DoH bypass.',
+          badge: 'NEW RELEASE',
+          ctaText: 'Code: 88103',
+          ctaUrl: '/go/88103',
+          impressions: 5412,
+          clicks: 845,
+        },
+      ],
+    };
+
+    const state = {
+      apps: [...FALLBACK_STORE.apps],
+      ads: [...FALLBACK_STORE.ads],
+      activeCategory: 'All',
+      selectedAppId: 'cloudstream-kv',
+      focusZone: 'channels', // 'channels' | 'inspector'
+      inspectorBtnIndex: 0,
+      dialBuffer: '88103',
+    };
+
+    function getAppSvgIcon(iconType) {
+      switch (iconType) {
+        case 'jellyfin':
+          return `<svg viewBox="0 0 28 28" width="24" height="24" aria-hidden="true">
+            <polygon points="14,3 25,23 3,23" fill="none" stroke="currentColor" stroke-width="2.2"/>
+            <polygon points="14,10 19,20 9,20" fill="currentColor"/>
+          </svg>`;
+        case 'kodi':
+          return `<svg viewBox="0 0 28 28" width="24" height="24" aria-hidden="true">
+            <rect x="6" y="6" width="16" height="16" transform="rotate(45 14 14)" fill="none" stroke="currentColor" stroke-width="2.2"/>
+            <circle cx="14" cy="14" r="3.5" fill="currentColor"/>
+          </svg>`;
+        case 'cloudstream':
+          return `<svg viewBox="0 0 28 28" width="24" height="24" aria-hidden="true">
+            <path d="M7 19H21C23.2 19 25 17.2 25 15C25 13 23.5 11.3 21.5 11C20.8 7.6 17.8 5 14 5C9.6 5 6 8.6 6 13C4.3 13.5 3 15.1 3 17C3 18.1 4.8 19 7 19Z" fill="none" stroke="currentColor" stroke-width="2.2"/>
+            <path d="M12 11L17 14L12 17V11Z" fill="currentColor"/>
+          </svg>`;
+        case 'netflix':
+          return `<svg viewBox="0 0 28 28" width="24" height="24" aria-hidden="true">
+            <path d="M8 4V24M20 4V24M8 4L20 24" fill="none" stroke="currentColor" stroke-width="2.8"/>
+          </svg>`;
+        case 'tube':
+        default:
+          return `<svg viewBox="0 0 28 28" width="24" height="24" aria-hidden="true">
+            <rect x="3" y="6" width="22" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/>
+            <path d="M12 10L18 14L12 18V10Z" fill="currentColor"/>
+          </svg>`;
+      }
+    }
+
+    function getFilteredApps() {
+      if (state.activeCategory === 'All') return state.apps;
+      return state.apps.filter((app) => app.category === state.activeCategory);
+    }
+
+    function animateFlapBank(containerEl, targetString, totalCells) {
+      if (!containerEl) return;
+      const padded = String(targetString || '')
+        .toUpperCase()
+        .padEnd(totalCells, ' ')
+        .slice(0, totalCells);
+      const cells = Array.from(containerEl.querySelectorAll('.flap-cell'));
+
+      cells.forEach((cell, idx) => {
+        const ch = padded[idx] === ' ' ? '\u00A0' : padded[idx];
+        if (cell.textContent !== ch) {
+          cell.classList.remove('is-flipping');
+          void cell.offsetWidth;
+          setTimeout(() => {
+            cell.textContent = ch;
+            cell.classList.add('is-flipping');
+          }, idx * 18);
+        }
+      });
+    }
+
+    function updateSplitFlapHeader(app) {
+      if (!app) return;
+      animateFlapBank(document.getElementById('flap-bank-code'), app.shortCode, 5);
+      animateFlapBank(document.getElementById('flap-bank-build'), app.name, 14);
+      animateFlapBank(
+        document.getElementById('flap-bank-status'),
+        app.preConfigured ? 'PRE-SET' : 'STD-APK',
+        7
+      );
+      const editionEl = document.getElementById('flap-edition-readout');
+      if (editionEl) {
+        editionEl.textContent = String(app.edition || '').toUpperCase();
+      }
+    }
+
+    function updateInspectorDock(app, indexInAll) {
+      if (!app) return;
+      const chNum = String(indexInAll + 1).padStart(2, '0');
+      document.getElementById('inspector-app-title').textContent = app.name;
+      document.getElementById('inspector-code-stamp').textContent = `CH ${chNum} · ${app.shortCode}`;
+      document.getElementById('inspector-edition-pill').textContent = app.edition;
+      document.getElementById('inspector-category-pill').textContent = app.category;
+      document.getElementById('inspector-description').textContent = app.description;
+
+      document.getElementById('spec-package').textContent = app.packageName;
+      document.getElementById('spec-version-size').textContent = `v${app.version} · ${app.size}`;
+      document.getElementById('spec-arch').textContent = `${app.arch || 'Universal'} (${app.minAndroid || 'Android TV'})`;
+      document.getElementById('spec-downloads').textContent = `${Number(app.downloads || 0).toLocaleString()} INSTALLS · ${app.rating || '5.0'} RATING`;
+
+      const checklistEl = document.getElementById('inspector-checklist');
+      checklistEl.innerHTML = (app.presetFeatures || [])
+        .map(
+          (feat) => `
+          <li class="preset-check-row">
+            <span class="check-icon-box" aria-hidden="true">
+              <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
+                <path d="M3 8.5L6.5 12L13 4.5" fill="none" stroke="currentColor" stroke-width="2.2"/>
+              </svg>
+            </span>
+            <span>${escapeHtml(feat)}</span>
+          </li>`
+        )
+        .join('');
+
+      const apkBtn = document.getElementById('hw-btn-apk');
+      const presetBtn = document.getElementById('hw-btn-preset');
+      apkBtn.href = `/api/download/${encodeURIComponent(app.id)}?type=apk`;
+      presetBtn.href = `/api/download/${encodeURIComponent(app.id)}?type=preset`;
+      document.getElementById('hw-apk-meta').textContent = `${app.size} · CODE ${app.shortCode}`;
+      document.getElementById('hw-preset-meta').textContent = `.ZIP ARCHIVE`;
+
+      const qrUrl = `https://tv.vndns.net/go/${app.shortCode}`;
+      const qrImg = document.getElementById('inspector-qr-img');
+      qrImg.src = `/api/qr?text=${encodeURIComponent(qrUrl)}&size=220&dark=%23141412&light=%23FFFFFF`;
+      qrImg.alt = `QR code for ${app.name} (${app.shortCode})`;
+
+      document.getElementById('inspector-route-url').textContent = `tv.vndns.net/go/${app.shortCode}`;
+      document.getElementById('inspector-shortcode-tag').textContent = `CODE ${app.shortCode}`;
+
+      const sha = String(app.sha256 || '9b423b14f254b94be464f087216b2d1a313aab0647934d8258c4da88bdc44e0d');
+      document.getElementById('inspector-sha-line').textContent = `SHA-256: ${sha.slice(0, 24)}...${sha.slice(-8)}`;
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function renderChannelDirectory(preserveFocus = false) {
+      const listEl = document.getElementById('channel-rows-list');
+      const filtered = getFilteredApps();
+
+      if (!filtered.some((a) => a.id === state.selectedAppId) && filtered.length > 0) {
+        state.selectedAppId = filtered[0].id;
+      }
+
+      const countPill = document.getElementById('channel-count-pill');
+      if (countPill) {
+        countPill.textContent = `${String(filtered.length).padStart(2, '0')} CHANNELS ONLINE · D-PAD READY`;
+      }
+
+      listEl.innerHTML = filtered
+        .map((app) => {
+          const globalIdx = state.apps.findIndex((a) => a.id === app.id);
+          const chNum = String((globalIdx >= 0 ? globalIdx : 0) + 1).padStart(2, '0');
+          const isSelected = app.id === state.selectedAppId;
+
+          return `
+            <div
+              class="channel-row ${isSelected ? 'is-selected' : ''}"
+              role="option"
+              aria-selected="${isSelected ? 'true' : 'false'}"
+              tabindex="${isSelected ? '0' : '-1'}"
+              data-app-id="${escapeHtml(app.id)}"
+              data-short-code="${escapeHtml(app.shortCode)}"
+            >
+              <div class="row-cell">
+                <span class="cell-ch-num">${chNum}</span>
+                <span class="cell-ch-sub">CH ${chNum}</span>
+              </div>
+              <div class="row-cell">
+                <span class="code-flap-pill">${escapeHtml(app.shortCode)}</span>
+              </div>
+              <div class="row-cell">
+                <div class="app-identity-wrap">
+                  <span class="app-emblem-box">${getAppSvgIcon(app.iconType)}</span>
+                  <div class="app-title-stack">
+                    <span class="row-app-name">${escapeHtml(app.name)}</span>
+                    <span class="row-app-edition">${escapeHtml(app.edition)}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row-cell">
+                <span class="preset-summary-text">${escapeHtml(app.presetSummary)}</span>
+                <span class="preset-verified-tag">
+                  <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
+                    <path d="M3 8.5L6.5 12L13 4.5" fill="none" stroke="currentColor" stroke-width="2.2"/>
+                  </svg>
+                  <span>PRE-CONFIGURED</span>
+                </span>
+              </div>
+              <div class="row-cell">
+                <span class="build-ver-num">v${escapeHtml(app.version)}</span>
+                <span class="build-size-num">${escapeHtml(app.size)}</span>
+              </div>
+            </div>
+          `;
+        })
+        .join('');
+
+      const activeApp = state.apps.find((a) => a.id === state.selectedAppId) || state.apps[0];
+      const activeGlobalIdx = state.apps.findIndex((a) => a.id === activeApp?.id);
+      updateSplitFlapHeader(activeApp);
+      updateInspectorDock(activeApp, activeGlobalIdx >= 0 ? activeGlobalIdx : 0);
+
+      listEl.querySelectorAll('.channel-row').forEach((rowEl) => {
+        rowEl.addEventListener('click', () => {
+          selectChannelById(rowEl.dataset.appId, true);
+        });
+      });
+
+      if (preserveFocus && state.focusZone === 'channels') {
+        const selectedRow = listEl.querySelector(`.channel-row[data-app-id="${state.selectedAppId}"]`);
+        if (selectedRow) selectedRow.focus();
+      }
+    }
+
+    function selectChannelById(appId, focusElement = false) {
+      const targetApp = state.apps.find((a) => a.id === appId);
+      if (!targetApp) return;
+
+      state.selectedAppId = targetApp.id;
+      const listEl = document.getElementById('channel-rows-list');
+      const rows = Array.from(listEl.querySelectorAll('.channel-row'));
+
+      rows.forEach((row) => {
+        const match = row.dataset.appId === appId;
+        row.classList.toggle('is-selected', match);
+        row.setAttribute('aria-selected', match ? 'true' : 'false');
+        row.setAttribute('tabindex', match ? '0' : '-1');
+        if (match && focusElement) {
+          row.focus();
+        }
+      });
+
+      const globalIdx = state.apps.findIndex((a) => a.id === targetApp.id);
+      updateSplitFlapHeader(targetApp);
+      updateInspectorDock(targetApp, globalIdx >= 0 ? globalIdx : 0);
+      pulseDpadLed();
+    }
+
+    function renderAdsBulletin() {
+      const gridEl = document.getElementById('bulletin-ads-grid');
+      if (!gridEl) return;
+
+      gridEl.innerHTML = state.ads
+        .slice(0, 3)
+        .map(
+          (ad) => `
+          <article class="bulletin-notice" data-ad-id="${escapeHtml(ad.id)}">
+            <div class="bulletin-notice-top">
+              <div class="bulletin-badge-row">
+                <span class="bulletin-badge">${escapeHtml(ad.badge || 'BULLETIN')}</span>
+                <span class="bulletin-metrics">${Number(ad.impressions || 0).toLocaleString()} VIEWS</span>
+              </div>
+              <h3 class="bulletin-notice-title">${escapeHtml(ad.title)}</h3>
+              <p class="bulletin-notice-desc">${escapeHtml(ad.subtitle)}</p>
+            </div>
+            <button type="button" class="bulletin-cta-btn" data-ad-id="${escapeHtml(ad.id)}" data-cta-url="${escapeHtml(ad.ctaUrl || '#catalog')}">
+              <span>[ ${escapeHtml(ad.ctaText || 'OPEN NOTICE')} ]</span>
+              <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
+                <path d="M3 8H13M13 8L9 4M13 8L9 12" fill="none" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </button>
+          </article>
+        `
+        )
+        .join('');
+
+      gridEl.querySelectorAll('.bulletin-cta-btn').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          const adId = btn.dataset.adId;
+          const ctaUrl = btn.dataset.ctaUrl || '';
+          try {
+            await fetch(`/api/ads/${encodeURIComponent(adId)}/click`, { method: 'POST' });
+          } catch {
+            // Ignore offline error
+          }
+          const codeMatch = ctaUrl.match(/(\d{5})/);
+          if (codeMatch) {
+            const matchedApp = state.apps.find((a) => a.shortCode === codeMatch[1]);
+            if (matchedApp) {
+              selectChannelById(matchedApp.id, true);
+              return;
+            }
+          }
+          const firstRow = document.querySelector('.channel-row.is-selected');
+          if (firstRow) firstRow.focus();
+        });
+      });
+    }
+
+    function pulseDpadLed() {
+      const led = document.getElementById('dpad-led');
+      if (!led) return;
+      led.classList.add('is-active');
+      clearTimeout(led._timer);
+      led._timer = setTimeout(() => led.classList.remove('is-active'), 180);
+    }
+
+    function moveDpad(direction) {
+      pulseDpadLed();
+      const dialog = document.getElementById('flap-dialer-dialog');
+      if (dialog && dialog.open) {
+        if (direction === 'BACK') dialog.close();
+        return;
+      }
+
+      const filtered = getFilteredApps();
+      if (!filtered.length) return;
+      const currentIdx = Math.max(
+        0,
+        filtered.findIndex((a) => a.id === state.selectedAppId)
+      );
+      const hwButtons = [
+        document.getElementById('hw-btn-apk'),
+        document.getElementById('hw-btn-preset'),
+      ];
+
+      if (direction === 'UP') {
+        if (state.focusZone === 'inspector') {
+          state.inspectorBtnIndex = Math.max(0, state.inspectorBtnIndex - 1);
+          hwButtons[state.inspectorBtnIndex]?.focus();
+        } else {
+          const prevIdx = (currentIdx - 1 + filtered.length) % filtered.length;
+          selectChannelById(filtered[prevIdx].id, true);
+        }
+      } else if (direction === 'DOWN') {
+        if (state.focusZone === 'inspector') {
+          state.inspectorBtnIndex = Math.min(hwButtons.length - 1, state.inspectorBtnIndex + 1);
+          hwButtons[state.inspectorBtnIndex]?.focus();
+        } else {
+          const nextIdx = (currentIdx + 1) % filtered.length;
+          selectChannelById(filtered[nextIdx].id, true);
+        }
+      } else if (direction === 'RIGHT') {
+        state.focusZone = 'inspector';
+        state.inspectorBtnIndex = 0;
+        hwButtons[0]?.focus();
+      } else if (direction === 'LEFT' || direction === 'BACK') {
+        state.focusZone = 'channels';
+        selectChannelById(state.selectedAppId, true);
+      } else if (direction === 'OK') {
+        if (state.focusZone === 'inspector') {
+          hwButtons[state.inspectorBtnIndex]?.click();
+        } else {
+          state.focusZone = 'inspector';
+          state.inspectorBtnIndex = 0;
+          hwButtons[0]?.focus();
+        }
+      }
+    }
+
+    function setupSpatialNavigation() {
+      document.addEventListener('keydown', (event) => {
+        const dialog = document.getElementById('flap-dialer-dialog');
+        if (dialog && dialog.open) return;
+
+        if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          moveDpad('UP');
+        } else if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          moveDpad('DOWN');
+        } else if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          moveDpad('RIGHT');
+        } else if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          moveDpad('LEFT');
+        } else if (event.key === '/' || event.key === 'd' || event.key === 'D') {
+          if (document.activeElement?.tagName !== 'INPUT') {
+            event.preventDefault();
+            openDialerModal();
+          }
+        }
+      });
+
+      document.querySelectorAll('[data-dpad]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const cmd = btn.dataset.dpad;
+          if (cmd === 'DIAL') {
+            openDialerModal();
+          } else if (cmd === 'CH1' && state.apps[0]) {
+            state.focusZone = 'channels';
+            selectChannelById(state.apps[0].id, true);
+          } else if (cmd === 'CH5' && state.apps[4]) {
+            state.focusZone = 'channels';
+            selectChannelById(state.apps[4].id, true);
+          } else {
+            moveDpad(cmd);
+          }
+        });
+      });
+
+      document.querySelectorAll('.category-filter-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.activeCategory = btn.dataset.category || 'All';
+          document.querySelectorAll('.category-filter-btn').forEach((b) => {
+            b.classList.toggle('is-active', b === btn);
+          });
+          state.focusZone = 'channels';
+          renderChannelDirectory(true);
+        });
+      });
+
+      const companionBtn = document.getElementById('toggle-companion-btn');
+      const companionLabel = document.getElementById('toggle-companion-label');
+      companionBtn?.addEventListener('click', () => {
+        const isCompanion = document.documentElement.getAttribute('data-view') === 'companion';
+        const nextView = isCompanion ? 'concourse' : 'companion';
+        document.documentElement.setAttribute('data-view', nextView);
+        companionBtn.setAttribute('aria-pressed', String(!isCompanion));
+        if (companionLabel) {
+          companionLabel.textContent = !isCompanion
+            ? '[ TV CONCOURSE RACK ]'
+            : '[ PHONE / AD VIEW ]';
+        }
+        document.getElementById('inspector-qr-img')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+
+      // Track hardware button focus & clicks
+      ['hw-btn-apk', 'hw-btn-preset'].forEach((id, idx) => {
+        const el = document.getElementById(id);
+        el?.addEventListener('focus', () => {
+          state.focusZone = 'inspector';
+          state.inspectorBtnIndex = idx;
+        });
+        el?.addEventListener('click', () => {
+          const activeApp = state.apps.find((a) => a.id === state.selectedAppId);
+          if (activeApp) {
+            activeApp.downloads = Number(activeApp.downloads || 0) + 1;
+            const globalIdx = state.apps.findIndex((a) => a.id === activeApp.id);
+            updateInspectorDock(activeApp, globalIdx >= 0 ? globalIdx : 0);
+            document.getElementById('telemetry-sync-text').textContent = 'DISPATCHING';
+            setTimeout(() => {
+              document.getElementById('telemetry-sync-text').textContent = 'VERIFIED';
+            }, 1200);
+          }
+        });
+      });
+    }
+
+    function openDialerModal() {
+      const dialog = document.getElementById('flap-dialer-dialog');
+      if (!dialog) return;
+      const activeApp = state.apps.find((a) => a.id === state.selectedAppId);
+      state.dialBuffer = activeApp ? activeApp.shortCode : '88103';
+      syncDialerReadout();
+      dialog.showModal();
+    }
+
+    function syncDialerReadout() {
+      animateFlapBank(document.getElementById('dialer-flap-readout'), state.dialBuffer, 5);
+      const statusEl = document.getElementById('dialer-status-msg');
+      const match = state.apps.find((a) => a.shortCode === state.dialBuffer);
+      if (match) {
+        statusEl.textContent = `READY: ${match.name.toUpperCase()}`;
+      } else if (state.dialBuffer.length < 5) {
+        statusEl.textContent = `ENTER ${5 - state.dialBuffer.length} MORE DIGIT(S)...`;
+      } else {
+        statusEl.textContent = `UNKNOWN CODE (USE 88101-88105)`;
+      }
+    }
+
+    function setupDialerModal() {
+      const dialog = document.getElementById('flap-dialer-dialog');
+      const openBtn = document.getElementById('open-dialer-btn');
+      const closeBtn = document.getElementById('close-dialer-btn');
+      const launchBtn = document.getElementById('dialer-launch-btn');
+
+      if (!dialog) return;
+
+      // Mandatory Fallback for browsers without native closedby="any" support
+      if (!('closedBy' in HTMLDialogElement.prototype)) {
+        dialog.addEventListener('click', (event) => {
+          if (event.target !== dialog) return;
+          const rect = dialog.getBoundingClientRect();
+          const isDialogContent =
+            rect.top <= event.clientY &&
+            event.clientY <= rect.top + rect.height &&
+            rect.left <= event.clientX &&
+            event.clientX <= rect.left + rect.width;
+          if (isDialogContent) return;
+          dialog.close();
+        });
+      }
+
+      openBtn?.addEventListener('click', () => openDialerModal());
+      closeBtn?.addEventListener('click', () => dialog.close());
+
+      dialog.querySelectorAll('[data-preset-code]').forEach((chip) => {
+        chip.addEventListener('click', () => {
+          state.dialBuffer = chip.dataset.presetCode;
+          syncDialerReadout();
+          const matched = state.apps.find((a) => a.shortCode === state.dialBuffer);
+          if (matched) {
+            selectChannelById(matched.id, false);
+          }
+        });
+      });
+
+      dialog.querySelectorAll('[data-key]').forEach((keyBtn) => {
+        keyBtn.addEventListener('click', () => {
+          const key = keyBtn.dataset.key;
+          if (key === 'CLR') {
+            state.dialBuffer = '';
+          } else if (key === 'DEL') {
+            state.dialBuffer = state.dialBuffer.slice(0, -1);
+          } else if (state.dialBuffer.length < 5) {
+            state.dialBuffer += key;
+          }
+          syncDialerReadout();
+        });
+      });
+
+      launchBtn?.addEventListener('click', async () => {
+        const code = state.dialBuffer.trim();
+        let matched = state.apps.find((a) => a.shortCode === code);
+
+        if (!matched && code.length > 0) {
+          try {
+            const res = await fetch(`/api/code/${encodeURIComponent(code)}`);
+            if (res.ok) {
+              const data = await res.json();
+              if (data.found && data.app) {
+                matched = data.app;
+              }
+            }
+          } catch {
+            // Fallback already handled
+          }
+        }
+
+        if (matched) {
+          state.activeCategory = 'All';
+          document.querySelectorAll('.category-filter-btn').forEach((b) => {
+            b.classList.toggle('is-active', b.dataset.category === 'All');
+          });
+          renderChannelDirectory(false);
+          selectChannelById(matched.id, true);
+          dialog.close();
+          window.location.href = `/api/download/${encodeURIComponent(matched.id)}?type=apk`;
+        } else {
+          document.getElementById('dialer-status-msg').textContent = 'INVALID SHORT-CODE (88101–88105)';
+        }
+      });
+    }
+
+    async function hydrateCatalogFromServer() {
+      try {
+        const res = await fetch('/api/catalog?device=tv');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (Array.isArray(data.apps) && data.apps.length > 0) {
+          state.apps = data.apps;
+        }
+        if (Array.isArray(data.ads) && data.ads.length > 0) {
+          state.ads = data.ads;
+        }
+        renderChannelDirectory(false);
+        renderAdsBulletin();
+      } catch {
+        // Offline / fallback already rendered
+      }
+    }
+
+    // Immediate boot render + live hydration
+    renderChannelDirectory(false);
+    renderAdsBulletin();
+    setupSpatialNavigation();
+    setupDialerModal();
+    hydrateCatalogFromServer();
+  </script>
+</body>
+</html>

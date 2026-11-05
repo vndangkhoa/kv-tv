@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en" data-pivot="store">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KV-TV Store · Metro Typographic Panorama (tv.vndns.net)</title>
+  <meta name="description" content="KV-TV Android TV App Store (tv.vndns.net) — Pre-configured CloudStream 3, Jellyfin TV, Kodi 21 Omega, KV-Netflix, and KV-Tube in kv-tv-theme.">
+  <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Work+Sans:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/kv-tv-theme.css">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <!-- Persistent Top System Bar (kv-tv-theme) -->
+  <nav class="kv-topbar mockup-switcher" aria-label="KV-TV System Navigation">
+    <div class="kv-topbar-brand switcher-brand">
+      <a class="kv-topbar-brand switcher-brand" href="/?mode=tv" id="brand-home-link">
+        <span class="kv-topbar-brand-mark switcher-brand-mark" aria-hidden="true"></span>
+        <span>KV-TV STORE · tv.vndns.net</span>
+      </a>
+      <span class="kv-topbar-badge">KV-TV-THEME v1.0</span>
+    </div>
+    <div class="kv-topbar-nav switcher-links">
+      <a class="kv-topbar-link switcher-link is-active" href="/?mode=tv" data-nav-pivot="store" aria-current="page">[ Storefront (TV) ]</a>
+      <a class="kv-topbar-link switcher-link" href="/?pivot=pre-sets" data-nav-pivot="pre-sets">[ Pre-Set Packs ]</a>
+      <a class="kv-topbar-link switcher-link" href="/?pivot=short-codes" data-nav-pivot="short-codes">[ Short-Codes ]</a>
+      <a class="kv-topbar-link switcher-link" href="/?mode=promo" data-nav-pivot="phone-qr">[ Phone &amp; Promo Hub ]</a>
+      <a class="kv-topbar-link switcher-link" href="/admin">[ Admin Console ]</a>
+    </div>
+  </nav>
+
+  <!-- Main Metro Typographic Panorama Stage -->
+  <main class="kv-stage metro-stage" id="tv-spatial-root">
+    <!-- Giant Lowercase Metro Panorama Header -->
+    <header class="kv-panorama-header panorama-header">
+      <div class="kv-pivots panorama-pivots" role="tablist" aria-label="Metro Panorama Pivots">
+        <button type="button" class="kv-pivot-btn pivot-btn" role="tab" id="pivot-store" aria-selected="true" data-pivot="store">store</button>
+        <button type="button" class="kv-pivot-btn pivot-btn" role="tab" id="pivot-presets" aria-selected="false" data-pivot="pre-sets">pre-sets</button>
+        <button type="button" class="kv-pivot-btn pivot-btn" role="tab" id="pivot-shortcodes" aria-selected="false" data-pivot="short-codes">short-codes</button>
+        <button type="button" class="kv-pivot-btn pivot-btn" role="tab" id="pivot-phoneqr" aria-selected="false" data-pivot="phone-qr">phone-qr</button>
+      </div>
+      <div class="kv-panorama-subbar panorama-subbar">
+        <p class="kv-panorama-deck panorama-deck" id="panorama-deck-text">
+          <strong>Pre-Configured Android TV Storefront</strong> — Zero manual repo typing. Every APK ships with KV-TV Vietnamese &amp; Global 4K repositories, subtitle profiles, and AFTVnews Downloader short-codes ready out of the box.
+        </p>
+        <div class="kv-panorama-telemetry panorama-telemetry">
+          <span class="kv-telemetry-pill telemetry-pill">
+            <span class="kv-telemetry-dot telemetry-dot" aria-hidden="true"></span>
+            <span id="catalog-status-text">EDGE CDN · tv.vndns.net</span>
+          </span>
+          <span class="kv-telemetry-pill telemetry-pill tabular" id="telemetry-downloads">18,060 TOTAL INSTALLS</span>
+          <span class="kv-telemetry-pill telemetry-pill tabular">CODES 88101–88105</span>
+          <time class="kv-telemetry-pill telemetry-pill tabular" id="tv-live-clock" datetime="2026-11-05T10:45:00">10:45</time>
+        </div>
+      </div>
+    </header>
+
+    <!-- Asymmetric 2D Panorama Live Tile Grid (6 columns x 2 rows = 12 cells) -->
+    <section id="metro-grid" class="kv-grid metro-grid" aria-label="Featured Android TV Live Tiles">
+      <!-- 1. CloudStream 3 (cloudstream-kv, 88103) — 2x2 Large Hero Tile in Metro Cobalt -->
+      <button
+        type="button"
+        class="kv-tile kv-tile--cobalt kv-span-2x2 metro-tile tile-cobalt span-2x2"
+        tabindex="0"
+        data-tile-kind="app"
+        data-app-id="cloudstream-kv"
+        data-short-code="88103"
+        data-pivot-tags="store pre-sets short-codes"
+      >
+        <svg class="kv-watermark-code watermark-code" viewBox="0 0 220 76" fill="currentColor" aria-hidden="true">
+          <path d="M18 35C11 33 7 28 7 21C7 11 15 4 26 4C37 4 45 11 45 21C45 28 41 33 34 35C42 37 47 43 47 52C47 64 38 72 26 72C14 72 5 64 5 52C5 43 10 37 18 35ZM26 30C31 30 35 26 35 21C35 16 31 12 26 12C21 12 17 16 17 21C17 26 21 30 26 30ZM26 63C32 63 37 58 37 52C37 45 32 40 26 40C20 40 15 45 15 52C15 58 20 63 26 63Z" />
+          <path d="M68 35C61 33 57 28 57 21C57 11 65 4 76 4C87 4 95 11 95 21C95 28 91 33 84 35C92 37 97 43 97 52C97 64 88 72 76 72C64 72 55 64 55 52C55 43 60 37 68 35ZM76 30C81 30 85 26 85 21C85 16 81 12 76 12C71 12 67 16 67 21C67 26 71 30 76 30ZM76 63C82 63 87 58 87 52C87 45 82 40 76 40C70 40 65 45 65 52C65 58 70 63 76 63Z" />
+          <path d="M118 71V18H106V10H128V71H118Z" />
+          <path d="M159 72C145 72 137 59 137 38C137 17 145 4 159 4C173 4 181 17 181 38C181 59 173 72 159 72ZM159 63C167 63 171 53 171 38C171 23 167 13 159 13C151 13 147 23 147 38C147 53 151 63 159 63Z" />
+          <path d="M188 53H198C198 59 202 63 207 63C213 63 217 59 217 52C217 45 212 41 204 41H200V32H204C211 32 215 28 215 22C215 16 211 12 206 12C201 12 197 16 197 22H187C187 11 195 4 206 4C217 4 225 11 225 21C225 28 221 33 214 35C221 37 226 43 226 52C226 64 218 72 207 72C195 72 188 64 188 53Z" transform="translate(-8, 0)" />
+        </svg>
+        <div class="kv-tile-top tile-top">
+          <svg class="kv-tile-glyph tile-glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+            <path d="M14 34H35C40 34 43 30.5 43 26C43 21.8 39.8 18.4 35.5 18.1C34.2 11.8 28.6 7 22 7C14.3 7 8 13.3 8 21C8 21.6 8.1 22.2 8.2 22.8C5.2 24.1 3 27.1 3 30.5C3 32.5 4.5 34 6.5 34H14Z" />
+            <polygon points="21,18 32,24.5 21,31" fill="currentColor" stroke="none" />
+          </svg>
+          <span class="kv-code-stamp code-stamp tabular" data-app-stamp="cloudstream-kv">88103 · 24.2 MB</span>
+        </div>
+        <div class="kv-tile-bottom tile-bottom">
+          <span class="kv-tile-title tile-title">cloudstream 3</span>
+          <span class="kv-tile-edition tile-edition">KV-PreSetup · All VN &amp; Global 4K Repos</span>
+          <div class="kv-live-status-strip live-status-strip">
+            <span class="kv-live-status-text live-status-text" id="cs-live-status">MegaRepo + Vietsub + 1.1.1.1 DoH Ready</span>
+            <span class="kv-live-status-badge live-status-badge tabular" data-app-version="cloudstream-kv">v4.4.1-kv</span>
+          </div>
+          <div class="kv-tile-meta-row tile-meta-row">
+            <span>com.lagradost.cloudstream3</span>
+            <span class="tabular" data-app-downloads="cloudstream-kv">4,150 installs</span>
+          </div>
+        </div>
+      </button>
+
+      <!-- 2. Jellyfin TV (jellyfin-kv, 88101) — 2x1 Wide Tile in Royal Violet -->
+      <button
+        type="button"
+        class="kv-tile kv-tile--violet kv-span-2x1 metro-tile tile-violet span-2x1"
+        tabindex="-1"
+        data-tile-kind="app"
+        data-app-id="jellyfin-kv"
+        data-short-code="88101"
+        data-pivot-tags="store pre-sets short-codes"
+      >
+        <div class="kv-tile-top tile-top">
+          <svg class="kv-tile-glyph tile-glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+            <polygon points="24,5 43,39 5,39" />
+            <polygon points="24,17 33,34 15,34" fill="currentColor" stroke="none" />
+          </svg>
+          <span class="kv-code-stamp code-stamp tabular" data-app-stamp="jellyfin-kv">88101 · 42.8 MB</span>
+        </div>
+        <div class="kv-tile-bottom tile-bottom">
+          <span class="kv-tile-title tile-title">jellyfin tv</span>
+          <span class="kv-tile-edition tile-edition">KV-Optimized · 4K HDR Direct Play</span>
+          <div class="kv-tile-meta-row tile-meta-row">
+            <span>v0.18.4-kv2 · ExoPlayer HDR10</span>
+            <span class="tabular" data-app-downloads="jellyfin-kv">1,420 installs</span>
+          </div>
+        </div>
+      </button>
+
+      <!-- 3. Kodi 21 Omega (kodi-kv, 88102) — 1x1 Square Tile in Metro Teal -->
+      <button
+        type="button"
+        class="kv-tile kv-tile--teal kv-span-1x1 metro-tile tile-teal span-1x1"
+        tabindex="-1"
+        data-tile-kind="app"
+        data-app-id="kodi-kv"
+        data-short-code="88102"
+        data-pivot-tags="store pre-sets short-codes"
+      >
+        <div class="kv-tile-top tile-top">
+          <svg class="kv-tile-glyph tile-glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+            <polygon points="24,4 44,24 24,44 4,24" />
+            <line x1="14" y1="14" x2="34" y2="34" />
+            <line x1="34" y1="14" x2="14" y2="34" />
+          </svg>
+          <span class="kv-code-stamp code-stamp tabular" data-app-stamp="kodi-kv">88102 · 94.5 MB</span>
+        </div>
+        <div class="kv-tile-bottom tile-bottom">
+          <span class="kv-tile-title tile-title">kodi 21</span>
+          <span class="kv-tile-edition tile-edition">Arctic Zephyr 2 + VN Subs</span>
+          <div class="kv-tile-meta-row tile-meta-row">
+            <span class="tabular">v21.2-kv</span>
+            <span class="tabular" data-app-downloads="kodi-kv">2,890</span>
+          </div>
+        </div>
+      </button>
+
+      <!-- 4. KV-Netflix (kv-netflix, 88104) — 1x1 Square Tile in Cinema Crimson -->
+      <button
+        type="button"
+        class="kv-tile kv-tile--crimson kv-span-1x1 metro-tile tile-crimson span-1x1"
+        tabindex="-1"
+        data-tile-kind="app"
+        data-app-id="kv-netflix"
+        data-short-code="88104"
+        data-pivot-tags="store pre-sets short-codes"
+      >
+        <div class="kv-tile-top tile-top">
+          <svg class="kv-tile-glyph tile-glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+            <path d="M13 40V8L35 40V8" />
+          </svg>
+          <span class="kv-code-stamp code-stamp tabular" data-app-stamp="kv-netflix">88104 · 38.6 MB</span>
+        </div>
+        <div class="kv-tile-bottom tile-bottom">
+          <span class="kv-tile-title tile-title">kv-netflix</span>
+          <span class="kv-tile-edition tile-edition">D-Pad + L1/L3 4K HDR</span>
+          <div class="kv-tile-meta-row tile-meta-row">
+            <span class="tabular">v8.114.0-kv</span>
+            <span class="tabular" data-app-downloads="kv-netflix">3,680</span>
+          </div>
+        </div>
+      </button>
+
+      <!-- 5. KV-Tube (kv-tube, 88105) — 2x1 Wide Tile in Vermilion Red -->
+      <button
+        type="button"
+        class="kv-tile kv-tile--vermilion kv-span-2x1 metro-tile tile-vermilion span-2x1"
+        tabindex="-1"
+        data-tile-kind="app"
+        data-app-id="kv-tube"
+        data-short-code="88105"
+        data-pivot-tags="store pre-sets short-codes"
+      >
+        <div class="kv-tile-top tile-top">
+          <svg class="kv-tile-glyph tile-glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+            <rect x="5" y="9" width="38" height="30" />
+            <polygon points="20,17 32,24 20,31" fill="currentColor" stroke="none" />
+          </svg>
+          <span class="kv-code-stamp code-stamp tabular" data-app-stamp="kv-tube">88105 · 19.4 MB</span>
+        </div>
+        <div class="kv-tile-bottom tile-bottom">
+          <span class="kv-tile-title tile-title">kv-tube</span>
+          <span class="kv-tile-edition tile-edition">Ad-Free 4K60 + SponsorBlock</span>
+          <div class="kv-tile-meta-row tile-meta-row">
+            <span>v24.85-kv · VP9/AV1 Hardware Decode</span>
+            <span class="tabular" data-app-downloads="kv-tube">5,920 installs</span>
+          </div>
+        </div>
+      </button>
+
+      <!-- 6. 5-Digit Short-Code Dialer Tile — 1x1 Action Tile in Emerald -->
+      <button
+        type="button"
+        class="kv-tile kv-tile--emerald kv-span-1x1 metro-tile tile-emerald span-1x1"
+        tabindex="-1"
+        data-tile-kind="dialer"
+        data-pivot-tags="store short-codes"
+      >
+        <div class="kv-tile-top tile-top">
+          <svg class="kv-tile-glyph tile-glyph" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true">
+            <rect x="8" y="8" width="8" height="8" />
+            <rect x="20" y="8" width="8" height="8" />
+            <rect x="32" y="8" width="8" height="8" />
+            <rect x="8" y="20" width="8" height="8" />
+            <rect x="20" y="20" width="8" height="8" />
+            <rect x="32" y="20" width="8" height="8" />
+            <rect x="8" y="32" width="8" height="8" />
+            <rect x="20" y="32" width="8" height="8" />
+            <rect x="32" y="32" width="8" height="8" />
+          </svg>
+          <span class="kv-code-stamp code-stamp tabular">88101–88105</span>
+        </div>
+        <div class="kv-tile-bottom tile-bottom">
+          <span class="kv-tile-title tile-title">short-code</span>
+          <span class="kv-tile-edition tile-edition">5-Digit AFTV Keypad</span>
+          <div class="kv-tile-meta-row tile-meta-row">
+            <span>Instant APK Fetch</span>
+            <span>DIAL</span>
+          </div>
+        </div>
+      </button>
+
+      <!-- 7. Phone & TV QR Companion Tile — 1x1 Live Tile in Deep Amber -->
+      <button
+        type="button"
+        class="kv-tile kv-tile--amber kv-span-1x1 metro-tile tile-amber span-1x1"
+        tabindex="-1"
+        data-tile-kind="qr"
+        data-pivot-tags="store phone-qr"
+      >
+        <div class="kv-tile-top tile-top kv-qr-tile-preview qr-tile-preview">
+          <img
+            class="kv-qr-tile-img qr-tile-img"
+            src="/api/qr?text=https%3A%2F%2Ftv.vndns.net&dark=%23000000&light=%23FFFFFF&size=160"
+            alt="Scan QR code for tv.vndns.net"
+            width="68"
+            height="68"
+          >
+          <span class="kv-code-stamp code-stamp tabular">QR SYNC</span>
+        </div>
+        <div class="kv-tile-bottom tile-bottom">
+          <span class="kv-tile-title tile-title">phone &amp; qr</span>
+          <span class="kv-tile-edition tile-edition">Mobile Sideload &amp; Promo</span>
+          <div class="kv-tile-meta-row tile-meta-row">
+            <span>tv.vndns.net</span>
+            <span>SCAN</span>
+          </div>
+        </div>
+      </button>
+    </section>
+
+    <!-- 3-Column Lower Metro Feature & Sponsor Strip -->
+    <section class="panorama-strip" id="metro-lower-strip" aria-label="Store Pre-Set Packs and Broadcast Notices">
+      <article class="strip-block">
+        <h2 class="strip-block-title">one-click pre-set config packs (.zip / .backup)</h2>
+        <p class="strip-block-body">
+          Already installed vanilla CloudStream, Kodi, or Jellyfin? Grab the standalone KV-TV configuration bundle to inject MegaRepo, Vietsub providers, and 1.1.1.1 DoH settings in seconds.
+        </p>
+        <div class="strip-block-footer">
+          <span class="tabular">5 PRE-SET ARCHIVES READY</span>
+          <a class="kv-btn kv-btn--primary kv-btn--sm metro-inline-btn" href="/api/download/cloudstream-kv?type=preset" data-app-download="cloudstream-kv">Download CS3 Pre-Set</a>
+        </div>
+      </article>
+
+      <article class="strip-block">
+        <h2 class="strip-block-title">aftvnews downloader short-code index</h2>
+        <p class="strip-block-body">
+          Open Downloader on any Android TV box and enter <strong class="tabular">88101</strong> (Jellyfin), <strong class="tabular">88102</strong> (Kodi 21), <strong class="tabular">88103</strong> (CloudStream 3), <strong class="tabular">88104</strong> (KV-Netflix), or <strong class="tabular">88105</strong> (KV-Tube).
+        </p>
+        <div class="strip-block-footer">
+          <span class="tabular">302 DIRECT APK REDIRECT</span>
+          <button type="button" class="kv-btn kv-btn--primary kv-btn--sm metro-inline-btn" id="open-dialer-strip-btn">Launch Dialer</button>
+        </div>
+      </article>
+
+      <article class="strip-block">
+        <h2 class="strip-block-title" id="sponsor-strip-title">kv-tv vip box setup — 4k cinema hub</h2>
+        <p class="strip-block-body" id="sponsor-strip-body">
+          Hosted on low-latency Vietnam NVMe VPS with 1Gbps direct APK streams and instant QR phone companion sideloading.
+        </p>
+        <div class="strip-block-footer">
+          <span class="tabular" id="sponsor-strip-stats">VN EDGE CDN · ACTIVE</span>
+          <button type="button" class="kv-btn kv-btn--primary kv-btn--sm metro-inline-btn" id="open-qr-strip-btn">Phone QR &amp; Promos</button>
+        </div>
+      </article>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- PIVOT PANEL: PRE-SETS (Pre-Configured Optimization & Backup Matrix)   -->
+    <!-- ===================================================================== -->
+    <section id="pivot-panel-presets" class="kv-pivot-section" aria-labelledby="presets-heading" hidden>
+      <div class="kv-section-head">
+        <div>
+          <h2 id="presets-heading" class="kv-section-title">pre-set backup packs &amp; optimization matrix</h2>
+          <p class="kv-section-desc">
+            Every KV-TV build includes both a pre-configured APK and a standalone <code>type=preset</code> configuration archive detailing pre-installed extensions, subtitle providers, and hardware player flags.
+          </p>
+        </div>
+      </div>
+      <div class="kv-presets-grid" id="presets-matrix-grid">
+        <!-- Populated and hydrated by app.js for all 5 signature apps -->
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- PIVOT PANEL: SHORT-CODES (5-Digit AFTVnews Directory & Inline Dialer) -->
+    <!-- ===================================================================== -->
+    <section id="pivot-panel-shortcodes" class="kv-pivot-section" aria-labelledby="shortcodes-heading" hidden>
+      <div class="kv-section-head">
+        <div>
+          <h2 id="shortcodes-heading" class="kv-section-title">5-digit aftvnews downloader short-code directory</h2>
+          <p class="kv-section-desc">
+            Type any 5-digit code (<strong class="tabular">88101</strong>–<strong class="tabular">88105</strong>) inside the AFTVnews Downloader app on Android TV or copy a code with one click below.
+          </p>
+        </div>
+      </div>
+      <div class="kv-shortcodes-layout">
+        <div class="kv-shortcode-list" id="shortcodes-directory-list">
+          <!-- Populated and hydrated by app.js -->
+        </div>
+        <aside class="kv-inline-dialer-box" aria-label="Interactive Short-Code Keypad">
+          <h3 class="kv-section-title">instant short-code dialer</h3>
+          <p class="kv-section-desc">Dial a 5-digit code to trigger immediate APK download or inspect package specs.</p>
+          <div class="dialer-readout">
+            <span id="inline-dialer-digits" class="tabular">88103</span>
+            <span class="dialer-status" id="inline-dialer-status">CloudStream 3 · 24.2 MB</span>
+          </div>
+          <div class="dialer-presets">
+            <button type="button" class="dialer-preset-chip" data-preset-code="88101">88101 · Jellyfin</button>
+            <button type="button" class="dialer-preset-chip" data-preset-code="88102">88102 · Kodi 21</button>
+            <button type="button" class="dialer-preset-chip" data-preset-code="88103">88103 · CloudStream 3</button>
+            <button type="button" class="dialer-preset-chip" data-preset-code="88104">88104 · KV-Netflix</button>
+            <button type="button" class="dialer-preset-chip" data-preset-code="88105">88105 · KV-Tube</button>
+          </div>
+          <div class="kv-dialog-actions">
+            <button type="button" class="kv-btn kv-btn--primary" id="inline-dialer-fetch-btn">FETCH APK BY CODE</button>
+            <button type="button" class="kv-btn" id="inline-dialer-modal-btn">OPEN FULL KEYPAD</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- PIVOT PANEL: PHONE-QR / PROMO PORTAL (Phone & Desktop Promo Hub)      -->
+    <!-- ===================================================================== -->
+    <section id="pivot-panel-phoneqr" class="kv-pivot-section" aria-labelledby="promo-hero-heading" hidden>
+      <!-- Metro Cobalt + Emerald Hero Banner -->
+      <div class="kv-promo-hero" id="promo-portal-root">
+        <div class="kv-promo-hero-main">
+          <div>
+            <h2 id="promo-hero-heading" class="kv-promo-hero-title">install on any android tv in 60 seconds</h2>
+            <p class="kv-promo-hero-lead">
+              Skip tedious repository typing, broken subtitle plugins, and air-mouse headaches. Every APK in <strong>KV-TV Store</strong> (<code>tv.vndns.net</code>) ships pre-configured with 4K HDR hardware players, Vietnamese &amp; English subtitles, and 10-foot D-Pad remote navigation out of the box.
+            </p>
+          </div>
+
+          <div class="kv-promo-hero-cta">
+            <a href="/api/download/cloudstream-kv?type=apk" class="kv-btn kv-btn--primary" id="promo-companion-download-btn" data-app-download="cloudstream-kv">
+              <span>DOWNLOAD COMPANION APK (88103)</span>
+            </a>
+            <button type="button" class="kv-btn kv-btn--emerald" id="promo-open-dialer-btn">
+              <span>SHORT-CODE DIALER (88101–88105)</span>
+            </button>
+            <button type="button" class="kv-btn" id="promo-launch-tv-btn">
+              <span>FOCUS LIVE TILE PANORAMA</span>
+            </button>
+          </div>
+
+          <div class="kv-device-chips" aria-label="Supported Android TV Hardware">
+            <span class="kv-code-stamp">SONY BRAVIA GOOGLE TV</span>
+            <span class="kv-code-stamp">TCL &amp; HISENSE 4K TV</span>
+            <span class="kv-code-stamp">XIAOMI TV BOX S / STICK</span>
+            <span class="kv-code-stamp">NVIDIA SHIELD TV PRO</span>
+            <span class="kv-code-stamp">AMLOGIC &amp; ROCKCHIP BOXES</span>
+          </div>
+        </div>
+
+        <aside class="kv-promo-qr-aside" aria-labelledby="promo-qr-heading">
+          <h3 id="promo-qr-heading" class="kv-promo-qr-title">scan on phone or tv</h3>
+          <div class="kv-promo-qr-frame">
+            <img
+              id="promo-hero-qr-img"
+              class="kv-promo-qr-img"
+              src="/api/qr?text=https%3A%2F%2Ftv.vndns.net"
+              width="168"
+              height="168"
+              alt="QR Code to open https://tv.vndns.net on Android TV or mobile"
+            >
+          </div>
+          <span class="kv-code-stamp tabular">https://tv.vndns.net</span>
+          <p class="kv-promo-qr-caption">
+            Point your phone camera here or type <strong>tv.vndns.net</strong> in your TV browser or Downloader app.
+          </p>
+        </aside>
+      </div>
+
+      <!-- 3-Step Setup Blocks (Inline SVG + Heading Side-by-Side) -->
+      <div class="kv-steps-grid" aria-label="3-Step Android TV Installation Guide">
+        <article class="kv-step-card">
+          <div class="kv-step-header">
+            <svg class="kv-step-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+              <rect x="3" y="5" width="22" height="15" />
+              <line x1="8" y1="24" x2="20" y2="24" />
+            </svg>
+            <h3 class="kv-step-title">1. open tv browser or downloader</h3>
+          </div>
+          <p class="kv-step-body">
+            Launch <strong>TV Bro</strong>, <strong>Puffin TV</strong>, <strong>Zeus Browser</strong>, or <strong>Downloader by AFTVnews</strong> from Google Play on your Sony, TCL, Xiaomi, or Android TV Box.
+          </p>
+        </article>
+
+        <article class="kv-step-card">
+          <div class="kv-step-header">
+            <svg class="kv-step-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+              <rect x="4" y="4" width="20" height="20" />
+              <line x1="9" y1="11" x2="19" y2="11" />
+              <line x1="9" y1="17" x2="15" y2="17" />
+            </svg>
+            <h3 class="kv-step-title">2. enter tv.vndns.net or 5-digit code</h3>
+          </div>
+          <p class="kv-step-body">
+            Navigate to <strong>tv.vndns.net</strong> for the full D-Pad store, or enter a 5-digit short-code (<code class="tabular">88101</code> Jellyfin, <code class="tabular">88102</code> Kodi, <code class="tabular">88103</code> CloudStream, <code class="tabular">88104</code> KV-Netflix, <code class="tabular">88105</code> KV-Tube).
+          </p>
+        </article>
+
+        <article class="kv-step-card">
+          <div class="kv-step-header">
+            <svg class="kv-step-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+              <polygon points="14,3 24,8 24,15 14,25 4,15 4,8" />
+              <polyline points="9,14 13,18 19,11" />
+            </svg>
+            <h3 class="kv-step-title">3. install pre-configured apk</h3>
+          </div>
+          <p class="kv-step-body">
+            Confirm APK installation with your remote OK button. Extensions, 4K codecs, and Vietnamese/English subtitle providers are already configured—open and play!
+          </p>
+        </article>
+      </div>
+
+      <!-- Active Promotional & Sponsor Ad Tiles (store.ads) -->
+      <div>
+        <div class="kv-section-head">
+          <div>
+            <h3 class="kv-section-title">active promotional &amp; sponsor campaigns</h3>
+            <p class="kv-section-desc">Curated seasonal builds and hardware-verified media bundles managed live via the KV-TV Admin Console.</p>
+          </div>
+        </div>
+      </div>
+      <div class="kv-ads-grid" id="promo-ads-grid">
+        <!-- Populated dynamically by app.js from store.ads -->
+      </div>
+
+      <!-- Full Sideload & Package Reference Table (tabular-nums) -->
+      <div class="kv-section-head">
+        <div>
+          <h3 id="promo-table-heading" class="kv-section-title">sideload &amp; package reference matrix</h3>
+          <p class="kv-section-desc">Direct APK links, standalone Pre-Set packs, SHA/package identifiers, and live install telemetry.</p>
+        </div>
+        <div class="kv-search-wrap">
+          <label for="promo-search-input" class="sr-only">Filter apps by name, short-code, or feature</label>
+          <input
+            type="search"
+            id="promo-search-input"
+            class="kv-input"
+            placeholder="Filter by app, code (88103), or package..."
+            autocomplete="off"
+          >
+        </div>
+      </div>
+
+      <div class="kv-table-wrap" role="region" aria-labelledby="promo-table-heading" tabindex="0">
+        <table class="kv-table">
+          <thead>
+            <tr>
+              <th scope="col">Application</th>
+              <th scope="col">Short-Code</th>
+              <th scope="col">Package Identifier</th>
+              <th scope="col">Version &amp; Size</th>
+              <th scope="col">Installs</th>
+              <th scope="col">Direct Actions</th>
+            </tr>
+          </thead>
+          <tbody id="promo-catalog-table-body">
+            <!-- Populated dynamically by app.js -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- 1. App Command Modal Dialog -->
+  <dialog id="metro-app-dialog" class="kv-dialog" closedby="any" aria-labelledby="metro-dialog-title">
+    <div class="kv-dialog-banner dialog-banner" id="app-dialog-banner">
+      <div>
+        <h2 class="kv-dialog-title dialog-title" id="metro-dialog-title">cloudstream 3</h2>
+        <p class="kv-dialog-subtitle dialog-subtitle" id="metro-dialog-edition">KV-PreSetup (Full Repos)</p>
+      </div>
+      <form method="dialog">
+        <button type="submit" class="kv-dialog-close-btn dialog-close-btn">ESC · CLOSE</button>
+      </form>
+    </div>
+    <div class="kv-dialog-body dialog-body">
+      <p id="metro-dialog-desc">
+        Zero manual repository typing required. Ships with MegaRepo and Vietnamese HD movie/anime extensions pre-activated, Cloudflare DoH enabled, and automatic 4K Vietsub stream selection.
+      </p>
+      <div class="kv-dialog-grid dialog-grid">
+        <div class="kv-dialog-col">
+          <div class="kv-dialog-specs dialog-specs">
+            <div class="spec-item">
+              <span class="spec-label">SHORT-CODE</span>
+              <span class="spec-value tabular" id="metro-dialog-code">88103</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">VERSION &amp; SIZE</span>
+              <span class="spec-value tabular" id="metro-dialog-version">v4.4.1-kv · 24.2 MB</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">PACKAGE ID</span>
+              <span class="spec-value" id="metro-dialog-pkg">com.lagradost.cloudstream3</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">ARCHITECTURE</span>
+              <span class="spec-value" id="metro-dialog-arch">Universal (arm64-v8a + armeabi-v7a)</span>
+            </div>
+          </div>
+          <ul class="feature-list" id="metro-dialog-features"></ul>
+        </div>
+        <div class="kv-dialog-qr-panel dialog-qr-panel">
+          <img
+            id="metro-dialog-qr"
+            class="kv-dialog-qr-img dialog-qr-img"
+            src="/api/qr?text=https%3A%2F%2Ftv.vndns.net%2Fgo%2F88103&size=200"
+            alt="QR Code for Direct APK Download"
+            width="148"
+            height="148"
+          >
+          <span class="dialog-qr-caption" id="metro-dialog-qr-caption">SCAN FOR APK · 88103</span>
+        </div>
+      </div>
+      <div class="kv-dialog-actions dialog-actions">
+        <a class="kv-btn kv-btn--primary metro-action-btn" id="metro-dialog-apk-btn" href="/api/download/cloudstream-kv?type=apk" data-app-download="cloudstream-kv">
+          <span>DOWNLOAD PRE-CONFIGURED APK</span>
+        </a>
+        <a class="kv-btn metro-action-btn secondary" id="metro-dialog-preset-btn" href="/api/download/cloudstream-kv?type=preset" data-app-download="cloudstream-kv">
+          <span>DOWNLOAD PRE-SET PACK (.ZIP)</span>
+        </a>
+        <button type="button" class="kv-btn" id="metro-dialog-copy-btn" data-copy-code="88103">
+          <span>COPY SHORT-CODE</span>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 2. 5-Digit Short-Code Dialer Modal Dialog -->
+  <dialog id="metro-dialer-dialog" class="kv-dialog" closedby="any" aria-labelledby="metro-dialer-title">
+    <div class="kv-dialog-banner dialog-banner kv-tile--emerald">
+      <div>
+        <h2 class="kv-dialog-title dialog-title" id="metro-dialer-title">short-code dialer</h2>
+        <p class="kv-dialog-subtitle dialog-subtitle">Enter 5-digit AFTVnews Downloader code (88101–88105)</p>
+      </div>
+      <form method="dialog">
+        <button type="submit" class="kv-dialog-close-btn dialog-close-btn">ESC · CLOSE</button>
+      </form>
+    </div>
+    <div class="kv-dialog-body dialog-body">
+      <div class="dialer-readout">
+        <span id="dialer-digits" class="tabular">88103</span>
+        <span class="dialer-status" id="dialer-match-label">CloudStream 3 · 24.2 MB</span>
+      </div>
+      <div class="dialer-presets" aria-label="Quick Short-Code Presets">
+        <button type="button" class="dialer-preset-chip" data-preset-code="88101">88101 · Jellyfin</button>
+        <button type="button" class="dialer-preset-chip" data-preset-code="88102">88102 · Kodi 21</button>
+        <button type="button" class="dialer-preset-chip" data-preset-code="88103">88103 · CloudStream 3</button>
+        <button type="button" class="dialer-preset-chip" data-preset-code="88104">88104 · KV-Netflix</button>
+        <button type="button" class="dialer-preset-chip" data-preset-code="88105">88105 · KV-Tube</button>
+      </div>
+      <div class="dialer-keypad" role="group" aria-label="Numeric Keypad">
+        <button type="button" class="dialer-key" data-key="1">1</button>
+        <button type="button" class="dialer-key" data-key="2">2</button>
+        <button type="button" class="dialer-key" data-key="3">3</button>
+        <button type="button" class="dialer-key" data-key="4">4</button>
+        <button type="button" class="dialer-key" data-key="5">5</button>
+        <button type="button" class="dialer-key" data-key="6">6</button>
+        <button type="button" class="dialer-key" data-key="7">7</button>
+        <button type="button" class="dialer-key" data-key="8">8</button>
+        <button type="button" class="dialer-key" data-key="9">9</button>
+        <button type="button" class="dialer-key" data-key="CLR">CLR</button>
+        <button type="button" class="dialer-key" data-key="0">0</button>
+        <button type="button" class="dialer-key" data-key="DEL">DEL</button>
+      </div>
+      <div class="kv-dialog-actions dialog-actions">
+        <button type="button" class="kv-btn kv-btn--primary metro-action-btn" id="dialer-go-apk-btn">
+          <span>FETCH APK BY CODE</span>
+        </button>
+        <button type="button" class="kv-btn metro-action-btn secondary" id="dialer-open-app-btn">
+          <span>INSPECT BUILD DETAILS</span>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 3. Phone & TV QR Companion Modal Dialog -->
+  <dialog id="metro-qr-dialog" class="kv-dialog" closedby="any" aria-labelledby="metro-qr-title">
+    <div class="kv-dialog-banner dialog-banner kv-tile--amber">
+      <div>
+        <h2 class="kv-dialog-title dialog-title" id="metro-qr-title">phone &amp; tv qr companion</h2>
+        <p class="kv-dialog-subtitle dialog-subtitle">Scan with phone camera to sideload APKs or browse sponsor offers</p>
+      </div>
+      <form method="dialog">
+        <button type="submit" class="kv-dialog-close-btn dialog-close-btn">ESC · CLOSE</button>
+      </form>
+    </div>
+    <div class="kv-dialog-body dialog-body">
+      <div class="kv-dialog-grid dialog-grid">
+        <div class="kv-dialog-col">
+          <p>
+            Select any KV-TV build below to generate a direct high-speed download QR code for your phone or Android TV browser:
+          </p>
+          <div class="dialer-presets" id="qr-target-chips">
+            <button type="button" class="dialer-preset-chip is-active" data-qr-url="https://tv.vndns.net" data-qr-label="KV-TV Storefront (tv.vndns.net)">Storefront</button>
+            <button type="button" class="dialer-preset-chip" data-qr-url="https://tv.vndns.net/go/88103" data-qr-label="CloudStream 3 APK (88103)">88103 · CloudStream</button>
+            <button type="button" class="dialer-preset-chip" data-qr-url="https://tv.vndns.net/go/88101" data-qr-label="Jellyfin TV APK (88101)">88101 · Jellyfin</button>
+            <button type="button" class="dialer-preset-chip" data-qr-url="https://tv.vndns.net/go/88102" data-qr-label="Kodi 21 APK (88102)">88102 · Kodi 21</button>
+            <button type="button" class="dialer-preset-chip" data-qr-url="https://tv.vndns.net/go/88104" data-qr-label="KV-Netflix APK (88104)">88104 · KV-Netflix</button>
+            <button type="button" class="dialer-preset-chip" data-qr-url="https://tv.vndns.net/go/88105" data-qr-label="KV-Tube APK (88105)">88105 · KV-Tube</button>
+          </div>
+          <div class="kv-dialog-specs dialog-specs" id="qr-promo-list">
+            <div class="spec-item">
+              <span class="spec-label">ACTIVE SPONSOR</span>
+              <span class="spec-value">ThueVPSGiaRe VN NVMe Edge CDN (1Gbps)</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">DIRECT SHORTLINK</span>
+              <span class="spec-value tabular" id="qr-selected-url">https://tv.vndns.net</span>
+            </div>
+          </div>
+        </div>
+        <div class="kv-dialog-qr-panel dialog-qr-panel">
+          <img
+            id="companion-qr-img"
+            class="kv-dialog-qr-img dialog-qr-img"
+            src="/api/qr?text=https%3A%2F%2Ftv.vndns.net&size=220"
+            alt="Companion QR Code"
+            width="148"
+            height="148"
+          >
+          <span class="dialog-qr-caption" id="companion-qr-caption">KV-TV Storefront (tv.vndns.net)</span>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Compact Bottom-Right D-Pad Remote Simulator -->
+  <aside class="kv-dpad-simulator dpad-simulator" id="tv-remote-widget" aria-label="TV D-Pad Remote Simulator">
+    <div class="kv-dpad-header dpad-header">
+      <span>D-PAD REMOTE</span>
+      <span class="tabular" id="dpad-focus-readout">88103</span>
+    </div>
+    <div class="kv-dpad-grid dpad-grid">
+      <button type="button" class="kv-dpad-btn dpad-btn dpad-back" data-dpad="BACK" title="Back / Close Modal">BACK</button>
+      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="ArrowUp" title="Navigate Up">UP</button>
+      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="DIAL" title="Short-Code Keypad">CODE</button>
+      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="ArrowLeft" title="Navigate Left">LEFT</button>
+      <button type="button" class="kv-dpad-btn dpad-btn dpad-ok" data-dpad="Enter" title="Select Focused Tile">OK</button>
+      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="ArrowRight" title="Navigate Right">RIGHT</button>
+      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="QR" title="Open Phone QR">QR</button>
+      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="ArrowDown" title="Navigate Down">DOWN</button>
+      <button type="button" class="kv-dpad-btn dpad-btn" data-dpad="HOME" title="Focus Hero Tile">TOP</button>
+    </div>
+  </aside>
+
+  <!-- Toast Status Banner -->
+  <div id="kv-toast-banner" class="kv-toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

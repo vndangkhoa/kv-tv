@@ -1,0 +1,413 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-05T04:24:00Z",
+  "title": "Design System: KV-TV Theme (kv-tv-theme)",
+  "extensions": {
+    "colorMeta": {
+      "cobalt": {
+        "role": "primary",
+        "displayName": "Metro Cobalt",
+        "canonical": "#0078D7",
+        "tonalRamp": [
+          "#001E38",
+          "#00335C",
+          "#004C87",
+          "#0063B0",
+          "#0078D7",
+          "#2B94E8",
+          "#6EB7F2",
+          "#C2E2FA"
+        ]
+      },
+      "violet": {
+        "role": "primary",
+        "displayName": "Royal Violet",
+        "canonical": "#6B21A8",
+        "tonalRamp": [
+          "#1E0730",
+          "#340D54",
+          "#4E167D",
+          "#6B21A8",
+          "#8636C7",
+          "#A35EE0",
+          "#C494F0",
+          "#E7D1FA"
+        ]
+      },
+      "teal": {
+        "role": "primary",
+        "displayName": "Metro Teal",
+        "canonical": "#008272",
+        "tonalRamp": [
+          "#00241F",
+          "#003D35",
+          "#005E52",
+          "#008272",
+          "#00A38F",
+          "#2BC2AE",
+          "#71DEC9",
+          "#C2F5EB"
+        ]
+      },
+      "crimson": {
+        "role": "secondary",
+        "displayName": "Cinema Crimson",
+        "canonical": "#D83B01",
+        "tonalRamp": [
+          "#360E00",
+          "#5C1800",
+          "#8A2500",
+          "#B33000",
+          "#D83B01",
+          "#F25C24",
+          "#F8926B",
+          "#FCD2C2"
+        ]
+      },
+      "vermilion": {
+        "role": "secondary",
+        "displayName": "Broadcast Vermilion",
+        "canonical": "#B91C1C",
+        "tonalRamp": [
+          "#300606",
+          "#540B0B",
+          "#7F1111",
+          "#9E1717",
+          "#B91C1C",
+          "#DC3838",
+          "#EE7777",
+          "#FACACA"
+        ]
+      },
+      "emerald": {
+        "role": "tertiary",
+        "displayName": "Signal Emerald",
+        "canonical": "#107C10",
+        "tonalRamp": [
+          "#042404",
+          "#083D08",
+          "#0C5C0C",
+          "#107C10",
+          "#189E18",
+          "#3CC23C",
+          "#7CE07C",
+          "#C8F5C8"
+        ]
+      },
+      "amber": {
+        "role": "tertiary",
+        "displayName": "Editorial Amber",
+        "canonical": "#B45309",
+        "tonalRamp": [
+          "#2E1402",
+          "#522403",
+          "#7A3705",
+          "#994507",
+          "#B45309",
+          "#D9701C",
+          "#EDA15F",
+          "#F9DEC2"
+        ]
+      },
+      "oled-void": {
+        "role": "neutral",
+        "displayName": "OLED Void",
+        "canonical": "#000000",
+        "tonalRamp": [
+          "#000000",
+          "#080808",
+          "#121212",
+          "#1C1C1C",
+          "#262626",
+          "#454545",
+          "#8E8E8E",
+          "#D4D4D4"
+        ]
+      },
+      "surface-chrome": {
+        "role": "neutral",
+        "displayName": "Surface Chrome",
+        "canonical": "#0A0A0A",
+        "tonalRamp": [
+          "#000000",
+          "#0A0A0A",
+          "#141414",
+          "#1F1F1F",
+          "#2E2E2E",
+          "#4D4D4D",
+          "#8C8C8C",
+          "#D6D6D6"
+        ]
+      },
+      "surface-card": {
+        "role": "neutral",
+        "displayName": "Surface Card",
+        "canonical": "#121212",
+        "tonalRamp": [
+          "#000000",
+          "#0A0A0A",
+          "#121212",
+          "#1C1C1C",
+          "#2B2B2B",
+          "#4A4A4A",
+          "#8E8E8E",
+          "#D4D4D4"
+        ]
+      },
+      "surface-elevated": {
+        "role": "neutral",
+        "displayName": "Surface Elevated",
+        "canonical": "#1C1C1C",
+        "tonalRamp": [
+          "#050505",
+          "#121212",
+          "#1C1C1C",
+          "#292929",
+          "#3B3B3B",
+          "#595959",
+          "#969696",
+          "#DEDEDE"
+        ]
+      },
+      "ink-primary": {
+        "role": "neutral",
+        "displayName": "Ink Primary",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#383838",
+          "#595959",
+          "#7A7A7A",
+          "#9E9E9E",
+          "#C2C2C2",
+          "#E3E3E3",
+          "#FFFFFF"
+        ]
+      },
+      "ink-secondary": {
+        "role": "neutral",
+        "displayName": "Ink Secondary",
+        "canonical": "#D4D4D4",
+        "tonalRamp": [
+          "#171717",
+          "#303030",
+          "#4D4D4D",
+          "#6E6E6E",
+          "#919191",
+          "#B5B5B5",
+          "#D4D4D4",
+          "#F2F2F2"
+        ]
+      },
+      "ink-muted": {
+        "role": "neutral",
+        "displayName": "Ink Muted",
+        "canonical": "#8E8E8E",
+        "tonalRamp": [
+          "#141414",
+          "#292929",
+          "#424242",
+          "#5E5E5E",
+          "#8E8E8E",
+          "#B0B0B0",
+          "#CFCFCF",
+          "#EDEDED"
+        ]
+      },
+      "border-hairline": {
+        "role": "neutral",
+        "displayName": "Border Hairline",
+        "canonical": "#262626",
+        "tonalRamp": [
+          "#0A0A0A",
+          "#171717",
+          "#262626",
+          "#383838",
+          "#4F4F4F",
+          "#6E6E6E",
+          "#9E9E9E",
+          "#D4D4D4"
+        ]
+      },
+      "border-strong": {
+        "role": "neutral",
+        "displayName": "Border Strong",
+        "canonical": "#454545",
+        "tonalRamp": [
+          "#0F0F0F",
+          "#1F1F1F",
+          "#303030",
+          "#454545",
+          "#616161",
+          "#828282",
+          "#ADADAD",
+          "#E0E0E0"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display (Panorama Pivot)",
+        "purpose": "Giant lowercase ExtraLight (200) panorama pivot headers ('store', 'pre-sets', 'short-codes', 'phone-qr')."
+      },
+      "headline": {
+        "displayName": "Headline (Hero Tile & Dialog Title)",
+        "purpose": "2x2 Hero live tile titles and modal banner headings in bold lowercase."
+      },
+      "title": {
+        "displayName": "Title (Standard Tile & Section Title)",
+        "purpose": "2x1 and 1x1 live tile titles and secondary structural block headers."
+      },
+      "body": {
+        "displayName": "Body (Panorama Deck & Editions)",
+        "purpose": "Subbar deck copy, app edition subtitles, and feature list items (max 72ch)."
+      },
+      "label": {
+        "displayName": "Label / Telemetry (Monospace)",
+        "purpose": "Tabular-nums 5-digit short-codes, file sizes, package names, and topbar navigation links."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Snappy Zune/Metro kinetic scale and state transitions (120ms-220ms) with zero bounce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "760px"
+      },
+      {
+        "name": "lg",
+        "value": "1220px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Metro Hero Live Tile",
+      "kind": "card",
+      "refersTo": "tile-cobalt",
+      "description": "Flat 0px-radius Metro color-block live tile with geometric SVG glyph, monospace short-code stamp, bold lowercase title, and 4px solid white D-Pad focus ring.",
+      "html": "<button type=\"button\" class=\"ds-metro-tile\"><div class=\"ds-tile-top\"><svg class=\"ds-tile-glyph\" viewBox=\"0 0 48 48\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.75\" stroke-linecap=\"square\" stroke-linejoin=\"miter\" aria-hidden=\"true\"><path d=\"M14 34H35C40 34 43 30.5 43 26C43 21.8 39.8 18.4 35.5 18.1C34.2 11.8 28.6 7 22 7C14.3 7 8 13.3 8 21C8 21.6 8.1 22.2 8.2 22.8C5.2 24.1 3 27.1 3 30.5C3 32.5 4.5 34 6.5 34H14Z\"/><polygon points=\"21,18 32,24.5 21,31\" fill=\"currentColor\" stroke=\"none\"/></svg><span class=\"ds-code-stamp\">88103 · 24.2 MB</span></div><div class=\"ds-tile-bottom\"><span class=\"ds-tile-title\">cloudstream 3</span><span class=\"ds-tile-edition\">KV-PreSetup · All VN &amp; Global 4K Repos</span><div class=\"ds-tile-meta\"><span>com.lagradost.cloudstream3</span><span>4,150 installs</span></div></div></button>",
+      "css": ".ds-metro-tile { position: relative; appearance: none; border: none; border-radius: 0px; background-color: #0078D7; color: #FFFFFF; font-family: 'Work Sans', 'Segoe UI', sans-serif; padding: 22px; width: 320px; min-height: 210px; display: flex; flex-direction: column; justify-content: space-between; text-align: left; cursor: pointer; transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-metro-tile:hover { transform: scale(1.01); } .ds-metro-tile:focus, .ds-metro-tile:focus-visible { outline: 4px solid #FFFFFF; outline-offset: 2px; transform: scale(1.022); } .ds-tile-top { display: flex; align-items: flex-start; justify-content: space-between; width: 100%; } .ds-tile-glyph { width: 44px; height: 44px; color: #FFFFFF; } .ds-code-stamp { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; background: rgba(0, 0, 0, 0.28); color: #FFFFFF; padding: 4px 8px; font-variant-numeric: tabular-nums; } .ds-tile-bottom { display: flex; flex-direction: column; gap: 6px; width: 100%; margin-top: 24px; } .ds-tile-title { font-size: 28px; font-weight: 700; letter-spacing: -0.035em; line-height: 1.05; text-transform: lowercase; } .ds-tile-edition { font-size: 14px; font-weight: 500; } .ds-tile-meta { display: flex; justify-content: space-between; padding-top: 6px; border-top: 1px solid rgba(255, 255, 255, 0.28); font-family: 'JetBrains Mono', monospace; font-size: 12px; font-variant-numeric: tabular-nums; }"
+    },
+    {
+      "name": "Panorama Pivot Header",
+      "kind": "nav",
+      "refersTo": "display",
+      "description": "Giant ExtraLight (200) lowercase panorama section switcher rail on pure OLED black.",
+      "html": "<div class=\"ds-pivot-rail\" role=\"tablist\"><button type=\"button\" class=\"ds-pivot-btn\" aria-selected=\"true\">store</button><button type=\"button\" class=\"ds-pivot-btn\" aria-selected=\"false\">pre-sets</button><button type=\"button\" class=\"ds-pivot-btn\" aria-selected=\"false\">short-codes</button></div>",
+      "css": ".ds-pivot-rail { display: flex; align-items: baseline; gap: 32px; background-color: #000000; padding: 12px 16px; border-bottom: 1px solid #262626; } .ds-pivot-btn { appearance: none; background: none; border: none; border-radius: 0px; cursor: pointer; font-family: 'Work Sans', 'Segoe UI', sans-serif; font-size: 48px; font-weight: 200; letter-spacing: -0.04em; line-height: 0.95; color: rgba(255, 255, 255, 0.58); text-transform: lowercase; transition: color 180ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-pivot-btn:hover { color: #D4D4D4; } .ds-pivot-btn[aria-selected=\"true\"] { color: #FFFFFF; } .ds-pivot-btn:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 4px; color: #FFFFFF; }"
+    },
+    {
+      "name": "Primary Metro Action Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "High-contrast 0px-radius rectangular command button with 2px solid white border that snaps to Metro Cobalt on hover/focus.",
+      "html": "<button type=\"button\" class=\"ds-btn-primary\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"square\" aria-hidden=\"true\"><path d=\"M12 4v12m0 0l-5-5m5 5l5-5M4 20h16\"/></svg><span>DOWNLOAD PRE-SET APK</span></button>",
+      "css": ".ds-btn-primary { appearance: none; border: 2px solid #FFFFFF; border-radius: 0px; padding: 12px 18px; background-color: #FFFFFF; color: #000000; font-family: 'Work Sans', 'Segoe UI', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 0.02em; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; transition: background-color 120ms cubic-bezier(0.16, 1, 0.3, 1), color 120ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-primary:hover, .ds-btn-primary:focus-visible { background-color: #0078D7; color: #FFFFFF; outline: 3px solid #FFFFFF; outline-offset: 2px; }"
+    },
+    {
+      "name": "Short-Code Stamp Chip",
+      "kind": "chip",
+      "refersTo": "tile-emerald",
+      "description": "Tabular-nums monospace short-code preset chip that inverts to Signal Emerald on hover or focus.",
+      "html": "<button type=\"button\" class=\"ds-code-chip\"><span class=\"ds-chip-dot\"></span><span>88103 · CLOUDSTREAM 3</span></button>",
+      "css": ".ds-code-chip { appearance: none; background-color: #000000; color: #FFFFFF; border: 1px solid #454545; border-radius: 0px; padding: 6px 10px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: background-color 140ms cubic-bezier(0.16, 1, 0.3, 1), border-color 140ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-chip-dot { width: 8px; height: 8px; background-color: #107C10; display: inline-block; } .ds-code-chip:hover, .ds-code-chip:focus-visible { background-color: #107C10; border-color: #FFFFFF; outline: 2px solid #FFFFFF; outline-offset: 1px; } .ds-code-chip:hover .ds-chip-dot, .ds-code-chip:focus-visible .ds-chip-dot { background-color: #FFFFFF; }"
+    },
+    {
+      "name": "Metro Command Input",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Zero-radius pitch-black command or short-code input field with crisp white focus frame.",
+      "html": "<div class=\"ds-input-wrap\"><label class=\"ds-input-label\" for=\"ds-shortcode-input\">SHORT-CODE / APK ENDPOINT</label><input id=\"ds-shortcode-input\" class=\"ds-input-field\" type=\"text\" value=\"88103\" /></div>",
+      "css": ".ds-input-wrap { display: flex; flex-direction: column; gap: 6px; background-color: #121212; padding: 14px; border: 1px solid #262626; width: 280px; } .ds-input-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; color: #8E8E8E; } .ds-input-field { appearance: none; background-color: #000000; color: #FFFFFF; border: 1px solid #454545; border-radius: 0px; padding: 10px 14px; font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; } .ds-input-field:hover { border-color: #D4D4D4; } .ds-input-field:focus, .ds-input-field:focus-visible { border-color: #FFFFFF; outline: 2px solid #0078D7; outline-offset: 1px; }"
+    },
+    {
+      "name": "Top Switcher Bar",
+      "kind": "nav",
+      "refersTo": "tile-cobalt",
+      "description": "Persistent top chrome bar with 12x12px Cobalt square emblem and bracketed monospace navigation links.",
+      "html": "<nav class=\"ds-topbar\" aria-label=\"System Navigation\"><a class=\"ds-brand\" href=\"#\"><span class=\"ds-brand-mark\"></span><span>KV-TV STORE · tv.vndns.net</span></a><div class=\"ds-nav-links\"><a class=\"ds-nav-link\" href=\"#\" aria-current=\"page\">[ STOREFRONT ]</a><a class=\"ds-nav-link\" href=\"#\">[ ADMIN CONSOLE ]</a></div></nav>",
+      "css": ".ds-topbar { background-color: #0A0A0A; border-bottom: 1px solid #262626; padding: 8px 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; } .ds-brand { display: inline-flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; color: #FFFFFF; text-decoration: none; } .ds-brand-mark { width: 12px; height: 12px; background-color: #0078D7; display: inline-block; } .ds-nav-links { display: flex; gap: 6px; } .ds-nav-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: #D4D4D4; text-decoration: none; padding: 5px 10px; border: 1px solid transparent; transition: background-color 140ms cubic-bezier(0.16, 1, 0.3, 1), color 140ms cubic-bezier(0.16, 1, 0.3, 1), border-color 140ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-nav-link:hover, .ds-nav-link:focus-visible { color: #FFFFFF; border-color: #FFFFFF; background-color: #121212; outline: none; } .ds-nav-link[aria-current=\"page\"] { background-color: #0078D7; color: #FFFFFF; border-color: #FFFFFF; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The OLED Typographic Panorama",
+    "overview": "kv-tv-theme is an unapologetically flat, razor-sharp 10-foot and desktop design system rooted in the Digital Design Canon of Windows Phone 7 / Zune HD Metro (digital-design-canon-metro-typographic-tiles). Rather than wrapping content in translucent glass panels, blurred backdrops, or rounded card chrome, the interface treats typography, flat high-chroma color planes, and pure OLED black void (#000000) as the sole structural materials. Oversized light-weight lowercase panorama pivot headers anchor the top of every stage, while asymmetric multi-span live tiles (2×2 hero, 2×1 wide, 1×1 square) carry crisp geometric vector glyphs, bottom-left bold lowercase titles, and monospace telemetry stamps.\n\nEvery surface is engineered simultaneously for a 10-foot living-room television navigated by a 5-way Android TV D-Pad remote (ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Enter) and a high-density desktop browser or admin console. Focus is never ambiguous: active tiles snap forward (scale(1.022)) with a 4px solid white perimeter frame (outline: 4px solid #FFFFFF; outline-offset: 2px) and zero blurred glow.\n\nThe system explicitly rejects all contemporary AI-slop tropes: no backdrop-filter: blur(), no radial neon glows, no rounded corners (border-radius: 0px everywhere), no gradient text or gradient tile backgrounds, and no decorative chrome.",
+    "keyCharacteristics": [
+      "Pure OLED pitch-black canvas (#000000) that turns off unlit television pixels and maximizes chromatic pop.",
+      "Giant light-weight (font-weight: 200) lowercase panorama pivot headers (store, pre-sets, short-codes, phone-qr, overview, applications, promotions) that establish hierarchy through scale and opacity contrast alone.",
+      "Unmodulated, high-chroma flat color-block tiles (cobalt, violet, teal, crimson, vermilion, emerald, amber) paired exclusively with crisp white ink (#FFFFFF).",
+      "Strict 0px corner radius across every tile, button, badge, modal dialog, table, and input control.",
+      "10-foot D-Pad spatial readiness with 4px solid #FFFFFF focus rings, 2D bounding-box roving tabindex, and tabular-nums monospace short-code stamps."
+    ],
+    "rules": [
+      {
+        "name": "The Unmodulated Color-Block Rule",
+        "body": "Every live tile and KPI block must use a single flat solid CSS color (background-color) with zero linear or radial gradients, zero internal drop shadows, and zero background photography bleed.",
+        "section": "colors"
+      },
+      {
+        "name": "The True OLED Pitch-Black Rule",
+        "body": "The root stage (html, body, .metro-grid) must always be pure #000000 so that the 12px grid gutters read as physical void between illuminated color planes on OLED television panels.",
+        "section": "colors"
+      },
+      {
+        "name": "The Brand-Locked Tile Color Rule",
+        "body": "Each flagship application and utility owns a permanent semantic tile color (cobalt for CloudStream 3, violet for Jellyfin TV, teal for Kodi 21, crimson for KV-Netflix, vermilion for KV-Tube, emerald for Short-Code Dialer, amber for Phone QR) that carries across the storefront, modal banners, and admin dashboards.",
+        "section": "colors"
+      },
+      {
+        "name": "The Lowercase Panorama Pivot Rule",
+        "body": "All panorama pivot headers (pivot-btn), tile titles (tile-title), and modal banner titles (dialog-title) must use text-transform: lowercase with tight negative tracking (-0.03em to -0.04em) to preserve the authentic Zune/Metro editorial voice.",
+        "section": "typography"
+      },
+      {
+        "name": "The 12px Functional Floor & Tabular-Nums Rule",
+        "body": "No text node anywhere in the interface may drop below 0.75rem (12px), and every numeric counter, short-code (88101–88105), version string, price, and file size must enforce font-variant-numeric: tabular-nums.",
+        "section": "typography"
+      },
+      {
+        "name": "The Zero-Shadow Flat Plane Rule",
+        "body": "Never apply box-shadow, text-shadow, or backdrop-filter: blur() to any tile, modal, button, or navigation bar.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Crisp White Focus Frame Rule",
+        "body": "Every interactive tile and control must indicate :focus-visible with a solid, unblurred #FFFFFF outline (4px solid #FFFFFF with outline-offset: 2px on tiles; 2px or 3px solid #FFFFFF on buttons and inputs).",
+        "section": "elevation"
+      },
+      {
+        "name": "The Zero-Radius Rule",
+        "body": "border-radius must remain 0px on every element without exception; pill badges, rounded avatars, and softened card corners are forbidden.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Structural Hairline Rule",
+        "body": "Internal tile metadata rows and secondary strips divide content with exposed 1px solid hairlines (rgba(255, 255, 255, 0.28) inside color tiles; rgba(255, 255, 255, 0.18) on dark surfaces) rather than nested card boxes.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do keep the root viewport background at pure #000000 (oled-void) so the 12px live-tile gutters act as true unlit OLED black separation.",
+      "Do enforce border-radius: 0px (rounded.none) on every single element, including tiles, buttons, inputs, QR frames, badges, and <dialog> modals.",
+      "Do set all panorama pivot headers (font-weight: 200, clamp(2.8rem, 5vw, 4.6rem)) and live tile titles (font-weight: 700) in text-transform: lowercase with tight negative letter-spacing (-0.03em to -0.04em).",
+      "Do pair every Metro color block (#0078D7, #6B21A8, #008272, #D83B01, #B91C1C, #107C10, #B45309) with pure #FFFFFF text and vector icons to guarantee WCAG AA contrast (>= 4.8:1).",
+      "Do provide a 4px solid #FFFFFF focus outline (outline-offset: 2px) and transform: scale(1.022) on all focusable tiles so 10-foot Android TV D-Pad users can track focus effortlessly across the room.",
+      "Do apply font-variant-numeric: tabular-nums (JetBrains Mono) to all 5-digit short-codes (88101–88105), install counters, file sizes, and version stamps."
+    ],
+    "donts": [
+      "Don't use backdrop-filter: blur(), frosted glass overlays, or translucent floating cards anywhere in the interface.",
+      "Don't apply box-shadow, neon outer glows, or colored drop shadows to tiles, modals, or buttons.",
+      "Don't use linear, radial, or mesh gradients on tile backgrounds or typography; every color plane must be a single unmodulated solid color.",
+      "Don't introduce rounded corners (border-radius: 4px, 8px, 9999px) on pills, buttons, avatars, or dialogs.",
+      "Don't set any text smaller than 0.75rem (12px) or use low-contrast gray text inside saturated color tiles.",
+      "Don't trap keyboard or D-Pad users in 1D tab loops; always wire 2D spatial arrow-key navigation (.metro-grid) and native <dialog closedby=\"any\"> Escape/Back dismissal."
+    ]
+  }
+}

@@ -1,0 +1,713 @@
+{
+  "storeInfo": {
+    "name": "KV-TV App Store",
+    "domain": "https://tv.vndns.net",
+    "downloaderCodePrefix": "88",
+    "version": "1.0.0"
+  },
+  "categories": [
+    "All",
+    "Media Center",
+    "Streaming",
+    "Originals & Cinema",
+    "Video & Music"
+  ],
+  "apps": [
+    {
+      "id": "jellyfin-kv",
+      "name": "Jellyfin TV",
+      "edition": "KV-Optimized Edition",
+      "packageName": "org.jellyfin.androidtv.kv",
+      "version": "0.18.4-kv2",
+      "size": "42.8 MB",
+      "shortCode": "88101",
+      "category": "Media Center",
+      "featured": true,
+      "preConfigured": true,
+      "presetSummary": "Pre-linked to KV Media Server + Direct Play 4K HDR10/Dolby Vision ExoPlayer profile",
+      "description": "Custom Android TV build of Jellyfin with pre-configured KV Media Server discovery, Direct Play 4K HEVC 10-bit profiles, and styled Vietnamese/English subtitles.",
+      "presetFeatures": [
+        "Auto-discovery & pre-filled server URL",
+        "Hardware-accelerated ExoPlayer + libVLC fallback",
+        "Zero-transcode 4K HEVC 10-bit Direct Play",
+        "Vietnamese & English default subtitle styling"
+      ],
+      "color": "#00A4DC",
+      "iconType": "jellyfin",
+      "downloads": 1420,
+      "rating": "4.9",
+      "minAndroid": "Android TV 7.0+",
+      "arch": "Universal (arm64-v8a + armeabi-v7a)",
+      "sha256": "99d98a40e11b84a33bd0de9eb51a3fdb434901c8d9016d9b54a6332f8651d2ae",
+      "apkFileName": null,
+      "presetFileName": null,
+      "updatedAt": "2026-11-03T03:48:10.908Z"
+    },
+    {
+      "id": "kodi-kv",
+      "name": "Kodi 21 Omega",
+      "edition": "KV-Build All-in-One",
+      "packageName": "org.xbmc.kodi",
+      "version": "21.2-kv-build",
+      "size": "94.5 MB",
+      "shortCode": "88102",
+      "category": "Media Center",
+      "featured": true,
+      "preConfigured": true,
+      "presetSummary": "Pre-loaded Arctic Zephyr 2 Leanback Skin + VN Subtitle Addons + RAM Cache Tuned",
+      "description": "Ready-to-run Kodi 21.2 Omega build featuring the lightweight Arctic Zephyr 2 10-foot TV skin, tuned memory cache for 1GB/2GB TV boxes, and pre-installed Vietnamese subtitle addons.",
+      "presetFeatures": [
+        "Arctic Zephyr 2 10-foot TV remote skin pre-activated",
+        "advancedsettings.xml tuned for 1GB/2GB RAM TV Boxes",
+        "Pre-installed Vietnamese subtitle providers (Subscene/OpenSubtitles)",
+        "TorrServer & Elementum streaming buffer optimization"
+      ],
+      "color": "#17B2E7",
+      "iconType": "kodi",
+      "downloads": 2890,
+      "rating": "4.9",
+      "minAndroid": "Android TV 7.0+",
+      "arch": "Universal (arm64-v8a + armeabi-v7a)",
+      "sha256": "547112484959b4a8e6a2f6bd1d44741fed6dc04adcfc3910cac56b95c32228de",
+      "apkFileName": null,
+      "presetFileName": null,
+      "updatedAt": "2026-11-02T03:48:10.908Z"
+    },
+    {
+      "id": "cloudstream-kv",
+      "name": "CloudStream 3",
+      "edition": "KV-PreSetup (Full Repos)",
+      "packageName": "com.lagradost.cloudstream3",
+      "version": "4.4.1-kv",
+      "size": "24.2 MB",
+      "shortCode": "88103",
+      "category": "Streaming",
+      "featured": true,
+      "preConfigured": true,
+      "presetSummary": "Our already-setup build: Vietnamese & Global repositories pre-installed & auto-updated",
+      "description": "Zero manual repository typing required. Ships with MegaRepo and Vietnamese HD movie/anime extensions pre-activated, Cloudflare DoH enabled, and automatic 4K Vietsub stream selection.",
+      "presetFeatures": [
+        "Pre-configured MegaRepo + Vietnamese HD Movie/Anime extensions",
+        "Auto-selects 1080p/4K highest-bitrate stream with Vietsub",
+        "DNS-over-HTTPS (Cloudflare 1.1.1.1) pre-enabled to bypass ISP blocks",
+        "One-click Pre-Set Backup (.backup) restore included"
+      ],
+      "color": "#6366F1",
+      "iconType": "cloudstream",
+      "downloads": 4151,
+      "rating": "5.0",
+      "minAndroid": "Android TV 6.0+",
+      "arch": "Universal (arm64-v8a + armeabi-v7a)",
+      "sha256": "9b423b14f254b94be464f087216b2d1a313aab0647934d8258c4da88bdc44e0d",
+      "apkFileName": null,
+      "presetFileName": null,
+      "updatedAt": "2026-11-04T03:48:10.908Z"
+    },
+    {
+      "id": "kv-netflix",
+      "name": "KV-Netflix",
+      "edition": "TV Remote & 4K HDR Mod",
+      "packageName": "vn.kvtv.netflix",
+      "version": "8.114.0-kv",
+      "size": "38.6 MB",
+      "shortCode": "88104",
+      "category": "Originals & Cinema",
+      "featured": true,
+      "preConfigured": true,
+      "presetSummary": "Works on both certified & uncertified Android TV boxes with full D-Pad navigation",
+      "description": "Engineered for Android TV boxes that fail Netflix certification checks. Provides native D-Pad remote focus navigation without an air-mouse, adaptive Widevine L1/L3 fallback, and 5.1 audio.",
+      "presetFeatures": [
+        "Native D-Pad directional navigation (no air-mouse needed)",
+        "Widevine L1/L3 adaptive fallback for uncertified TV boxes",
+        "Pre-tuned Dolby Digital Plus 5.1 & HDR10 playback flags",
+        "Ultra-fast cold start on Amlogic & Rockchip chips"
+      ],
+      "color": "#E50914",
+      "iconType": "netflix",
+      "downloads": 3680,
+      "rating": "4.8",
+      "minAndroid": "Android TV 7.0+",
+      "arch": "Universal (arm64-v8a + armeabi-v7a)",
+      "sha256": "c41a079e854761ba2417a1a159d28979ac56102c0f798e206b3605ff179680cd",
+      "apkFileName": null,
+      "presetFileName": null,
+      "updatedAt": "2026-11-01T03:48:10.908Z"
+    },
+    {
+      "id": "kv-tube",
+      "name": "KV-Tube",
+      "edition": "Ad-Free 4K60 + SponsorBlock",
+      "packageName": "vn.kvtv.tube",
+      "version": "24.85-kv",
+      "size": "19.4 MB",
+      "shortCode": "88105",
+      "category": "Video & Music",
+      "featured": true,
+      "preConfigured": true,
+      "presetSummary": "Zero ads, SponsorBlock auto-skip, 4K 60fps HDR VP9/AV1, and Voice Search ready",
+      "description": "Next-gen SmartTube/KV-Tube client for Android TV. Blocks 100% of video and banner ads, automatically skips sponsor reads via SponsorBlock, and unlocks 4K 60fps HDR on any TV box.",
+      "presetFeatures": [
+        "100% Ad-free playback (no pre-roll, mid-roll, or banner ads)",
+        "SponsorBlock pre-configured (skips intros, self-promo & sponsor segments)",
+        "AV1 & VP9 hardware codec selector for smooth 4K 60fps",
+        "Works without Google Play Services on any Android TV box"
+      ],
+      "color": "#FF0033",
+      "iconType": "tube",
+      "downloads": 5920,
+      "rating": "5.0",
+      "minAndroid": "Android TV 6.0+",
+      "arch": "Universal (arm64-v8a + armeabi-v7a)",
+      "sha256": "629784a302008b3497ee53e341ab48d51841b46f0a5a41540dcb4947150f17d1",
+      "apkFileName": null,
+      "presetFileName": null,
+      "updatedAt": "2026-11-04T15:48:10.908Z"
+    }
+  ],
+  "ads": [
+    {
+      "id": "ad-vip-box",
+      "title": "KV-TV VIP Box Setup — Turn any Android TV into a 4K Cinema Hub",
+      "subtitle": "Pre-tuned Jellyfin, Kodi 21 Omega, CloudStream Vietsub & Ad-Free 4K60 KV-Tube ready in 60 seconds.",
+      "badge": "FEATURED",
+      "ctaText": "Explore Pre-Set Apps",
+      "ctaUrl": "#catalog",
+      "gradient": "linear-gradient(135deg, #00A4DC 0%, #6366F1 100%)",
+      "active": true,
+      "impressions": 4857,
+      "clicks": 612,
+      "createdAt": "2026-10-30T03:48:10.908Z"
+    },
+    {
+      "id": "ad-vps-cdn",
+      "title": "ThueVPSGiaRe High-Speed VN Edge CDN — 1Gbps Direct APK Downloads",
+      "subtitle": "Hosted on low-latency Vietnam NVMe VPS with instant AFTVnews Downloader short-codes (88101–88105).",
+      "badge": "SPONSOR",
+      "ctaText": "Test Speed",
+      "ctaUrl": "/tv",
+      "gradient": "linear-gradient(135deg, #10B981 0%, #0EA5E9 100%)",
+      "active": true,
+      "impressions": 3227,
+      "clicks": 284,
+      "createdAt": "2026-10-31T03:48:10.908Z"
+    },
+    {
+      "id": "ad-cloudstream-44",
+      "title": "CloudStream KV-PreSetup v4.4 Released — All VN Movie Extensions Ready",
+      "subtitle": "Includes pre-loaded MegaRepo, 4K Vietsub auto-selector, and Cloudflare 1.1.1.1 DoH bypass.",
+      "badge": "NEW RELEASE",
+      "ctaText": "Code: 88103",
+      "ctaUrl": "/go/88103",
+      "gradient": "linear-gradient(135deg, #6366F1 0%, #EC4899 100%)",
+      "active": true,
+      "impressions": 5447,
+      "clicks": 890,
+      "createdAt": "2026-11-03T03:48:10.908Z"
+    }
+  ],
+  "admin": {
+    "username": "admin",
+    "passwordHash": "pbkdf2$100000$kvtv2026salt01$3a9c0d968100ce74dae5666d6be80c428d14faca632552a633269953d80d1e50",
+    "totpSecret": "KVKVTV2026STORE2FASECRETBASE32AA",
+    "totpEnabled": true,
+    "updatedAt": "2026-11-05T03:48:10.908Z"
+  },
+  "analytics": {
+    "daily": [
+      {
+        "date": "2026-10-30",
+        "tvViews": 310,
+        "webViews": 195,
+        "downloads": 184
+      },
+      {
+        "date": "2026-10-31",
+        "tvViews": 345,
+        "webViews": 220,
+        "downloads": 215
+      },
+      {
+        "date": "2026-11-01",
+        "tvViews": 390,
+        "webViews": 260,
+        "downloads": 248
+      },
+      {
+        "date": "2026-11-02",
+        "tvViews": 412,
+        "webViews": 240,
+        "downloads": 269
+      },
+      {
+        "date": "2026-11-03",
+        "tvViews": 468,
+        "webViews": 305,
+        "downloads": 312
+      },
+      {
+        "date": "2026-11-04",
+        "tvViews": 520,
+        "webViews": 342,
+        "downloads": 364
+      },
+      {
+        "date": "2026-11-05",
+        "tvViews": 518,
+        "webViews": 322,
+        "downloads": 340
+      }
+    ],
+    "logs": [
+      {
+        "id": "evt-mw329pdn-0b5d",
+        "timestamp": "2026-11-05T04:44:15.419Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw3282o5-351a",
+        "timestamp": "2026-11-05T04:42:59.333Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw324sq3-1d9d",
+        "timestamp": "2026-11-05T04:40:26.476Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+      },
+      {
+        "id": "evt-mw322byi-4f79",
+        "timestamp": "2026-11-05T04:38:31.434Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw321ur4-bcfe",
+        "timestamp": "2026-11-05T04:38:09.136Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw321tbz-7c66",
+        "timestamp": "2026-11-05T04:38:07.295Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw321r58-8213",
+        "timestamp": "2026-11-05T04:38:04.460Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw321qk0-e8f4",
+        "timestamp": "2026-11-05T04:38:03.696Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw321q9k-271a",
+        "timestamp": "2026-11-05T04:38:03.320Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw321pg2-b8a4",
+        "timestamp": "2026-11-05T04:38:02.258Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw321ntl-7ff1",
+        "timestamp": "2026-11-05T04:38:00.153Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw321klu-e928",
+        "timestamp": "2026-11-05T04:37:55.986Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw321cjl-f54f",
+        "timestamp": "2026-11-05T04:37:45.537Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+      },
+      {
+        "id": "evt-mw321bwb-61af",
+        "timestamp": "2026-11-05T04:37:44.699Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+      },
+      {
+        "id": "evt-mw32158l-583d",
+        "timestamp": "2026-11-05T04:37:36.069Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw3214kk-4c24",
+        "timestamp": "2026-11-05T04:37:35.204Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw3213p2-678d",
+        "timestamp": "2026-11-05T04:37:34.070Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw3205wy-e643",
+        "timestamp": "2026-11-05T04:36:50.290Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw31sxf5-9aed",
+        "timestamp": "2026-11-05T04:31:12.689Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw31asme-b5df",
+        "timestamp": "2026-11-05T04:17:06.662Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw31aqrk-d01d",
+        "timestamp": "2026-11-05T04:17:04.256Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw31ad1y-b06f",
+        "timestamp": "2026-11-05T04:16:46.486Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw31a6iq-ec57",
+        "timestamp": "2026-11-05T04:16:38.018Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw319v74-5854",
+        "timestamp": "2026-11-05T04:16:23.344Z",
+        "event": "download",
+        "appId": "cloudstream-kv",
+        "appName": "CloudStream 3 (preset)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw319slj-bbdb",
+        "timestamp": "2026-11-05T04:16:19.975Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw319n7i-466d",
+        "timestamp": "2026-11-05T04:16:12.990Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+      },
+      {
+        "id": "evt-mw319mju-b8f2",
+        "timestamp": "2026-11-05T04:16:12.138Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+      },
+      {
+        "id": "evt-mw318s6v-9af9",
+        "timestamp": "2026-11-05T04:15:32.791Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw318f7b-d471",
+        "timestamp": "2026-11-05T04:15:15.959Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw316wta-c337",
+        "timestamp": "2026-11-05T04:14:05.470Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+      },
+      {
+        "id": "evt-mw316vzj-9d64",
+        "timestamp": "2026-11-05T04:14:04.399Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+      },
+      {
+        "id": "evt-mw316vc5-85f4",
+        "timestamp": "2026-11-05T04:14:03.558Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+      },
+      {
+        "id": "evt-mw3164o2-6d49",
+        "timestamp": "2026-11-05T04:13:28.994Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw313ryk-c962",
+        "timestamp": "2026-11-05T04:11:39.212Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw30zved-5612",
+        "timestamp": "2026-11-05T04:08:37.045Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw30yras-bec1",
+        "timestamp": "2026-11-05T04:07:45.076Z",
+        "event": "admin_login",
+        "appId": null,
+        "appName": "Admin 2FA Login",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw30m0z9-6b48",
+        "timestamp": "2026-11-05T03:57:51.093Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
+      },
+      {
+        "id": "evt-mw30kbzs-f8d3",
+        "timestamp": "2026-11-05T03:56:32.057Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (DESKTOP)",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "curl/8.18.0"
+      },
+      {
+        "id": "evt-mw309xa7-98d4",
+        "timestamp": "2026-11-05T03:48:26.431Z",
+        "event": "admin_login",
+        "appId": null,
+        "appName": "Admin 2FA Verified",
+        "deviceType": "desktop",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-mw309x91-2c58",
+        "timestamp": "2026-11-05T03:48:26.389Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog (TV)",
+        "deviceType": "tv",
+        "ip": "127.0.0.1",
+        "userAgent": "node"
+      },
+      {
+        "id": "evt-seed-1",
+        "timestamp": "2026-11-05T03:30:10.908Z",
+        "event": "download",
+        "appId": "kv-tube",
+        "appName": "KV-Tube (apk)",
+        "deviceType": "tv",
+        "ip": "113.161.72.14",
+        "userAgent": "Mozilla/5.0 (Linux; Android 11; MIBOX4 Build/RTM3.210722.001) TV Bro/2.0.1"
+      },
+      {
+        "id": "evt-seed-2",
+        "timestamp": "2026-11-05T03:34:10.908Z",
+        "event": "download",
+        "appId": "cloudstream-kv",
+        "appName": "CloudStream 3 (apk)",
+        "deviceType": "tv",
+        "ip": "27.72.98.210",
+        "userAgent": "AFTVnews Downloader/1.4.4 (Android TV; BRAVIA 4K VH2)"
+      },
+      {
+        "id": "evt-seed-3",
+        "timestamp": "2026-11-05T03:39:10.908Z",
+        "event": "download",
+        "appId": "kv-netflix",
+        "appName": "KV-Netflix (apk)",
+        "deviceType": "tv",
+        "ip": "14.232.160.55",
+        "userAgent": "Mozilla/5.0 (Linux; Android 12; Chromecast HD) AppleWebKit/537.36"
+      },
+      {
+        "id": "evt-seed-4",
+        "timestamp": "2026-11-05T03:43:10.908Z",
+        "event": "view",
+        "appId": null,
+        "appName": "Catalog View",
+        "deviceType": "tv",
+        "ip": "171.244.18.92",
+        "userAgent": "Mozilla/5.0 (Linux; Android 10; Shield Android TV) AppleWebKit/537.36"
+      },
+      {
+        "id": "evt-seed-5",
+        "timestamp": "2026-11-05T03:46:10.908Z",
+        "event": "download",
+        "appId": "jellyfin-kv",
+        "appName": "Jellyfin TV (preset)",
+        "deviceType": "desktop",
+        "ip": "118.69.54.101",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) Chrome/130.0.0.0 Safari/537.36"
+      }
+    ]
+  }
+}

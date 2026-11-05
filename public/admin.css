@@ -1,0 +1,1876 @@
+/* ==========================================================================
+   KV-TV Store Administrator Console — Metro Typographic Panorama (kv-tv-theme)
+   Domain: https://tv.vndns.net/admin
+   ========================================================================== */
+
+:root {
+  --bg-oled: #000000;
+  --bg-chrome: #0A0A0A;
+  --bg-surface: #121212;
+  --bg-elevated: #1C1C1C;
+  --bg-input: #000000;
+  --bg-hover: #1C1C1C;
+
+  --border-hairline: #262626;
+  --border-strong: #454545;
+
+  --fg-primary: #FFFFFF;
+  --fg-secondary: #D4D4D4;
+  --fg-muted: #8E8E8E;
+  --fg-pivot-inactive: #8E8E8E;
+
+  /* Committed DESIGN.md Metro Flat Color-Block Palette */
+  --metro-cobalt: #0078D7;
+  --metro-violet: #6B21A8;
+  --metro-teal: #008272;
+  --metro-crimson: #D83B01;
+  --metro-vermilion: #B91C1C;
+  --metro-emerald: #107C10;
+  --metro-amber: #B45309;
+
+  --font-sans: 'Work Sans', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  color-scheme: dark;
+  scrollbar-width: thin;
+  scrollbar-color: var(--metro-cobalt) var(--bg-chrome);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-radius: 0px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+::selection {
+  background-color: var(--metro-cobalt);
+  color: var(--fg-primary);
+}
+
+html {
+  background-color: var(--bg-oled);
+  color: var(--fg-primary);
+  font-family: var(--font-sans);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--bg-oled);
+  color: var(--fg-primary);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  caret-color: var(--metro-cobalt);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-chrome);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--metro-cobalt);
+}
+
+:focus-visible {
+  outline: 3px solid #FFFFFF;
+  outline-offset: 2px;
+}
+
+a {
+  color: var(--fg-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--fg-secondary);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  background: var(--bg-chrome);
+  border: 1px solid var(--border-hairline);
+  padding: 2px 6px;
+  color: var(--fg-primary);
+}
+
+.mono-num,
+.code-stamp,
+.ledger-value,
+.ledger-sub,
+.pivot-count-badge {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link,
+.skip-link:hover,
+.skip-link:focus {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  background: var(--fg-primary);
+  color: var(--bg-oled);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 10px 16px;
+  border: 2px solid var(--fg-primary);
+  text-decoration: none;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  top: 16px;
+}
+
+/* ==========================================================================
+   1. PERSISTENT TOP SYSTEM BAR (MATCHES MOCKUP 1)
+   ========================================================================== */
+
+.mockup-switcher {
+  background-color: var(--bg-chrome);
+  border-bottom: 1px solid var(--border-hairline);
+  padding: 10px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  z-index: 30;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.switcher-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--fg-primary);
+  text-decoration: none;
+}
+
+.switcher-brand-mark {
+  width: 12px;
+  height: 12px;
+  background-color: var(--metro-cobalt);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.switcher-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.switcher-link {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--fg-secondary);
+  text-decoration: none;
+  padding: 6px 12px;
+  border: 1px solid transparent;
+  background-color: transparent;
+  transition: background-color 140ms var(--ease-out-expo), color 140ms var(--ease-out-expo), border-color 140ms var(--ease-out-expo);
+}
+
+.switcher-link:hover,
+.switcher-link:focus-visible {
+  color: var(--fg-primary);
+  border-color: var(--fg-primary);
+  background-color: var(--bg-surface);
+  outline: none;
+}
+
+.switcher-link[aria-current="page"] {
+  background-color: var(--fg-primary);
+  color: var(--bg-oled);
+  border-color: var(--fg-primary);
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.topbar-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-hairline);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--fg-secondary);
+}
+
+.topbar-divider {
+  color: var(--fg-muted);
+}
+
+.topbar-timestamp {
+  font-size: 0.75rem;
+  color: var(--fg-secondary);
+}
+
+/* ==========================================================================
+   2. METRO PANORAMA CANVAS & LOWERCASE PIVOT RAIL
+   ========================================================================== */
+
+.metro-stage {
+  flex: 1;
+  width: 100%;
+  max-width: 1720px;
+  margin: 0 auto;
+  padding: 32px 32px 84px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.panorama-header {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-bottom: 1px solid var(--border-hairline);
+  padding-bottom: 18px;
+}
+
+.panorama-pivots {
+  display: flex;
+  align-items: baseline;
+  gap: 36px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 4px 0;
+}
+
+.panorama-pivots::-webkit-scrollbar {
+  display: none;
+}
+
+.pivot-btn {
+  appearance: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  font-family: var(--font-sans);
+  font-size: clamp(2.8rem, 5vw, 4.6rem);
+  font-weight: 200;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  color: var(--fg-pivot-inactive);
+  text-transform: lowercase;
+  white-space: nowrap;
+  padding: 4px 2px;
+  transition: color 180ms var(--ease-out-expo);
+}
+
+.pivot-btn:hover {
+  color: var(--fg-secondary);
+}
+
+.pivot-btn.is-active,
+.pivot-btn[aria-selected="true"] {
+  color: var(--fg-primary);
+}
+
+.pivot-btn:focus-visible {
+  outline: 3px solid var(--fg-primary);
+  outline-offset: 4px;
+  color: var(--fg-primary);
+}
+
+.pivot-count-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 4px 8px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-hairline);
+  color: var(--fg-secondary);
+  transform: translateY(-0.65em);
+}
+
+.pivot-btn.is-active .pivot-count-badge,
+.pivot-btn[aria-selected="true"] .pivot-count-badge {
+  background-color: var(--metro-emerald);
+  border-color: var(--fg-primary);
+  color: var(--fg-primary);
+}
+
+.panorama-subbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.panorama-deck {
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: var(--fg-secondary);
+  max-width: 76ch;
+}
+
+.panorama-deck strong {
+  color: var(--fg-primary);
+  font-weight: 600;
+}
+
+.panorama-telemetry {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--fg-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.telemetry-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-hairline);
+}
+
+.telemetry-dot,
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--metro-emerald);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.status-dot-active {
+  background-color: var(--metro-emerald);
+}
+
+.code-stamp {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--fg-primary);
+  background-color: var(--bg-chrome);
+  border: 1px solid var(--border-hairline);
+  padding: 6px 10px;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   3. AUTHENTICATION & 2FA GATE VIEW (SHARP METRO 2-COLUMN)
+   ========================================================================== */
+
+.auth-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-oled);
+}
+
+.auth-stage {
+  max-width: 1360px;
+}
+
+.auth-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
+/* Left Column: Sharp #121212 Bordered Login + 6-Digit TOTP 2FA Gate */
+.auth-panel {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-hairline);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.auth-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.auth-heading-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.auth-title {
+  font-size: clamp(2.2rem, 3.2vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  text-transform: lowercase;
+  color: var(--fg-primary);
+}
+
+.auth-subtitle {
+  color: var(--fg-secondary);
+  font-size: 0.9375rem;
+  max-width: 60ch;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fg-secondary);
+}
+
+.text-input,
+.select-input,
+.textarea-input {
+  width: 100%;
+  background-color: var(--bg-input);
+  color: var(--fg-primary);
+  border: 1px solid var(--border-strong);
+  padding: 12px 14px;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  box-shadow: none;
+  transition: border-color 140ms var(--ease-out-expo), background-color 140ms var(--ease-out-expo);
+}
+
+.text-input::placeholder,
+.textarea-input::placeholder {
+  color: var(--fg-muted);
+}
+
+.text-input:hover,
+.select-input:hover,
+.textarea-input:hover {
+  border-color: var(--fg-secondary);
+}
+
+.text-input:focus,
+.select-input:focus,
+.textarea-input:focus {
+  border-color: var(--fg-primary);
+  outline: 2px solid var(--metro-cobalt);
+  outline-offset: 0px;
+}
+
+.password-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrap .text-input {
+  padding-right: 44px;
+}
+
+.password-input-wrap .ghost-icon-btn {
+  position: absolute;
+  right: 6px;
+}
+
+.totp-code-input {
+  font-family: var(--font-mono);
+  font-size: 1.85rem;
+  font-weight: 700;
+  letter-spacing: 0.34em;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  padding: 12px;
+  border-color: var(--fg-primary);
+}
+
+.step-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background-color: var(--metro-emerald);
+  border: 1px solid var(--fg-primary);
+  color: var(--fg-primary);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.step-indicator .status-dot {
+  background-color: var(--fg-primary);
+}
+
+.auth-actions {
+  margin-top: 4px;
+}
+
+.auth-actions-split {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+}
+
+.auth-footer-links {
+  padding-top: 16px;
+  border-top: 1px solid var(--border-hairline);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.inline-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--fg-secondary);
+  text-decoration: none;
+  padding: 4px 0;
+}
+
+.inline-link:hover {
+  color: var(--fg-primary);
+  text-decoration: underline;
+}
+
+/* Right Column: Solid Metro Cobalt & Metro Emerald Live Tile Helper */
+.demo-helper-panel {
+  background-color: var(--metro-cobalt);
+  border: 1px solid var(--fg-primary);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+  color: var(--fg-primary);
+}
+
+.demo-helper-top {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.demo-helper-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  background-color: rgba(0, 0, 0, 0.28);
+  padding: 12px 14px;
+}
+
+.demo-helper-title {
+  font-size: clamp(1.35rem, 1.8vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  text-transform: lowercase;
+  color: var(--fg-primary);
+}
+
+.demo-helper-desc {
+  color: var(--fg-primary);
+  background-color: var(--bg-chrome);
+  border: 1px solid var(--fg-primary);
+  padding: 12px 14px;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+.demo-credential-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.demo-cred-item {
+  background-color: var(--bg-chrome);
+  border: 1px solid var(--fg-primary);
+  padding: 12px 14px;
+}
+
+.demo-cred-item dt {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fg-secondary);
+  margin-bottom: 4px;
+}
+
+.demo-cred-item dd {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--fg-primary);
+}
+
+.demo-cred-live-tile {
+  background-color: var(--metro-emerald);
+  border: 1px solid var(--fg-primary);
+}
+
+.demo-cred-live-tile dt {
+  color: var(--fg-primary);
+}
+
+.demo-live-code-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.live-totp-digits {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--fg-primary);
+  letter-spacing: 0.08em;
+}
+
+.totp-timer-pill {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  background-color: var(--bg-oled);
+  border: 1px solid var(--fg-primary);
+  color: var(--fg-primary);
+}
+
+.secret-truncate {
+  font-size: 0.75rem !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.demo-oneclick-bar {
+  margin-top: 2px;
+}
+
+.demo-qr-box {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  background-color: var(--bg-chrome);
+  border: 1px solid var(--fg-primary);
+}
+
+.qr-preview-img {
+  background: #FFFFFF;
+  padding: 6px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.demo-qr-meta strong {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fg-primary);
+  margin-bottom: 4px;
+}
+
+.demo-qr-meta p {
+  font-size: 0.75rem;
+  color: var(--fg-secondary);
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   4. SHARP METRO BUTTONS, BADGES & ALERTS (0PX RADIUS, NO GRADIENTS)
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 12px 18px;
+  border: 2px solid transparent;
+  box-shadow: none;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 140ms var(--ease-out-expo), border-color 140ms var(--ease-out-expo), color 140ms var(--ease-out-expo);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.btn-sm {
+  font-size: 0.75rem;
+  padding: 8px 12px;
+}
+
+.btn-xs {
+  font-size: 0.75rem;
+  padding: 6px 10px;
+}
+
+/* Primary button follows DESIGN.md button-primary (#FFFFFF on #000000, hover Cobalt) */
+.btn-primary,
+a.btn-primary {
+  background-color: var(--fg-primary);
+  color: var(--bg-oled);
+  border-color: var(--fg-primary);
+}
+
+.btn-primary:hover:not(:disabled),
+a.btn-primary:hover {
+  background-color: var(--metro-teal);
+  color: var(--fg-primary);
+  border-color: var(--fg-primary);
+}
+
+.btn-emerald,
+.btn-accent,
+a.btn-emerald,
+a.btn-accent {
+  background-color: var(--metro-emerald);
+  color: var(--fg-primary);
+  border-color: var(--fg-primary);
+}
+
+.btn-emerald:hover:not(:disabled),
+.btn-accent:hover:not(:disabled),
+a.btn-emerald:hover,
+a.btn-accent:hover {
+  background-color: var(--bg-oled);
+  color: var(--fg-primary);
+  border-color: var(--fg-primary);
+}
+
+.btn-secondary,
+a.btn-secondary {
+  background-color: var(--bg-surface);
+  color: var(--fg-primary);
+  border-color: var(--border-strong);
+}
+
+.btn-secondary:hover:not(:disabled),
+a.btn-secondary:hover {
+  background-color: var(--metro-teal);
+  border-color: var(--fg-primary);
+  color: var(--fg-primary);
+}
+
+.btn-danger,
+a.btn-danger {
+  background-color: var(--metro-vermilion);
+  color: var(--fg-primary);
+  border-color: var(--fg-primary);
+}
+
+.btn-danger:hover:not(:disabled),
+a.btn-danger:hover {
+  background-color: var(--metro-crimson);
+  color: var(--fg-primary);
+}
+
+.btn-danger-ghost {
+  background-color: var(--bg-chrome);
+  color: var(--fg-primary);
+  border-color: var(--metro-vermilion);
+}
+
+.btn-danger-ghost:hover:not(:disabled) {
+  background-color: var(--metro-vermilion);
+  color: var(--fg-primary);
+  border-color: var(--fg-primary);
+}
+
+.ghost-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border-hairline);
+  background-color: var(--bg-chrome);
+  color: var(--fg-primary);
+  cursor: pointer;
+}
+
+.ghost-icon-btn:hover {
+  background-color: var(--metro-teal);
+  border-color: var(--fg-primary);
+  color: var(--fg-primary);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border: 1px solid var(--fg-primary);
+  white-space: nowrap;
+}
+
+.badge-emerald {
+  background-color: var(--metro-emerald);
+  color: var(--fg-primary);
+}
+
+.badge-amber {
+  background-color: var(--metro-amber);
+  color: var(--fg-primary);
+}
+
+.badge-sky {
+  background-color: var(--metro-teal);
+  color: var(--fg-primary);
+}
+
+.badge-subtle {
+  background-color: var(--bg-chrome);
+  color: var(--fg-secondary);
+  border-color: var(--border-hairline);
+}
+
+.alert-banner {
+  padding: 12px 14px;
+  border: 2px solid var(--fg-primary);
+  background-color: var(--metro-vermilion);
+  color: var(--fg-primary);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   5. CONSOLE SHELL & 5-TILE METRO COLOR-BLOCK KPI PANORAMA STRIP
+   ========================================================================== */
+
+.console-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-oled);
+}
+
+.console-main {
+  min-width: 0;
+}
+
+.console-toast {
+  padding: 12px 16px;
+  background-color: var(--metro-emerald);
+  border: 2px solid var(--fg-primary);
+  color: var(--fg-primary);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.tab-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section-header-bar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.page-heading {
+  font-size: clamp(1.35rem, 1.8vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--fg-primary);
+  margin-bottom: 4px;
+}
+
+.page-description {
+  color: var(--fg-secondary);
+  font-size: 0.9375rem;
+  max-width: 74ch;
+}
+
+/* 5-Tile Metro Color-Block KPI Panorama Strip */
+.telemetry-ledger.metro-kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  background-color: var(--bg-oled);
+}
+
+.kpi-tile {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 184px;
+  color: var(--fg-primary);
+  border: none;
+  box-shadow: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.tile-cobalt {
+  background-color: var(--metro-cobalt);
+}
+
+.tile-violet {
+  background-color: var(--metro-violet);
+}
+
+.tile-teal {
+  background-color: var(--metro-teal);
+}
+
+.tile-emerald {
+  background-color: var(--metro-emerald);
+}
+
+.tile-amber {
+  background-color: var(--metro-amber);
+}
+
+.kpi-tile-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.kpi-tile .code-stamp {
+  background-color: var(--bg-oled);
+  border-color: var(--fg-primary);
+  color: var(--fg-primary);
+}
+
+.ledger-label {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--fg-primary);
+}
+
+.ledger-value {
+  margin-top: auto;
+  padding-top: 14px;
+  font-size: clamp(2.2rem, 3.2vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: var(--fg-primary);
+}
+
+.ledger-sub {
+  margin-top: 10px;
+  border-top: 1px solid var(--fg-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--fg-primary);
+  background-color: var(--bg-oled);
+  padding: 6px 10px;
+}
+
+/* ==========================================================================
+   6. RULED METRO PANELS & 7-DAY TRAFFIC CHART
+   ========================================================================== */
+
+.panel-box {
+  background-color: var(--bg-chrome);
+  border: 1px solid var(--border-hairline);
+  padding: 24px;
+  box-shadow: none;
+}
+
+.panel-box-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-hairline);
+  flex-wrap: wrap;
+}
+
+.section-heading {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--fg-primary);
+  margin-bottom: 4px;
+}
+
+.section-sub {
+  font-size: 0.9375rem;
+  color: var(--fg-secondary);
+}
+
+.chart-legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--fg-secondary);
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-swatch {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+}
+
+.swatch-tv {
+  background-color: var(--metro-cobalt);
+}
+
+.swatch-web {
+  background-color: var(--metro-teal);
+}
+
+.swatch-dl {
+  background-color: var(--metro-emerald);
+}
+
+.daily-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.chart-day-col {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-hairline);
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chart-bars-stage {
+  height: 124px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.chart-bar {
+  width: 16px;
+  min-height: 4px;
+  transition: height 180ms var(--ease-out-expo);
+}
+
+.chart-bar-tv {
+  background-color: var(--metro-cobalt);
+}
+
+.chart-bar-web {
+  background-color: var(--metro-teal);
+}
+
+.chart-bar-dl {
+  background-color: var(--metro-emerald);
+}
+
+.chart-day-date {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--fg-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-day-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--fg-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-day-metrics div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chart-day-metrics strong {
+  color: var(--fg-primary);
+}
+
+/* ==========================================================================
+   7. RESPONSIVE DATA TABLES (SHARP METRO GRIDLINES)
+   ========================================================================== */
+
+.table-wrapper {
+  overflow: auto;
+  max-inline-size: 100%;
+  max-block-size: min(540px, 78vh);
+  container-type: inline-size;
+  border: 1px solid var(--border-hairline);
+  background-color: var(--bg-surface);
+  padding: 12px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.data-table thead {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 2;
+  background-color: var(--bg-chrome);
+}
+
+.data-table th,
+.data-table td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-hairline);
+  vertical-align: middle;
+}
+
+.data-table thead th {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fg-secondary);
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.data-table tbody th {
+  position: sticky;
+  inset-inline-start: 0;
+  z-index: 1;
+  background-color: var(--bg-surface);
+  font-weight: 700;
+  color: var(--fg-primary);
+}
+
+.data-table tbody tr:hover td,
+.data-table tbody tr:hover th {
+  background-color: var(--bg-elevated);
+}
+
+.data-table .num-col {
+  text-align: right;
+  font-family: var(--font-mono);
+}
+
+.data-table .actions-col {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.table-cell-sub {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--fg-secondary);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.row-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+@container (width < 600px) {
+  .data-table,
+  .data-table thead,
+  .data-table tbody,
+  .data-table tr,
+  .data-table th,
+  .data-table td {
+    display: block;
+  }
+
+  .data-table thead {
+    /* MANDATORY: Hide column header from layout and screen readers. */
+    display: none;
+  }
+
+  .data-table tr {
+    margin-block-end: 12px;
+    border: 1px solid var(--border-strong);
+  }
+
+  .data-table tbody th {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 2;
+    background-color: var(--bg-chrome);
+  }
+
+  .perf-table {
+    --label-2: "Short-Code";
+    --label-3: "Version & Size";
+    --label-4: "APK Binary State";
+    --label-5: "Pre-Set Pack";
+    --label-6: "Downloads";
+    --label-7: "Quick Actions";
+  }
+
+  .logs-table {
+    --label-2: "Timestamp";
+    --label-3: "Device Class";
+    --label-4: "Client IP";
+    --label-5: "User-Agent";
+  }
+
+  .ads-table {
+    --label-2: "Badge";
+    --label-3: "Target CTA";
+    --label-4: "Impressions";
+    --label-5: "Clicks";
+    --label-6: "CTR";
+    --label-7: "Status";
+    --label-8: "Actions";
+  }
+
+  .data-table td:nth-child(2)::before {
+    content: var(--label-2) ": ";
+    font-weight: 700;
+    color: var(--fg-secondary);
+  }
+
+  .data-table td:nth-child(3)::before {
+    content: var(--label-3) ": ";
+    font-weight: 700;
+    color: var(--fg-secondary);
+  }
+
+  .data-table td:nth-child(4)::before {
+    content: var(--label-4) ": ";
+    font-weight: 700;
+    color: var(--fg-secondary);
+  }
+
+  .data-table td:nth-child(5)::before {
+    content: var(--label-5) ": ";
+    font-weight: 700;
+    color: var(--fg-secondary);
+  }
+
+  .data-table td:nth-child(6)::before {
+    content: var(--label-6) ": ";
+    font-weight: 700;
+    color: var(--fg-secondary);
+  }
+
+  .data-table td:nth-child(7)::before {
+    content: var(--label-7) ": ";
+    font-weight: 700;
+    color: var(--fg-secondary);
+  }
+
+  .data-table td:nth-child(8)::before {
+    content: var(--label-8) ": ";
+    font-weight: 700;
+    color: var(--fg-secondary);
+  }
+
+  .data-table .num-col,
+  .data-table .actions-col {
+    text-align: left;
+  }
+}
+
+/* Segmented Control */
+.segmented-control {
+  display: inline-flex;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-hairline);
+  padding: 4px;
+  gap: 4px;
+}
+
+.seg-btn {
+  background-color: transparent;
+  border: 1px solid transparent;
+  color: var(--fg-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.seg-btn:hover {
+  color: var(--fg-primary);
+  background-color: var(--bg-hover);
+}
+
+.seg-btn.is-active {
+  background-color: var(--fg-primary);
+  color: var(--bg-oled);
+  border-color: var(--fg-primary);
+}
+
+/* ==========================================================================
+   8. APP CATALOG & DIRECT APK UPLOAD CARDS
+   ========================================================================== */
+
+.catalog-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.search-input-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 260px;
+  max-width: 520px;
+}
+
+.search-input-wrap svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--fg-muted);
+  pointer-events: none;
+}
+
+.search-input {
+  padding-left: 38px;
+}
+
+.toolbar-meta {
+  font-size: 0.75rem;
+  color: var(--fg-secondary);
+}
+
+.catalog-manager-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.app-admin-row {
+  background-color: var(--bg-chrome);
+  border: 1px solid var(--border-hairline);
+  padding: 20px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.95fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.app-admin-Identity {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.app-icon-tile {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #FFFFFF;
+  border: 1px solid var(--fg-primary);
+}
+
+.app-admin-body {
+  min-width: 0;
+  flex: 1;
+}
+
+.app-title-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.app-title-line h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--fg-primary);
+}
+
+.app-edition-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--fg-secondary);
+}
+
+.app-meta-specs {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 0.75rem;
+  color: var(--fg-secondary);
+  margin: 6px 0 10px;
+}
+
+.app-preset-summary {
+  margin-bottom: 10px;
+  font-size: 0.9375rem;
+  color: var(--fg-primary);
+}
+
+.app-feature-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+}
+
+.app-feature-pills li {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-hairline);
+  color: var(--fg-secondary);
+  padding: 6px 10px;
+}
+
+/* Right Column of App Card: Binary Upload & Controls */
+.app-binary-panel {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-hairline);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.binary-slot-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.binary-slot-row:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.binary-slot-info {
+  min-width: 0;
+}
+
+.binary-slot-info strong {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fg-primary);
+  margin-bottom: 2px;
+}
+
+.binary-slot-info span {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--fg-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-upload-btn-label {
+  cursor: pointer;
+}
+
+.upload-progress-bar {
+  height: 8px;
+  background-color: var(--bg-chrome);
+  border: 1px solid var(--border-hairline);
+  overflow: hidden;
+}
+
+.upload-progress-fill {
+  height: 100%;
+  width: 0%;
+  background-color: var(--metro-cobalt);
+  transition: width 150ms linear;
+}
+
+.app-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-hairline);
+}
+
+/* ==========================================================================
+   9. SECURITY & VPS DOCKER OPERATIONS TAB
+   ========================================================================== */
+
+.security-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.totp-Enrollment-layout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.totp-qr-frame {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-hairline);
+  padding: 12px;
+}
+
+.totp-details-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.copy-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.totp-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.ops-reference-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ops-block {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-hairline);
+  padding: 16px;
+}
+
+.ops-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 0.9375rem;
+}
+
+.code-snippet {
+  margin-bottom: 8px;
+  padding: 12px 14px;
+  background-color: var(--bg-oled);
+  border: 1px solid var(--border-hairline);
+  color: var(--fg-primary);
+  font-size: 0.75rem;
+  overflow-x: auto;
+}
+
+.ops-note {
+  font-size: 0.75rem;
+  color: var(--fg-secondary);
+}
+
+/* ==========================================================================
+   10. NATIVE MODAL DIALOGS (SHARP METRO COMMAND FLYOUTS)
+   ========================================================================== */
+
+dialog:modal {
+  /* MANDATORY: Prevent scroll gestures inside the modal (even when its content
+     does not overflow) from chaining to the underlying page. */
+  overscroll-behavior: contain;
+}
+
+dialog::backdrop {
+  /* MANDATORY: ::backdrop defaults to overflow: visible (not a scroll container).
+     Set overflow: hidden so it becomes a non-scrollable scroll container that
+     honors overscroll-behavior. */
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background-color: rgba(0, 0, 0, 0.86);
+}
+
+.console-dialog {
+  width: min(720px, 94vw);
+  max-height: 90vh;
+  margin: auto;
+  padding: 0;
+  background-color: var(--bg-chrome);
+  color: var(--fg-primary);
+  border: 2px solid #FFFFFF;
+  border-radius: 0px;
+  box-shadow: none;
+}
+
+.console-dialog.dialog-compact {
+  width: min(460px, 92vw);
+}
+
+.dialog-inner {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.dialog-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--fg-primary);
+}
+
+.dialog-body-text {
+  color: var(--fg-secondary);
+  font-size: 0.9375rem;
+}
+
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.form-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.checkbox-group {
+  justify-content: flex-end;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: var(--fg-primary);
+  cursor: pointer;
+  padding: 8px 0;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--metro-cobalt);
+}
+
+.dialog-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-hairline);
+}
+
+/* ==========================================================================
+   11. RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+
+@media (max-width: 1200px) {
+  .telemetry-ledger.metro-kpi-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .app-admin-row,
+  .security-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .auth-container {
+    grid-template-columns: 1fr;
+  }
+  .daily-chart-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .form-grid-3,
+  .form-grid-4 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .telemetry-ledger.metro-kpi-strip,
+  .daily-chart-grid,
+  .form-grid-2,
+  .form-grid-3,
+  .form-grid-4,
+  .totp-Enrollment-layout {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,1999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KV-TV Store · Metro Typographic Panorama (tv.vndns.net)</title>
+  <meta name="description" content="KV-TV Android TV App Store — Metro Typographic Panorama. Pre-configured Jellyfin, Kodi 21 Omega, CloudStream 3, KV-Netflix, and KV-Tube.">
+  <meta name="theme-color" content="#000000">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Work+Sans:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/kv-tv-theme.css">
+  <style>
+    :root {
+      --bg-oled: #000000;
+      --bg-chrome: #0A0A0A;
+      --bg-surface: #121212;
+      --bg-surface-elevated: #1C1C1C;
+      --fg-primary: #FFFFFF;
+      --fg-secondary: #D4D4D4;
+      --fg-muted: #8E8E8E;
+      --fg-pivot-inactive: rgba(255, 255, 255, 0.58);
+      --border-hairline: #262626;
+      --border-strong: #454545;
+
+      /* Committed Metro Flat Color-Block Palette (WCAG AA >= 4.8:1 with #FFFFFF) */
+      --metro-cobalt: #0063B0;
+      --metro-violet: #6B21A8;
+      --metro-teal: #005E52;
+      --metro-crimson: #B33000;
+      --metro-vermilion: #B91C1C;
+      --metro-emerald: #107C10;
+      --metro-amber: #994507;
+
+      --font-sans: 'Work Sans', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      border-radius: 0px;
+    }
+
+    ::selection {
+      background-color: var(--metro-cobalt);
+      color: var(--fg-primary);
+    }
+
+    html {
+      background-color: var(--bg-oled);
+      color: var(--fg-primary);
+      font-family: var(--font-sans);
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color-scheme: dark;
+      scrollbar-width: thin;
+      scrollbar-color: var(--metro-cobalt) var(--bg-chrome);
+    }
+
+    body {
+      background-color: var(--bg-oled);
+      color: var(--fg-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Numeric discipline */
+    .tabular,
+    .code-stamp,
+    .watermark-code,
+    .dialer-key,
+    .dialer-readout,
+    .stat-num {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* 1. Persistent Top Mockup Switcher Bar */
+    .mockup-switcher {
+      background-color: var(--bg-chrome);
+      border-bottom: 1px solid var(--border-hairline);
+      padding: 8px clamp(16px, 3.5vw, 48px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      z-index: 30;
+    }
+
+    .switcher-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--fg-primary);
+      text-decoration: none;
+    }
+
+    .switcher-brand-mark {
+      width: 12px;
+      height: 12px;
+      background-color: var(--metro-cobalt);
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .switcher-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .switcher-link {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--fg-secondary);
+      text-decoration: none;
+      padding: 5px 10px;
+      border: 1px solid transparent;
+      background-color: transparent;
+      transition: background-color 140ms var(--ease-out-expo), color 140ms var(--ease-out-expo), border-color 140ms var(--ease-out-expo);
+    }
+
+    .switcher-link:hover,
+    .switcher-link:focus-visible {
+      color: var(--fg-primary);
+      border-color: var(--fg-primary);
+      background-color: var(--bg-surface);
+      outline: none;
+    }
+
+    .switcher-link[aria-current="page"] {
+      background-color: var(--metro-cobalt);
+      color: var(--fg-primary);
+      border-color: var(--fg-primary);
+    }
+
+    /* 2. Metro Panorama Main Canvas */
+    .metro-stage {
+      flex: 1;
+      width: 100%;
+      max-width: 1720px;
+      margin: 0 auto;
+      padding: clamp(20px, 3vw, 42px) clamp(16px, 3.5vw, 48px) 110px;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(20px, 2.6vw, 34px);
+    }
+
+    /* Panorama Top Header & Giant Lowercase Pivot Rail */
+    .panorama-header {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      border-bottom: 1px solid var(--border-hairline);
+      padding-bottom: 18px;
+    }
+
+    .panorama-pivots {
+      display: flex;
+      align-items: baseline;
+      gap: clamp(20px, 3.2vw, 48px);
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 4px 0;
+    }
+
+    .panorama-pivots::-webkit-scrollbar {
+      display: none;
+    }
+
+    .pivot-btn {
+      appearance: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: clamp(2.8rem, 5vw, 4.6rem);
+      font-weight: 200;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      color: var(--fg-pivot-inactive);
+      text-transform: lowercase;
+      white-space: nowrap;
+      padding: 4px 2px;
+      transition: color 180ms var(--ease-out-expo), transform 180ms var(--ease-out-expo);
+    }
+
+    .pivot-btn:hover {
+      color: var(--fg-secondary);
+    }
+
+    .pivot-btn[aria-selected="true"] {
+      color: var(--fg-primary);
+    }
+
+    .pivot-btn:focus-visible {
+      outline: 3px solid var(--fg-primary);
+      outline-offset: 4px;
+      color: var(--fg-primary);
+    }
+
+    .panorama-subbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .panorama-deck {
+      font-size: 0.9375rem;
+      font-weight: 400;
+      color: var(--fg-secondary);
+      max-width: 72ch;
+    }
+
+    .panorama-deck strong {
+      color: var(--fg-primary);
+      font-weight: 600;
+    }
+
+    .panorama-telemetry {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--fg-secondary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .telemetry-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+    }
+
+    .telemetry-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--metro-emerald);
+      display: inline-block;
+    }
+
+    /* 3. Asymmetric 2D Panorama Live Tile Grid */
+    .metro-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      grid-auto-rows: minmax(215px, 240px);
+      gap: 12px;
+      background-color: var(--bg-oled);
+    }
+
+    .metro-tile {
+      position: relative;
+      appearance: none;
+      border: none;
+      box-shadow: none;
+      text-align: left;
+      color: var(--fg-primary);
+      font-family: var(--font-sans);
+      cursor: pointer;
+      padding: clamp(18px, 2vw, 26px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      user-select: none;
+      transition: transform 160ms var(--ease-out-expo), opacity 160ms var(--ease-out-expo);
+    }
+
+    /* Solid unmodulated Metro flat color blocks */
+    .tile-cobalt {
+      background-color: var(--metro-cobalt);
+    }
+
+    .tile-violet {
+      background-color: var(--metro-violet);
+    }
+
+    .tile-teal {
+      background-color: var(--metro-teal);
+    }
+
+    .tile-crimson {
+      background-color: var(--metro-crimson);
+    }
+
+    .tile-vermilion {
+      background-color: var(--metro-vermilion);
+    }
+
+    .tile-emerald {
+      background-color: var(--metro-emerald);
+    }
+
+    .tile-amber {
+      background-color: var(--metro-amber);
+    }
+
+    /* Tile spans in the 6x2 panorama matrix */
+    .span-2x2 {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+
+    .span-2x1 {
+      grid-column: span 2;
+      grid-row: span 1;
+    }
+
+    .span-1x1 {
+      grid-column: span 1;
+      grid-row: span 1;
+    }
+
+    /* Razor-sharp D-Pad Spatial Focus State (Zero blurred glow!) */
+    .metro-tile:focus,
+    .metro-tile:focus-visible {
+      outline: 4px solid #FFFFFF;
+      outline-offset: 2px;
+      transform: scale(1.022);
+      z-index: 5;
+    }
+
+    .metro-tile:hover:not(:focus) {
+      transform: scale(1.01);
+      z-index: 3;
+    }
+
+    .metro-tile.is-dimmed {
+      opacity: 0.28;
+    }
+
+    /* Tile internal geometry */
+    .tile-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      position: relative;
+      z-index: 2;
+      width: 100%;
+    }
+
+    .tile-glyph {
+      width: 40px;
+      height: 40px;
+      color: var(--fg-primary);
+      flex-shrink: 0;
+    }
+
+    .span-2x2 .tile-glyph {
+      width: 56px;
+      height: 56px;
+    }
+
+    .code-stamp {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--fg-primary);
+      background-color: rgba(0, 0, 0, 0.28);
+      padding: 4px 8px;
+      white-space: nowrap;
+    }
+
+    /* Giant middle-right watermark numeral SVG on 2x2 Hero Tile */
+    .watermark-code {
+      position: absolute;
+      top: 76px;
+      right: 16px;
+      width: 220px;
+      height: 76px;
+      color: rgba(255, 255, 255, 0.2);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .tile-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      margin-top: auto;
+    }
+
+    .tile-title {
+      font-size: clamp(1.35rem, 1.8vw, 1.85rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: var(--fg-primary);
+      text-transform: lowercase;
+    }
+
+    .span-2x2 .tile-title {
+      font-size: clamp(2.2rem, 3.2vw, 3.25rem);
+      letter-spacing: -0.035em;
+    }
+
+    .tile-edition {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--fg-primary);
+      line-height: 1.3;
+    }
+
+    .span-2x2 .tile-edition {
+      font-size: 0.9375rem;
+    }
+
+    .tile-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(255, 255, 255, 0.28);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--fg-primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Live cycling status strip on CloudStream 3 hero tile */
+    .live-status-strip {
+      margin-top: 8px;
+      background-color: rgba(0, 0, 0, 0.32);
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--fg-primary);
+    }
+
+    .live-status-text {
+      font-weight: 600;
+      transition: opacity 220ms var(--ease-out-expo), transform 220ms var(--ease-out-expo);
+    }
+
+    .live-status-badge {
+      background-color: var(--fg-primary);
+      color: var(--bg-oled);
+      font-weight: 700;
+      padding: 2px 6px;
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
+
+    /* QR Live Tile preview box */
+    .qr-tile-preview {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .qr-tile-img {
+      width: 68px;
+      height: 68px;
+      background-color: #FFFFFF;
+      padding: 4px;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    /* 4. Secondary Panorama Pivot Strip (Pre-Sets / Short-Codes / Promo Ledger) */
+    .panorama-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      padding-top: 6px;
+    }
+
+    .strip-block {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .strip-block-title {
+      font-size: clamp(1.35rem, 1.8vw, 1.85rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: var(--fg-primary);
+    }
+
+    .strip-block-body {
+      font-size: 0.9375rem;
+      color: var(--fg-secondary);
+      line-height: 1.45;
+    }
+
+    .strip-block-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-hairline);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--fg-secondary);
+    }
+
+    .metro-inline-btn {
+      appearance: none;
+      background-color: var(--fg-primary);
+      color: var(--bg-oled);
+      border: none;
+      padding: 6px 12px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .metro-inline-btn:hover,
+    .metro-inline-btn:focus-visible {
+      background-color: var(--metro-cobalt);
+      color: var(--fg-primary);
+      outline: 2px solid var(--fg-primary);
+      outline-offset: 2px;
+    }
+
+    /* 5. Native Modal Dialogs (Scroll-contained & Light-Dismiss) */
+    dialog {
+      margin: auto;
+      background-color: var(--bg-surface);
+      color: var(--fg-primary);
+      border: 2px solid var(--fg-primary);
+      padding: 0;
+      width: min(92vw, 760px);
+      max-height: 88vh;
+    }
+
+    dialog:modal {
+      overscroll-behavior: contain;
+    }
+
+    dialog::backdrop {
+      background-color: rgba(0, 0, 0, 0.82);
+      overflow: hidden;
+      overscroll-behavior: contain;
+    }
+
+    .dialog-banner {
+      padding: 22px 26px;
+      background-color: var(--metro-cobalt);
+      color: var(--fg-primary);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .dialog-title {
+      font-size: clamp(2.2rem, 3.2vw, 3.25rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      text-transform: lowercase;
+    }
+
+    .dialog-subtitle {
+      font-size: 0.9375rem;
+      color: var(--fg-primary);
+      margin-top: 4px;
+    }
+
+    .dialog-close-btn {
+      appearance: none;
+      background-color: var(--bg-oled);
+      color: var(--fg-primary);
+      border: 2px solid var(--fg-primary);
+      padding: 6px 12px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .dialog-close-btn:hover,
+    .dialog-close-btn:focus-visible {
+      background-color: var(--fg-primary);
+      color: var(--bg-oled);
+      outline: none;
+    }
+
+    .dialog-body {
+      padding: 24px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .dialog-grid {
+      display: grid;
+      grid-template-columns: 1fr 190px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .dialog-specs {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      background-color: var(--bg-oled);
+      border: 1px solid var(--border-hairline);
+      padding: 14px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .spec-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .spec-label {
+      color: var(--fg-muted);
+      font-size: 0.75rem;
+    }
+
+    .spec-value {
+      color: var(--fg-primary);
+      font-weight: 600;
+      font-size: 0.9375rem;
+      word-break: break-all;
+    }
+
+    .feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.9375rem;
+      color: var(--fg-secondary);
+    }
+
+    .feature-bullet {
+      width: 8px;
+      height: 8px;
+      background-color: var(--metro-cobalt);
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    .dialog-qr-panel {
+      background-color: var(--bg-oled);
+      border: 1px solid var(--border-hairline);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+    }
+
+    .dialog-qr-img {
+      width: 148px;
+      height: 148px;
+      background-color: #FFFFFF;
+      padding: 6px;
+      display: block;
+    }
+
+    .dialog-qr-caption {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--fg-secondary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .dialog-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding-top: 8px;
+      border-top: 1px solid var(--border-hairline);
+    }
+
+    .metro-action-btn {
+      appearance: none;
+      text-decoration: none;
+      border: 2px solid var(--fg-primary);
+      padding: 12px 18px;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background-color: var(--fg-primary);
+      color: var(--bg-oled);
+      transition: transform 120ms var(--ease-out-expo), background-color 120ms var(--ease-out-expo), color 120ms var(--ease-out-expo);
+    }
+
+    .metro-action-btn.secondary {
+      background-color: var(--bg-oled);
+      color: var(--fg-primary);
+    }
+
+    .metro-action-btn:hover,
+    .metro-action-btn:focus-visible {
+      background-color: var(--metro-cobalt);
+      color: var(--fg-primary);
+      outline: 3px solid var(--fg-primary);
+      outline-offset: 2px;
+    }
+
+    /* Short-Code Dialer Keypad inside #metro-dialer-dialog */
+    .dialer-readout {
+      background-color: var(--bg-oled);
+      border: 2px solid var(--fg-primary);
+      padding: 14px 18px;
+      font-family: var(--font-mono);
+      font-size: clamp(2.2rem, 3.2vw, 3.25rem);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--fg-primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .dialer-status {
+      font-family: var(--font-sans);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      letter-spacing: 0;
+      color: var(--fg-secondary);
+    }
+
+    .dialer-keypad {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .dialer-key {
+      appearance: none;
+      background-color: var(--bg-oled);
+      color: var(--fg-primary);
+      border: 1px solid var(--border-strong);
+      padding: 14px;
+      font-family: var(--font-mono);
+      font-size: clamp(1.35rem, 1.8vw, 1.85rem);
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .dialer-key:hover,
+    .dialer-key:focus-visible {
+      background-color: var(--metro-emerald);
+      border-color: var(--fg-primary);
+      outline: 2px solid var(--fg-primary);
+      outline-offset: 1px;
+    }
+
+    .dialer-presets {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .dialer-preset-chip {
+      appearance: none;
+      background-color: var(--bg-oled);
+      color: var(--fg-primary);
+      border: 1px solid var(--border-hairline);
+      padding: 6px 10px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .dialer-preset-chip:hover,
+    .dialer-preset-chip:focus-visible {
+      background-color: var(--metro-emerald);
+      border-color: var(--fg-primary);
+      outline: none;
+    }
+
+    /* 6. Compact Bottom-Right D-Pad Remote Simulator */
+    .dpad-simulator {
+      position: fixed;
+      right: 20px;
+      bottom: 12px;
+      background-color: var(--bg-chrome);
+      border: 2px solid var(--fg-primary);
+      padding: 6px 10px;
+      z-index: 40;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .dpad-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--fg-primary);
+    }
+
+    .dpad-grid {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .dpad-btn {
+      appearance: none;
+      background-color: var(--bg-surface-elevated);
+      color: var(--fg-primary);
+      border: 1px solid var(--border-strong);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 8px;
+      min-height: 28px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dpad-btn:hover,
+    .dpad-btn:focus-visible {
+      background-color: var(--metro-cobalt);
+      border-color: var(--fg-primary);
+      outline: none;
+    }
+
+    .dpad-btn.dpad-ok {
+      background-color: var(--metro-cobalt);
+    }
+
+    .dpad-btn.dpad-back {
+      background-color: var(--metro-crimson);
+    }
+
+    /* Responsive Panorama Breakpoints */
+    @media (max-width: 1220px) {
+      .metro-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-auto-rows: minmax(200px, 225px);
+      }
+
+      .panorama-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .metro-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-auto-rows: minmax(185px, auto);
+      }
+
+      .span-2x2,
+      .span-2x1 {
+        grid-column: span 2;
+      }
+
+      .span-1x1 {
+        grid-column: span 1;
+      }
+
+      .dialog-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dpad-simulator {
+        right: 12px;
+        bottom: 12px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Persistent Top Mockup Switcher Bar -->
+  <nav class="mockup-switcher" aria-label="Mockup Concept Switcher">
+    <a class="switcher-brand" href="/mockup-1">
+      <span class="switcher-brand-mark" aria-hidden="true"></span>
+      <span>KV-TV STORE · tv.vndns.net</span>
+    </a>
+    <div class="switcher-links">
+      <a class="switcher-link" href="/mockup-1" aria-current="page">[ 1 · Metro Panorama Tiles ]</a>
+      <a class="switcher-link" href="/mockup-2">[ 2 · Split-Flap Broadcast Ledger ]</a>
+      <a class="switcher-link" href="/mockup-3">[ 3 · Full-Bleed Cinema Stage ]</a>
+      <a class="switcher-link" href="/?mode=classic">[ Classic View ]</a>
+      <a class="switcher-link" href="/admin">[ Admin Console ]</a>
+    </div>
+  </nav>
+
+  <main class="metro-stage">
+    <!-- Giant Lowercase Metro Panorama Header -->
+    <header class="panorama-header">
+      <div class="panorama-pivots" role="tablist" aria-label="Metro Panorama Pivots">
+        <button type="button" class="pivot-btn" role="tab" id="pivot-store" aria-selected="true" data-pivot="store">store</button>
+        <button type="button" class="pivot-btn" role="tab" id="pivot-presets" aria-selected="false" data-pivot="pre-sets">pre-sets</button>
+        <button type="button" class="pivot-btn" role="tab" id="pivot-shortcodes" aria-selected="false" data-pivot="short-codes">short-codes</button>
+        <button type="button" class="pivot-btn" role="tab" id="pivot-phoneqr" aria-selected="false" data-pivot="phone-qr">phone-qr</button>
+      </div>
+      <div class="panorama-subbar">
+        <p class="panorama-deck" id="panorama-deck-text">
+          <strong>Pre-Configured Android TV Storefront</strong> — Zero manual repo typing. Every APK ships with KV-TV Vietnamese &amp; Global 4K repositories, subtitle profiles, and AFTVnews Downloader short-codes ready out of the box.
+        </p>
+        <div class="panorama-telemetry">
+          <span class="telemetry-pill">
+            <span class="telemetry-dot" aria-hidden="true"></span>
+            <span>EDGE CDN · tv.vndns.net</span>
+          </span>
+          <span class="telemetry-pill tabular" id="telemetry-downloads">18,060 TOTAL INSTALLS</span>
+          <span class="telemetry-pill tabular">CODES 88101–88105</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Asymmetric 2D Panorama Live Tile Grid (6 columns x 2 rows = 12 cells) -->
+    <section id="metro-grid" class="metro-grid" aria-label="Featured Android TV Live Tiles">
+      <!-- 1. CloudStream 3 (cloudstream-kv, 88103) — 2x2 Large Hero Tile in Metro Cobalt (#0078D7) -->
+      <button
+        type="button"
+        class="metro-tile tile-cobalt span-2x2"
+        tabindex="0"
+        data-tile-kind="app"
+        data-app-id="cloudstream-kv"
+        data-short-code="88103"
+        data-pivot-tags="store pre-sets short-codes"
+      >
+        <svg class="watermark-code" viewBox="0 0 220 76" fill="currentColor" aria-hidden="true">
+          <path d="M18 35C11 33 7 28 7 21C7 11 15 4 26 4C37 4 45 11 45 21C45 28 41 33 34 35C42 37 47 43 47 52C47 64 38 72 26 72C14 72 5 64 5 52C5 43 10 37 18 35ZM26 30C31 30 35 26 35 21C35 16 31 12 26 12C21 12 17 16 17 21C17 26 21 30 26 30ZM26 63C32 63 37 58 37 52C37 45 32 40 26 40C20 40 15 45 15 52C15 58 20 63 26 63Z" />
+          <path d="M68 35C61 33 57 28 57 21C57 11 65 4 76 4C87 4 95 11 95 21C95 28 91 33 84 35C92 37 97 43 97 52C97 64 88 72 76 72C64 72 55 64 55 52C55 43 60 37 68 35ZM76 30C81 30 85 26 85 21C85 16 81 12 76 12C71 12 67 16 67 21C67 26 71 30 76 30ZM76 63C82 63 87 58 87 52C87 45 82 40 76 40C70 40 65 45 65 52C65 58 70 63 76 63Z" />
+          <path d="M118 71V18H106V10H128V71H118Z" />
+          <path d="M159 72C145 72 137 59 137 38C137 17 145 4 159 4C173 4 181 17 181 38C181 59 173 72 159 72ZM159 63C167 63 171 53 171 38C171 23 167 13 159 13C151 13 147 23 147 38C147 53 151 63 159 63Z" />
+          <path d="M188 53H198C198 59 202 63 207 63C213 63 217 59 217 52C217 45 212 41 204 41H200V32H204C211 32 215 28 215 22C215 16 211 12 206 12C201 12 197 16 197 22H187C187 11 195 4 206 4C217 4 225 11 225 21C225 28 221 33 214 35C221 37 226 43 226 52C226 64 218 72 207 72C195 72 188 64 188 53Z" transform="translate(-8, 0)" />
+        </svg>
+        <div class="tile-top">
+          <svg class="tile-glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+            <path d="M14 34H35C40 34 43 30.5 43 26C43 21.8 39.8 18.4 35.5 18.1C34.2 11.8 28.6 7 22 7C14.3 7 8 13.3 8 21C8 21.6 8.1 22.2 8.2 22.8C5.2 24.1 3 27.1 3 30.5C3 32.5 4.5 34 6.5 34H14Z" />
+            <polygon points="21,18 32,24.5 21,31" fill="currentColor" stroke="none" />
+          </svg>
+          <span class="code-stamp tabular">88103 · 24.2 MB</span>
+        </div>
+        <div class="tile-bottom">
+          <span class="tile-title">cloudstream 3</span>
+          <span class="tile-edition">KV-PreSetup · All VN &amp; Global 4K Repos</span>
+          <div class="live-status-strip">
+            <span class="live-status-text" id="cs-live-status">MegaRepo + Vietsub + 1.1.1.1 DoH Ready</span>
+            <span class="live-status-badge tabular">v4.4.1-kv</span>
+          </div>
+          <div class="tile-meta-row">
+            <span>com.lagradost.cloudstream3</span>
+            <span class="tabular" data-app-downloads="cloudstream-kv">4,150 installs</span>
+          </div>
+        </div>
+      </button>
+
+      <!-- 2. Jellyfin TV (jellyfin-kv, 88101) — 2x1 Wide Tile in Royal Violet (#6B21A8) -->
+      <button
+        type="button"
+        class="metro-tile tile-violet span-2x1"
+        tabindex="-1"
+        data-tile-kind="app"
+        data-app-id="jellyfin-kv"
+        data-short-code="88101"
+        data-pivot-tags="store pre-sets short-codes"
+      >
+        <div class="tile-top">
+          <svg class="tile-glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+            <polygon points="24,5 43,39 5,39" />
+            <polygon points="24,17 33,34 15,34" fill="currentColor" stroke="none" />
+          </svg>
+          <span class="code-stamp tabular">88101 · 42.8 MB</span>
+        </div>
+        <div class="tile-bottom">
+          <span class="tile-title">jellyfin tv</span>
+          <span class="tile-edition">KV-Optimized · 4K HDR Direct Play</span>
+          <div class="tile-meta-row">
+            <span>v0.18.4-kv2 · ExoPlayer HDR10</span>
+            <span class="tabular" data-app-downloads="jellyfin-kv">1,420 installs</span>
+          </div>
+        </div>
+      </button>
+
+      <!-- 3. Kodi 21 Omega (kodi-kv, 88102) — 1x1 Square Tile in Metro Teal (#008272) -->
+      <button
+        type="button"
+        class="metro-tile tile-teal span-1x1"
+        tabindex="-1"
+        data-tile-kind="app"
+        data-app-id="kodi-kv"
+        data-short-code="88102"
+        data-pivot-tags="store pre-sets short-codes"
+      >
+        <div class="tile-top">
+          <svg class="tile-glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+            <polygon points="24,4 44,24 24,44 4,24" />
+            <line x1="14" y1="14" x2="34" y2="34" />
+            <line x1="34" y1="14" x2="14" y2="34" />
+          </svg>
+          <span class="code-stamp tabular">88102 · 94.5 MB</span>
+        </div>
+        <div class="tile-bottom">
+          <span class="tile-title">kodi 21</span>
+          <span class="tile-edition">Arctic Zephyr 2 + VN Subs</span>
+          <div class="tile-meta-row">
+            <span class="tabular">v21.2-kv</span>
+            <span class="tabular" data-app-downloads="kodi-kv">2,890</span>
+          </div>
+        </div>
+      </button>
+
+      <!-- 4. KV-Netflix (kv-netflix, 88104) — 1x1 Square Tile in Cinema Crimson (#D83B01) -->
+      <button
+        type="button"
+        class="metro-tile tile-crimson span-1x1"
+        tabindex="-1"
+        data-tile-kind="app"
+        data-app-id="kv-netflix"
+        data-short-code="88104"
+        data-pivot-tags="store pre-sets short-codes"
+      >
+        <div class="tile-top">
+          <svg class="tile-glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+            <path d="M13 40V8L35 40V8" />
+          </svg>
+          <span class="code-stamp tabular">88104 · 38.6 MB</span>
+        </div>
+        <div class="tile-bottom">
+          <span class="tile-title">kv-netflix</span>
+          <span class="tile-edition">D-Pad + L1/L3 4K HDR</span>
+          <div class="tile-meta-row">
+            <span class="tabular">v8.114.0-kv</span>
+            <span class="tabular" data-app-downloads="kv-netflix">3,680</span>
+          </div>
+        </div>
+      </button>
+
+      <!-- 5. KV-Tube (kv-tube, 88105) — 2x1 Wide Tile in Vermilion Red (#B91C1C) -->
+      <button
+        type="button"
+        class="metro-tile tile-vermilion span-2x1"
+        tabindex="-1"
+        data-tile-kind="app"
+        data-app-id="kv-tube"
+        data-short-code="88105"
+        data-pivot-tags="store pre-sets short-codes"
+      >
+        <div class="tile-top">
+          <svg class="tile-glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+            <rect x="5" y="9" width="38" height="30" />
+            <polygon points="20,17 32,24 20,31" fill="currentColor" stroke="none" />
+          </svg>
+          <span class="code-stamp tabular">88105 · 19.4 MB</span>
+        </div>
+        <div class="tile-bottom">
+          <span class="tile-title">kv-tube</span>
+          <span class="tile-edition">Ad-Free 4K60 + SponsorBlock</span>
+          <div class="tile-meta-row">
+            <span>v24.85-kv · VP9/AV1 Hardware Decode</span>
+            <span class="tabular" data-app-downloads="kv-tube">5,920 installs</span>
+          </div>
+        </div>
+      </button>
+
+      <!-- 6. 5-Digit Short-Code Dialer Tile — 1x1 Action Tile in Emerald (#107C10) -->
+      <button
+        type="button"
+        class="metro-tile tile-emerald span-1x1"
+        tabindex="-1"
+        data-tile-kind="dialer"
+        data-pivot-tags="store short-codes"
+      >
+        <div class="tile-top">
+          <svg class="tile-glyph" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true">
+            <rect x="8" y="8" width="8" height="8" />
+            <rect x="20" y="8" width="8" height="8" />
+            <rect x="32" y="8" width="8" height="8" />
+            <rect x="8" y="20" width="8" height="8" />
+            <rect x="20" y="20" width="8" height="8" />
+            <rect x="32" y="20" width="8" height="8" />
+            <rect x="8" y="32" width="8" height="8" />
+            <rect x="20" y="32" width="8" height="8" />
+            <rect x="32" y="32" width="8" height="8" />
+          </svg>
+          <span class="code-stamp tabular">88101–88105</span>
+        </div>
+        <div class="tile-bottom">
+          <span class="tile-title">short-code</span>
+          <span class="tile-edition">5-Digit AFTV Keypad</span>
+          <div class="tile-meta-row">
+            <span>Instant APK Fetch</span>
+            <span>DIAL</span>
+          </div>
+        </div>
+      </button>
+
+      <!-- 7. Phone & TV QR Companion Tile — 1x1 Live Tile in Deep Amber (#B45309) -->
+      <button
+        type="button"
+        class="metro-tile tile-amber span-1x1"
+        tabindex="-1"
+        data-tile-kind="qr"
+        data-pivot-tags="store phone-qr"
+      >
+        <div class="tile-top qr-tile-preview">
+          <img
+            class="qr-tile-img"
+            src="/api/qr?text=https%3A%2F%2Ftv.vndns.net&dark=%23000000&light=%23FFFFFF&size=160"
+            alt="Scan QR code for tv.vndns.net"
+            width="68"
+            height="68"
+          >
+          <span class="code-stamp tabular">QR SYNC</span>
+        </div>
+        <div class="tile-bottom">
+          <span class="tile-title">phone &amp; qr</span>
+          <span class="tile-edition">Mobile Sideload &amp; Promo</span>
+          <div class="tile-meta-row">
+            <span>tv.vndns.net</span>
+            <span>SCAN</span>
+          </div>
+        </div>
+      </button>
+    </section>
+
+    <!-- Panorama Utility Ledger Strip -->
+    <section class="panorama-strip" aria-label="Store Pre-Set Packs and Broadcast Notices">
+      <article class="strip-block">
+        <h2 class="strip-block-title">One-Click Pre-Set Config Packs (.zip / .backup)</h2>
+        <p class="strip-block-body">
+          Already installed vanilla CloudStream, Kodi, or Jellyfin? Grab the standalone KV-TV configuration bundle to inject MegaRepo, Vietsub providers, and 1.1.1.1 DoH settings in seconds.
+        </p>
+        <div class="strip-block-footer">
+          <span class="tabular">5 PRE-SET ARCHIVES READY</span>
+          <a class="metro-inline-btn" href="/api/download/cloudstream-kv?type=preset">Download CS3 Pre-Set</a>
+        </div>
+      </article>
+
+      <article class="strip-block">
+        <h2 class="strip-block-title">AFTVnews Downloader Short-Code Index</h2>
+        <p class="strip-block-body">
+          Open Downloader on any Android TV box and enter <strong class="tabular">88101</strong> (Jellyfin), <strong class="tabular">88102</strong> (Kodi 21), <strong class="tabular">88103</strong> (CloudStream 3), <strong class="tabular">88104</strong> (KV-Netflix), or <strong class="tabular">88105</strong> (KV-Tube).
+        </p>
+        <div class="strip-block-footer">
+          <span class="tabular">302 DIRECT APK REDIRECT</span>
+          <button type="button" class="metro-inline-btn" id="open-dialer-strip-btn">Launch Dialer</button>
+        </div>
+      </article>
+
+      <article class="strip-block">
+        <h2 class="strip-block-title" id="sponsor-strip-title">KV-TV VIP Box Setup — 4K Cinema Hub</h2>
+        <p class="strip-block-body" id="sponsor-strip-body">
+          Hosted on low-latency Vietnam NVMe VPS with 1Gbps direct APK streams and instant QR phone companion sideloading.
+        </p>
+        <div class="strip-block-footer">
+          <span class="tabular" id="sponsor-strip-stats">VN EDGE CDN · ACTIVE</span>
+          <button type="button" class="metro-inline-btn" id="open-qr-strip-btn">Phone QR &amp; Promos</button>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <!-- 1. App Command Modal Dialog -->
+  <dialog id="metro-app-dialog" closedby="any" aria-labelledby="metro-dialog-title">
+    <div class="dialog-banner" id="app-dialog-banner">
+      <div>
+        <h2 class="dialog-title" id="metro-dialog-title">cloudstream 3</h2>
+        <p class="dialog-subtitle" id="metro-dialog-edition">KV-PreSetup (Full Repos)</p>
+      </div>
+      <form method="dialog">
+        <button type="submit" class="dialog-close-btn">ESC · CLOSE</button>
+      </form>
+    </div>
+    <div class="dialog-body">
+      <p id="metro-dialog-desc">
+        Zero manual repository typing required. Ships with MegaRepo and Vietnamese HD movie/anime extensions pre-activated, Cloudflare DoH enabled, and automatic 4K Vietsub stream selection.
+      </p>
+      <div class="dialog-grid">
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div class="dialog-specs">
+            <div class="spec-item">
+              <span class="spec-label">SHORT-CODE</span>
+              <span class="spec-value tabular" id="metro-dialog-code">88103</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">VERSION &amp; SIZE</span>
+              <span class="spec-value tabular" id="metro-dialog-version">v4.4.1-kv · 24.2 MB</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">PACKAGE ID</span>
+              <span class="spec-value" id="metro-dialog-pkg">com.lagradost.cloudstream3</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">ARCHITECTURE</span>
+              <span class="spec-value" id="metro-dialog-arch">Universal (arm64-v8a + armeabi-v7a)</span>
+            </div>
+          </div>
+          <ul class="feature-list" id="metro-dialog-features"></ul>
+        </div>
+        <div class="dialog-qr-panel">
+          <img
+            id="metro-dialog-qr"
+            class="dialog-qr-img"
+            src="/api/qr?text=https%3A%2F%2Ftv.vndns.net%2Fgo%2F88103&size=200"
+            alt="QR Code for Direct APK Download"
+            width="148"
+            height="148"
+          >
+          <span class="dialog-qr-caption" id="metro-dialog-qr-caption">SCAN FOR APK · 88103</span>
+        </div>
+      </div>
+      <div class="dialog-actions">
+        <a class="metro-action-btn" id="metro-dialog-apk-btn" href="/api/download/cloudstream-kv?type=apk">
+          <span>DOWNLOAD PRE-CONFIGURED APK</span>
+        </a>
+        <a class="metro-action-btn secondary" id="metro-dialog-preset-btn" href="/api/download/cloudstream-kv?type=preset">
+          <span>DOWNLOAD PRE-SET PACK (.ZIP)</span>
+        </a>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 2. 5-Digit Short-Code Dialer Modal Dialog -->
+  <dialog id="metro-dialer-dialog" closedby="any" aria-labelledby="metro-dialer-title">
+    <div class="dialog-banner" style="background-color: var(--metro-emerald);">
+      <div>
+        <h2 class="dialog-title" id="metro-dialer-title">short-code dialer</h2>
+        <p class="dialog-subtitle">Enter 5-digit AFTVnews Downloader code (88101–88105)</p>
+      </div>
+      <form method="dialog">
+        <button type="submit" class="dialog-close-btn">ESC · CLOSE</button>
+      </form>
+    </div>
+    <div class="dialog-body">
+      <div class="dialer-readout">
+        <span id="dialer-digits" class="tabular">88103</span>
+        <span class="dialer-status" id="dialer-match-label">CloudStream 3 · 24.2 MB</span>
+      </div>
+      <div class="dialer-presets" aria-label="Quick Short-Code Presets">
+        <button type="button" class="dialer-preset-chip" data-preset-code="88101">88101 · Jellyfin</button>
+        <button type="button" class="dialer-preset-chip" data-preset-code="88102">88102 · Kodi 21</button>
+        <button type="button" class="dialer-preset-chip" data-preset-code="88103">88103 · CloudStream 3</button>
+        <button type="button" class="dialer-preset-chip" data-preset-code="88104">88104 · KV-Netflix</button>
+        <button type="button" class="dialer-preset-chip" data-preset-code="88105">88105 · KV-Tube</button>
+      </div>
+      <div class="dialer-keypad" role="group" aria-label="Numeric Keypad">
+        <button type="button" class="dialer-key" data-key="1">1</button>
+        <button type="button" class="dialer-key" data-key="2">2</button>
+        <button type="button" class="dialer-key" data-key="3">3</button>
+        <button type="button" class="dialer-key" data-key="4">4</button>
+        <button type="button" class="dialer-key" data-key="5">5</button>
+        <button type="button" class="dialer-key" data-key="6">6</button>
+        <button type="button" class="dialer-key" data-key="7">7</button>
+        <button type="button" class="dialer-key" data-key="8">8</button>
+        <button type="button" class="dialer-key" data-key="9">9</button>
+        <button type="button" class="dialer-key" data-key="CLR">CLR</button>
+        <button type="button" class="dialer-key" data-key="0">0</button>
+        <button type="button" class="dialer-key" data-key="DEL">DEL</button>
+      </div>
+      <div class="dialog-actions">
+        <button type="button" class="metro-action-btn" id="dialer-go-apk-btn">
+          <span>FETCH APK BY CODE</span>
+        </button>
+        <button type="button" class="metro-action-btn secondary" id="dialer-open-app-btn">
+          <span>INSPECT BUILD DETAILS</span>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 3. Phone & TV QR Companion Modal Dialog -->
+  <dialog id="metro-qr-dialog" closedby="any" aria-labelledby="metro-qr-title">
+    <div class="dialog-banner" style="background-color: var(--metro-amber);">
+      <div>
+        <h2 class="dialog-title" id="metro-qr-title">phone &amp; tv qr companion</h2>
+        <p class="dialog-subtitle">Scan with phone camera to sideload APKs or browse sponsor offers</p>
+      </div>
+      <form method="dialog">
+        <button type="submit" class="dialog-close-btn">ESC · CLOSE</button>
+      </form>
+    </div>
+    <div class="dialog-body">
+      <div class="dialog-grid">
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <p style="font-size: 0.9375rem; color: var(--fg-secondary);">
+            Select any KV-TV build below to generate a direct high-speed download QR code for your phone or Android TV browser:
+          </p>
+          <div class="dialer-presets" id="qr-target-chips">
+            <button type="button" class="dialer-preset-chip" data-qr-url="https://tv.vndns.net" data-qr-label="KV-TV Storefront (tv.vndns.net)">Storefront</button>
+            <button type="button" class="dialer-preset-chip" data-qr-url="https://tv.vndns.net/go/88103" data-qr-label="CloudStream 3 APK (88103)">88103 · CloudStream</button>
+            <button type="button" class="dialer-preset-chip" data-qr-url="https://tv.vndns.net/go/88101" data-qr-label="Jellyfin TV APK (88101)">88101 · Jellyfin</button>
+            <button type="button" class="dialer-preset-chip" data-qr-url="https://tv.vndns.net/go/88102" data-qr-label="Kodi 21 APK (88102)">88102 · Kodi 21</button>
+            <button type="button" class="dialer-preset-chip" data-qr-url="https://tv.vndns.net/go/88104" data-qr-label="KV-Netflix APK (88104)">88104 · KV-Netflix</button>
+            <button type="button" class="dialer-preset-chip" data-qr-url="https://tv.vndns.net/go/88105" data-qr-label="KV-Tube APK (88105)">88105 · KV-Tube</button>
+          </div>
+          <div class="dialog-specs" id="qr-promo-list">
+            <div class="spec-item">
+              <span class="spec-label">ACTIVE SPONSOR</span>
+              <span class="spec-value">ThueVPSGiaRe VN NVMe Edge CDN (1Gbps)</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">DIRECT SHORTLINK</span>
+              <span class="spec-value tabular" id="qr-selected-url">https://tv.vndns.net</span>
+            </div>
+          </div>
+        </div>
+        <div class="dialog-qr-panel">
+          <img
+            id="companion-qr-img"
+            class="dialog-qr-img"
+            src="/api/qr?text=https%3A%2F%2Ftv.vndns.net&size=220"
+            alt="Companion QR Code"
+            width="148"
+            height="148"
+          >
+          <span class="dialog-qr-caption" id="companion-qr-caption">KV-TV Storefront (tv.vndns.net)</span>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Compact Bottom-Right D-Pad Remote Simulator -->
+  <aside class="dpad-simulator" aria-label="TV D-Pad Remote Simulator">
+    <div class="dpad-header">
+      <span>D-PAD REMOTE</span>
+      <span class="tabular" id="dpad-focus-readout">88103</span>
+    </div>
+    <div class="dpad-grid">
+      <button type="button" class="dpad-btn dpad-back" data-dpad="BACK" title="Back / Close Modal">BACK</button>
+      <button type="button" class="dpad-btn" data-dpad="ArrowUp" title="Navigate Up">UP</button>
+      <button type="button" class="dpad-btn" data-dpad="DIAL" title="Short-Code Keypad">CODE</button>
+      <button type="button" class="dpad-btn" data-dpad="ArrowLeft" title="Navigate Left">LEFT</button>
+      <button type="button" class="dpad-btn dpad-ok" data-dpad="Enter" title="Select Focused Tile">OK</button>
+      <button type="button" class="dpad-btn" data-dpad="ArrowRight" title="Navigate Right">RIGHT</button>
+      <button type="button" class="dpad-btn" data-dpad="QR" title="Open Phone QR">QR</button>
+      <button type="button" class="dpad-btn" data-dpad="ArrowDown" title="Navigate Down">DOWN</button>
+      <button type="button" class="dpad-btn" data-dpad="HOME" title="Focus Hero Tile">TOP</button>
+    </div>
+  </aside>
+
+  <script type="module">
+    // Fallback catalog data matching /api/catalog so UI works instantaneously and updates from live API
+    const FALLBACK_APPS = {
+      'cloudstream-kv': {
+        id: 'cloudstream-kv',
+        name: 'CloudStream 3',
+        edition: 'KV-PreSetup (Full Repos)',
+        packageName: 'com.lagradost.cloudstream3',
+        version: '4.4.1-kv',
+        size: '24.2 MB',
+        shortCode: '88103',
+        arch: 'Universal (arm64-v8a + armeabi-v7a)',
+        color: '#0078D7',
+        downloads: 4150,
+        description:
+          'Zero manual repository typing required. Ships with MegaRepo and Vietnamese HD movie/anime extensions pre-activated, Cloudflare DoH enabled, and automatic 4K Vietsub stream selection.',
+        presetFeatures: [
+          'Pre-configured MegaRepo + Vietnamese HD Movie/Anime extensions',
+          'Auto-selects 1080p/4K highest-bitrate stream with Vietsub',
+          'DNS-over-HTTPS (Cloudflare 1.1.1.1) pre-enabled to bypass ISP blocks',
+          'One-click Pre-Set Backup (.backup) restore included',
+        ],
+      },
+      'jellyfin-kv': {
+        id: 'jellyfin-kv',
+        name: 'Jellyfin TV',
+        edition: 'KV-Optimized Edition',
+        packageName: 'org.jellyfin.androidtv.kv',
+        version: '0.18.4-kv2',
+        size: '42.8 MB',
+        shortCode: '88101',
+        arch: 'Universal (arm64-v8a + armeabi-v7a)',
+        color: '#6B21A8',
+        downloads: 1420,
+        description:
+          'Custom Android TV build of Jellyfin with pre-configured KV Media Server discovery, Direct Play 4K HEVC 10-bit profiles, and styled Vietnamese/English subtitles.',
+        presetFeatures: [
+          'Auto-discovery & pre-filled server URL',
+          'Hardware-accelerated ExoPlayer + libVLC fallback',
+          'Zero-transcode 4K HEVC 10-bit Direct Play',
+          'Vietnamese & English default subtitle styling',
+        ],
+      },
+      'kodi-kv': {
+        id: 'kodi-kv',
+        name: 'Kodi 21 Omega',
+        edition: 'KV-Build All-in-One',
+        packageName: 'org.xbmc.kodi',
+        version: '21.2-kv-build',
+        size: '94.5 MB',
+        shortCode: '88102',
+        arch: 'Universal (arm64-v8a + armeabi-v7a)',
+        color: '#008272',
+        downloads: 2890,
+        description:
+          'Ready-to-run Kodi 21.2 Omega build featuring the lightweight Arctic Zephyr 2 10-foot TV skin, tuned memory cache for 1GB/2GB TV boxes, and pre-installed Vietnamese subtitle addons.',
+        presetFeatures: [
+          'Arctic Zephyr 2 10-foot TV remote skin pre-activated',
+          'advancedsettings.xml tuned for 1GB/2GB RAM TV Boxes',
+          'Pre-installed Vietnamese subtitle providers (Subscene/OpenSubtitles)',
+          'TorrServer & Elementum streaming buffer optimization',
+        ],
+      },
+      'kv-netflix': {
+        id: 'kv-netflix',
+        name: 'KV-Netflix',
+        edition: 'TV Remote & 4K HDR Mod',
+        packageName: 'vn.kvtv.netflix',
+        version: '8.114.0-kv',
+        size: '38.6 MB',
+        shortCode: '88104',
+        arch: 'Universal (arm64-v8a + armeabi-v7a)',
+        color: '#D83B01',
+        downloads: 3680,
+        description:
+          'Engineered for Android TV boxes that fail Netflix certification checks. Provides native D-Pad remote focus navigation without an air-mouse, adaptive Widevine L1/L3 fallback, and 5.1 audio.',
+        presetFeatures: [
+          'Native D-Pad directional navigation (no air-mouse needed)',
+          'Widevine L1/L3 adaptive fallback for uncertified TV boxes',
+          'Pre-tuned Dolby Digital Plus 5.1 & HDR10 playback flags',
+          'Ultra-fast cold start on Amlogic & Rockchip chips',
+        ],
+      },
+      'kv-tube': {
+        id: 'kv-tube',
+        name: 'KV-Tube',
+        edition: 'Ad-Free 4K60 + SponsorBlock',
+        packageName: 'vn.kvtv.tube',
+        version: '24.85-kv',
+        size: '19.4 MB',
+        shortCode: '88105',
+        arch: 'Universal (arm64-v8a + armeabi-v7a)',
+        color: '#B91C1C',
+        downloads: 5920,
+        description:
+          'Next-gen SmartTube/KV-Tube client for Android TV. Blocks 100% of video and banner ads, automatically skips sponsor reads via SponsorBlock, and unlocks 4K 60fps HDR on any TV box.',
+        presetFeatures: [
+          '100% Ad-free playback (no pre-roll, mid-roll, or banner ads)',
+          'SponsorBlock pre-configured (skips intros, self-promo & sponsor segments)',
+          'AV1 & VP9 hardware codec selector for smooth 4K 60fps',
+          'Works without Google Play Services on any Android TV box',
+        ],
+      },
+    };
+
+    const METRO_TILE_COLORS = {
+      'cloudstream-kv': '#0078D7',
+      'jellyfin-kv': '#6B21A8',
+      'kodi-kv': '#008272',
+      'kv-netflix': '#D83B01',
+      'kv-tube': '#B91C1C',
+    };
+
+    const appsById = { ...FALLBACK_APPS };
+
+    // 1. Light-dismiss fallback for browsers without native <dialog closedby="any">
+    const allDialogs = document.querySelectorAll('dialog');
+    if (!('closedBy' in HTMLDialogElement.prototype)) {
+      allDialogs.forEach((dialog) => {
+        dialog.addEventListener('click', (event) => {
+          if (event.target !== dialog) return;
+          const rect = dialog.getBoundingClientRect();
+          const isDialogContent =
+            rect.top <= event.clientY &&
+            event.clientY <= rect.top + rect.height &&
+            rect.left <= event.clientX &&
+            event.clientX <= rect.left + rect.width;
+          if (isDialogContent) return;
+          dialog.close();
+        });
+      });
+    }
+
+    // 2. Fetch live catalog from /api/catalog
+    async function hydrateCatalog() {
+      try {
+        const res = await fetch('/api/catalog?device=tv');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (Array.isArray(data.apps)) {
+          let totalInstalls = 0;
+          for (const app of data.apps) {
+            appsById[app.id] = {
+              ...appsById[app.id],
+              ...app,
+              color: METRO_TILE_COLORS[app.id] || app.color || '#0078D7',
+            };
+            totalInstalls += Number(app.downloads || 0);
+            const dlEl = document.querySelector(`[data-app-downloads="${app.id}"]`);
+            if (dlEl) {
+              const formatted = Number(app.downloads || 0).toLocaleString('en-US');
+              dlEl.textContent = dlEl.textContent.includes('installs')
+                ? `${formatted} installs`
+                : formatted;
+            }
+          }
+          const totalEl = document.getElementById('telemetry-downloads');
+          if (totalEl && totalInstalls > 0) {
+            totalEl.textContent = `${totalInstalls.toLocaleString('en-US')} TOTAL INSTALLS`;
+          }
+        }
+        if (Array.isArray(data.ads) && data.ads.length > 0) {
+          const leadAd = data.ads[0];
+          const titleEl = document.getElementById('sponsor-strip-title');
+          const bodyEl = document.getElementById('sponsor-strip-body');
+          const statsEl = document.getElementById('sponsor-strip-stats');
+          if (titleEl) titleEl.textContent = leadAd.title;
+          if (bodyEl) bodyEl.textContent = leadAd.subtitle;
+          if (statsEl) {
+            statsEl.textContent = `${leadAd.badge || 'SPONSOR'} · ${Number(leadAd.impressions || 0).toLocaleString('en-US')} VIEWS`;
+          }
+        }
+      } catch {
+        // Offline or static preview: fallback catalog remains active
+      }
+    }
+    hydrateCatalog();
+
+    // 3. CloudStream 3 Live Tile Status Strip Cycling
+    const csMessages = [
+      'MegaRepo + Vietsub + 1.1.1.1 DoH Ready',
+      'Auto-Selects 4K HDR10 Stream + Vietnamese Subs',
+      'Zero Manual Repo Typing · Pre-Activated Extensions',
+      'AFTVnews Downloader Short-Code: 88103',
+    ];
+    let csIndex = 0;
+    const csStatusEl = document.getElementById('cs-live-status');
+    setInterval(() => {
+      if (!csStatusEl) return;
+      csIndex = (csIndex + 1) % csMessages.length;
+      csStatusEl.textContent = csMessages[csIndex];
+    }, 3600);
+
+    // 4. Panorama Pivot Switching ("store", "pre-sets", "short-codes", "phone-qr")
+    const pivotBtns = Array.from(document.querySelectorAll('.pivot-btn'));
+    const deckTextEl = document.getElementById('panorama-deck-text');
+    const gridEl = document.getElementById('metro-grid');
+    const allTiles = Array.from(gridEl.querySelectorAll('.metro-tile'));
+
+    const PIVOT_DESCRIPTIONS = {
+      store:
+        '<strong>Pre-Configured Android TV Storefront</strong> — Zero manual repo typing. Every APK ships with KV-TV Vietnamese &amp; Global 4K repositories, subtitle profiles, and AFTVnews Downloader short-codes ready out of the box.',
+      'pre-sets':
+        '<strong>KV-TV Pre-Set Builds &amp; Backup Packs</strong> — Select any app tile below to download either the pre-configured APK or the standalone <code>.zip</code> configuration backup bundle.',
+      'short-codes':
+        '<strong>AFTVnews 5-Digit Short-Code Directory (88101–88105)</strong> — Press Enter on the Emerald Short-Code tile or any app tile to dial and fetch APKs directly on your TV box.',
+      'phone-qr':
+        '<strong>Phone &amp; TV QR Sideload Companion</strong> — Scan the live QR tile with your phone camera to push builds or open direct APK links on your local network.',
+    };
+
+    function activatePivot(pivotName, openUtilityModal = false) {
+      pivotBtns.forEach((btn) => {
+        const isMatch = btn.dataset.pivot === pivotName;
+        btn.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+      });
+
+      if (deckTextEl && PIVOT_DESCRIPTIONS[pivotName]) {
+        deckTextEl.innerHTML = PIVOT_DESCRIPTIONS[pivotName];
+      }
+
+      allTiles.forEach((tile) => {
+        const tags = (tile.dataset.pivotTags || 'store').split(/\s+/);
+        const matches = pivotName === 'store' || tags.includes(pivotName);
+        tile.classList.toggle('is-dimmed', !matches);
+      });
+
+      if (openUtilityModal && pivotName === 'short-codes') {
+        const dialerTile = gridEl.querySelector('[data-tile-kind="dialer"]');
+        if (dialerTile) setRovingFocus(dialerTile);
+      } else if (openUtilityModal && pivotName === 'phone-qr') {
+        const qrTile = gridEl.querySelector('[data-tile-kind="qr"]');
+        if (qrTile) setRovingFocus(qrTile);
+      }
+    }
+
+    pivotBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        activatePivot(btn.dataset.pivot, true);
+      });
+    });
+
+    // 5. App Detail Modal Dialog
+    const appDialog = document.getElementById('metro-app-dialog');
+    const dialerDialog = document.getElementById('metro-dialer-dialog');
+    const qrDialog = document.getElementById('metro-qr-dialog');
+
+    function openAppDialog(appId) {
+      const app = appsById[appId] || FALLBACK_APPS['cloudstream-kv'];
+      if (!app || !appDialog) return;
+
+      const banner = document.getElementById('app-dialog-banner');
+      if (banner) {
+        banner.style.backgroundColor = METRO_TILE_COLORS[app.id] || app.color || '#0078D7';
+      }
+
+      document.getElementById('metro-dialog-title').textContent = app.name.toLowerCase();
+      document.getElementById('metro-dialog-edition').textContent = app.edition;
+      document.getElementById('metro-dialog-desc').textContent = app.description;
+      document.getElementById('metro-dialog-code').textContent = app.shortCode;
+      document.getElementById('metro-dialog-version').textContent = `v${app.version} · ${app.size}`;
+      document.getElementById('metro-dialog-pkg').textContent = app.packageName;
+      document.getElementById('metro-dialog-arch').textContent = app.arch || 'Universal (arm64-v8a + armeabi-v7a)';
+
+      const featureList = document.getElementById('metro-dialog-features');
+      featureList.innerHTML = '';
+      (app.presetFeatures || []).forEach((feat) => {
+        const li = document.createElement('li');
+        const bullet = document.createElement('span');
+        bullet.className = 'feature-bullet';
+        bullet.style.backgroundColor = METRO_TILE_COLORS[app.id] || '#0078D7';
+        const text = document.createElement('span');
+        text.textContent = feat;
+        li.append(bullet, text);
+        featureList.appendChild(li);
+      });
+
+      const qrUrl = `https://tv.vndns.net/go/${app.shortCode}`;
+      const qrImg = document.getElementById('metro-dialog-qr');
+      if (qrImg) {
+        qrImg.src = `/api/qr?text=${encodeURIComponent(qrUrl)}&size=200`;
+      }
+      const qrCap = document.getElementById('metro-dialog-qr-caption');
+      if (qrCap) {
+        qrCap.textContent = `SCAN FOR APK · ${app.shortCode}`;
+      }
+
+      const apkBtn = document.getElementById('metro-dialog-apk-btn');
+      const presetBtn = document.getElementById('metro-dialog-preset-btn');
+      if (apkBtn) apkBtn.href = `/api/download/${encodeURIComponent(app.id)}?type=apk`;
+      if (presetBtn) presetBtn.href = `/api/download/${encodeURIComponent(app.id)}?type=preset`;
+
+      if (!appDialog.open) {
+        appDialog.showModal();
+      }
+    }
+
+    // 6. Short-Code Dialer Logic
+    let currentCode = '88103';
+    const dialerDigitsEl = document.getElementById('dialer-digits');
+    const dialerMatchEl = document.getElementById('dialer-match-label');
+
+    function findAppByShortCode(code) {
+      return Object.values(appsById).find((a) => String(a.shortCode) === String(code)) || null;
+    }
+
+    function updateDialerReadout() {
+      if (dialerDigitsEl) {
+        dialerDigitsEl.textContent = currentCode.padEnd(5, '_');
+      }
+      const match = findAppByShortCode(currentCode);
+      if (dialerMatchEl) {
+        if (match) {
+          dialerMatchEl.textContent = `${match.name} · ${match.size}`;
+        } else if (currentCode.length === 5) {
+          dialerMatchEl.textContent = 'Valid codes: 88101–88105';
+        } else {
+          dialerMatchEl.textContent = 'Type 5-digit code...';
+        }
+      }
+    }
+
+    document.querySelectorAll('.dialer-key').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.key;
+        if (key === 'CLR') {
+          currentCode = '';
+        } else if (key === 'DEL') {
+          currentCode = currentCode.slice(0, -1);
+        } else if (currentCode.length < 5) {
+          currentCode += key;
+        } else {
+          currentCode = key;
+        }
+        updateDialerReadout();
+      });
+    });
+
+    document.querySelectorAll('[data-preset-code]').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        currentCode = chip.dataset.presetCode || '88103';
+        updateDialerReadout();
+      });
+    });
+
+    document.getElementById('dialer-go-apk-btn')?.addEventListener('click', () => {
+      const match = findAppByShortCode(currentCode) || FALLBACK_APPS['cloudstream-kv'];
+      window.location.href = `/api/download/${encodeURIComponent(match.id)}?type=apk`;
+    });
+
+    document.getElementById('dialer-open-app-btn')?.addEventListener('click', () => {
+      const match = findAppByShortCode(currentCode) || FALLBACK_APPS['cloudstream-kv'];
+      if (dialerDialog?.open) dialerDialog.close();
+      openAppDialog(match.id);
+    });
+
+    // 7. Phone & TV QR Companion switcher
+    document.querySelectorAll('[data-qr-url]').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const url = chip.dataset.qrUrl || 'https://tv.vndns.net';
+        const label = chip.dataset.qrLabel || url;
+        const img = document.getElementById('companion-qr-img');
+        const cap = document.getElementById('companion-qr-caption');
+        const urlReadout = document.getElementById('qr-selected-url');
+        if (img) img.src = `/api/qr?text=${encodeURIComponent(url)}&size=220`;
+        if (cap) cap.textContent = label;
+        if (urlReadout) urlReadout.textContent = url;
+      });
+    });
+
+    // Tile activation handler
+    allTiles.forEach((tile) => {
+      tile.addEventListener('click', () => {
+        setRovingFocus(tile, false);
+        const kind = tile.dataset.tileKind;
+        if (kind === 'app') {
+          openAppDialog(tile.dataset.appId);
+        } else if (kind === 'dialer') {
+          if (dialerDialog && !dialerDialog.open) dialerDialog.showModal();
+        } else if (kind === 'qr') {
+          if (qrDialog && !qrDialog.open) qrDialog.showModal();
+        }
+      });
+
+      tile.addEventListener('focus', () => {
+        const codeReadout = document.getElementById('dpad-focus-readout');
+        if (codeReadout) {
+          codeReadout.textContent =
+            tile.dataset.shortCode ||
+            (tile.dataset.tileKind === 'dialer' ? 'DIAL' : 'QR');
+        }
+      });
+    });
+
+    document.getElementById('open-dialer-strip-btn')?.addEventListener('click', () => {
+      if (dialerDialog && !dialerDialog.open) dialerDialog.showModal();
+    });
+
+    document.getElementById('open-qr-strip-btn')?.addEventListener('click', () => {
+      if (qrDialog && !qrDialog.open) qrDialog.showModal();
+    });
+
+    // 8. 2D Spatial Navigation with Roving Tabindex & Live Geometry (getBoundingClientRect)
+    function getVisibleCandidates() {
+      return allTiles.filter((el) =>
+        typeof el.checkVisibility === 'function' ? el.checkVisibility() : true
+      );
+    }
+
+    function setRovingFocus(targetTile, shouldFocus = true) {
+      allTiles.forEach((tile) => {
+        tile.setAttribute('tabindex', tile === targetTile ? '0' : '-1');
+      });
+      if (shouldFocus) {
+        targetTile.focus();
+        targetTile.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      }
+    }
+
+    function findSpatialCandidate(currentEl, direction) {
+      const candidates = getVisibleCandidates().filter((el) => el !== currentEl);
+      if (candidates.length === 0) return null;
+
+      const currentRect = currentEl.getBoundingClientRect();
+      const currentCenterX = currentRect.left + currentRect.width / 2;
+      const currentCenterY = currentRect.top + currentRect.height / 2;
+      const tolerance = 2;
+
+      const inDirection = [];
+
+      for (const candidate of candidates) {
+        const rect = candidate.getBoundingClientRect();
+        let gap = 0;
+        let isValid = false;
+        let overlapsPerpendicular = false;
+        let perpCenterOffset = 0;
+
+        if (direction === 'ArrowRight') {
+          isValid = rect.left >= currentRect.right - tolerance;
+          gap = Math.max(0, rect.left - currentRect.right);
+          overlapsPerpendicular =
+            rect.bottom > currentRect.top + tolerance &&
+            rect.top < currentRect.bottom - tolerance;
+          perpCenterOffset = Math.abs(rect.top + rect.height / 2 - currentCenterY);
+        } else if (direction === 'ArrowLeft') {
+          isValid = rect.right <= currentRect.left + tolerance;
+          gap = Math.max(0, currentRect.left - rect.right);
+          overlapsPerpendicular =
+            rect.bottom > currentRect.top + tolerance &&
+            rect.top < currentRect.bottom - tolerance;
+          perpCenterOffset = Math.abs(rect.top + rect.height / 2 - currentCenterY);
+        } else if (direction === 'ArrowDown') {
+          isValid = rect.top >= currentRect.bottom - tolerance;
+          gap = Math.max(0, rect.top - currentRect.bottom);
+          overlapsPerpendicular =
+            rect.right > currentRect.left + tolerance &&
+            rect.left < currentRect.right - tolerance;
+          perpCenterOffset = Math.abs(rect.left + rect.width / 2 - currentCenterX);
+        } else if (direction === 'ArrowUp') {
+          isValid = rect.bottom <= currentRect.top + tolerance;
+          gap = Math.max(0, currentRect.top - rect.bottom);
+          overlapsPerpendicular =
+            rect.right > currentRect.left + tolerance &&
+            rect.left < currentRect.right - tolerance;
+          perpCenterOffset = Math.abs(rect.left + rect.width / 2 - currentCenterX);
+        }
+
+        if (isValid) {
+          inDirection.push({
+            candidate,
+            gap,
+            overlapsPerpendicular,
+            perpCenterOffset,
+          });
+        }
+      }
+
+      if (inDirection.length === 0) return null;
+
+      // Prefer candidates whose extent on the perpendicular axis overlaps the current element's extent
+      const overlapping = inDirection.filter((item) => item.overlapsPerpendicular);
+      if (overlapping.length > 0) {
+        overlapping.sort((a, b) => {
+          if (Math.abs(a.gap - b.gap) > 1) return a.gap - b.gap;
+          return a.perpCenterOffset - b.perpCenterOffset;
+        });
+        return overlapping[0].candidate;
+      }
+
+      // Weighted fallback when no candidate directly overlaps on perpendicular axis
+      const weight = 2.5;
+      inDirection.sort(
+        (a, b) =>
+          a.gap + weight * a.perpCenterOffset - (b.gap + weight * b.perpCenterOffset)
+      );
+      return inDirection[0].candidate;
+    }
+
+    // Scoped keydown handler on the spatial widget container
+    gridEl.addEventListener('keydown', (e) => {
+      if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+      const arrowDirs = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+      if (!arrowDirs.includes(e.key)) return;
+
+      const innermost = e.composedPath()[0];
+      if (
+        innermost instanceof Element &&
+        innermost.matches(':read-write, select, input[type="range"], [role="slider"]')
+      ) {
+        return;
+      }
+
+      const activeEl = document.activeElement;
+      if (!allTiles.includes(activeEl)) return;
+
+      const nextTile = findSpatialCandidate(activeEl, e.key);
+      if (!nextTile) {
+        // Preserve native boundary scrolling when no candidate exists in the pressed direction
+        return;
+      }
+
+      e.preventDefault();
+      setRovingFocus(nextTile, true);
+    });
+
+    // Global keyboard shortcuts for Mockup 1/2/3 switching when no modal is open
+    window.addEventListener('keydown', (e) => {
+      if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
+      const anyDialogOpen = Array.from(allDialogs).some((d) => d.open);
+      if (anyDialogOpen) return;
+
+      const target = e.composedPath()[0];
+      if (target instanceof Element && target.matches('input, textarea, select, :read-write')) {
+        return;
+      }
+
+      if (e.key === '1') {
+        window.location.href = '/mockup-1';
+      } else if (e.key === '2') {
+        window.location.href = '/mockup-2';
+      } else if (e.key === '3') {
+        window.location.href = '/mockup-3';
+      }
+    });
+
+    // 9. D-Pad Remote Simulator Controls
+    document.querySelectorAll('[data-dpad]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const action = btn.dataset.dpad;
+        const activeTile =
+          allTiles.find((t) => t.getAttribute('tabindex') === '0') || allTiles[0];
+
+        if (action === 'BACK') {
+          allDialogs.forEach((d) => {
+            if (d.open) d.close();
+          });
+          setRovingFocus(activeTile, true);
+          return;
+        }
+
+        if (action === 'HOME') {
+          setRovingFocus(allTiles[0], true);
+          return;
+        }
+
+        if (action === 'DIAL') {
+          if (dialerDialog && !dialerDialog.open) dialerDialog.showModal();
+          return;
+        }
+
+        if (action === 'QR') {
+          if (qrDialog && !qrDialog.open) qrDialog.showModal();
+          return;
+        }
+
+        if (action === 'Enter') {
+          activeTile.click();
+          return;
+        }
+
+        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(action)) {
+          const next = findSpatialCandidate(activeTile, action);
+          if (next) {
+            setRovingFocus(next, true);
+          } else {
+            setRovingFocus(activeTile, true);
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

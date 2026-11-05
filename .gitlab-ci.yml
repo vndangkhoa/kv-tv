@@ -1,0 +1,15 @@
+stages:
+  - test
+
+variables:
+  NPM_CONFIG_CACHE: "$CI_PROJECT_DIR/.npm"
+
+verify-syntax:
+  stage: test
+  image: node:22-alpine
+  script:
+    - node --check server.js
+    - node --check lib/totp.js
+    - node --check lib/seed.js
+    - node --check public/app.js
+    - node --check public/admin.js

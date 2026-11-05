@@ -1,0 +1,26 @@
+{
+  "name": "KV-TV Store — Android TV Pre-Configured App Hub",
+  "short_name": "KV-TV Store",
+  "description": "Blazing-fast 10-foot Android TV App Store and pre-configured media hub at tv.vndns.net for Jellyfin, Kodi, CloudStream, KV-Netflix, and KV-Tube.",
+  "start_url": "/?mode=tv",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#070A12",
+  "theme_color": "#F59E0B",
+  "categories": ["entertainment", "utilities", "multimedia"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='40' fill='%230B101E'/%3E%3Crect x='20' y='34' width='152' height='102' rx='18' fill='%23131C33' stroke='%23F59E0B' stroke-width='8'/%3E%3Cpath d='M78 66L122 85L78 104V66Z' fill='%23F59E0B'/%3E%3Cpath d='M62 154H130' stroke='%2338BDF8' stroke-width='10' stroke-linecap='round'/%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='104' fill='%230B101E'/%3E%3Crect x='52' y='88' width='408' height='272' rx='44' fill='%23131C33' stroke='%23F59E0B' stroke-width='20'/%3E%3Cpath d='M208 172L328 224L208 276V172Z' fill='%23F59E0B'/%3E%3Cpath d='M164 412H348' stroke='%2338BDF8' stroke-width='24' stroke-linecap='round'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
