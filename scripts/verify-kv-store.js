@@ -190,21 +190,76 @@ async function runTests() {
   const adminViaBackend = await request(BACKEND_URL, '/admin');
   assert(adminViaBackend.statusCode === 200, 'GET :3457/admin returns 200');
 
-  // 7. Frontend Integration verification
-  console.log('\n7. Verifying Frontend 1-Click Installer & Fallback UI:');
-  const indexHtml = fs.readFileSync(path.join(__dirname, '..', 'public', 'index.html'), 'utf8');
+  // 6b. Test App Updates API (/api/version & GET/POST /api/updates/check)
+  console.log('\n6b. Testing Updates Center API (/api/version & /api/updates/check):');
+  const versionRes = await request(INTERFACE_URL, '/api/version');
+  assert(versionRes.statusCode === 200, 'GET /api/version returns 200');
+  const versionJson = JSON.parse(versionRes.body.toString('utf8'));
   assert(
-    indexHtml.includes('id="metro-dialog-backup-btn"'),
-    'index.html includes #metro-dialog-backup-btn (Forgejo Backup Mirror button)'
+    versionJson.ok === true && versionJson.storeVersion === '1.1.0' && versionJson.storeVersionCode === 2,
+    `Store version is 1.1.0 (#2) (got ${versionJson.storeVersion} #${versionJson.storeVersionCode})`
   );
-  const appJs = fs.readFileSync(path.join(__dirname, '..', 'public', 'app.js'), 'utf8');
+
+  const updatesGetRes = await request(INTERFACE_URL, '/api/updates/check?storeVersionCode=1');
+  assert(updatesGetRes.statusCode === 200, 'GET /api/updates/check?storeVersionCode=1 returns 200');
+  const updatesGetJson = JSON.parse(updatesGetRes.body.toString('utf8'));
   assert(
-    appJs.includes('triggerOneClickApkDownload'),
-    'app.js implements triggerOneClickApkDownload with auto-fallback'
+    updatesGetJson.selfUpdate?.updateAvailable === true,
+    'Self-update flagged true when storeVersionCode=1 < 2'
   );
+
+  const updatesPostRes = await request(INTERFACE_URL, '/api/updates/check', {
+    method: 'POST',
+    body: {
+      storeVersionCode: 1,
+      storeVersionName: '1.0.0',
+      apps: [
+        { packageName: 'com.kvtube.tv', versionCode: 8, versionName: '1.1.5-tv' },
+        { packageName: 'com.streamflow.tv', versionCode: 117, versionName: '1.4.6-kv', isDebuggable: true },
+        {
+          packageName: 'org.smarttube.stable',
+          versionCode: 2458,
+          versionName: '32.68s',
+          signingCertSha256: 'e89668e5f473a3193e7d624d2d1679985ec8e612bce1bf969661634fd33e218b',
+        },
+        { packageName: 'org.jellyfin.androidtv', versionCode: 191099, versionName: '0.19.10' },
+      ],
+    },
+  });
+  assert(updatesPostRes.statusCode === 200, 'POST /api/updates/check returns 200');
+  const updatesPostJson = JSON.parse(updatesPostRes.body.toString('utf8'));
+  const availIds = (updatesPostJson.updatesAvailable || []).map((a) => a.id);
+  const stEntry = (updatesPostJson.updatesAvailable || []).find((a) => a.id === 'smarttube-tv');
+  const nfEntry = (updatesPostJson.updatesAvailable || []).find((a) => a.id === 'kv-netflix');
   assert(
-    appJs.includes('installAppWithFallback'),
-    'app.js integrates window.KVTVBridge.installAppWithFallback'
+    updatesPostJson.selfUpdate?.updateAvailable === true &&
+      availIds.includes('kv-tube') &&
+      Boolean(nfEntry?.debuggableUpgrade) &&
+      Boolean(stEntry?.signatureMismatch) &&
+      updatesPostJson.totalUpdates === 4,
+    `Updates matrix flags self-update + kv-tube + kv-netflix (debuggable) + smarttube-tv (signatureMismatch) (total=${updatesPostJson.totalUpdates})`
+  );
+
+  // 7. Frontend Integration verification (Astryx built bundle + fallback)
+  console.log('\n7. Verifying Astryx Built Storefront & Assets via Interface (:3456):');
+  const uiHtmlRes = await request(INTERFACE_URL, '/');
+  const uiHtmlText = uiHtmlRes.body.toString('utf8');
+  assert(
+    uiHtmlRes.statusCode === 200 && /\/assets\/index-[^"']+\.js/i.test(uiHtmlText),
+    'GET / serves Vite-built Astryx bundle (index-*.js)'
+  );
+  const assetMatch = uiHtmlText.match(/(\/assets\/index-[^"']+\.js)/i);
+  if (assetMatch) {
+    const assetRes = await request(INTERFACE_URL, assetMatch[1]);
+    assert(
+      assetRes.statusCode === 200 &&
+        String(assetRes.headers['cache-control'] || '').includes('immutable'),
+      `GET ${assetMatch[1]} returns 200 with immutable Cache-Control (${assetRes.headers['cache-control']})`
+    );
+  }
+  assert(
+    fs.existsSync(path.join(__dirname, '..', 'frontend', 'dist', 'index.html')),
+    'frontend/dist/index.html built on disk'
   );
 
   // 8. Production Security & Anti-Abuse Hardening Tests

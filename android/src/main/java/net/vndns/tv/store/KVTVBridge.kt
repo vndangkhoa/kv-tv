@@ -3,11 +3,16 @@ package net.vndns.tv.store
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.content.pm.Signature
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.widget.Toast
@@ -38,6 +43,18 @@ class KVTVBridge(
 
     @Volatile
     private var isDownloadingApk: Boolean = false
+
+    @Volatile
+    private var pendingInstallApk: File? = null
+
+    @Volatile
+    private var pendingInstallAppId: String? = null
+
+    @Volatile
+    private var pendingSignatureReplaceApk: File? = null
+
+    @Volatile
+    private var pendingSignatureReplacePkg: String? = null
 
     companion object {
         const val STATUS_NOT_INSTALLED = "NOT_INSTALLED"
@@ -91,24 +108,122 @@ class KVTVBridge(
         )
 
         val PACKAGE_ALIASES: Map<String, List<String>> = mapOf(
-            "org.smarttube.stable" to listOf("org.smarttube.stable", "com.teamsmart.videomanager.tv", "app.smarttube.fdroid", "com.liskovsoft.smarttubetv"),
-            "com.teamsmart.videomanager.tv" to listOf("org.smarttube.stable", "com.teamsmart.videomanager.tv", "app.smarttube.fdroid", "com.liskovsoft.smarttubetv"),
+            "org.smarttube.stable" to listOf("org.smarttube.stable", "com.teamsmart.videomanager.tv", "app.smarttube.fdroid", "com.liskovsoft.smarttubetv", "app.smarttube"),
+            "com.teamsmart.videomanager.tv" to listOf("org.smarttube.stable", "com.teamsmart.videomanager.tv", "app.smarttube.fdroid", "com.liskovsoft.smarttubetv", "app.smarttube"),
             "org.schabi.newpipe" to listOf("org.schabi.newpipe", "com.kvtube.tv"),
             "com.kvtube.tv" to listOf("org.schabi.newpipe", "com.kvtube.tv")
         )
     }
 
-    private fun resolveInstalledPackage(packageName: String): android.content.pm.PackageInfo? {
+    private fun resolveInstalledPackage(packageName: String, flags: Int = 0): PackageInfo? {
         val pm = context.packageManager
         val candidates = PACKAGE_ALIASES[packageName] ?: listOf(packageName)
         for (cand in candidates) {
             try {
-                return pm.getPackageInfo(cand, 0)
+                @Suppress("DEPRECATION")
+                return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && flags != 0) {
+                    pm.getPackageInfo(cand, PackageManager.PackageInfoFlags.of(flags.toLong()))
+                } else {
+                    pm.getPackageInfo(cand, flags)
+                }
             } catch (_: PackageManager.NameNotFoundException) {
             } catch (_: Exception) {
             }
         }
         return null
+    }
+
+    private fun sha256Hex(bytes: ByteArray): String {
+        return MessageDigest.getInstance("SHA-256")
+            .digest(bytes)
+            .joinToString("") { "%02x".format(it) }
+    }
+
+    @Suppress("DEPRECATION")
+    private fun extractFirstSignatureDigest(pInfo: PackageInfo?): String {
+        if (pInfo == null) return ""
+        return try {
+            val signatures: Array<Signature>? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                val signingInfo = pInfo.signingInfo
+                if (signingInfo != null) {
+                    if (signingInfo.hasMultipleSigners()) signingInfo.apkContentsSigners else signingInfo.signingCertificateHistory
+                } else {
+                    pInfo.signatures
+                }
+            } else {
+                pInfo.signatures
+            }
+            val first = signatures?.firstOrNull() ?: return ""
+            sha256Hex(first.toByteArray()).lowercase()
+        } catch (_: Exception) {
+            ""
+        }
+    }
+
+    private fun getSigningCertSha256(packageName: String): String {
+        @Suppress("DEPRECATION")
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            PackageManager.GET_SIGNING_CERTIFICATES
+        } else {
+            PackageManager.GET_SIGNATURES
+        }
+        val pInfo = resolveInstalledPackage(packageName, flags)
+        return extractFirstSignatureDigest(pInfo)
+    }
+
+    @Suppress("DEPRECATION")
+    private fun getApkSigningCertSha256(apkFile: File): String {
+        return try {
+            val pm = context.packageManager
+            val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                PackageManager.GET_SIGNING_CERTIFICATES
+            } else {
+                PackageManager.GET_SIGNATURES
+            }
+            val archiveInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                pm.getPackageArchiveInfo(apkFile.absolutePath, PackageManager.PackageInfoFlags.of(flags.toLong()))
+            } else {
+                pm.getPackageArchiveInfo(apkFile.absolutePath, flags)
+            }
+            extractFirstSignatureDigest(archiveInfo)
+        } catch (_: Exception) {
+            ""
+        }
+    }
+
+    private fun isPackageDebuggable(pInfo: PackageInfo): Boolean {
+        val flags = pInfo.applicationInfo?.flags ?: 0
+        return (flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
+    }
+
+    private fun canInstallUnknownApps(): Boolean {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.O || context.packageManager.canRequestPackageInstalls()
+    }
+
+    private fun isSignatureMismatch(installedCert: String, expectedCert: String): Boolean {
+        if (installedCert.length != 64 || expectedCert.length != 64) return false
+        return !installedCert.equals(expectedCert, ignoreCase = true)
+    }
+
+    /**
+     * Open Android Unknown Sources install permission settings for KV-Store TV (Android 8+).
+     */
+    @JavascriptInterface
+    fun openUnknownSourcesSettings(): Boolean {
+        return try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val intent = Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES).apply {
+                    data = Uri.parse("package:${context.packageName}")
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                }
+                activity.startActivity(intent)
+                true
+            } else {
+                false
+            }
+        } catch (_: Exception) {
+            false
+        }
     }
 
     /**
@@ -131,6 +246,115 @@ class KVTVBridge(
     }
 
     /**
+     * Detailed status inspector for Updates Center & signature/debuggable checks.
+     * Returns JSON: { canRequestPackageInstalls, apps: { [packageName]: {...} }, byId: { [id]: {...} } }
+     */
+    @JavascriptInterface
+    fun getInstalledAppDetails(catalogJsonStr: String): String {
+        val out = JSONObject()
+        val byPkg = JSONObject()
+        val byId = JSONObject()
+        out.put("canRequestPackageInstalls", canInstallUnknownApps())
+        try {
+            val arr = JSONArray(catalogJsonStr)
+            for (i in 0 until arr.length()) {
+                val item = arr.optJSONObject(i) ?: continue
+                val appId = item.optString("id", "")
+                val pkgName = item.optString("packageName", "")
+                if (pkgName.isBlank()) continue
+
+                val storeCode = item.optLong("versionCode", 0L)
+                val storeVersionName = item.optString("version", item.optString("versionName", ""))
+                val releaseOnly = item.optBoolean("releaseOnly", false)
+                val expectedCert = item.optString("signingCertSha256", "").trim().lowercase()
+
+                val pInfo = resolveInstalledPackage(pkgName)
+                val installed = pInfo != null
+                val installedCode = if (pInfo != null) PackageInfoCompat.getLongVersionCode(pInfo) else 0L
+                val installedVerName = pInfo?.versionName ?: ""
+                val isDebuggable = if (pInfo != null) isPackageDebuggable(pInfo) else false
+                val installedCert = if (pInfo != null) getSigningCertSha256(pInfo.packageName) else ""
+                val sigMismatch = installed && isSignatureMismatch(installedCert, expectedCert)
+                val needsUpgrade = installed && (
+                    (storeCode > 0 && installedCode < storeCode) ||
+                        (releaseOnly && isDebuggable) ||
+                        sigMismatch
+                    )
+                val status = when {
+                    !installed -> STATUS_NOT_INSTALLED
+                    needsUpgrade -> STATUS_UPDATE
+                    else -> STATUS_INSTALLED
+                }
+
+                val detail = JSONObject().apply {
+                    put("id", appId)
+                    put("packageName", pkgName)
+                    put("installed", installed)
+                    put("installedPackage", pInfo?.packageName ?: "")
+                    put("installedVersionCode", installedCode)
+                    put("installedVersionName", installedVerName)
+                    put("storeVersionCode", storeCode)
+                    put("storeVersionName", storeVersionName)
+                    put("isDebuggable", isDebuggable)
+                    put("installedCertSha256", installedCert)
+                    put("expectedCertSha256", expectedCert)
+                    put("signatureMismatch", sigMismatch)
+                    put("updateAvailable", needsUpgrade)
+                    put("status", status)
+                }
+                byPkg.put(pkgName, detail)
+                if (appId.isNotBlank()) byId.put(appId, detail)
+            }
+        } catch (_: Exception) {
+        }
+        out.put("apps", byPkg)
+        out.put("byId", byId)
+        return out.toString()
+    }
+
+    /**
+     * Check whether KV-Store TV itself has an update available in the catalog.
+     */
+    @JavascriptInterface
+    fun checkSelfUpdate(catalogJsonStr: String): String {
+        val result = JSONObject()
+        try {
+            val pInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+            val currentCode = PackageInfoCompat.getLongVersionCode(pInfo)
+            val currentName = pInfo.versionName ?: BuildConfig.VERSION_NAME
+            result.put("packageName", context.packageName)
+            result.put("currentVersionCode", currentCode)
+            result.put("currentVersionName", currentName)
+            result.put("canRequestPackageInstalls", canInstallUnknownApps())
+
+            val arr = JSONArray(catalogJsonStr)
+            for (i in 0 until arr.length()) {
+                val item = arr.optJSONObject(i) ?: continue
+                val id = item.optString("id", "")
+                val pkg = item.optString("packageName", "")
+                if (id == "kv-store" || pkg == context.packageName) {
+                    val latestCode = item.optLong("versionCode", 0L)
+                    val latestName = item.optString("version", item.optString("versionName", currentName))
+                    result.put("latestVersionCode", latestCode)
+                    result.put("latestVersionName", latestName)
+                    result.put("updateAvailable", latestCode > currentCode)
+                    result.put("downloadUrl", item.optString("downloadUrl", "/api/download/kv-store"))
+                    result.put("backupUrl", item.optString("backupApkUrl", ""))
+                    result.put("changelog_vi", item.optString("changelog_vi", ""))
+                    result.put("changelog_en", item.optString("changelog_en", ""))
+                    result.put("sha256", item.optString("sha256", ""))
+                    result.put("fileSizeFormatted", item.optString("fileSizeFormatted", ""))
+                    result.put("signingCertSha256", item.optString("signingCertSha256", ""))
+                    break
+                }
+            }
+        } catch (_: Exception) {
+            result.put("updateAvailable", false)
+        }
+        return result.toString()
+    }
+
+    /**
      * Batch check app catalog packages from JSON array string.
      * Returns JSON map: {"org.xbmc.kodi": "INSTALLED", ...}
      */
@@ -138,30 +362,39 @@ class KVTVBridge(
     fun scanCatalogStatuses(catalogJsonStr: String): String {
         val result = JSONObject()
         try {
+            val detailsRoot = JSONObject(getInstalledAppDetails(catalogJsonStr))
+            val appsObj = detailsRoot.optJSONObject("apps")
+            if (appsObj != null) {
+                val keys = appsObj.keys()
+                while (keys.hasNext()) {
+                    val pkg = keys.next()
+                    val status = appsObj.optJSONObject(pkg)?.optString("status") ?: STATUS_NOT_INSTALLED
+                    result.put(pkg, status)
+                }
+            }
             val arr = JSONArray(catalogJsonStr)
             for (i in 0 until arr.length()) {
-                val item = arr.optJSONObject(i)
-                val pkgName = item?.optString("packageName")
-                    ?: arr.optString(i, "")
-                if (pkgName.isNullOrBlank()) continue
-
-                val storeCode = item?.optLong("versionCode", 0L) ?: 0L
-                val status = checkApp(pkgName, storeCode)
-                result.put(pkgName, status)
+                val pkgOnly = arr.optString(i, "")
+                if (pkgOnly.isNotBlank() && !pkgOnly.startsWith("{") && !result.has(pkgOnly)) {
+                    result.put(pkgOnly, checkApp(pkgOnly, 0L))
+                }
             }
-        } catch (e: Exception) {
-            // Error parsing json
+        } catch (_: Exception) {
         }
         return result.toString()
     }
 
     /**
      * Clean up temporary APK files from cache and external directories
-     * so KV-Store never leaves stored APK files on the device.
+     * while preserving any pending permission/signature-replace APK.
      */
     @JavascriptInterface
     fun cleanTempApks(): Int {
         if (isDownloadingApk) return 0
+        val protectedPaths = setOfNotNull(
+            pendingInstallApk?.absolutePath,
+            pendingSignatureReplaceApk?.absolutePath
+        )
         var deletedCount = 0
         val candidateDirs = listOfNotNull(
             File(context.cacheDir, "apk_staging"),
@@ -174,7 +407,10 @@ class KVTVBridge(
             if (!dir.exists() || !dir.isDirectory) continue
             val files = dir.listFiles() ?: continue
             for (file in files) {
-                if (file.isFile && (file.name.endsWith(".apk", ignoreCase = true) || file.name.endsWith(".apk.tmp", ignoreCase = true))) {
+                if (file.isFile &&
+                    !protectedPaths.contains(file.absolutePath) &&
+                    (file.name.endsWith(".apk", ignoreCase = true) || file.name.endsWith(".apk.tmp", ignoreCase = true))
+                ) {
                     if (file.delete()) {
                         deletedCount++
                     }
@@ -378,6 +614,36 @@ class KVTVBridge(
         }
     }
 
+    private fun emitJs(script: String) {
+        mainHandler.post {
+            try {
+                webView.evaluateJavascript(script, null)
+            } catch (_: Exception) {
+            }
+        }
+    }
+
+    private fun emitProgress(appId: String, percent: Int, downloadedBytes: Long, totalBytes: Long, phase: String) {
+        if (appId.isBlank()) return
+        val qId = JSONObject.quote(appId)
+        val qPhase = JSONObject.quote(phase)
+        emitJs("window.onKVTVDownloadProgress && window.onKVTVDownloadProgress($qId, $percent, $downloadedBytes, $totalBytes, $qPhase);")
+    }
+
+    private fun emitComplete(appId: String, status: String) {
+        if (appId.isBlank()) return
+        val qId = JSONObject.quote(appId)
+        val qStatus = JSONObject.quote(status)
+        emitJs("window.onKVTVDownloadComplete && window.onKVTVDownloadComplete($qId, $qStatus);")
+    }
+
+    private fun emitError(appId: String, message: String) {
+        if (appId.isBlank()) return
+        val qId = JSONObject.quote(appId)
+        val qMsg = JSONObject.quote(message)
+        emitJs("window.onKVTVDownloadError && window.onKVTVDownloadError($qId, $qMsg);")
+    }
+
     /**
      * Download from a link-only endpoint (following up to 10 HTTP/HTTPS redirects)
      * into a temporary cache file and trigger Android's native PackageInstaller,
@@ -385,11 +651,7 @@ class KVTVBridge(
      */
     @JavascriptInterface
     fun installApp(downloadUrl: String, appName: String) {
-        if (!isTrustedDownloadUrl(downloadUrl)) {
-            showToast("Nguồn tải không hợp lệ hoặc không đáng tin cậy.")
-            return
-        }
-        startApkDownloadAndInstall(downloadUrl, null, appName)
+        installAppWithProgress("", downloadUrl, "", appName, "", "", "")
     }
 
     /**
@@ -397,17 +659,22 @@ class KVTVBridge(
      */
     @JavascriptInterface
     fun installAppWithFallback(downloadUrl: String, backupUrl: String, appName: String) {
-        if (!isTrustedDownloadUrl(downloadUrl) && (backupUrl.isBlank() || !isTrustedDownloadUrl(backupUrl))) {
-            showToast("Nguồn tải không hợp lệ hoặc không đáng tin cậy.")
-            return
-        }
-        startApkDownloadAndInstall(downloadUrl, backupUrl, appName)
+        installAppWithProgress("", downloadUrl, backupUrl, appName, "", "", "")
     }
 
-    private fun startApkDownloadAndInstall(
+    /**
+     * 1-Click Download & Install with live JS progress, SHA-256 verification, Android 8+ install permission
+     * handling, and signing-certificate mismatch uninstall-then-reinstall flow.
+     */
+    @JavascriptInterface
+    fun installAppWithProgress(
+        appId: String,
         downloadUrl: String,
-        backupUrl: String?,
-        appName: String
+        backupUrl: String,
+        appName: String,
+        expectedSha256: String,
+        expectedCertSha256: String,
+        targetPackageName: String
     ) {
         val fullPrimaryUrl = normalizeUrl(downloadUrl)
         val resolvedBackupUrl = resolveBackupUrl(fullPrimaryUrl, backupUrl)
@@ -415,17 +682,28 @@ class KVTVBridge(
             (resolvedBackupUrl.isNullOrBlank() || !isTrustedDownloadUrl(resolvedBackupUrl))
         ) {
             showToast("Nguồn tải không hợp lệ hoặc không đáng tin cậy.")
+            emitError(appId, "Untrusted download URL")
+            return
+        }
+        if (isDownloadingApk) {
+            val busyMsg = "Đang tải ứng dụng khác, vui lòng đợi..."
+            showToast(busyMsg)
+            emitError(appId, busyMsg)
             return
         }
 
         cleanTempApks()
-        showToast("Đang tải $appName...\nVui lòng đợi giây lát.")
+        if (appId.isBlank()) {
+            showToast("Đang tải $appName...\nVui lòng đợi giây lát.")
+        }
+        emitProgress(appId, 0, 0L, 0L, "downloading")
 
         scope.launch {
             isDownloadingApk = true
             try {
+                val explicitSha = expectedSha256.trim().lowercase()
                 var apkFile = if (isTrustedDownloadUrl(fullPrimaryUrl)) {
-                    downloadApkFile(fullPrimaryUrl, appName)
+                    downloadApkFile(fullPrimaryUrl, appName, appId, explicitSha)
                 } else {
                     null
                 }
@@ -434,8 +712,9 @@ class KVTVBridge(
                     resolvedBackupUrl != fullPrimaryUrl &&
                     isTrustedDownloadUrl(resolvedBackupUrl)
                 ) {
+                    emitProgress(appId, 0, 0L, 0L, "fallback")
                     showToast("Đang chuyển sang máy chủ dự phòng (Forgejo) cho $appName...")
-                    apkFile = downloadApkFile(resolvedBackupUrl, appName)
+                    apkFile = downloadApkFile(resolvedBackupUrl, appName, appId, explicitSha)
                 }
 
                 isDownloadingApk = false
@@ -449,21 +728,126 @@ class KVTVBridge(
                     ) {
                         preConfigureApp(PKG_CLOUDSTREAM)
                     }
+
+                    val apkSize = apkFile.length()
+
+                    // Check Android 8+ Unknown Sources permission first
+                    if (!canInstallUnknownApps()) {
+                        pendingInstallApk = apkFile
+                        pendingInstallAppId = appId
+                        emitProgress(appId, 100, apkSize, apkSize, "permission_required")
+                        withContext(Dispatchers.Main) {
+                            showToast("Vui lòng bật quyền 'Cài ứng dụng không rõ nguồn gốc' cho KV-Store TV")
+                            openUnknownSourcesSettings()
+                        }
+                        return@launch
+                    }
+
+                    // Check signing-certificate mismatch against currently installed package
+                    val resolvedInstalledPkg = if (targetPackageName.isNotBlank()) {
+                        resolveInstalledPackage(targetPackageName)
+                    } else {
+                        null
+                    }
+                    if (resolvedInstalledPkg != null) {
+                        val expectedCert = if (expectedCertSha256.trim().length == 64) {
+                            expectedCertSha256.trim().lowercase()
+                        } else {
+                            getApkSigningCertSha256(apkFile)
+                        }
+                        val installedCert = getSigningCertSha256(resolvedInstalledPkg.packageName)
+                        if (isSignatureMismatch(installedCert, expectedCert)) {
+                            pendingSignatureReplaceApk = apkFile
+                            pendingSignatureReplacePkg = resolvedInstalledPkg.packageName
+                            pendingInstallAppId = appId
+                            emitProgress(appId, 100, apkSize, apkSize, "uninstalling_old")
+                            withContext(Dispatchers.Main) {
+                                showToast("Phát hiện bản cũ khác chữ ký. Hãy xác nhận gỡ bản cũ để tự động cài bản chính thức mới.")
+                                uninstallApp(resolvedInstalledPkg.packageName)
+                            }
+                            return@launch
+                        }
+                    }
+
+                    emitProgress(appId, 100, apkSize, apkSize, "installing")
+                    emitComplete(appId, "installing")
                     withContext(Dispatchers.Main) {
-                        showToast("Đã tải xong $appName. Đang mở trình cài đặt...")
+                        if (appId.isBlank()) {
+                            showToast("Đã tải xong $appName. Đang mở trình cài đặt...")
+                        }
                         promptApkInstall(apkFile)
                     }
                 } else {
+                    emitError(appId, "Tải xuống hoặc kiểm tra SHA-256 thất bại cho $appName.")
                     withContext(Dispatchers.Main) {
                         showToast("Lỗi khi tải $appName. Vui lòng thử lại.")
                     }
                 }
             } catch (e: Exception) {
                 isDownloadingApk = false
+                val errMsg = e.localizedMessage ?: "Download error"
+                emitError(appId, errMsg)
                 withContext(Dispatchers.Main) {
-                    showToast("Lỗi tải ứng dụng: ${e.localizedMessage}")
+                    showToast("Lỗi tải ứng dụng: $errMsg")
                 }
             }
+        }
+    }
+
+    /**
+     * Resume pending installation after Unknown Sources permission grant or old-signature uninstall.
+     */
+    fun resumePendingInstallIfReady() {
+        val sigPkg = pendingSignatureReplacePkg
+        val sigApk = pendingSignatureReplaceApk
+        if (!sigPkg.isNullOrBlank() && sigApk != null && isValidApkFile(sigApk)) {
+            val stillInstalled = resolveInstalledPackage(sigPkg)
+            if (stillInstalled == null) {
+                val appId = pendingInstallAppId ?: ""
+                pendingSignatureReplacePkg = null
+                pendingSignatureReplaceApk = null
+                if (canInstallUnknownApps()) {
+                    pendingInstallAppId = null
+                    emitComplete(appId, "installing")
+                    showToast("Đã gỡ bản cũ. Đang mở trình cài đặt bản mới...")
+                    promptApkInstall(sigApk)
+                } else {
+                    pendingInstallApk = sigApk
+                    emitProgress(appId, 100, sigApk.length(), sigApk.length(), "permission_required")
+                    openUnknownSourcesSettings()
+                }
+                return
+            } else {
+                // PackageManager occasionally lags briefly after uninstall dialog closes; re-check once after 400ms
+                mainHandler.postDelayed({
+                    val checkPkg = pendingSignatureReplacePkg
+                    val checkApk = pendingSignatureReplaceApk
+                    if (!checkPkg.isNullOrBlank() && checkApk != null) {
+                        val recheck = resolveInstalledPackage(checkPkg)
+                        val appId = pendingInstallAppId ?: ""
+                        pendingSignatureReplacePkg = null
+                        pendingSignatureReplaceApk = null
+                        pendingInstallAppId = null
+                        if (recheck == null && isValidApkFile(checkApk)) {
+                            emitComplete(appId, "installing")
+                            promptApkInstall(checkApk)
+                        } else {
+                            emitError(appId, "Đã hủy gỡ bản cũ nên chưa thể cài bản mới.")
+                        }
+                    }
+                }, 400L)
+                return
+            }
+        }
+
+        val permApk = pendingInstallApk
+        if (permApk != null && isValidApkFile(permApk) && canInstallUnknownApps()) {
+            val appId = pendingInstallAppId ?: ""
+            pendingInstallApk = null
+            pendingInstallAppId = null
+            emitComplete(appId, "installing")
+            showToast("Đã cấp quyền cài đặt. Đang mở trình cài đặt...")
+            promptApkInstall(permApk)
         }
     }
 
@@ -522,13 +906,15 @@ class KVTVBridge(
             val pInfo = context.packageManager.getPackageInfo(context.packageName, 0)
             val vCode = PackageInfoCompat.getLongVersionCode(pInfo)
             json.put("packageName", context.packageName)
-            json.put("versionName", pInfo.versionName ?: "1.0.0")
+            json.put("versionName", pInfo.versionName ?: BuildConfig.VERSION_NAME)
             json.put("versionCode", vCode)
             json.put("appName", "KV-Store TV")
+            json.put("canRequestPackageInstalls", canInstallUnknownApps())
         } catch (e: Exception) {
             json.put("packageName", "net.vndns.tv.store")
-            json.put("versionName", "1.0.0")
-            json.put("versionCode", 1)
+            json.put("versionName", BuildConfig.VERSION_NAME)
+            json.put("versionCode", BuildConfig.VERSION_CODE)
+            json.put("canRequestPackageInstalls", canInstallUnknownApps())
         }
         return json.toString()
     }
@@ -565,7 +951,7 @@ class KVTVBridge(
                 connectTimeout = 30000
                 readTimeout = 60000
                 instanceFollowRedirects = false
-                setRequestProperty("User-Agent", "KVTVStore-Installer/1.0.0 (Android TV)")
+                setRequestProperty("User-Agent", "KVTVStore-Installer/${BuildConfig.VERSION_NAME} (Android TV)")
                 setRequestProperty("Accept", "*/*")
             }
             conn.connect()
@@ -606,7 +992,12 @@ class KVTVBridge(
      * Download APK to a temporary cache file in context.cacheDir with up to 10 redirects,
      * verify ZIP magic header bytes, and verify optional X-KVTV-SHA256 cryptographic digest.
      */
-    private fun downloadApkFile(urlStr: String, appName: String): File? {
+    private fun downloadApkFile(
+        urlStr: String,
+        appName: String,
+        appId: String = "",
+        explicitExpectedSha256: String = ""
+    ): File? {
         if (!isTrustedDownloadUrl(urlStr)) {
             return null
         }
@@ -617,7 +1008,13 @@ class KVTVBridge(
         } ?: return null
 
         return try {
-            val expectedSha256 = conn.getHeaderField("X-KVTV-SHA256")?.trim()?.lowercase()
+            val headerSha256 = conn.getHeaderField("X-KVTV-SHA256")?.trim()?.lowercase()
+            val expectedSha256 = if (explicitExpectedSha256.length == 64) explicitExpectedSha256 else headerSha256
+            val totalBytes = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                conn.contentLengthLong
+            } else {
+                conn.contentLength.toLong()
+            }
             val digest = MessageDigest.getInstance("SHA-256")
 
             val stagingDir = File(context.cacheDir, "apk_staging")
@@ -627,6 +1024,10 @@ class KVTVBridge(
             val targetFile = File(stagingDir, "temp_${safeName}.apk")
             if (targetFile.exists()) targetFile.delete()
 
+            var downloadedBytes = 0L
+            var lastEmitPct = -1
+            var lastEmitMs = 0L
+
             conn.inputStream.use { input ->
                 FileOutputStream(targetFile).use { output ->
                     val buffer = ByteArray(8192)
@@ -635,11 +1036,29 @@ class KVTVBridge(
                         if (bytesRead > 0) {
                             digest.update(buffer, 0, bytesRead)
                             output.write(buffer, 0, bytesRead)
+                            downloadedBytes += bytesRead
+                            if (appId.isNotBlank()) {
+                                val now = System.currentTimeMillis()
+                                val pct = if (totalBytes > 0L) {
+                                    ((downloadedBytes * 100L) / totalBytes).toInt().coerceIn(0, 99)
+                                } else {
+                                    0
+                                }
+                                if (pct - lastEmitPct >= 2 || now - lastEmitMs >= 120L) {
+                                    lastEmitPct = pct
+                                    lastEmitMs = now
+                                    emitProgress(appId, pct, downloadedBytes, totalBytes, "downloading")
+                                }
+                            }
                         }
                         bytesRead = input.read(buffer)
                     }
                     output.flush()
                 }
+            }
+
+            if (appId.isNotBlank()) {
+                emitProgress(appId, 100, downloadedBytes, if (totalBytes > 0L) totalBytes else downloadedBytes, "verifying")
             }
 
             val computedSha256 = digest.digest().joinToString("") { "%02x".format(it) }

@@ -1,0 +1,189 @@
+/* ==========================================================================
+   KV-TV Store · Astryx Cinema Obsidian Layer & 10-Foot TV Focus Rules
+   ========================================================================== */
+
+:root {
+  --font-family-sans: 'Be Vietnam Pro', 'Figtree', system-ui, -apple-system, sans-serif;
+  --font-family-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+body {
+  font-family: var(--font-family-sans);
+  overflow-x: hidden;
+}
+
+/* Fallback for older Android TV WebViews (< Chromium 123) without CSS light-dark() */
+@supports not (color: light-dark(black, white)) {
+  [data-theme='dark'],
+  [data-theme='dark'] * {
+    --color-background-body: #0b0d11;
+    --color-background-surface: #131720;
+    --color-background-card: #191f2c;
+    --color-background-muted: #212938;
+    --color-text-primary: #f4f6fa;
+    --color-text-secondary: #9aa3b2;
+    --color-border: #283142;
+    --color-border-emphasized: #495670;
+    --color-accent: #e50914;
+    --color-accent-muted: #351015;
+    --color-on-accent: #ffffff;
+    --color-text-accent: #ff6b6b;
+  }
+
+  [data-theme='light'],
+  [data-theme='light'] * {
+    --color-background-body: #f3f4f7;
+    --color-background-surface: #ffffff;
+    --color-background-card: #ffffff;
+    --color-background-muted: #e7eaf1;
+    --color-text-primary: #11151d;
+    --color-text-secondary: #4e596a;
+    --color-border: #d6dbe5;
+    --color-border-emphasized: #8b95a7;
+    --color-accent: #dc2626;
+    --color-accent-muted: #fee2e2;
+    --color-on-accent: #ffffff;
+    --color-text-accent: #b91c1c;
+  }
+}
+
+/* 10-Foot TV D-pad crisp high-contrast focus rim */
+:focus-visible {
+  outline: 2px solid var(--color-accent, #e50914) !important;
+  outline-offset: 2px;
+}
+
+[data-tv-mode='true'] button:focus-visible,
+[data-tv-mode='true'] a:focus-visible,
+[data-tv-mode='true'] input:focus-visible,
+[data-tv-mode='true'] [tabindex]:focus-visible {
+  outline: 3px solid #ffffff !important;
+  outline-offset: 3px;
+  box-shadow:
+    0 0 0 6px rgba(229, 9, 20, 0.55),
+    0 8px 24px rgba(0, 0, 0, 0.5) !important;
+}
+
+.kvtv-app-card {
+  height: 100%;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.kvtv-app-card:hover {
+  border-color: var(--color-border-emphasized);
+}
+
+.kvtv-hero-card {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-accent) 12%, var(--color-background-card)) 0%,
+    var(--color-background-card) 58%
+  );
+  border-color: color-mix(in srgb, var(--color-accent) 42%, var(--color-border));
+}
+
+.kvtv-icon-tile {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.kvtv-icon-tile-lg {
+  width: 60px;
+  height: 60px;
+  min-width: 60px;
+  border-radius: 14px;
+}
+
+.kvtv-glyph-store {
+  background: linear-gradient(135deg, #e50914 0%, #991b1b 100%);
+  color: #ffffff;
+}
+
+.kvtv-glyph-jellyfin {
+  background: linear-gradient(135deg, #00a4dc 0%, #7c3aed 100%);
+  color: #ffffff;
+}
+
+.kvtv-glyph-kodi {
+  background: linear-gradient(135deg, #17b2e7 0%, #0369a1 100%);
+  color: #ffffff;
+}
+
+.kvtv-glyph-cloudstream {
+  background: linear-gradient(135deg, #6366f1 0%, #3730a3 100%);
+  color: #ffffff;
+}
+
+.kvtv-glyph-netflix {
+  background: linear-gradient(135deg, #dc2626 0%, #7f1d1d 100%);
+  color: #ffffff;
+}
+
+.kvtv-glyph-kvtube {
+  background: linear-gradient(135deg, #ff1e42 0%, #be123c 100%);
+  color: #ffffff;
+}
+
+.kvtv-glyph-smarttube {
+  background: linear-gradient(135deg, #f97316 0%, #b91c1c 100%);
+  color: #ffffff;
+}
+
+.kvtv-mono {
+  font-family: var(--font-family-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.kvtv-qr-frame {
+  background: #ffffff;
+  padding: 12px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border);
+}
+
+.kvtv-qr-frame img,
+.kvtv-qr-frame svg {
+  width: 184px;
+  height: 184px;
+  display: block;
+}
+
+/* Compact density inside KV-Store Android TV WebView (960x540 viewport scale) */
+[data-tv-mode='true'] .kvtv-hide-on-tv {
+  display: none !important;
+}
+
+.kvtv-segment-strip {
+  overflow-x: auto;
+  max-width: 100%;
+  scrollbar-width: none;
+}
+
+.kvtv-segment-strip::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .kvtv-hide-on-mobile {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1024px) and (max-height: 620px) {
+  .kvtv-icon-tile {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+  }
+}

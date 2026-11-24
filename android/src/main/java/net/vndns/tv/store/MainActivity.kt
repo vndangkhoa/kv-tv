@@ -18,6 +18,8 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +28,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var webView: WebView
     private lateinit var progressBar: ProgressBar
+    private lateinit var splashOverlay: LinearLayout
+    private lateinit var errorOverlay: LinearLayout
+    private lateinit var retryButton: Button
+    private var hasMainFrameError: Boolean = false
     private var lastBackPressTime: Long = 0
     private lateinit var bridge: KVTVBridge
 
@@ -43,6 +49,20 @@ class MainActivity : AppCompatActivity() {
 
         webView = findViewById(R.id.webView)
         progressBar = findViewById(R.id.progressBar)
+        splashOverlay = findViewById(R.id.splashOverlay)
+        errorOverlay = findViewById(R.id.errorOverlay)
+        retryButton = findViewById(R.id.retryButton)
+
+        retryButton.setOnClickListener {
+            hasMainFrameError = false
+            errorOverlay.visibility = View.GONE
+            splashOverlay.visibility = View.VISIBLE
+            if (webView.url.isNullOrBlank()) {
+                webView.loadUrl(START_URL)
+            } else {
+                webView.reload()
+            }
+        }
 
         bridge = KVTVBridge(this, webView)
         bridge.cleanTempApks()
@@ -55,12 +75,14 @@ class MainActivity : AppCompatActivity() {
             webView.loadUrl(START_URL)
         } else {
             webView.restoreState(savedInstanceState)
+            splashOverlay.visibility = View.GONE
         }
     }
 
     override fun onResume() {
         super.onResume()
         hideSystemUI()
+        bridge.resumePendingInstallIfReady()
         bridge.cleanTempApks()
         // Notify webview to refresh catalog statuses on resume (e.g. returning from installer)
         webView.evaluateJavascript("window.onKVTVResume && window.onKVTVResume();", null)
@@ -104,7 +126,7 @@ class MainActivity : AppCompatActivity() {
             mediaPlaybackRequiresUserGesture = false
             cacheMode = WebSettings.LOAD_DEFAULT
             mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-            userAgentString = "$userAgentString KVTVStore/1.0.0 (Android TV)"
+            userAgentString = "$userAgentString KVTVStore/${BuildConfig.VERSION_NAME} (Android TV)"
         }
 
         webView.isFocusable = true
@@ -130,12 +152,18 @@ class MainActivity : AppCompatActivity() {
 
         webView.webViewClient = object : WebViewClient() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                hasMainFrameError = false
+                errorOverlay.visibility = View.GONE
                 progressBar.visibility = View.VISIBLE
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 progressBar.visibility = View.GONE
-                webView.requestFocus()
+                if (!hasMainFrameError) {
+                    splashOverlay.visibility = View.GONE
+                    errorOverlay.visibility = View.GONE
+                    webView.requestFocus()
+                }
             }
 
             override fun onReceivedError(
@@ -144,7 +172,11 @@ class MainActivity : AppCompatActivity() {
                 error: WebResourceError?
             ) {
                 if (request?.isForMainFrame == true) {
+                    hasMainFrameError = true
                     progressBar.visibility = View.GONE
+                    splashOverlay.visibility = View.GONE
+                    errorOverlay.visibility = View.VISIBLE
+                    retryButton.requestFocus()
                 }
             }
 
@@ -194,10 +226,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleBackPress() {
-        // First check if a modal dialog is currently open in web page
         webView.evaluateJavascript(
             """
             (function() {
+                if (typeof window.onKVTVBackPress === 'function') {
+                    return !!window.onKVTVBackPress();
+                }
                 var dialog = document.querySelector('dialog[open]');
                 if (dialog) {
                     dialog.close();

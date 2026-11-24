@@ -19,3 +19,7 @@ android/.gradle/
 android/build/
 android/local.properties
 
+# Astryx React frontend
+frontend/node_modules/
+frontend/dist/
+

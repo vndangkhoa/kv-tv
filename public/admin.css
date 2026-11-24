@@ -4,37 +4,37 @@
    ========================================================================== */
 
 :root {
-  --bg-oled: #000000;
-  --bg-chrome: #0A0A0A;
-  --bg-surface: #121212;
-  --bg-elevated: #1C1C1C;
-  --bg-input: #000000;
-  --bg-hover: #1C1C1C;
+  --bg-oled: #0b0d11;
+  --bg-chrome: #10141c;
+  --bg-surface: #141820;
+  --bg-elevated: #1c2230;
+  --bg-input: #0b0d11;
+  --bg-hover: #212938;
 
-  --border-hairline: #262626;
-  --border-strong: #454545;
+  --border-hairline: #283142;
+  --border-strong: #495670;
 
-  --fg-primary: #FFFFFF;
-  --fg-secondary: #D4D4D4;
-  --fg-muted: #8E8E8E;
-  --fg-pivot-inactive: #8E8E8E;
+  --fg-primary: #f4f6fa;
+  --fg-secondary: #c7d0dd;
+  --fg-muted: #9aa3b2;
+  --fg-pivot-inactive: #9aa3b2;
 
-  /* Committed DESIGN.md Metro Flat Color-Block Palette */
-  --metro-cobalt: #0078D7;
-  --metro-violet: #6B21A8;
-  --metro-teal: #008272;
-  --metro-crimson: #D83B01;
-  --metro-vermilion: #B91C1C;
-  --metro-emerald: #107C10;
-  --metro-amber: #B45309;
+  /* Harmonized with Astryx Cinema Obsidian tokens */
+  --metro-cobalt: #2563eb;
+  --metro-violet: #7c3aed;
+  --metro-teal: #0d9488;
+  --metro-crimson: #e50914;
+  --metro-vermilion: #dc2626;
+  --metro-emerald: #10b981;
+  --metro-amber: #f59e0b;
 
-  --font-sans: 'Work Sans', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: 'Be Vietnam Pro', 'Figtree', 'Work Sans', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
   color-scheme: dark;
   scrollbar-width: thin;
-  scrollbar-color: var(--metro-cobalt) var(--bg-chrome);
+  scrollbar-color: var(--metro-crimson) var(--bg-chrome);
 }
 
 *,
@@ -43,7 +43,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  border-radius: 0px;
+  border-radius: 6px;
 }
 
 [hidden] {

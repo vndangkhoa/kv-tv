@@ -25,6 +25,12 @@ const {
 const PORT = Number(process.env.PORT || 3456);
 const HOST = process.env.HOST || '0.0.0.0';
 const PUBLIC_DIR = path.join(__dirname, 'public');
+const FRONTEND_DIST_DIR = path.join(__dirname, 'frontend', 'dist');
+function getStorefrontDir() {
+  return fs.existsSync(path.join(FRONTEND_DIST_DIR, 'index.html'))
+    ? FRONTEND_DIST_DIR
+    : PUBLIC_DIR;
+}
 const MAX_UPLOAD_BYTES = 512 * 1024 * 1024; // 512 MB max APK upload
 const MAX_JSON_BYTES = 1 * 1024 * 1024; // 1 MB max JSON body
 const MAX_RATE_KEYS = 10000;
@@ -1203,9 +1209,16 @@ function serveFileWithRange(req, res, filePath, extraHeaders = {}) {
     const contentType =
       extraHeaders['Content-Type'] || MIME_TYPES[ext] || 'application/octet-stream';
     const isHtml = ext === '.html';
+    const isHashedAsset =
+      filePath.includes(`${path.sep}assets${path.sep}`) &&
+      /(?:-|.)[a-zA-Z0-9_-]{6,}\.(js|css|woff2?|svg|png|webp)$/i.test(filePath);
     const cacheControl =
       extraHeaders['Cache-Control'] ||
-      (isHtml ? 'no-cache, must-revalidate' : 'public, max-age=3600');
+      (isHtml
+        ? 'no-cache, must-revalidate'
+        : isHashedAsset
+          ? 'public, max-age=31536000, immutable'
+          : 'public, max-age=3600');
 
     const headers = {
       'Content-Type': contentType,
@@ -1764,6 +1777,8 @@ const server = http.createServer(async (req, res) => {
     // Tier 2 — Public API Rate Limit (120 requests per 60 seconds per IP)
     if (
       pathname === '/api/catalog' ||
+      pathname === '/api/version' ||
+      pathname === '/api/updates/check' ||
       pathname.startsWith('/api/apps/') ||
       pathname.startsWith('/api/code/') ||
       pathname === '/api/qr'
@@ -1822,6 +1837,7 @@ const server = http.createServer(async (req, res) => {
           name: 'KV-TV App Store',
           domain: 'https://tv.vndns.net',
           downloaderCodePrefix: '88',
+          version: '1.1.0',
         },
         suggestedLang,
         clientCountry: cfCountry || xCountry || 'UNKNOWN',
@@ -1834,6 +1850,235 @@ const server = http.createServer(async (req, res) => {
           'Originals & Cinema',
           'Video & Music',
         ],
+      });
+      return;
+    }
+
+    // 2.1 GET / HEAD /api/version
+    if ((method === 'GET' || method === 'HEAD') && pathname === '/api/version') {
+      const storeApp = store.apps.find((a) => a.id === 'kv-store');
+      sendJson(req, res, 200, {
+        ok: true,
+        storeVersion: store.storeInfo?.version || storeApp?.version || '1.1.0',
+        storeVersionCode: Number(storeApp?.versionCode || 2),
+        updatedAt: storeApp?.updatedAt || new Date().toISOString(),
+        apps: store.apps.map((a) => ({
+          id: a.id,
+          name: a.name,
+          packageName: a.packageName,
+          version: a.version,
+          versionCode: Number(a.versionCode || 1),
+          releaseOnly: Boolean(a.releaseOnly),
+          size: a.size,
+          fileSize: a.fileSize || null,
+          sha256: a.sha256,
+          signingCertSha256: a.signingCertSha256 || '',
+          updatedAt: a.updatedAt || null,
+        })),
+      });
+      return;
+    }
+
+    // 2.15 GET / HEAD / POST /api/updates/check
+    if (
+      (method === 'GET' || method === 'HEAD' || method === 'POST') &&
+      pathname === '/api/updates/check'
+    ) {
+      let body = {};
+      if (method === 'POST') {
+        try {
+          body = await readJsonBody(req);
+        } catch (err) {
+          sendJson(req, res, 400, { ok: false, error: err.message });
+          return;
+        }
+      } else {
+        const rawCode = searchParams.get('storeVersionCode');
+        if (rawCode !== null && rawCode !== '') {
+          body.storeVersionCode = Number(rawCode);
+        }
+        const rawInstalled = searchParams.get('installed');
+        if (rawInstalled) {
+          try {
+            const parsed = JSON.parse(rawInstalled);
+            if (Array.isArray(parsed)) body.apps = parsed;
+          } catch {
+            body.apps = rawInstalled
+              .split(',')
+              .map((part) => part.trim())
+              .filter(Boolean)
+              .map((part) => {
+                const [packageName, versionCodeStr, debugStr, certStr] = part.split(':');
+                return {
+                  packageName: (packageName || '').trim(),
+                  versionCode: Number(versionCodeStr || 0),
+                  isDebuggable: debugStr === '1' || debugStr === 'true',
+                  signingCertSha256: (certStr || '').trim().toLowerCase(),
+                };
+              });
+          }
+        }
+      }
+
+      const CLIENT_PACKAGE_ALIASES = {
+        'org.smarttube.stable': [
+          'org.smarttube.stable',
+          'com.teamsmart.videomanager.tv',
+          'app.smarttube.fdroid',
+          'com.liskovsoft.smarttubetv',
+          'app.smarttube',
+        ],
+        'com.kvtube.tv': ['com.kvtube.tv', 'org.schabi.newpipe'],
+      };
+
+      const clientApps = Array.isArray(body.apps) ? body.apps : [];
+      const installedMap = new Map();
+      for (const item of clientApps) {
+        if (!item || !item.packageName) continue;
+        installedMap.set(String(item.packageName).trim().toLowerCase(), {
+          packageName: String(item.packageName).trim(),
+          versionCode: Number(item.versionCode || 0),
+          versionName: item.versionName ? String(item.versionName) : '',
+          isDebuggable: Boolean(item.isDebuggable),
+          signingCertSha256: String(item.signingCertSha256 || '').trim().toLowerCase(),
+        });
+      }
+
+      const storeAppRaw = store.apps.find((a) => a.id === 'kv-store');
+      const storeApp = storeAppRaw ? decorateAppForPublic(storeAppRaw) : null;
+      const clientStoreVerCode = Number(
+        body.storeVersionCode ||
+          installedMap.get('net.vndns.tv.store')?.versionCode ||
+          0
+      );
+      const clientStoreVerName = String(
+        body.storeVersionName ||
+          installedMap.get('net.vndns.tv.store')?.versionName ||
+          ''
+      );
+      const selfLatestCode = Number(storeApp?.versionCode || 2);
+      const selfHasClientVersion = clientStoreVerCode > 0;
+      const selfUpdate = {
+        id: 'kv-store',
+        packageName: 'net.vndns.tv.store',
+        currentVersionCode: clientStoreVerCode || null,
+        currentVersionName: clientStoreVerName || null,
+        latestVersionCode: selfLatestCode,
+        latestVersionName: storeApp?.version || '1.1.0',
+        updateAvailable: selfHasClientVersion && selfLatestCode > clientStoreVerCode,
+        downloadUrl: '/kv-store.apk',
+        backupUrl: storeApp?.backupApkUrl || null,
+        sha256: storeApp?.sha256 || null,
+        signingCertSha256: storeApp?.signingCertSha256 || '',
+        size: storeApp?.size || '2.5 MB',
+        changelog_vi: storeApp?.changelog_vi || '',
+        changelog_en: storeApp?.changelog_en || '',
+      };
+
+      const updatesAvailable = [];
+      const upToDate = [];
+      const notInstalled = [];
+
+      for (const rawApp of store.apps) {
+        if (rawApp.id === 'kv-store') continue;
+        const app = decorateAppForPublic(rawApp);
+        const candidates = CLIENT_PACKAGE_ALIASES[app.packageName] || [app.packageName];
+        let matched = null;
+        for (const cand of candidates) {
+          const hit = installedMap.get(String(cand).toLowerCase());
+          if (hit) {
+            matched = hit;
+            break;
+          }
+        }
+
+        if (!matched) {
+          notInstalled.push({
+            id: app.id,
+            name: app.name,
+            packageName: app.packageName,
+            latestVersion: app.version,
+            latestVersionCode: Number(app.versionCode || 1),
+            size: app.size,
+            sha256: app.sha256,
+            signingCertSha256: app.signingCertSha256 || '',
+            shortCode: app.shortCode,
+            aftvCode: app.aftvCode,
+            apkDownloadUrl: app.apkDownloadUrl,
+            backupApkUrl: app.backupApkUrl,
+            changelog_vi: app.changelog_vi || '',
+            changelog_en: app.changelog_en || '',
+            updatedAt: app.updatedAt || null,
+          });
+          continue;
+        }
+
+        const latestCode = Number(app.versionCode || 1);
+        const expectedCert = String(app.signingCertSha256 || '').trim().toLowerCase();
+        const installedCert = matched.signingCertSha256;
+        const signatureMismatch = Boolean(
+          installedCert.length === 64 &&
+            expectedCert.length === 64 &&
+            installedCert !== expectedCert
+        );
+        const debuggableUpgrade = Boolean(app.releaseOnly && matched.isDebuggable);
+        const versionUpgrade = latestCode > matched.versionCode;
+        const needsUpdate = versionUpgrade || debuggableUpgrade || signatureMismatch;
+
+        const entry = {
+          id: app.id,
+          name: app.name,
+          packageName: app.packageName,
+          installedPackage: matched.packageName,
+          installedVersion: matched.versionName || String(matched.versionCode),
+          installedVersionCode: matched.versionCode,
+          isDebuggable: matched.isDebuggable,
+          installedCertSha256: installedCert,
+          latestVersion: app.version,
+          latestVersionCode: latestCode,
+          releaseOnly: Boolean(app.releaseOnly),
+          expectedCertSha256: expectedCert,
+          signatureMismatch,
+          debuggableUpgrade,
+          versionUpgrade,
+          updateAvailable: needsUpdate,
+          reason: signatureMismatch
+            ? 'signature_mismatch'
+            : debuggableUpgrade
+              ? 'debug_to_release'
+              : versionUpgrade
+                ? 'newer_version'
+                : 'up_to_date',
+          size: app.size,
+          sha256: app.sha256,
+          shortCode: app.shortCode,
+          aftvCode: app.aftvCode,
+          apkDownloadUrl: app.apkDownloadUrl,
+          backupApkUrl: app.backupApkUrl,
+          changelog_vi: app.changelog_vi || '',
+          changelog_en: app.changelog_en || '',
+          notes_vi: app.notes_vi || '',
+          notes_en: app.notes_en || '',
+          updatedAt: app.updatedAt || null,
+        };
+
+        if (needsUpdate) {
+          updatesAvailable.push(entry);
+        } else {
+          upToDate.push(entry);
+        }
+      }
+
+      sendJson(req, res, 200, {
+        ok: true,
+        checkedAt: new Date().toISOString(),
+        storeVersion: selfUpdate.latestVersionName,
+        storeVersionCode: selfUpdate.latestVersionCode,
+        selfUpdate,
+        updatesAvailable,
+        upToDate,
+        notInstalled,
+        totalUpdates: updatesAvailable.length + (selfUpdate.updateAvailable ? 1 : 0),
       });
       return;
     }
@@ -2863,7 +3108,7 @@ const server = http.createServer(async (req, res) => {
           serveStaticFile(req, res, PUBLIC_DIR, 'mockup-3.html');
           return;
         }
-        serveStaticFile(req, res, PUBLIC_DIR, 'index.html');
+        serveStaticFile(req, res, getStorefrontDir(), 'index.html');
         return;
       }
       if (pathname === '/admin' || pathname === '/admin/') {
@@ -2902,9 +3147,21 @@ const server = http.createServer(async (req, res) => {
         serveStaticFile(req, res, UPLOADS_DIR, relUpload);
         return;
       }
-      // Serve static assets from public/
+      // Serve static assets from built Astryx storefront first, falling back to public/
       const relAsset = decodeURIComponent(pathname.slice(1));
-      serveStaticFile(req, res, PUBLIC_DIR, relAsset);
+      const storefrontDir = getStorefrontDir();
+      const safeRelAsset = path.normalize(relAsset).replace(/^(\.\.(\/|\\|$))+/, '');
+      const storefrontCandidate = path.join(storefrontDir, safeRelAsset);
+      if (
+        storefrontDir !== PUBLIC_DIR &&
+        storefrontCandidate.startsWith(storefrontDir) &&
+        fs.existsSync(storefrontCandidate) &&
+        fs.statSync(storefrontCandidate).isFile()
+      ) {
+        serveStaticFile(req, res, storefrontDir, safeRelAsset);
+        return;
+      }
+      serveStaticFile(req, res, PUBLIC_DIR, safeRelAsset);
       return;
     }
 

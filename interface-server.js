@@ -10,6 +10,13 @@ const PORT = Number(process.env.PORT || 3456);
 const HOST = process.env.HOST || '0.0.0.0';
 const BACKEND_URL = process.env.BACKEND_URL || 'http://kv-tv-backend:3457';
 const PUBLIC_DIR = path.join(__dirname, 'public');
+const FRONTEND_DIST_DIR = path.join(__dirname, 'frontend', 'dist');
+
+function getStorefrontDir() {
+  return fs.existsSync(path.join(FRONTEND_DIST_DIR, 'index.html'))
+    ? FRONTEND_DIST_DIR
+    : PUBLIC_DIR;
+}
 
 const SECURITY_HEADERS = Object.freeze({
   'X-Content-Type-Options': 'nosniff',
@@ -308,15 +315,31 @@ function proxyToBackend(req, res) {
  */
 function serveStorefrontFile(req, res, relativePath) {
   const safeRel = path.normalize(relativePath).replace(/^(\.\.(\/|\\|$))+/, '');
-  const fullPath = path.join(PUBLIC_DIR, safeRel);
+  const storefrontDir = getStorefrontDir();
+  const primaryPath = path.join(storefrontDir, safeRel);
 
-  if (!fullPath.startsWith(PUBLIC_DIR)) {
+  if (!primaryPath.startsWith(storefrontDir)) {
     res.writeHead(403, {
       ...SECURITY_HEADERS,
       'Content-Type': 'application/json; charset=utf-8',
     });
     res.end(JSON.stringify({ error: 'Forbidden path' }));
     return;
+  }
+
+  let fullPath = primaryPath;
+  if (
+    storefrontDir !== PUBLIC_DIR &&
+    (!fs.existsSync(fullPath) || !fs.statSync(fullPath).isFile())
+  ) {
+    const legacyPath = path.join(PUBLIC_DIR, safeRel);
+    if (
+      legacyPath.startsWith(PUBLIC_DIR) &&
+      fs.existsSync(legacyPath) &&
+      fs.statSync(legacyPath).isFile()
+    ) {
+      fullPath = legacyPath;
+    }
   }
 
   fs.stat(fullPath, (err, stat) => {
@@ -337,9 +360,14 @@ function serveStorefrontFile(req, res, relativePath) {
     const ext = path.extname(fullPath).toLowerCase();
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
     const isHtml = ext === '.html';
+    const isHashedAsset =
+      fullPath.includes(`${path.sep}assets${path.sep}`) &&
+      /(?:-|.)[a-zA-Z0-9_-]{6,}\.(js|css|woff2?|svg|png|webp)$/i.test(fullPath);
     const cacheControl = isHtml
       ? 'no-cache, must-revalidate'
-      : 'public, max-age=3600';
+      : isHashedAsset
+        ? 'public, max-age=31536000, immutable'
+        : 'public, max-age=3600';
 
     const headers = {
       ...SECURITY_HEADERS,
