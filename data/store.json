@@ -173,7 +173,7 @@
       ],
       "color": "#17B2E7",
       "iconType": "kodi",
-      "downloads": 781,
+      "downloads": 782,
       "rating": "4.9",
       "minAndroid": "Android TV 7.0+",
       "arch": "Universal (arm64-v8a)",
@@ -551,10 +551,20 @@
         "date": "2026-11-24",
         "tvViews": 2,
         "webViews": 4,
-        "downloads": 3
+        "downloads": 4
       }
     ],
     "logs": [
+      {
+        "id": "evt-mwu21is8-64ca",
+        "timestamp": "2026-11-24T02:07:40.376Z",
+        "event": "download",
+        "appId": "kodi-kv",
+        "appName": "Kodi 21 Omega (apk)",
+        "deviceType": "desktop",
+        "ip": "172.26.0.1",
+        "userAgent": ""
+      },
       {
         "id": "evt-mwu1w1lp-d5d6",
         "timestamp": "2026-11-24T02:03:24.829Z",
@@ -1538,16 +1548,6 @@
       {
         "id": "evt-mw3hnd2u-e059",
         "timestamp": "2026-11-05T11:54:46.902Z",
-        "event": "view",
-        "appId": null,
-        "appName": "Catalog (DESKTOP)",
-        "deviceType": "desktop",
-        "ip": "127.0.0.1",
-        "userAgent": "node"
-      },
-      {
-        "id": "evt-mw3hmxl3-9d0d",
-        "timestamp": "2026-11-05T11:54:26.823Z",
         "event": "view",
         "appId": null,
         "appName": "Catalog (DESKTOP)",
